@@ -1,4 +1,4 @@
-`include "../defines/UETRV_PCore.svh"
+`include "../defines/UETRV_PCore_defs.svh"
 
 module decode (
 
