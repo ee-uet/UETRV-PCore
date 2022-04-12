@@ -11,7 +11,7 @@ module reg_file (
     output  logic [`XLEN-1:0]            rf2idu_rs1_data_o,        // rs1 read data
     output  logic [`XLEN-1:0]            rf2idu_rs2_data_o,        // rs2 read data
 
-    input   logic                        idu2rf_wr_req_i,          // write request
+    input   logic                        idu2rf_rd_wr_req_i,       // write request
     input   logic [`RF_AWIDTH-1:0]       idu2rf_rd_addr_i,         // rd write address
     input   logic [`XLEN-1:0]            idu2rf_rd_data_i          // rd write data
 
@@ -24,7 +24,7 @@ logic             [`XLEN-1:0]            register_file[`RF_SIZE];
 // control signals for validity of regiter file read/write operations
 assign  rs1_addr_valid   =   |idu2rf_rs1_addr_i;
 assign  rs2_addr_valid   =   |idu2rf_rs2_addr_i;
-assign  rf_wr_valid      =   |idu2rf_rd_addr_i & idu2rf_wr_req_i;
+assign  rd_wr_valid      =   |idu2rf_rd_addr_i & idu2rf_rd_wr_req_i;
 
 // asynchronous read operation for two register operands
 assign  rf2idu_rs1_data_o   =   ( rs1_addr_valid ) ? register_file[idu2rf_rs1_addr_i] : '0;
@@ -34,7 +34,7 @@ assign  rf2idu_rs2_data_o   =   ( rs2_addr_valid ) ? register_file[idu2rf_rs2_ad
 always_ff @( posedge clk) begin
     if ( rst_n ) begin
         register_file   <=   '{default: '0};
-    end else if ( rf_wr_valid ) begin
+    end else if ( rd_wr_valid ) begin
         register_file[idu2rf_rd_addr_i]   <=   idu2rf_rd_data_i;
     end
 end
