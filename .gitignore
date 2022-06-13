@@ -1,1 +1,6 @@
 *.bak
+*.vcd
+*.mti
+*.mpf
+*.mpf_new
+work/
