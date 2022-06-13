@@ -12,4 +12,10 @@
 `define RF_AWIDTH           5
 `define RF_SIZE            32
 
+
+`define IMEM_SIZE        1024
+`define IMEM_INST_REQ       1
+
+
+
 `endif // UETRV_PCORE_SVH

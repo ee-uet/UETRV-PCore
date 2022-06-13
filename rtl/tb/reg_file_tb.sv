@@ -1,6 +1,6 @@
 `timescale 1 ns / 100 ps
 
-`include "../defines/UETRV_PCore.svh"
+`include "../defines/UETRV_PCore_defs.svh"
 
 
 module reg_file_tb();
@@ -20,13 +20,13 @@ wire [7:0] count;
 reg_file dut (
 .clk                     (clk),
 .rst_n                   (reset),
-.idu2rf_rs1_addr_i       (idu2rf_rs1_addr_i),
-.idu2rf_rs2_addr_i       (idu2rf_rs2_addr_i),
-.rf2idu_rs1_data_o       (rf2idu_rs1_data_o),
-.rf2idu_rs2_data_o       (rf2idu_rs2_data_o),
-.idu2rf_wr_req_i         (idu2rf_wr_req_i),
-.idu2rf_rd_addr_i        (idu2rf_rd_addr_i),
-.idu2rf_rd_data_i        (idu2rf_rd_data_i)
+.id2rf_rs1_addr_i       (idu2rf_rs1_addr_i),
+.id2rf_rs2_addr_i       (idu2rf_rs2_addr_i),
+.rf2id_rs1_data_o       (rf2idu_rs1_data_o),
+.rf2id_rs2_data_o       (rf2idu_rs2_data_o),
+.id2rf_wr_req_i         (idu2rf_wr_req_i),
+.id2rf_rd_addr_i        (idu2rf_rd_addr_i),
+.id2rf_rd_data_i        (idu2rf_rd_data_i)
 ); 
 
 
