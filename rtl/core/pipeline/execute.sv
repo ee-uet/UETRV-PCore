@@ -71,8 +71,8 @@ end
 // Addition and subtraction
 always_comb begin
     alu_adder_out = (alu_operator == ALU_OPS_ADD)
-                  ? (alu_operand_1 + alu_operand_2)   // Subtraction and comparison
-                  : (alu_operand_1 - alu_operand_2);  // Addition
+                  ? (alu_operand_1 + alu_operand_2)   // Addition 
+                  : (alu_operand_1 - alu_operand_2);  // Subtraction and comparison
 end
 
 //============================ Branch related implementation ====================================// 
