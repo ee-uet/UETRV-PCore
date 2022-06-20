@@ -17,12 +17,12 @@ module imem (
 
 
 // Instruction memory instantiation and initialization
-logic   [`XLEN-1:0]          memory[`IMEM_SIZE];
+logic   [`XLEN-1:0]          inst_memory[`IMEM_SIZE];
 
 initial
 begin
      // Reading the contents of imem.txt file to memory variable
-     $readmemh("imem.txt", memory); 
+     $readmemh("imem.txt", inst_memory); 
 end
 
 // Local signals
@@ -41,7 +41,7 @@ always_ff @(posedge clk)
     end 
     else begin
        cs_ff     <=   if2imem_req_i;
-       raddr_ff  <=   if2imem_addr_i[9:2]; // Memory is word addressable
+       raddr_ff  <=   {2'b0, if2imem_addr_i[9:2]};  // Memory is word addressable
     end
   end
 
@@ -50,12 +50,12 @@ always_ff @(posedge clk)
     if (rst_n) begin
         rdata_ff  <= '0;
     end else if (cs_ff) begin
-        rdata_ff   <=   memory[raddr_ff];   // #(DELAY)
+        rdata_ff <= memory[raddr_ff];   // #(DELAY)
     end
 end
 */
 
-assign imem2if_rdata_o   =   memory[raddr_ff];  // MT: Asynchronous read    --- rdata_ff; 
+assign imem2if_rdata_o = inst_memory[raddr_ff];  // MT: Asynchronous read    --- rdata_ff; 
 
-endmodule: imem
+endmodule : imem
 
