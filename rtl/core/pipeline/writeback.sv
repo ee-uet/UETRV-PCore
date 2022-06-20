@@ -39,15 +39,15 @@ assign wb2id_rd_wr_req_o  =  mem2wb_ctrl.rd_wr_req;
                 wb2id_rd_data  =  mem2wb_data.alu_result;
             end
             RD_WB_INC_PC : begin
-                wb2id_rd_data  =  mem2wb_data.pc + 4'b0100;;
+                wb2id_rd_data  =  mem2wb_data.pc + 32'd4;;
             end
             RD_WB_MEM : begin
-                wb2id_rd_data  =  mem2wb_data.dmem_data;
+                wb2id_rd_data  =  mem2wb_data.dmem_rdata;
             end
             RD_WB_CSR : begin
                 wb2id_rd_data  =  mem2wb_data.csr_data;
             end
-            default :                ; // default case to suppress warning
+            default :    wb2id_rd_data  = '0; // default case 
         endcase
    end
 
@@ -55,5 +55,5 @@ assign wb2id_rd_wr_req_o  =  mem2wb_ctrl.rd_wr_req;
 // The output signal update
  assign wb2id_rd_data_o  =  wb2id_rd_data;
 
-endmodule: writeback
+endmodule : writeback
 

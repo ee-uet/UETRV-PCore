@@ -333,11 +333,11 @@ always_comb begin
 end // Decoder logic
 
 // MT TODO: Feedforward (pipeline) signals should be made configurable for enabling/disabling pipeline stage 
-assign id2exe_ctrl_o          =   id2exe_ctrl;
-assign id2exe_data_o          =   id2exe_data; 
+assign id2exe_ctrl_o = id2exe_ctrl;
+assign id2exe_data_o = id2exe_data; 
 
 // Feedback signals
-assign id2if_rdy_o            =   '1;
+assign id2if_rdy_o = '1;
 
 
 // Instantiation of register file

@@ -25,12 +25,9 @@ logic                                   if2imem_req;             // Instruction 
 logic [`XLEN-1:0]                       if2imem_addr;            // Instruction memory address
 logic [`XLEN-1:0]                       imem2if_rdata;           // Instruction memory read data
 
-logic                                   id2if_rdy;             // Instruction memory request
+logic                                   id2if_rdy;              // Instruction memory request
 logic [`XLEN-1:0]                       if2id_instr;            // Instruction 
-logic [`XLEN-1:0]                       if2id_pc;            // PC
-
-logic [`XLEN-1:0]                       id2exe_rs1_data;
-logic [`XLEN-1:0]                       id2exe_rs2_data;
+logic [`XLEN-1:0]                       if2id_pc;               // PC
 
 type_id2exe_ctrl_s                      id2exu_ctrl;
 type_id2exe_data_s                      id2exu_data;
@@ -43,6 +40,8 @@ type_signal_from_dmem_s                 dmem2mem;
 
 type_mem2wb_ctrl_s                      mem2wb_ctrl;
 type_mem2wb_data_s                      mem2wb_data;
+
+type_exe2if_fb_s                        exe2if_fb;
 
 logic                                   wb2id_rd_wr_req;
 logic [`RF_AWIDTH-1:0]                  wb2id_rd_addr;
@@ -60,7 +59,8 @@ fetch fetch_module (
     .imem2if_rdata_i     (imem2if_rdata),
     .if2id_instr_o       (if2id_instr),
     .if2id_pc_o          (if2id_pc),
-    .id2if_rdy_i         (id2if_rdy)
+    .id2if_rdy_i         (id2if_rdy),
+    .exe2if_fb_i         (exe2if_fb)
 );
 
 // Instruction Decode module instantiation
@@ -91,7 +91,10 @@ execute execute_module (
 
     // Memory module interface signals
     .exe2mem_ctrl_o       (exe2mem_ctrl),
-    .exe2mem_data_o       (exe2mem_data)
+    .exe2mem_data_o       (exe2mem_data),
+
+    // Memory module feedback signal from memory module to instruction fetch signal
+    .exe2if_fb_o          (exe2if_fb) 
 );
 
 // Data Memory module instantiation
@@ -133,5 +136,5 @@ assign imem2if_rdata    =   imem2if_rdata_i;           // Instruction memory rea
 assign ptop2dmem_o      =   mem2dmem;
 assign dmem2mem         =   dmem2ptop_i;
 
-endmodule: pipeline_top
+endmodule : pipeline_top
 
