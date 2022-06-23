@@ -16,7 +16,7 @@
 
 `define DMEM_SIZE        1024
 
-// `define IF2ID_PIPELINE_STAGE 0
+// `define IF2ID_PIPELINE_STAGE 1
 
 `define INSTR_NOP           32'h00000013
 
