@@ -21,25 +21,25 @@ typedef enum logic [4:0] {
 
 // ALU operand 1 selection
 typedef enum logic {
-    ALU_OPR1_REG,          // opr1 = rs1
-    ALU_OPR1_PC            // opr1 = program counter
+    ALU_OPR1_PC = '0,       // opr1 = rs1
+    ALU_OPR1_REG            // opr1 = program counter
 } type_alu_opr1_sel_e;
 
 // ALU operand 2 selection
 typedef enum logic {
-    ALU_OPR2_REG,          // opr2 = rs2
-    ALU_OPR2_IMM           // opr2 = immediate value
+    ALU_OPR2_IMM = '0,     // opr2 = rs2
+    ALU_OPR2_REG           // opr2 = immediate value
 } type_alu_opr2_sel_e;
 
 // ALU comparison operand 2 selection
 typedef enum logic {
-    ALU_CMP_OPR2_REG,          // opr2 = rs2
-    ALU_CMP_OPR2_IMM           // opr2 = immediate value
+    ALU_CMP_OPR2_IMM = '0, // opr2 = rs2
+    ALU_CMP_OPR2_REG       // opr2 = immediate value
 } type_alu_cmp_opr2_sel_e;
 
 
 typedef enum logic [4:0] {
-    ALU_OPS_NONE  = '0,   // ALU is idle 
+    ALU_OPS_NONE = '0,   // ALU is idle 
     ALU_OPS_ADD,          // oprnd1 + oprnd2
     ALU_OPS_SUB,          // oprnd1 - oprnd2
     ALU_OPS_AND,          // oprnd1 & oprnd2
@@ -104,6 +104,12 @@ typedef enum logic [2:0] {
     RD_WB_MEM,                           // Writeback selection for Load operation from DMEM
     RD_WB_CSR                            // Writeback for reading CSR
 } type_rd_wb_sel_e;
+
+// Decode-2-Execute data and control signals
+typedef struct packed {                            
+    logic [`XLEN-1:0]                instr;
+    logic [`XLEN-1:0]                pc;
+} type_if2id_data_s;
 
 // Decode-2-Execute data and control signals
 typedef struct packed {                            

@@ -8,8 +8,8 @@ module imem (
   // IF <---> IMEM interface
 //    output   logic                                   imem2if_resp_o,         // Instruction memory request acknowledgement
     input  logic                                    if2imem_req_i,             // Instruction memory request
-    input   logic [`XLEN-1:0]                       if2imem_addr_i,            // Instruction memory address
-    output  logic [`XLEN-1:0]                       imem2if_rdata_o           // Instruction memory read data
+    input  logic [`XLEN-1:0]                        if2imem_addr_i,            // Instruction memory address
+    output logic [`XLEN-1:0]                        imem2if_rdata_o           // Instruction memory read data
 //    input   type_scr1_mem_resp_e                    imem2if_resp_i,            // Instruction memory response
 
 
@@ -17,7 +17,7 @@ module imem (
 
 
 // Instruction memory instantiation and initialization
-logic   [`XLEN-1:0]          inst_memory[`IMEM_SIZE];
+logic [`XLEN-1:0]          inst_memory[`IMEM_SIZE];
 
 initial
 begin
@@ -26,36 +26,25 @@ begin
 end
 
 // Local signals
-logic   [`XLEN-1:0]          rdata_ff;
-logic   [9:0]                raddr_ff;
-logic                        cs_ff;
+logic [`XLEN-1:0]                         rdata_ff;
+logic [9:0]                               raddr;
+logic                                     cs;
 
+// Local signal assignments
+assign cs = if2imem_req_i;
+assign raddr = {2'b0, if2imem_addr_i[9:2]};  // Memory is word addressable
 
-// The memory read address is captured on the positive edge of the clock, 
-// while the read data/instruction is made available on the negative edge 
-always_ff @(posedge clk)
-  begin
-   if (rst_n) begin
-       cs_ff     <=   '0;
-       raddr_ff  <=   '0;
-    end 
-    else begin
-       cs_ff     <=   if2imem_req_i;
-       raddr_ff  <=   {2'b0, if2imem_addr_i[9:2]};  // Memory is word addressable
-    end
-  end
-
-// Memory read operation requires cs_ff = 0
-/*always_ff @ (negedge clk) begin 
+// Synchronous memory read operation
+always_ff @ (posedge clk) begin 
     if (rst_n) begin
         rdata_ff  <= '0;
-    end else if (cs_ff) begin
-        rdata_ff <= memory[raddr_ff];   // #(DELAY)
+    end else if (cs) begin
+        rdata_ff <= inst_memory[raddr];   // #(DELAY)
     end
 end
-*/
 
-assign imem2if_rdata_o = inst_memory[raddr_ff];  // MT: Asynchronous read    --- rdata_ff; 
+
+assign imem2if_rdata_o = rdata_ff;  //  
 
 endmodule : imem
 

@@ -36,8 +36,8 @@ logic                                 cs_ff;
 // Connect the local signals to appropriate IOs of the module
 assign  mem2dmem = mem2dmem_i; 
 
-// The memory read address is captured on the positive edge of the clock, 
-// while the read data/instruction is made available on the negative edge 
+// The memory read address is captured on the negative edge of the clock, 
+// while the read data/instruction is made available asynchronously 
 always_ff @(negedge clk)
   begin
    if (rst_n) begin
@@ -56,12 +56,14 @@ always_ff @(negedge clk)
     end
   end
 
-
-assign dmem2mem.data_rd = mem2dmem.cs ? '0 : data_memory[addr_ff];  // Asynchronous read operation
+// Asynchronous read operation
+assign dmem2mem.data_rd = ((~mem2dmem.cs) & (~mem2dmem.wr)) 
+                        ? data_memory[addr_ff]                 
+                        : '0;                       
 assign dmem2mem_o       = dmem2mem;
 
-// Memory write operation 
-always_ff @(negedge clk)
+// Memory store operation 
+always_ff @(posedge clk)
 begin  
    if ( !cs_ff && !wr_ff ) begin
         if (mask_ff[0])
