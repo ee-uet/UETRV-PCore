@@ -26,11 +26,10 @@ logic [`XLEN-1:0]                       if2imem_addr;            // Instruction 
 logic [`XLEN-1:0]                       imem2if_rdata;           // Instruction memory read data
 
 logic                                   id2if_rdy;              // Instruction memory request
-logic [`XLEN-1:0]                       if2id_instr;            // Instruction 
-logic [`XLEN-1:0]                       if2id_pc;               // PC
 
-type_id2exe_ctrl_s                      id2exu_ctrl;
-type_id2exe_data_s                      id2exu_data;
+type_if2id_data_s                       if2id_data;
+type_id2exe_ctrl_s                      id2exe_ctrl;
+type_id2exe_data_s                      id2exe_data;
 
 type_exe2mem_ctrl_s                     exe2mem_ctrl;
 type_exe2mem_data_s                     exe2mem_data;
@@ -46,7 +45,19 @@ type_exe2if_fb_s                        exe2if_fb;
 logic                                   wb2id_rd_wr_req;
 logic [`RF_AWIDTH-1:0]                  wb2id_rd_addr;
 logic [`XLEN-1:0]                       wb2id_rd_data;
-    
+
+// Fetch <-----> Decode pipeline/nopipeline  
+`ifdef IF2ID_PIPELINE_STAGE
+  type_if2id_data_s                     if2id_data_pipe_ff;
+
+  always_ff @(posedge clk) begin
+      if (rst_n) begin
+          if2id_data_pipe_ff <= '0;
+      end else begin
+          if2id_data_pipe_ff <= if2id_data;
+      end
+  end
+`endif // IF2ID_PIPELINE_STAGE
 
 // Instruction Fetch module instantiation
 fetch fetch_module (
@@ -57,11 +68,11 @@ fetch fetch_module (
     .if2imem_req_o       (if2imem_req),
     .if2imem_addr_o      (if2imem_addr),
     .imem2if_rdata_i     (imem2if_rdata),
-    .if2id_instr_o       (if2id_instr),
-    .if2id_pc_o          (if2id_pc),
-    .id2if_rdy_i         (id2if_rdy),
+    .if2id_data_o        (if2id_data),
+    .id2if_fb_rdy_i      (id2if_rdy),
     .exe2if_fb_i         (exe2if_fb)
 );
+
 
 // Instruction Decode module instantiation
 decode decode_module (
@@ -69,11 +80,14 @@ decode decode_module (
     .clk                 (clk),
 
     // ID module interface signals 
-    .if2id_instr_i       (if2id_instr),
-    .if2id_pc_i          (if2id_pc),
-    .id2if_rdy_o         (id2if_rdy ),
-    .id2exu_ctrl_o       (id2exu_ctrl),
-    .id2exu_data_o       (id2exu_data),
+`ifdef IF2ID_PIPELINE_STAGE
+    .if2id_data_i        (if2id_data_pipe_ff),
+`else
+    .if2id_data_i        (if2id_data),
+`endif
+    .id2if_fb_rdy_i      (id2if_rdy ),
+    .id2exe_ctrl_o       (id2exe_ctrl),
+    .id2exe_data_o       (id2exe_data),
     .wb2id_rd_wr_req_i   (wb2id_rd_wr_req),
     .wb2id_rd_addr_i     (wb2id_rd_addr),
     .wb2id_rd_data_i     (wb2id_rd_data)
@@ -86,8 +100,8 @@ execute execute_module (
     .clk                  (clk        ),
 
     // Decode module interface signals 
-    .id2exu_ctrl_i        (id2exu_ctrl),
-    .id2exu_data_i        (id2exu_data),
+    .id2exe_ctrl_i        (id2exe_ctrl),
+    .id2exe_data_i        (id2exe_data),
 
     // Memory module interface signals
     .exe2mem_ctrl_o       (exe2mem_ctrl),

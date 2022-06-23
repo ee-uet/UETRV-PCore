@@ -7,11 +7,10 @@ module decode (
     input   logic                        clk,                      // clock
 
     // Fetch <---> Decode interface
-    input   logic [`XLEN-1:0]            if2id_pc_i,              // pc from fetch stage
-    input   logic [`XLEN-1:0]            if2id_instr_i,           // Instruction from IF module
-//    input   logic                        if2id_err_i,             // Instruction access fault 
+    input wire type_if2id_data_s              if2id_data_i,
 
-    output  logic                        id2if_rdy_o,             // Ready signal from ID module 
+//    input   logic                        if2id_err_i,             // Instruction access fault 
+    output logic                         id2if_fb_rdy_i,             // Ready signal from ID module 
 //    input   logic                        if2id_valid_i,           // Valid response from IF module
 
     // Decode <---> Execute interface
@@ -46,7 +45,7 @@ type_id2exe_ctrl_s                   id2exe_ctrl;
 type_id2exe_data_s                   id2exe_data;
 
 // Instruction opcodes
-assign instr_codeword = if2id_instr_i;
+assign instr_codeword = if2id_data_i.instr;
 assign instr_opcode   = type_rv_opcode_e'(instr_codeword[6:2]); 
 assign funct7_opcode  = instr_codeword[31:25];
 assign funct3_opcode  = instr_codeword[14:12];
@@ -82,7 +81,7 @@ always_comb begin
     id2exe_data.rs1_data = rf2id_rs1_data;   // These operands need to be updated in case of forwarding
     id2exe_data.rs2_data = rf2id_rs2_data;   // These operands need to be updated in case of forwarding
     id2exe_data.instr    = instr_codeword;
-    id2exe_data.pc       = if2id_pc_i;
+    id2exe_data.pc       = if2id_data_i.pc;
     
     // Default values for local signals
     illegal_instr        = 1'b0;
@@ -337,7 +336,7 @@ assign id2exe_ctrl_o = id2exe_ctrl;
 assign id2exe_data_o = id2exe_data; 
 
 // Feedback signals
-assign id2if_rdy_o = '1;
+assign id2if_fb_rdy_i = '1;
 
 
 // Instantiation of register file
