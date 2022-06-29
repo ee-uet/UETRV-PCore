@@ -15,9 +15,18 @@ module execute (
     // EXE <---> MEM interface
     output type_exe2mem_data_s           exe2mem_data_o,
     output type_exe2mem_ctrl_s           exe2mem_ctrl_o,
+
+    // EXE <---> Forward_stall interface
+    input wire type_fwd2exe_s            fwd2exe_i,
+    output type_exe2fwd_s                exe2fwd_o,    
+
     
     // EXE <---> IF feedback interface
-    output type_exe2if_fb_s              exe2if_fb_o
+    output type_exe2if_fb_s              exe2if_fb_o,
+
+    // WB <---> EXE feedback interface
+    input logic [`XLEN-1:0]              wrb2exe_fb_rd_data_i
+
 );
 
 //============================= Local signals and their assignments =============================//
@@ -27,7 +36,15 @@ type_id2exe_data_s                   id2exe_data;
 type_exe2if_fb_s                     exe2if_fb;
 type_alu_ops_sel_e                   alu_operator;
 type_br_ops_sel_e                    branch_ops;
+type_exe2fwd_s                       exe2fwd;
+type_fwd2exe_s                       fwd2exe;
+logic [`XLEN-1:0]                    wrb2exe_fb_rd_data;
 
+// Input operand signals
+logic [`XLEN-1:0]                    operand_rs1_data;
+logic [`XLEN-1:0]                    operand_rs2_data;
+
+// ALU signals
 logic  [`XLEN-1:0]                   alu_adder_out;
 logic  [`XLEN-1:0]                   alu_operand_1;
 logic  [`XLEN-1:0]                   alu_operand_2;
@@ -46,10 +63,18 @@ logic  [4:0]                         shift_amt;
 logic                                illegal_instr;
 
 // Instantiate input control and data structures and get the ALU operator
-assign alu_operator   =   type_alu_ops_sel_e'(id2exe_ctrl_i.alu_ops);
-assign branch_ops     =   type_br_ops_sel_e'(id2exe_ctrl_i.branch_ops);
-assign id2exe_ctrl    =   id2exe_ctrl_i;
-assign id2exe_data    =   id2exe_data_i;
+assign alu_operator   = type_alu_ops_sel_e'(id2exe_ctrl_i.alu_ops);
+assign branch_ops     = type_br_ops_sel_e'(id2exe_ctrl_i.branch_ops);
+assign id2exe_ctrl    = id2exe_ctrl_i;
+assign id2exe_data    = id2exe_data_i;
+
+// Feedback data from Writeback
+assign wrb2exe_fb_rd_data = wrb2exe_fb_rd_data_i;
+
+// Preparing the operands with forwarding 
+assign fwd2exe = fwd2exe_i;
+assign operand_rs1_data = fwd2exe.fwd_rs1 ? wrb2exe_fb_rd_data : id2exe_data.rs1_data;
+assign operand_rs2_data = fwd2exe.fwd_rs2 ? wrb2exe_fb_rd_data : id2exe_data.rs2_data;
 
 
 //============================== Preparing signals for ALU operations ============================//
@@ -59,12 +84,12 @@ assign shift_amt = alu_operand_2[4:0];
 
 // Prepare the two operands
 always_comb begin
-   alu_operand_1 = (id2exe_ctrl.alu_opr1_sel  ==   ALU_OPR1_PC)
+   alu_operand_1 = (id2exe_ctrl.alu_opr1_sel == ALU_OPR1_PC)
                  ? (id2exe_data.pc)                               // Operand 1 is PC
-                 : (id2exe_data.rs1_data);                        // Operand 1 is register
-   alu_operand_2 = (id2exe_ctrl.alu_opr2_sel  ==   ALU_OPR2_IMM)
+                 : (operand_rs1_data);                            // Operand 1 is register
+   alu_operand_2 = (id2exe_ctrl.alu_opr2_sel == ALU_OPR2_IMM)
                  ? (id2exe_data.imm)                              // Operand 2 is immediate
-                 : (id2exe_data.rs2_data);                        // Operand 2 is register
+                 : (operand_rs2_data);                        // Operand 2 is register
 end
 
 // Implementation of different ALU operations
@@ -78,10 +103,10 @@ end
 //============================ Branch related implementation ====================================// 
 
 // Difference calculation for comparison operations (branch and set-less-then operations)
-assign cmp_operand_1 = id2exe_data.rs1_data;
+assign cmp_operand_1 = operand_rs1_data;
 assign cmp_operand_2 = (id2exe_ctrl.alu_cmp_opr2_sel == ALU_CMP_OPR2_IMM)
-                      ? id2exe_data.imm 
-                      : id2exe_data.rs2_data;
+                     ? id2exe_data.imm 
+                     : operand_rs2_data;
 
 assign cmp_output    = {1'b0, cmp_operand_1} - {1'b0, cmp_operand_2};
 assign cmp_not_zero  = |cmp_output[`XLEN-1:0];
@@ -160,10 +185,10 @@ end
 assign exe2mem_data_o.alu_result = exe2mem_alu_result;
 assign exe2mem_data_o.instr      = id2exe_data.instr;
 assign exe2mem_data_o.pc         = id2exe_data.pc;
-assign exe2mem_data_o.rs2_data   = id2exe_data.rs2_data; // MT: This should be updated when implementing forwarding
+assign exe2mem_data_o.rs2_data   = operand_rs2_data; // MT: This should be verified due to forwarding
 
 // Assign the output control signals 
-assign exe2mem_ctrl_o.rd_wb_sel  = id2exe_ctrl.rd_wb_sel;
+assign exe2mem_ctrl_o.rd_wrb_sel = id2exe_ctrl.rd_wrb_sel;
 assign exe2mem_ctrl_o.mem_ld_ops = id2exe_ctrl.mem_ld_ops;
 assign exe2mem_ctrl_o.mem_st_ops = id2exe_ctrl.mem_st_ops;
 assign exe2mem_ctrl_o.rd_wr_req  = id2exe_ctrl.rd_wr_req;
@@ -173,10 +198,17 @@ assign exe2mem_ctrl_o.mret_req   = id2exe_ctrl.mret_req;
 assign exe2mem_ctrl_o.fencei_req = id2exe_ctrl.fencei_req;                         
 assign exe2mem_ctrl_o.wfi_req    = id2exe_ctrl.wfi_req;  
 
+
+// Update the module output signals
+assign exe2fwd.rs1_addr = id2exe_data.instr[19:15];
+assign exe2fwd.rs2_addr = id2exe_data.instr[24:20];
+
+assign exe2fwd_o = exe2fwd;
+
 // Feedback signals from EXE to IF stage
-assign exe2if_fb.jump_br_taken   = id2exe_ctrl.jump_req || (id2exe_ctrl.branch_req & branch_res);                          
-assign exe2if_fb.alu_pc          = exe2mem_alu_result;                          
-assign exe2if_fb_o               = exe2if_fb;                  
+assign exe2if_fb.jump_br_taken = id2exe_ctrl.jump_req || (id2exe_ctrl.branch_req & branch_res);                          
+assign exe2if_fb.alu_pc        = exe2mem_alu_result;                          
+assign exe2if_fb_o             = exe2if_fb;                  
 
 endmodule : execute
 

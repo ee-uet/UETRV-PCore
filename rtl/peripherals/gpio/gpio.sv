@@ -1,0 +1,73 @@
+`include "../../defines/UETRV_PCore_defs.svh"
+`include "../../defines/UETRV_PCore_ISA.svh"
+
+module gpio (
+
+    input   logic                                  rst_n,                    // reset
+    input   logic                                  clk,                      // clock
+
+  // Dbus to GPIO module interface
+    input   wire type_core2dbus_s                  dbus2gpio_i,              // GPIO dbus input signals
+    output  type_dbus2core_s                       gpio2dbus_o,              // GPIO dbus output signals
+
+  // Selection signal from address decoder of dbus interconnect 
+    input   logic                                  gpio_sel_i,
+
+  // Selection signal from address decoder of dbus interconnect 
+    input   logic [7:0]                            gpio_port_i,
+    output  logic [7:0]                            gpio_port_o
+
+);
+
+
+// Local signals
+type_core2dbus_s                      dbus2gpio; 
+type_dbus2core_s                      gpio2dbus;              
+logic [`XLEN-1:0]                     data_wr_ff;
+logic [`XLEN-1:0]                     addr_ff;
+logic [3:0]                           mask_ff;
+logic                                 wr_ff;
+logic                                 req_ff;
+
+logic                                 gpio_sel;
+logic [7:0]                           gpio_rdata_reg;
+logic [7:0]                           gpio_wdata_reg;
+
+// Connect the local signals to appropriate IOs of the module
+assign dbus2gpio = dbus2gpio_i; 
+assign gpio_sel = gpio_sel_i;
+
+always_ff @(posedge clk)
+  begin
+   if (rst_n) begin
+       req_ff     <= '0;
+       wr_ff      <= '0;
+       mask_ff    <= '0;
+       addr_ff    <= '0;
+       data_wr_ff <= '0;
+    end 
+    else begin
+       req_ff     <= dbus2gpio.req;
+       wr_ff      <= dbus2gpio.wr;
+       mask_ff    <= dbus2gpio.mask;
+       data_wr_ff <= dbus2gpio.data_wr;
+       addr_ff    <= {2'b0, dbus2gpio.addr[9:2]};              // Memory is word addressable
+    end
+  end
+
+
+// GPIO port read write operation 
+always_ff @(negedge clk)
+begin  
+   if (!req_ff && !wr_ff && gpio_sel) begin           // Write operation
+       gpio_wdata_reg = data_wr_ff[7:0];
+   end else if (!req_ff && wr_ff && gpio_sel) begin   // Read operation
+       gpio_rdata_reg = gpio_port_i;
+   end 
+end
+
+assign gpio_port_o = gpio_wdata_reg;
+assign gpio2dbus_o.data_rd[7:0] = gpio_rdata_reg;
+
+endmodule : gpio
+

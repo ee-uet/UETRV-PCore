@@ -18,10 +18,7 @@ module decode (
     output  type_id2exe_ctrl_s           id2exe_ctrl_o,             // Structure for control signals  
 
     // Writeback <---> Decode feedback interface
-    input   logic                        wb2id_rd_wr_req_i,        // write request
-    input   logic [`RF_AWIDTH-1:0]       wb2id_rd_addr_i,          // rd write address
-    input   logic [`XLEN-1:0]            wb2id_rd_data_i           // rd write data from write-back
-
+    input wire type_wrb2id_fb_s           wrb2id_fb_i
 );
 
 
@@ -62,7 +59,7 @@ assign shift_amt      = instr_codeword[24:20];
 always_comb begin
     // Default values for control signals
     id2exe_ctrl.alu_ops          = ALU_OPS_NONE;
-    id2exe_ctrl.rd_wb_sel        = RD_WB_NONE;
+    id2exe_ctrl.rd_wrb_sel       = RD_WB_NONE;
     id2exe_ctrl.mem_ld_ops       = MEM_LD_OPS_NONE;
     id2exe_ctrl.mem_st_ops       = MEM_ST_OPS_NONE;
     id2exe_ctrl.branch_ops       = BR_NONE;
@@ -97,7 +94,7 @@ always_comb begin
          case (instr_opcode)
              OPCODE_ARITH_INST  : begin
                  
-                 id2exe_ctrl.rd_wb_sel        = RD_WB_ALU;
+                 id2exe_ctrl.rd_wrb_sel       = RD_WB_ALU;
                  id2exe_ctrl.alu_opr1_sel     = ALU_OPR1_REG;
                  id2exe_ctrl.alu_opr2_sel     = ALU_OPR2_REG;
                  id2exe_ctrl.alu_cmp_opr2_sel = ALU_CMP_OPR2_REG;
@@ -147,7 +144,7 @@ always_comb begin
              // IMM operation
              OPCODE_IMM_INST : begin
  
-                 id2exe_ctrl.rd_wb_sel        =   RD_WB_ALU;
+                 id2exe_ctrl.rd_wrb_sel       =   RD_WB_ALU;
                  id2exe_ctrl.alu_opr1_sel     =   ALU_OPR1_REG;
                  id2exe_ctrl.alu_opr2_sel     =   ALU_OPR2_IMM;
                  id2exe_ctrl.alu_cmp_opr2_sel = ALU_CMP_OPR2_IMM;
@@ -187,7 +184,7 @@ always_comb begin
 
              // AUIPC operation
              OPCODE_AUIPC_INST : begin
-                 id2exe_ctrl.rd_wb_sel    = RD_WB_ALU;
+                 id2exe_ctrl.rd_wrb_sel    = RD_WB_ALU;
                  id2exe_ctrl.alu_opr1_sel = ALU_OPR1_PC;
                  id2exe_ctrl.alu_opr2_sel = ALU_OPR2_IMM;
                  id2exe_ctrl.alu_ops      = ALU_OPS_ADD;
@@ -199,7 +196,7 @@ always_comb begin
 
              // LUI operation
              OPCODE_LUI_INST : begin
-                 id2exe_ctrl.rd_wb_sel    = RD_WB_ALU;
+                 id2exe_ctrl.rd_wrb_sel    = RD_WB_ALU;
                  id2exe_ctrl.alu_opr2_sel = ALU_OPR2_IMM;
                  id2exe_ctrl.alu_ops      = ALU_OPS_COPY_OPR2;
                  id2exe_ctrl.rd_wr_req    = 1'b1;                
@@ -210,7 +207,7 @@ always_comb begin
 
              // Load operations
              OPCODE_LOAD_INST : begin
-                 id2exe_ctrl.rd_wb_sel    = RD_WB_MEM;
+                 id2exe_ctrl.rd_wrb_sel    = RD_WB_MEM;
                  id2exe_ctrl.alu_opr1_sel = ALU_OPR1_REG;
                  id2exe_ctrl.alu_opr2_sel = ALU_OPR2_IMM;
                  id2exe_ctrl.alu_ops      = ALU_OPS_ADD;
@@ -275,7 +272,7 @@ always_comb begin
 
              // JALR operation
              OPCODE_JALR_INST : begin
-                 id2exe_ctrl.rd_wb_sel    = RD_WB_INC_PC;
+                 id2exe_ctrl.rd_wrb_sel    = RD_WB_INC_PC;
                  id2exe_ctrl.alu_opr1_sel = ALU_OPR1_REG;
                  id2exe_ctrl.alu_opr2_sel = ALU_OPR2_IMM;
                  id2exe_ctrl.alu_ops      = ALU_OPS_ADD;
@@ -287,7 +284,7 @@ always_comb begin
 
              // JAL operation
              OPCODE_JAL_INST : begin
-                 id2exe_ctrl.rd_wb_sel    = RD_WB_INC_PC;
+                 id2exe_ctrl.rd_wrb_sel    = RD_WB_INC_PC;
                  id2exe_ctrl.alu_opr1_sel = ALU_OPR1_PC;
                  id2exe_ctrl.alu_opr2_sel = ALU_OPR2_IMM;
                  id2exe_ctrl.alu_ops      = ALU_OPS_ADD;
@@ -317,7 +314,7 @@ always_comb begin
    // Handle the illegal instruction
    if(illegal_instr)  begin
       id2exe_ctrl.alu_ops    = ALU_OPS_NONE;
-      id2exe_ctrl.rd_wb_sel  = RD_WB_NONE;
+      id2exe_ctrl.rd_wrb_sel  = RD_WB_NONE;
       id2exe_ctrl.mem_ld_ops = MEM_LD_OPS_NONE;
       id2exe_ctrl.mem_st_ops = MEM_ST_OPS_NONE;
       id2exe_ctrl.jump_req   = 1'b0;
@@ -349,9 +346,9 @@ reg_file rf_module (
     .rf2id_rs1_data_o     (rf2id_rs1_data),
     .id2rf_rs2_addr_i     (id2rf_rs2_addr),
     .rf2id_rs2_data_o     (rf2id_rs2_data),
-    .id2rf_rd_wr_req_i    (wb2id_rd_wr_req_i),
-    .id2rf_rd_addr_i      (wb2id_rd_addr_i ),
-    .id2rf_rd_data_i      (wb2id_rd_data_i )
+    .id2rf_rd_wr_req_i    (wrb2id_fb_i.rd_wr_req),
+    .id2rf_rd_addr_i      (wrb2id_fb_i.rd_addr ),
+    .id2rf_rd_data_i      (wrb2id_fb_i.rd_data)
 );
 
 

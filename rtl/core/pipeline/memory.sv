@@ -10,23 +10,23 @@ module memory (
     input  wire type_exe2mem_data_s         exe2mem_data_i,
     input  wire type_exe2mem_ctrl_s         exe2mem_ctrl_i,            // Structure for control signals from execute to memory 
 
-    // MEM <---> WB interface
-    output type_mem2wb_data_s               mem2wb_data_o,
-    output type_mem2wb_ctrl_s               mem2wb_ctrl_o,
+    // MEM <---> WRB interface
+    output type_mem2wrb_data_s               mem2wrb_data_o,
+    output type_mem2wrb_ctrl_s               mem2wrb_ctrl_o,
 
     // Memory module (memory) to Data memory (dmem) interface
-    output type_signal_to_dmem_s            mem2dmem_o,                // Signal to data memory 
-    input  wire type_signal_from_dmem_s     dmem2mem_i 
+    output type_core2dbus_s                  mem2dmem_o,                // Signal to data memory 
+    input  wire type_dbus2core_s             dmem2mem_i 
 
 );
 
 // Local signals
 type_exe2mem_data_s          exe2mem_data;
 type_exe2mem_ctrl_s          exe2mem_ctrl;
-type_mem2wb_data_s           mem2wb_data;
-type_mem2wb_ctrl_s           mem2wb_ctrl;
-type_signal_to_dmem_s        mem2dmem;
-type_signal_from_dmem_s      dmem2mem;
+type_mem2wrb_data_s          mem2wrb_data;
+type_mem2wrb_ctrl_s          mem2wrb_ctrl;
+type_core2dbus_s             mem2dmem;
+type_dbus2core_s             dmem2mem;
 
 logic [`XLEN-1:0]            dmem_rdata_word;
 logic [15:0]                 dmem_rdata_hword;
@@ -41,7 +41,7 @@ assign dmem2mem      =  dmem2mem_i;
 // Prepare the signals to perform load/store operations
 assign st_ops        = |exe2mem_ctrl.mem_st_ops;
 assign mem2dmem.addr = exe2mem_data.alu_result;
-assign mem2dmem.cs   = ~(st_ops | (|exe2mem_ctrl.mem_ld_ops)); // Chip select is active low
+assign mem2dmem.req  = ~(st_ops | (|exe2mem_ctrl.mem_ld_ops)); // Chip select is active low
 assign mem2dmem.wr   = ~st_ops;  // Memory write/store is active low
 
 //=================================== Memory store operation =====================================//
@@ -149,28 +149,28 @@ end
 // Extend the load data for sign/zero
 always_comb begin
     case (exe2mem_ctrl.mem_ld_ops)
-        MEM_LD_OPS_LB  : mem2wb_data.dmem_rdata = {{24{dmem_rdata_byte[7]}},  dmem_rdata_byte};
-        MEM_LD_OPS_LBU : mem2wb_data.dmem_rdata = { 24'b0,                    dmem_rdata_byte};
-        MEM_LD_OPS_LH  : mem2wb_data.dmem_rdata = {{16{dmem_rdata_byte[15]}}, dmem_rdata_hword};
-        MEM_LD_OPS_LHU : mem2wb_data.dmem_rdata = { 16'b0,                    dmem_rdata_hword};
-        MEM_LD_OPS_LW  : mem2wb_data.dmem_rdata = {                           dmem_rdata_word};
-        default        : mem2wb_data.dmem_rdata = '0;
+        MEM_LD_OPS_LB  : mem2wrb_data.dmem_rdata = {{24{dmem_rdata_byte[7]}},  dmem_rdata_byte};
+        MEM_LD_OPS_LBU : mem2wrb_data.dmem_rdata = { 24'b0,                    dmem_rdata_byte};
+        MEM_LD_OPS_LH  : mem2wrb_data.dmem_rdata = {{16{dmem_rdata_byte[15]}}, dmem_rdata_hword};
+        MEM_LD_OPS_LHU : mem2wrb_data.dmem_rdata = { 16'b0,                    dmem_rdata_hword};
+        MEM_LD_OPS_LW  : mem2wrb_data.dmem_rdata = {                           dmem_rdata_word};
+        default        : mem2wrb_data.dmem_rdata = '0;
     endcase // mem_ld_ops
 end
 
 // Update data for writeback
-assign  mem2wb_data.alu_result =  exe2mem_data.alu_result;
-assign  mem2wb_data.pc         =  exe2mem_data.pc;
-assign  mem2wb_data.rd_addr    =  exe2mem_data.instr[11:7];  
-//assign  mem2wb_data.dmem_rdata =  dmem2mem.data_rd;       
+assign  mem2wrb_data.alu_result =  exe2mem_data.alu_result;
+assign  mem2wrb_data.pc         =  exe2mem_data.pc;
+assign  mem2wrb_data.rd_addr    =  exe2mem_data.instr[11:7];  
+//assign  mem2wrb_data.dmem_rdata =  dmem2mem.data_rd;       
 
 // Update control signals for writeback
-assign  mem2wb_ctrl.rd_wb_sel  =  exe2mem_ctrl.rd_wb_sel;
-assign  mem2wb_ctrl.rd_wr_req  =  exe2mem_ctrl.rd_wr_req;
+assign  mem2wrb_ctrl.rd_wrb_sel =  exe2mem_ctrl.rd_wrb_sel;
+assign  mem2wrb_ctrl.rd_wr_req  =  exe2mem_ctrl.rd_wr_req;
 
 // Update the output signals with proper assignment
-assign  mem2wb_data_o  =  mem2wb_data;
-assign  mem2wb_ctrl_o  =  mem2wb_ctrl;   
+assign  mem2wrb_data_o  =  mem2wrb_data;
+assign  mem2wrb_ctrl_o  =  mem2wrb_ctrl;   
 assign  mem2dmem_o     =  mem2dmem; 
 
 

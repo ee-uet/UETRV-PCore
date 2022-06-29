@@ -14,9 +14,9 @@ module pipeline_top (
     output  logic [`XLEN-1:0]            if2imem_addr_o,            // Instruction memory address
     input   logic [`XLEN-1:0]            imem2if_rdata_i,           // Instruction memory read data
 
-   // DMEM interface
-    output type_signal_to_dmem_s         ptop2dmem_o,                // Signal to data memory 
-    input  wire type_signal_from_dmem_s  dmem2ptop_i 
+   // Data bus interface
+    output type_core2dbus_s              ptop2dbus_o,                // Signal to data bus 
+    input  wire type_dbus2core_s         dbus2ptop_i 
 );
 
 
@@ -34,17 +34,20 @@ type_id2exe_data_s                      id2exe_data;
 type_exe2mem_ctrl_s                     exe2mem_ctrl;
 type_exe2mem_data_s                     exe2mem_data;
 
-type_signal_to_dmem_s                   mem2dmem;               // Signal to data memory 
-type_signal_from_dmem_s                 dmem2mem; 
+type_core2dbus_s                        ptop2dbus;               // Signal to data memory 
+type_dbus2core_s                        dbus2ptop; 
 
-type_mem2wb_ctrl_s                      mem2wb_ctrl;
-type_mem2wb_data_s                      mem2wb_data;
+type_mem2wrb_ctrl_s                     mem2wrb_ctrl;
+type_mem2wrb_data_s                     mem2wrb_data;
 
 type_exe2if_fb_s                        exe2if_fb;
 
-logic                                   wb2id_rd_wr_req;
-logic [`RF_AWIDTH-1:0]                  wb2id_rd_addr;
-logic [`XLEN-1:0]                       wb2id_rd_data;
+type_wrb2id_fb_s                        wrb2id_fb;
+type_fwd2exe_s                          fwd2exe;
+type_exe2fwd_s                          exe2fwd;
+type_wrb2fwd_s                          wrb2fwd;
+logic [`XLEN-1:0]                       wrb2exe_fb_rd_data;
+
 
 // Fetch <-----> Decode pipeline/nopipeline  
 `ifdef IF2ID_PIPELINE_STAGE
@@ -58,6 +61,24 @@ logic [`XLEN-1:0]                       wb2id_rd_data;
       end
   end
 `endif // IF2ID_PIPELINE_STAGE
+
+
+// Execute <-----> Memory pipeline/nopipeline  
+`ifdef EXE2MEM_PIPELINE_STAGE
+  type_exe2mem_data_s                   exe2mem_data_pipe_ff;
+  type_exe2mem_ctrl_s                   exe2mem_ctrl_pipe_ff;
+
+  always_ff @(posedge clk) begin
+      if (rst_n) begin
+          exe2mem_data_pipe_ff <= '0;
+          exe2mem_ctrl_pipe_ff <= '0;
+      end else begin
+          exe2mem_data_pipe_ff <= exe2mem_data;
+          exe2mem_ctrl_pipe_ff <= exe2mem_ctrl;
+      end
+  end
+`endif // EXE2MEM_PIPELINE_STAGE
+
 
 // Instruction Fetch module instantiation
 fetch fetch_module (
@@ -88,9 +109,7 @@ decode decode_module (
     .id2if_fb_rdy_i      (id2if_rdy ),
     .id2exe_ctrl_o       (id2exe_ctrl),
     .id2exe_data_o       (id2exe_data),
-    .wb2id_rd_wr_req_i   (wb2id_rd_wr_req),
-    .wb2id_rd_addr_i     (wb2id_rd_addr),
-    .wb2id_rd_data_i     (wb2id_rd_data)
+    .wrb2id_fb_i          (wrb2id_fb)
 );
 
 
@@ -107,8 +126,16 @@ execute execute_module (
     .exe2mem_ctrl_o       (exe2mem_ctrl),
     .exe2mem_data_o       (exe2mem_data),
 
+    // EXE <---> Forward_stall interface
+    .fwd2exe_i            (fwd2exe),
+    .exe2fwd_o            (exe2fwd),    
+
     // Memory module feedback signal from memory module to instruction fetch signal
-    .exe2if_fb_o          (exe2if_fb) 
+    .exe2if_fb_o          (exe2if_fb),
+
+    // WB <---> EXE feedback interface
+    .wrb2exe_fb_rd_data_i  (wrb2exe_fb_rd_data)
+ 
 );
 
 // Data Memory module instantiation
@@ -116,16 +143,23 @@ memory memory_module (
     .rst_n                (rst_n      ),
     .clk                  (clk        ),
 
-    // Execution module interface signals
+    // Execution module interface signals 
+`ifdef EXE2MEM_PIPELINE_STAGE
+    .exe2mem_ctrl_i       (exe2mem_ctrl_pipe_ff),
+    .exe2mem_data_i       (exe2mem_data_pipe_ff),
+
+`else
     .exe2mem_ctrl_i       (exe2mem_ctrl),
     .exe2mem_data_i       (exe2mem_data),
+`endif
+
 
     // Writeback module interface signals 
-    .mem2wb_ctrl_o        (mem2wb_ctrl),
-    .mem2wb_data_o        (mem2wb_data),
+    .mem2wrb_ctrl_o        (mem2wrb_ctrl),
+    .mem2wrb_data_o        (mem2wrb_data),
 
-    .mem2dmem_o           (mem2dmem),      
-    .dmem2mem_i           (dmem2mem)
+    .mem2dmem_o           (ptop2dbus),      
+    .dmem2mem_i           (dbus2ptop)
 );
 
 
@@ -135,20 +169,31 @@ writeback writeback_module (
     .clk                  (clk        ),
 
     // Data memory module interface signals 
-    .mem2wb_ctrl_i        (mem2wb_ctrl),
-    .mem2wb_data_i        (mem2wb_data),
-    .wb2id_rd_wr_req_o    (wb2id_rd_wr_req),
-    .wb2id_rd_addr_o      (wb2id_rd_addr),
-    .wb2id_rd_data_o      (wb2id_rd_data)
+    .mem2wrb_ctrl_i        (mem2wrb_ctrl),
+    .mem2wrb_data_i        (mem2wrb_data),
+    .wrb2id_fb_o           (wrb2id_fb),
+    .wrb2exe_fb_rd_data_o  (wrb2exe_fb_rd_data),
+    .wrb2fwd_o             (wrb2fwd)
 );
 
 
-assign if2imem_req_o    =   if2imem_req;              // Instruction memory request
-assign if2imem_addr_o   =   if2imem_addr;             // Instruction memory address
-assign imem2if_rdata    =   imem2if_rdata_i;           // Instruction memory read data
+// Forward_stall module instantiation
+forward_stall forward_stall_module (
+    .rst_n                (rst_n      ),
+    .clk                  (clk        ),
 
-assign ptop2dmem_o      =   mem2dmem;
-assign dmem2mem         =   dmem2ptop_i;
+    // Data memory module interface signals 
+    .wrb2fwd_i            (wrb2fwd),
+    .exe2fwd_i            (exe2fwd),
+    .fwd2exe_o            (fwd2exe)
+);
+
+assign if2imem_req_o  =   if2imem_req;              // Instruction memory request
+assign if2imem_addr_o =   if2imem_addr;             // Instruction memory address
+assign imem2if_rdata  =   imem2if_rdata_i;          // Instruction memory read data
+
+assign ptop2dbus_o    =   ptop2dbus;
+assign dbus2ptop      =   dbus2ptop_i;
 
 endmodule : pipeline_top
 

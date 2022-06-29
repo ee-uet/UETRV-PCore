@@ -59,8 +59,8 @@ assign if2imem_req_o  = `IMEM_INST_REQ;
 // MT TODO: should be made configurable for enabling/disabling pipeline stage 
 `ifdef IF2ID_PIPELINE_STAGE
     assign if2id_data.instr = exe2if_fb.jump_br_taken 
-                        ? `INSTR_NOP                     // Insert NOP for jump or branch taken
-                        : imem2if_rdata_i;
+                            ? `INSTR_NOP              // Insert NOP for jump or branch taken
+                            : imem2if_rdata_i;
 `else
     assign if2id_data.instr = imem2if_rdata_i;
 `endif

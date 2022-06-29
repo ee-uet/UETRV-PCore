@@ -28,17 +28,17 @@ end
 // Local signals
 logic [`XLEN-1:0]                         rdata_ff;
 logic [9:0]                               raddr;
-logic                                     cs;
+logic                                     rd_req;
 
 // Local signal assignments
-assign cs = if2imem_req_i;
+assign rd_req = if2imem_req_i;
 assign raddr = {2'b0, if2imem_addr_i[9:2]};  // Memory is word addressable
 
 // Synchronous memory read operation
 always_ff @ (posedge clk) begin 
     if (rst_n) begin
         rdata_ff  <= '0;
-    end else if (cs) begin
+    end else if (rd_req) begin
         rdata_ff <= inst_memory[raddr];   // #(DELAY)
     end
 end

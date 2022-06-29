@@ -6,12 +6,16 @@
 module core_tb();
 reg clk, reset;
 reg [31:0] loop_count;
+reg  port_in;
+wire port_out;
 wire [7:0] count;
 
 
 core_top dut (
 .clk                     (clk),
-.rst_n                   (reset)
+.rst_n                   (reset),
+.gpio_port_i             (port_in),
+.gpio_port_o             (port_out)
 ); 
 
 
