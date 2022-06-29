@@ -38,7 +38,7 @@ logic                                     rd_req;
 
 // Local signal assignments
 assign rd_req = if2imem_req_i;
-assign raddr = {2'b0, if2imem_addr_i[9:2]};  // Memory is word addressable
+assign raddr = {2'b0, if2imem_addr_i[11:2]};  // Memory is word addressable
 
 // Synchronous memory read operation
 always_ff @ (posedge clk) begin 
@@ -84,7 +84,7 @@ always_ff @(negedge clk)
        wr_ff      <= mem2dmem.wr;
        mask_ff    <= mem2dmem.mask;
        data_wr_ff <= mem2dmem.data_wr;
-       addr_ff    <= {2'b0, mem2dmem.addr[9:2]};              // Memory is word addressable
+       addr_ff    <= mem2dmem.addr[11:2];              // Memory is word addressable
     end
   end
 

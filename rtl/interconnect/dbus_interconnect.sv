@@ -33,12 +33,13 @@ logic                                 gpio_sel;
 // Connect the local signals to appropriate IOs of the module
 assign dbus_addr = core2dbus_i.addr; 
 assign dbus_req = core2dbus_i.req; 
+assign addr_instr_space = |(dbus_addr & `IMEM_ADDR_MASK);
 
 // Address decoder for peripheral module selection
 always_comb begin
     dmem_sel = 1'b0;
     gpio_sel = 1'b0;
-    if ((dbus_addr & `DMEM_ADDR_MASK) == `DMEM_ADDR_MATCH) begin
+    if (((dbus_addr & `DMEM_ADDR_MASK) == `DMEM_ADDR_MATCH) || addr_instr_space) begin
         dmem_sel = 1'b1;
     end else if ((dbus_addr & `GPIO_ADDR_MASK) == `GPIO_ADDR_MATCH) begin
         gpio_sel = 1'b1;

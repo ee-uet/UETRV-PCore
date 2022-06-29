@@ -13,7 +13,7 @@ module gpio (
   // Selection signal from address decoder of dbus interconnect 
     input   logic                                  gpio_sel_i,
 
-  // Selection signal from address decoder of dbus interconnect 
+  // IO signals from GPIO ports 
     input   logic [7:0]                            gpio_port_i,
     output  logic [7:0]                            gpio_port_o
 
@@ -51,7 +51,7 @@ always_ff @(posedge clk)
        wr_ff      <= dbus2gpio.wr;
        mask_ff    <= dbus2gpio.mask;
        data_wr_ff <= dbus2gpio.data_wr;
-       addr_ff    <= {2'b0, dbus2gpio.addr[9:2]};              // Memory is word addressable
+       addr_ff    <= dbus2gpio.addr[11:0];              // Address range is 12 bit 
     end
   end
 
@@ -60,9 +60,9 @@ always_ff @(posedge clk)
 always_ff @(negedge clk)
 begin  
    if (!req_ff && !wr_ff && gpio_sel) begin           // Write operation
-       gpio_wdata_reg = data_wr_ff[7:0];
+       gpio_wdata_reg <= data_wr_ff[7:0];
    end else if (!req_ff && wr_ff && gpio_sel) begin   // Read operation
-       gpio_rdata_reg = gpio_port_i;
+       gpio_rdata_reg <= gpio_port_i;
    end 
 end
 
