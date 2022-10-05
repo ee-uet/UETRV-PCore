@@ -3,58 +3,147 @@
 
 module dbus_interconnect (
 
-    input   logic                                  rst_n,                    // reset
-    input   logic                                  clk,                      // clock
+    input logic                                    rst_n,                    // reset
+    input logic                                    clk,                      // clock
 
-    // Core to dbus interface
-    input wire type_core2dbus_s                    core2dbus_i,
+    // Core <----> dbus interface
+    input wire type_lsu2dbus_s                     lsu2dbus_i,
+    output type_dbus2lsu_s                         dbus2lsu_o,               // Signals to core
 
-    // Interface for signals from dbus to core
-    output type_dbus2core_s                        dbus2core_o,               // Signals to core
+    // dbus <----> Peripheral module interface
+    input wire type_peri2dbus_s                    dmem2dbus_i,              // Signals from data memory 
+    input wire type_peri2dbus_s                    uart2dbus_i,              // Signals from gpio module
+    input wire type_peri2dbus_s                    clint2dbus_i,             // Signals from gpio module
 
-    // Peripheral module selection lines
-    output logic                                   dmem_sel_o,
-    output logic                                   gpio_sel_o, 
-
-    // Interfaces for different peripheral modules (for read mux)
-    input wire type_dbus2core_s                    dmem2dbus_i,              // Signals from data memory 
-    input wire type_dbus2core_s                    gpio2dbus_i               // Signals from gpio module
+    output logic                                   dmem_sel_o,               // Data memory selection line
+    output logic                                   uart_sel_o,               // UART selection line
+    output logic                                   clint_sel_o,              // CLINT selection line
+    
+    output type_dbus2peri_s                        dbus2peri_o              // Signals from dbus to peripheral modules
 );
 
-
 // Local signals
-//type_core_to_dbus_s                   core2dbus;
-logic [`XLEN-1:0]                     dbus_addr;
-logic                                 dbus_req;
-logic                                 dmem_sel;
-logic                                 gpio_sel;
+type_lsu2dbus_s                       lsu2dbus;
 
+type_dbus2peri_s                      dbus2peri;
+logic [`DBUS_ADDR_WIDTH-1:0]          dbus_addr;
+logic                                 ld_req;
+logic                                 st_req;
+logic                                 dbus_req;
+
+logic                                 dmem_addr_match;
+logic                                 uart_addr_match;
+logic                                 clint_addr_match;
+logic                                 dmem_sel;
+logic                                 uart_sel;
+logic                                 clint_sel;
+
+// Assign input signals
+assign lsu2dbus = lsu2dbus_i;
+assign ld_req   = lsu2dbus.ld_req;
+assign st_req   = |lsu2dbus.st_ops;
 
 // Connect the local signals to appropriate IOs of the module
-assign dbus_addr = core2dbus_i.addr; 
-assign dbus_req = core2dbus_i.req; 
-assign addr_instr_space = |(dbus_addr & `IMEM_ADDR_MASK);
+assign dbus_addr = lsu2dbus.addr[`DBUS_ADDR_WIDTH-1:0]; 
+assign dbus_req  = st_req | ld_req; 
+
+// Does the address fall in instruction memory address space
+//assign addr_instr_space = (ld_req) & (|(dbus_addr & `IMEM_ADDR_MASK));
+
+assign dmem_addr_match  = (dbus_addr[`DEV_SEL_ADDR_HIGH:`DEV_SEL_ADDR_LOW] == `DMEM_ADDR_MATCH);
+assign uart_addr_match  = (dbus_addr[`DEV_SEL_ADDR_HIGH:`DEV_SEL_ADDR_LOW] == `UART_ADDR_MATCH);
+assign clint_addr_match = (dbus_addr[`DEV_SEL_ADDR_HIGH:`DEV_SEL_ADDR_LOW] == `CLINT_ADDR_MATCH);
+//assign imem_read_req   = (dbus_addr[`DEV_SEL_ADDR_HIGH:`DEV_SEL_ADDR_LOW] == `IMEM_ADDR_MATCH) 
+//                       & ld_req;
+
+//=================================== Store operation =====================================//
+// Prepare the write data and mask for store  
+always_comb begin
+   dbus2peri.w_data   = '0;
+   dbus2peri.sel_byte = '0;
+
+   case (lsu2dbus.st_ops)
+      ST_OPS_SB : begin
+         case (dbus_addr[1:0]) 
+            2'b00 : begin 
+               dbus2peri.w_data[7:0]   = lsu2dbus.w_data[7:0]; 
+               dbus2peri.sel_byte = 4'b0001;
+            end 
+            2'b01 : begin
+               dbus2peri.w_data[15:8]  = lsu2dbus.w_data[7:0];
+               dbus2peri.sel_byte = 4'b0010;
+            end
+            2'b10 : begin
+               dbus2peri.w_data[23:16] = lsu2dbus.w_data[7:0];
+               dbus2peri.sel_byte = 4'b0100;
+            end
+            2'b11 : begin
+               dbus2peri.w_data[31:24] = lsu2dbus.w_data[7:0];
+               dbus2peri.sel_byte = 4'b1000;
+            end
+            default : begin    
+            end  
+         endcase
+      end // ST_OPS_SB   
+      ST_OPS_SH : begin 
+         case (dbus_addr[1]) 
+            1'b0 : begin
+               dbus2peri.w_data[15:0]  = lsu2dbus.w_data[15:0];
+               dbus2peri.sel_byte = 4'b0011;
+            end 
+            1'b1 : begin
+               dbus2peri.w_data[31:16]  = lsu2dbus.w_data[15:0];
+               dbus2peri.sel_byte = 4'b1100;
+            end
+            default : begin    
+            end  
+         endcase
+      end // ST_OPS_SH
+      ST_OPS_SW : begin
+         dbus2peri.w_data = lsu2dbus.w_data;
+         dbus2peri.sel_byte = 4'b1111;
+      end
+      default : begin
+         dbus2peri.w_data = '0;
+         dbus2peri.sel_byte = 4'b0000;
+      end
+   endcase // st_ops
+end
 
 // Address decoder for peripheral module selection
 always_comb begin
     dmem_sel = 1'b0;
-    gpio_sel = 1'b0;
-    if (((dbus_addr & `DMEM_ADDR_MASK) == `DMEM_ADDR_MATCH) || addr_instr_space) begin
-        dmem_sel = 1'b1;
-    end else if ((dbus_addr & `GPIO_ADDR_MASK) == `GPIO_ADDR_MATCH) begin
-        gpio_sel = 1'b1;
+    clint_sel = 1'b0;
+    uart_sel = 1'b0;
+
+    if (dmem_addr_match & dbus_req) begin
+        dmem_sel  = 1'b1;
+    end else if (clint_addr_match & dbus_req) begin
+        clint_sel = 1'b1;
+    end else if (uart_addr_match & dbus_req) begin
+        uart_sel  = 1'b1;
     end
 end
 
-// Mux for the peripheral module read data
-assign dbus2core_o = dmem_sel ? dmem2dbus_i 
-                   : gpio_sel ? gpio2dbus_i 
-                   : '0;
+// Output signal assignemnets
+assign dbus2peri.addr = dbus_addr;
+assign dbus2peri.cyc  = dbus_req;
+assign dbus2peri.stb  = dmem_sel | uart_sel | clint_sel;
+assign dbus2peri.w_en = st_req;
+
+// Assign the output signals
+assign dbus2peri_o = dbus2peri;
 
 // Peripheral module selection signals from address decoder 
-assign dmem_sel_o = dmem_sel;
-assign gpio_sel_o = gpio_sel;
+assign dmem_sel_o  = dmem_sel;
+assign uart_sel_o  = uart_sel;
+assign clint_sel_o = clint_sel;
 
+// Mux for the peripheral module read data
+assign dbus2lsu_o = dmem_sel  ? type_dbus2lsu_s'(dmem2dbus_i) 
+                  : clint_sel ? type_dbus2lsu_s'(clint2dbus_i)
+                  : uart_sel  ? type_dbus2lsu_s'(uart2dbus_i)  
+                  : '0;
 
 endmodule : dbus_interconnect
 

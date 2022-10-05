@@ -29,7 +29,7 @@ logic                        rf_wr_valid;
 // control signals for validity of register file read/write operations
 assign  rs1_addr_valid   = |id2rf_rs1_addr_i;
 assign  rs2_addr_valid   = |id2rf_rs2_addr_i;
-assign  rf_wr_valid      = |id2rf_rd_addr_i & id2rf_rd_wr_req_i;
+assign  rf_wr_valid      = (|id2rf_rd_addr_i) & id2rf_rd_wr_req_i;
 
 // asynchronous read operation for two register operands
 assign  rf2id_rs1_data_o = (rs1_addr_valid) 
@@ -39,11 +39,11 @@ assign  rf2id_rs2_data_o = (rs2_addr_valid)
                          ? register_file[id2rf_rs2_addr_i] 
                          : '0;
 
-// write operation
-always_ff @( posedge clk) begin
-    if ( rst_n ) begin
+// Write operation is performed on the negative edge
+always_ff @( negedge clk) begin
+    if (~rst_n) begin
         register_file <= '{default: '0};
-    end else if ( rf_wr_valid ) begin
+    end else if (rf_wr_valid) begin
         register_file[id2rf_rd_addr_i] <= id2rf_rd_data_i;
     end
 end

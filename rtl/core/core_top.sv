@@ -1,3 +1,4 @@
+
 `include "../defines/UETRV_PCore_defs.svh"
 `include "../defines/UETRV_PCore_ISA.svh"
 
@@ -6,75 +7,108 @@ module core_top (
     input   logic                        rst_n,                  // reset
     input   logic                        clk,                     // clock
 
-    input   logic [7:0]                  gpio_port_i,
-    output  logic [7:0]                  gpio_port_o
+    input   logic                        irq_ext_i,
+    input   logic                        irq_soft_i,
+    
+    input   logic                        uart_rxd_i,
+    output                               uart_txd_o 
 
 );
 
 // Local signals
-logic                                   if2imem_req;             // Instruction memory request
-logic [`XLEN-1:0]                       if2imem_addr;            // Instruction memory address
-logic [`XLEN-1:0]                       imem2if_rdata;  
-type_core2dbus_s                        ptop2dbus;               // Signal to data memory 
-type_dbus2core_s                        dbus2ptop; 
+type_if2imem_s                          if2imem;            // Instruction memory address
+type_imem2if_s                          imem2if;  
 
+type_lsu2dbus_s                         lsu2dbus;               // Signal to data memory 
+type_dbus2lsu_s                         dbus2lsu; 
 
-// Interface for signals between dbus and core
-type_dbus2core_s                        dbus2core;               // Signals to core
-type_core2dbus_s                        core2dbus;
+type_dbus2peri_s                        dbus2peri;
+type_pipe2csr_s                         core2pipe;
 
 // Peripheral module selection lines from the address decoder
 logic                                   dmem_sel;
-logic                                   gpio_sel;
+logic                                   uart_sel;
+logic                                   clint_sel;
+
+// IRQ ignals
+logic                                   irq_uart;
+logic                                   irq_clint_timer;
 
 // Interfaces for different peripheral modules (for read mux)
-type_dbus2core_s                        dmem2dbus;              // Signals from data memory 
-type_dbus2core_s                        gpio2dbus; 
+type_peri2dbus_s                        dmem2dbus;              // Signals from data memory 
+type_peri2dbus_s                        uart2dbus; 
+type_peri2dbus_s                        clint2dbus; 
 
+// Input assignment to local signals
+assign core2pipe.csr_mhartid = `CSR_MHARTID;
+assign core2pipe.ext_irq     = irq_ext_i;
+assign core2pipe.timer_irq   = irq_clint_timer;
+assign core2pipe.soft_irq    = irq_soft_i;
+assign core2pipe.uart_irq    = irq_uart;
 
 pipeline_top pipeline_top_module (
     .rst_n               (rst_n        ),
     .clk                 (clk          ),
 
     // IMEM interface signals 
-    .if2imem_req_o       (if2imem_req  ),
-    .if2imem_addr_o      (if2imem_addr ),
-    .imem2if_rdata_i     (imem2if_rdata),
+    .if2imem_o           (if2imem),
+    
+    .imem2if_i           (imem2if),
 
-    // DMEM interface signals
-    .ptop2dbus_o         (ptop2dbus    ),       // Signal to data memory 
-    .dbus2ptop_i         (dbus2ptop    )
+    // DBUS interface signals
+    .lsu2dbus_o          (lsu2dbus    ),       // Signal to data bus 
+    .dbus2lsu_i          (dbus2lsu    ),
+
+    // IRQ lines
+    .core2pipe_i         (core2pipe)
 );
 
 
 dbus_interconnect dbus_interconnect_module (
-    .rst_n                (rst_n    ),
-    .clk                  (clk      ),
+    .rst_n                 (rst_n    ),
+    .clk                   (clk      ),
 
     // Data memory interface signals 
-    .core2dbus_i           (ptop2dbus),
-    .dbus2core_o           (dbus2ptop),
+    .lsu2dbus_i            (lsu2dbus),
+    .dbus2lsu_o            (dbus2lsu),
 
-    // Peripheral selection signals
+    // Peripheral (data memory and GPIO) selection signals
     .dmem_sel_o            (dmem_sel),
-    .gpio_sel_o            (gpio_sel), 
+    .uart_sel_o            (uart_sel),
+    .clint_sel_o           (clint_sel), 
 
-   // Instruction memory interface signals 
+    // Signals from dbus to peripherals
+    .dbus2peri_o           (dbus2peri),
+
+   // Data memory and GPIO interface signals 
     .dmem2dbus_i           (dmem2dbus),
-    .gpio2dbus_i           (gpio2dbus)
+    .uart2dbus_i           (uart2dbus),
+    .clint2dbus_i          (clint2dbus)
 );
 
 
-gpio gpio_module (
+uart uart_module (
     .rst_n                (rst_n    ),
     .clk                  (clk      ),
 
     // Data memory interface signals 
-    .dbus2gpio_i           (ptop2dbus),
-    .gpio_sel_i            (gpio_sel),
-    .gpio2dbus_o           (gpio2dbus),
-    .gpio_port_i           (gpio_port_i),
-    .gpio_port_o           (gpio_port_o)
+    .dbus2uart_i           (dbus2peri),  // This should be updated after the WB/AHBL bus interface is used
+    .uart_sel_i            (uart_sel),
+    .uart2dbus_o           (uart2dbus),
+    .uart_irq_o            (irq_uart),
+    .uart_rxd_i            (uart_rxd_i),
+    .uart_txd_o            (uart_txd_o)
+);
+
+clint clint_module (
+    .rst_n                (rst_n    ),
+    .clk                  (clk      ),
+
+    // Data memory interface signals 
+    .dbus2clint_i          (dbus2peri),  // This should be updated if the bus interface is updated
+    .clint_sel_i           (clint_sel),
+    .clint2dbus_o          (clint2dbus),
+    .clint_timer_irq_o     (irq_clint_timer)
 );
 
 
@@ -84,14 +118,13 @@ dualport_mem dualport_mem_module (
     .clk                  (clk      ),
 
     // Data memory interface signals 
-    .mem2dmem_i           (ptop2dbus),
+    .dbus2dmem_i          (dbus2peri),
     .dmem_sel_i           (dmem_sel),
-    .dmem2mem_o           (dmem2dbus),
+    .dmem2dbus_o          (dmem2dbus),
 
    // Instruction memory interface signals 
-    .if2imem_req_i       (if2imem_req  ),
-    .if2imem_addr_i      (if2imem_addr ),
-    .imem2if_rdata_o     (imem2if_rdata)
+    .if2imem_i            (if2imem ),
+    .imem2if_o            (imem2if)
 );
 
 `else
@@ -101,9 +134,9 @@ dmem dmem_module (
     .clk                  (clk      ),
 
     // Data memory interface signals 
-    .mem2dmem_i           (ptop2dbus),
+    .dbus2dmem_i          (dbus2peri),
     .dmem_sel_i           (dmem_sel),
-    .dmem2mem_o           (dmem2dbus)
+    .dmem2dbus_o          (dmem2dbus)
 );
 
 
@@ -118,6 +151,7 @@ imem imem_module (
     .imem2if_rdata_o     (imem2if_rdata)
 );
 `endif
+
 
 endmodule : core_top
 

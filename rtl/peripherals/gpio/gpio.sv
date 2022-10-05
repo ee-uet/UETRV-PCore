@@ -7,8 +7,8 @@ module gpio (
     input   logic                                  clk,                      // clock
 
   // Dbus to GPIO module interface
-    input   wire type_core2dbus_s                  dbus2gpio_i,              // GPIO dbus input signals
-    output  type_dbus2core_s                       gpio2dbus_o,              // GPIO dbus output signals
+    input   wire type_dbus2peri_s                  dbus2gpio_i,              // GPIO dbus input signals
+    output  type_peri2dbus_s                       gpio2dbus_o,              // GPIO dbus output signals
 
   // Selection signal from address decoder of dbus interconnect 
     input   logic                                  gpio_sel_i,
@@ -21,9 +21,9 @@ module gpio (
 
 
 // Local signals
-type_core2dbus_s                      dbus2gpio; 
-type_dbus2core_s                      gpio2dbus;              
-logic [`XLEN-1:0]                     data_wr_ff;
+type_dbus2peri_s                      dbus2gpio; 
+type_peri2dbus_s                      gpio2dbus;              
+logic [`XLEN-1:0]                     w_data_ff;
 logic [`XLEN-1:0]                     addr_ff;
 logic [3:0]                           mask_ff;
 logic                                 wr_ff;
@@ -39,18 +39,18 @@ assign gpio_sel = gpio_sel_i;
 
 always_ff @(posedge clk)
   begin
-   if (rst_n) begin
+   if (~rst_n) begin
        req_ff     <= '0;
        wr_ff      <= '0;
        mask_ff    <= '0;
        addr_ff    <= '0;
-       data_wr_ff <= '0;
+       w_data_ff <= '0;
     end 
     else begin
        req_ff     <= dbus2gpio.req;
        wr_ff      <= dbus2gpio.wr;
        mask_ff    <= dbus2gpio.mask;
-       data_wr_ff <= dbus2gpio.data_wr;
+       w_data_ff <= dbus2gpio.w_data;
        addr_ff    <= dbus2gpio.addr[11:0];              // Address range is 12 bit 
     end
   end
@@ -60,14 +60,14 @@ always_ff @(posedge clk)
 always_ff @(negedge clk)
 begin  
    if (!req_ff && !wr_ff && gpio_sel) begin           // Write operation
-       gpio_wdata_reg <= data_wr_ff[7:0];
+       gpio_wdata_reg <= w_data_ff[7:0];
    end else if (!req_ff && wr_ff && gpio_sel) begin   // Read operation
        gpio_rdata_reg <= gpio_port_i;
    end 
 end
 
 assign gpio_port_o = gpio_wdata_reg;
-assign gpio2dbus_o.data_rd[7:0] = gpio_rdata_reg;
+assign gpio2dbus_o.r_data[7:0] = gpio_rdata_reg;
 
 endmodule : gpio
 
