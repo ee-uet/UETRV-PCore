@@ -164,26 +164,6 @@ ptw ptw_module (
 //============================= PMP instantiation and connectivity =============================//
 
 
-//    logic allow_access;
-//
-//    assign bad_paddr_o = ptw_access_exception_o ? ptw_pptr_q : 'b0;
-//
-//    pmp #(
-//        .PLEN       ( riscv::PLEN            ),
-//        .PMP_LEN    ( riscv::PLEN - 2        ),
-//        .NR_ENTRIES ( ArianeCfg.NrPMPEntries )
-//    ) i_pmp_ptw (
-//        .addr_i        ( ptw_pptr_q         ),
-//        // PTW access are always checked as if in S-Mode...
-//        .priv_lvl_i    ( riscv::PRIV_LVL_S  ),
-//        // ...and they are always loads
-//        .access_type_i ( riscv::ACCESS_READ ),
-//        // Configuration
-//        .conf_addr_i   ( pmpaddr_i          ),
-//        .conf_i        ( pmpcfg_i           ),
-//        .allow_o       ( allow_access       )
-//    );
-//
-//
+
 endmodule // mmu
 
