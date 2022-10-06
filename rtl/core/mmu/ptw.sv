@@ -29,9 +29,6 @@ type_ptw2tlb_s                       ptw2tlb;
 type_dcache2mmu_s                    dcache2ptw;
 type_mmu2dcache_s                    ptw2dcache;
 
-//logic [9:0]                         vpn_0, vpn_1;
-//logic [1:0]                         index;
-
 type_ptw_state_e                     ptw_state_ff, ptw_state_next;
 type_ptw_levels_e                    ptw_lvl_ff, ptw_lvl_next;
 type_pte_sv32_s                      pte;
@@ -72,9 +69,6 @@ assign ptw2dcache.paddr = ptw_paddr_ff[`PALEN-1:0];
 assign ptw2tlb.vpn     = vaddr_ff[`VALEN-1:12];
 assign ptw2tlb.page_4M = (ptw_lvl_ff == LEVEL_1);
 assign ptw2tlb.pte     = pte | (gmap_bit_ff << 5);
-//assign ptw2tlb.asid    = tlb_update_asid_ff;
-//assign ptw2dcache.tag_valid = tag_valid_ff;
-//assign ptw2dcache.data_be = be_gen_32(req_port_o.address_index[1:0], req_port_o.data_size);
 assign itlb_miss = mmu2ptw.en_vaddr & mmu2ptw.itlb_req 
                  & ~mmu2ptw.itlb_hit & ~mmu2ptw.dtlb_req;
 
@@ -87,10 +81,7 @@ always_comb begin : ptw_walker
         ptw_paddr_next      = ptw_paddr_ff;
         ptw_state_next      = ptw_state_ff;
 
-      //  tag_valid_next      = 1'b0;
         ptw2dcache.r_req    = 1'b0;
-//        req_port_o.data_size   = 2'b10;
-//        req_port_o.data_we     = 1'b0;
         ptw2mmu.access_exc  = 1'b0;
         ptw2mmu.pte_error   = 1'b0;
 
@@ -98,13 +89,9 @@ always_comb begin : ptw_walker
         dtlb_update    = 1'b0;
 
         gmap_bit_next       = gmap_bit_ff;
-       // tlb_update_asid_next     = tlb_update_asid_ff; 
         iwalk_active_next   = iwalk_active_ff;
         ptw_lvl_next        = ptw_lvl_ff;
-   
-        vaddr_next            = vaddr_ff;
- //       itlb_miss_o           = 1'b0;
- //       dtlb_miss_o           = 1'b0;
+        vaddr_next          = vaddr_ff;
 
         case (ptw_state_ff)
 
@@ -198,13 +185,7 @@ always_comb begin : ptw_walker
                     end
 
                     // PMP check to verify the access permission
-//                    if (!pmp2ptw.allow_access) begin
-//                        itlb_update = 1'b0;
-//                        dtlb_update = 1'b0;
-//                        // Return page access error with faulting address
-//                        ptw_paddr_next = ptw_paddr_ff;
-//                        ptw_state_next = PTW_PAGE_ACCESS_ERR;
-//                    end
+
                 end
                 
             end
@@ -214,10 +195,12 @@ always_comb begin : ptw_walker
                 ptw_state_next = PTW_IDLE;
                 ptw2mmu.pte_error = 1'b1;
             end
+            
             PTW_PAGE_ACCESS_ERR: begin
                 ptw_state_next     = PTW_IDLE;
                 ptw2mmu.access_exc = 1'b1;
             end
+            
             // Wait for the read valid before going back to IDLE
             PTW_WAIT_R_VALID: begin
                 if (r_data_valid_ff) ptw_state_next = PTW_IDLE;
