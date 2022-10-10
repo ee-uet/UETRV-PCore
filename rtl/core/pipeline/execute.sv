@@ -2,6 +2,7 @@
 
 `include "../../defines/UETRV_PCore_defs.svh"
 `include "../../defines/UETRV_PCore_ISA.svh"
+`include "../../defines/M_EXT_defs.svh"
 
 module execute (
 
@@ -11,6 +12,10 @@ module execute (
     // ID <---> EXE interface
     input  wire type_id2exe_data_s       id2exe_data_i,
     input  wire type_id2exe_ctrl_s       id2exe_ctrl_i,            // Structure for control signals from decode to execute 
+
+    // EXE <---> MULDIV interface
+    output type_exe2mul_data_s           exe2mul_data_o,
+    output type_exe2mul_ctrl_s           exe2mul_ctrl_o,
 
     // EXE <---> LSU interface
     output type_exe2lsu_data_s           exe2lsu_data_o,
@@ -38,6 +43,8 @@ module execute (
 // Local control and data signal structures 
 type_id2exe_ctrl_s                   id2exe_ctrl;
 type_id2exe_data_s                   id2exe_data;
+type_exe2mul_ctrl_s                  exe2mul_ctrl;
+type_exe2mul_data_s                  exe2mul_data;
 type_exe2lsu_ctrl_s                  exe2lsu_ctrl;
 type_exe2lsu_data_s                  exe2lsu_data;
 type_exe2csr_ctrl_s                  exe2csr_ctrl;
@@ -256,6 +263,13 @@ end
 
 
 //==================================== Output signals update ======================================// 
+// Update the output data signals for MUL
+assign exe2mul_data.alu_operand_1 = alu_operand_1;
+assign exe2mul_data.alu_operand_2 = alu_operand_2;
+
+// Assign the output control signals for MUL
+assign exe2mul_ctrl.alu_m_ops = id2exe_ctrl.alu_m_ops;
+
 // Update the output data signals for LSU
 assign exe2lsu_data.alu_result = alu_result;
 assign exe2lsu_data.pc_next    = id2exe_data.pc_next;
@@ -306,6 +320,8 @@ assign exe2fwd.use_rs2 = (id2exe_ctrl.alu_opr2_sel == ALU_OPR2_REG)
                        | id2exe_ctrl.branch_req;
 
 // Update the module output signals
+assign exe2mul_ctrl_o  = exe2mul_ctrl;
+assign exe2mul_data_o  = exe2mul_data;
 assign exe2lsu_ctrl_o  = exe2lsu_ctrl;
 assign exe2lsu_data_o  = exe2lsu_data;
 assign exe2csr_ctrl_o  = exe2csr_ctrl;
@@ -317,4 +333,3 @@ assign exe2if_fb.pc_new = fence_i_req ? id2exe_data.pc_next : alu_result;
 assign exe2if_fb_o      = exe2if_fb;                  
 
 endmodule : execute
-

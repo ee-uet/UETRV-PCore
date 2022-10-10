@@ -1,5 +1,6 @@
 `include "../../defines/UETRV_PCore_defs.svh"
 `include "../../defines/UETRV_PCore_ISA.svh"
+`include "../../defines/M_EXT_defs.svh"
 
 `default_nettype wire
 
@@ -28,6 +29,12 @@ type_if2id_ctrl_s                       if2id_ctrl, if2id_ctrl_next;
 
 type_id2exe_ctrl_s                      id2exe_ctrl, id2exe_ctrl_next;
 type_id2exe_data_s                      id2exe_data, id2exe_data_next;
+
+type_exe2mul_ctrl_s                     exe2mul_ctrl;
+type_exe2mul_data_s                     exe2mul_data;
+
+type_mul2lsu_data_s                     mul2lsu_data, mul2lsu_data_next;
+type_mul2lsu_ctrl_s                     mul2lsu_ctrl, mul2lsu_ctrl_next;
 
 type_exe2lsu_ctrl_s                     exe2lsu_ctrl, exe2lsu_ctrl_next;
 type_exe2lsu_data_s                     exe2lsu_data, exe2lsu_data_next;
@@ -206,6 +213,10 @@ execute execute_module (
     .id2exe_ctrl_i              (id2exe_ctrl),
 `endif
 
+    // EXE <---> MUL module interface signals
+    .exe2mul_ctrl_o             (exe2mul_ctrl),
+    .exe2mul_data_o             (exe2mul_data),
+
     // EXE <---> LSU module interface signals
     .exe2lsu_ctrl_o             (exe2lsu_ctrl),
     .exe2lsu_data_o             (exe2lsu_data),
@@ -227,6 +238,19 @@ execute execute_module (
  
 );
 
+muldiv m_ext_module(
+    .rst_n                      (rst_n        ),            // reset
+    .clk                        (clk          ),            // clock
+
+    // EXE <---> MUL interface
+    .exe2mul_data_i             (exe2mul_data ),
+    .exe2mul_ctrl_i             (exe2mul_ctrl ),            // Structure for control signals from decode to execute 
+
+    // MUL <---> EXE interface
+    .mul2lsu_data_o             (mul2lsu_data ),
+    .mul2lsu_ctrl_o             (mul2lsu_ctrl )
+);
+
 //================================= Execute to LSU interface ==================================//
 // Execute <-----> LSU pipeline/nopipeline  
 `ifdef EXE2LSU_PIPELINE_STAGE
@@ -234,16 +258,22 @@ type_exe2lsu_data_s                     exe2lsu_data_pipe_ff;
 type_exe2lsu_ctrl_s                     exe2lsu_ctrl_pipe_ff;
 type_exe2csr_data_s                     exe2csr_data_pipe_ff;
 type_exe2csr_ctrl_s                     exe2csr_ctrl_pipe_ff;
+type_mul2lsu_data_s                     mul2lsu_data_pipe_ff;
+type_mul2lsu_ctrl_s                     mul2lsu_ctrl_pipe_ff;
 
 always_ff @(posedge clk) begin
     if (~rst_n) begin
         exe2lsu_data_pipe_ff <= '0;
-        exe2lsu_ctrl_pipe_ff <= '0;         
+        exe2lsu_ctrl_pipe_ff <= '0;
+        mul2lsu_data_pipe_ff <= '0;
+        mul2lsu_ctrl_pipe_ff <= '0;         
         exe2csr_data_pipe_ff <= '0;
         exe2csr_ctrl_pipe_ff <= '0;
      end else begin
         exe2lsu_data_pipe_ff <= exe2lsu_data_next;
         exe2lsu_ctrl_pipe_ff <= exe2lsu_ctrl_next;
+        mul2lsu_data_pipe_ff <= mul2lsu_data_next;
+        mul2lsu_ctrl_pipe_ff <= mul2lsu_ctrl_next;
         exe2csr_data_pipe_ff <= exe2csr_data_next;
         exe2csr_ctrl_pipe_ff <= exe2csr_ctrl_next;
     end
@@ -254,17 +284,23 @@ always_comb begin
     if (fwd2ptop.exe2lsu_pipe_flush) begin
         exe2lsu_ctrl_next = '0;
         exe2csr_ctrl_next = '0;
+        mul2lsu_ctrl_next = '0;
         exe2csr_data_next.instr_flushed = 1'b1;
-        exe2lsu_data_next.alu_result = exe2lsu_data_pipe_ff.alu_result;
+        exe2lsu_data_next.alu_result   = exe2lsu_data_pipe_ff.alu_result;
+        mul2lsu_data_next.alu_m_result = mul2lsu_data_pipe_ff.alu_m_result;
     // Stall the exe2lsu/csr stage
     end else if (fwd2ptop.exe2lsu_pipe_stall) begin
         exe2lsu_ctrl_next = exe2lsu_ctrl_pipe_ff;
+        mul2lsu_ctrl_next = mul2lsu_ctrl_pipe_ff;
         exe2csr_ctrl_next = exe2csr_ctrl_pipe_ff;
-        exe2lsu_data_next.alu_result = exe2lsu_data_pipe_ff.alu_result;
+        exe2lsu_data_next.alu_result   = exe2lsu_data_pipe_ff.alu_result;
+        mul2lsu_data_next.alu_m_result = mul2lsu_data_pipe_ff.alu_m_result;
     end else begin
         exe2lsu_ctrl_next = exe2lsu_ctrl;
         exe2csr_ctrl_next = exe2csr_ctrl; 
         exe2lsu_data_next = exe2lsu_data;
+        mul2lsu_ctrl_next = mul2lsu_ctrl;
+        mul2lsu_data_next = mul2lsu_data;
     end
 end 
 `endif // EXE2LSU_PIPELINE_STAGE
@@ -278,10 +314,14 @@ lsu lsu_module (
 `ifdef EXE2LSU_PIPELINE_STAGE
     .exe2lsu_ctrl_i             (exe2lsu_ctrl_pipe_ff),
     .exe2lsu_data_i             (exe2lsu_data_pipe_ff),
+    .mul2lsu_ctrl_i             (mul2lsu_ctrl_pipe_ff),
+    .mul2lsu_data_i             (mul2lsu_data_pipe_ff),
 
 `else
     .exe2lsu_ctrl_i             (exe2lsu_ctrl),
     .exe2lsu_data_i             (exe2lsu_data),
+    .mul2lsu_ctrl_i             (mul2lsu_ctrl),
+    .mul2lsu_data_i             (mul2lsu_data),
 `endif
 
     // CSR module interface signals 
@@ -392,7 +432,6 @@ forward_stall forward_stall_module (
 
 
 assign lsu2dbus_o     = lsu2dbus;
-assign dbus2lsu       = dbus2lsu_i; 
+assign dbus2lsu       = dbus2lsu_i;
 
 endmodule : pipeline_top
-

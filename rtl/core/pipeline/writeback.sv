@@ -39,6 +39,9 @@ assign csr2wrb_data = csr2wrb_data_i;
 always_comb begin
      wrb_rd_data = '0;
       case (lsu2wrb_ctrl.rd_wrb_sel)
+         RD_WRB_M_ALU     : begin
+             wrb_rd_data = lsu2wrb_data.alu_m_result;
+         end
          RD_WRB_ALU     : begin
              wrb_rd_data = lsu2wrb_data.alu_result;
          end

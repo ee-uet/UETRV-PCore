@@ -1,0 +1,19 @@
+`include "UETRV_PCore_defs.svh"
+`include "UETRV_PCore_ISA.svh"
+
+typedef struct packed {                            
+    logic [`XLEN-1:0]                alu_operand_1;     
+    logic [`XLEN-1:0]                alu_operand_2; 
+} type_exe2mul_data_s;
+
+typedef struct packed {                        
+    type_alu_m_ops_e                 alu_m_ops;
+} type_exe2mul_ctrl_s;
+
+typedef struct packed {                            
+    logic [`XLEN-1:0]                alu_m_result; 
+} type_mul2lsu_data_s;
+
+typedef struct packed {                        
+    logic                            alu_m_res;
+} type_mul2lsu_ctrl_s;

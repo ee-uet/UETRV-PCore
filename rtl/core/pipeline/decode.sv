@@ -141,6 +141,7 @@ always_comb begin
                     end // 7'b0100000
 
                     7'b0000001 : begin
+                        id2exe_ctrl.rd_wrb_sel       = RD_WRB_M_ALU;
                         case (funct3_opcode)
                             3'b000 : id2exe_ctrl.alu_m_ops = ALU_M_OPS_MUL;
                             3'b001 : id2exe_ctrl.alu_m_ops = ALU_M_OPS_MULH;

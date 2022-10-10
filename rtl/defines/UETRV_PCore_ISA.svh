@@ -103,6 +103,7 @@ typedef enum logic [1:0] {
 typedef enum logic [2:0] {
     RD_WRB_NONE = '0,
     RD_WRB_ALU,                           // Writeback ALU result
+    RD_WRB_M_ALU,                         // Writeback M Extension ALU result
     RD_WRB_INC_PC,                        // Writeback PC (return address) for JAL/JALR
     RD_WRB_DMEM,                           // Writeback selection for Load operation from DMEM
     RD_WRB_CSR                            // Writeback for reading CSR
@@ -283,6 +284,7 @@ typedef struct packed {
 // LSU-2-Writeback data and control signals
 typedef struct packed {                            
     logic [`XLEN-1:0]                alu_result;
+    logic [`XLEN-1:0]                alu_m_result;
     logic [`XLEN-1:0]                pc_next;
     logic [`XLEN-1:0]                r_data;  
     logic [`RF_AWIDTH-1:0]           rd_addr;    
