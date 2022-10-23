@@ -14,8 +14,8 @@ module muldiv (
     input  wire type_exe2mul_ctrl_s      exe2mul_ctrl_i,            // Structure for control signals from decode to execute 
 
     // MUL <---> LSU interface
-    output type_mul2lsu_data_s           mul2lsu_data_o,
-    output type_mul2lsu_ctrl_s           mul2lsu_ctrl_o
+    output type_mul2wrb_data_s           mul2wrb_data_o,
+    output type_mul2wrb_ctrl_s           mul2wrb_ctrl_o
 );
 
 
@@ -23,16 +23,20 @@ module muldiv (
 // Local control and data signal structures 
 type_exe2mul_ctrl_s                  exe2mul_ctrl;
 type_exe2mul_data_s                  exe2mul_data;
-type_mul2lsu_ctrl_s                  mul2lsu_ctrl;
-type_mul2lsu_data_s                  mul2lsu_data;
+type_mul2wrb_ctrl_s                  mul2wrb_ctrl;
+type_mul2wrb_data_s                  mul2wrb_data;
 
 type_alu_m_ops_e                     alu_m_operator;
 
 // ALU_M signals
 logic                                alu_m_res;
+logic                                alu_m_res_ff;
+logic                                alu_m_res_ff_ff;
 logic  [`XLEN-1:0]                   alu_m_operand_1;
 logic  [`XLEN-1:0]                   alu_m_operand_2;
 logic  [`XLEN-1:0]                   alu_m_result;
+logic  [`XLEN-1:0]                   alu_m_result_ff;
+logic  [`XLEN-1:0]                   alu_m_result_ff_ff;
 logic  [2*`XLEN-1:0]                 mult;
 logic  [2*`XLEN-1:0]                 mult_ss;
 logic  [2*`XLEN-1:0]                 mult_su;
@@ -77,10 +81,20 @@ always_comb begin
     endcase
 end
 
-assign mul2lsu_data.alu_m_result = alu_m_result;
-assign mul2lsu_ctrl.alu_m_res    = alu_m_res;
+always_ff @( posedge clk ) begin
+    alu_m_result_ff <= alu_m_result; 
+    alu_m_res_ff    <= alu_m_res;
+end
 
-assign mul2lsu_data_o = mul2lsu_data;
-assign mul2lsu_ctrl_o = mul2lsu_ctrl;
+always_ff @( posedge clk ) begin
+    alu_m_result_ff_ff <= alu_m_result_ff; 
+    alu_m_res_ff_ff    <= alu_m_res_ff;
+end
+
+assign mul2wrb_data.alu_m_result = alu_m_result_ff_ff;
+assign mul2wrb_ctrl.alu_m_res    = alu_m_res_ff_ff;
+
+assign mul2wrb_data_o = mul2wrb_data;
+assign mul2wrb_ctrl_o = mul2wrb_ctrl;
 
 endmodule

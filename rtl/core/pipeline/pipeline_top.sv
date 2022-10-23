@@ -33,8 +33,8 @@ type_id2exe_data_s                      id2exe_data, id2exe_data_next;
 type_exe2mul_ctrl_s                     exe2mul_ctrl;
 type_exe2mul_data_s                     exe2mul_data;
 
-type_mul2lsu_data_s                     mul2lsu_data, mul2lsu_data_next;
-type_mul2lsu_ctrl_s                     mul2lsu_ctrl, mul2lsu_ctrl_next;
+type_mul2wrb_data_s                     mul2wrb_data;
+type_mul2wrb_ctrl_s                     mul2wrb_ctrl;
 
 type_exe2lsu_ctrl_s                     exe2lsu_ctrl, exe2lsu_ctrl_next;
 type_exe2lsu_data_s                     exe2lsu_data, exe2lsu_data_next;
@@ -247,8 +247,8 @@ muldiv m_ext_module(
     .exe2mul_ctrl_i             (exe2mul_ctrl ),            // Structure for control signals from decode to execute 
 
     // MUL <---> EXE interface
-    .mul2lsu_data_o             (mul2lsu_data ),
-    .mul2lsu_ctrl_o             (mul2lsu_ctrl )
+    .mul2wrb_data_o             (mul2wrb_data ),
+    .mul2wrb_ctrl_o             (mul2wrb_ctrl )
 );
 
 //================================= Execute to LSU interface ==================================//
@@ -258,22 +258,16 @@ type_exe2lsu_data_s                     exe2lsu_data_pipe_ff;
 type_exe2lsu_ctrl_s                     exe2lsu_ctrl_pipe_ff;
 type_exe2csr_data_s                     exe2csr_data_pipe_ff;
 type_exe2csr_ctrl_s                     exe2csr_ctrl_pipe_ff;
-type_mul2lsu_data_s                     mul2lsu_data_pipe_ff;
-type_mul2lsu_ctrl_s                     mul2lsu_ctrl_pipe_ff;
 
 always_ff @(posedge clk) begin
     if (~rst_n) begin
         exe2lsu_data_pipe_ff <= '0;
-        exe2lsu_ctrl_pipe_ff <= '0;
-        mul2lsu_data_pipe_ff <= '0;
-        mul2lsu_ctrl_pipe_ff <= '0;         
+        exe2lsu_ctrl_pipe_ff <= '0;        
         exe2csr_data_pipe_ff <= '0;
         exe2csr_ctrl_pipe_ff <= '0;
      end else begin
         exe2lsu_data_pipe_ff <= exe2lsu_data_next;
         exe2lsu_ctrl_pipe_ff <= exe2lsu_ctrl_next;
-        mul2lsu_data_pipe_ff <= mul2lsu_data_next;
-        mul2lsu_ctrl_pipe_ff <= mul2lsu_ctrl_next;
         exe2csr_data_pipe_ff <= exe2csr_data_next;
         exe2csr_ctrl_pipe_ff <= exe2csr_ctrl_next;
     end
@@ -284,23 +278,17 @@ always_comb begin
     if (fwd2ptop.exe2lsu_pipe_flush) begin
         exe2lsu_ctrl_next = '0;
         exe2csr_ctrl_next = '0;
-        mul2lsu_ctrl_next = '0;
         exe2csr_data_next.instr_flushed = 1'b1;
         exe2lsu_data_next.alu_result   = exe2lsu_data_pipe_ff.alu_result;
-        mul2lsu_data_next.alu_m_result = mul2lsu_data_pipe_ff.alu_m_result;
     // Stall the exe2lsu/csr stage
     end else if (fwd2ptop.exe2lsu_pipe_stall) begin
         exe2lsu_ctrl_next = exe2lsu_ctrl_pipe_ff;
-        mul2lsu_ctrl_next = mul2lsu_ctrl_pipe_ff;
         exe2csr_ctrl_next = exe2csr_ctrl_pipe_ff;
         exe2lsu_data_next.alu_result   = exe2lsu_data_pipe_ff.alu_result;
-        mul2lsu_data_next.alu_m_result = mul2lsu_data_pipe_ff.alu_m_result;
     end else begin
         exe2lsu_ctrl_next = exe2lsu_ctrl;
         exe2csr_ctrl_next = exe2csr_ctrl; 
         exe2lsu_data_next = exe2lsu_data;
-        mul2lsu_ctrl_next = mul2lsu_ctrl;
-        mul2lsu_data_next = mul2lsu_data;
     end
 end 
 `endif // EXE2LSU_PIPELINE_STAGE
@@ -314,14 +302,10 @@ lsu lsu_module (
 `ifdef EXE2LSU_PIPELINE_STAGE
     .exe2lsu_ctrl_i             (exe2lsu_ctrl_pipe_ff),
     .exe2lsu_data_i             (exe2lsu_data_pipe_ff),
-    .mul2lsu_ctrl_i             (mul2lsu_ctrl_pipe_ff),
-    .mul2lsu_data_i             (mul2lsu_data_pipe_ff),
 
 `else
     .exe2lsu_ctrl_i             (exe2lsu_ctrl),
     .exe2lsu_data_i             (exe2lsu_data),
-    .mul2lsu_ctrl_i             (mul2lsu_ctrl),
-    .mul2lsu_data_i             (mul2lsu_data),
 `endif
 
     // CSR module interface signals 
@@ -407,7 +391,8 @@ writeback writeback_module (
     .lsu2wrb_data_i             (lsu2wrb_data),
     .csr2wrb_data_i             (csr2wrb_data),
 `endif
-
+    .mul2wrb_data_i             (mul2wrb_data),
+    .mul2wrb_ctrl_i             (mul2wrb_ctrl),
     .wrb2id_fb_o                (wrb2id_fb),
     .wrb2exe_fb_rd_data_o       (wrb2exe_fb_rd_data),
     .wrb2fwd_o                  (wrb2fwd)

@@ -12,8 +12,8 @@ typedef struct packed {
 
 typedef struct packed {                            
     logic [`XLEN-1:0]                alu_m_result; 
-} type_mul2lsu_data_s;
+} type_mul2wrb_data_s;
 
 typedef struct packed {                        
     logic                            alu_m_res;
-} type_mul2lsu_ctrl_s;
+} type_mul2wrb_ctrl_s;

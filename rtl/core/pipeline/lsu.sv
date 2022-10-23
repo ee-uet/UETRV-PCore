@@ -1,7 +1,6 @@
 `include "../../defines/UETRV_PCore_defs.svh"
 `include "../../defines/UETRV_PCore_ISA.svh"
 `include "../../defines/MMU_defs.svh"
-`include "../../defines/M_EXT_defs.svh"
 
 module lsu (
 
@@ -11,10 +10,6 @@ module lsu (
     // EXE <---> LSU interface
     input  wire type_exe2lsu_data_s         exe2lsu_data_i,
     input  wire type_exe2lsu_ctrl_s         exe2lsu_ctrl_i,            // Structure for control signals from execute to memory 
-    
-    // MUL <---> LSU interface
-    input  wire type_mul2lsu_data_s         mul2lsu_data_i,
-    input  wire type_mul2lsu_ctrl_s         mul2lsu_ctrl_i,            // Structure for control signals from multiply to memory 
 
     // LSU <---> CSR interface
     input wire type_csr2lsu_data_s          csr2lsu_data_i,
@@ -43,8 +38,6 @@ module lsu (
 // Local signals
 type_exe2lsu_data_s          exe2lsu_data;
 type_exe2lsu_ctrl_s          exe2lsu_ctrl;
-type_mul2lsu_data_s          mul2lsu_data;
-type_mul2lsu_ctrl_s          mul2lsu_ctrl;
 type_lsu2wrb_data_s          lsu2wrb_data;
 type_lsu2wrb_ctrl_s          lsu2wrb_ctrl;
 type_lsu2dbus_s              lsu2dbus;
@@ -66,8 +59,6 @@ type_ld_ops_e                ld_ops;
 // Signal assignments
 assign exe2lsu_data  = exe2lsu_data_i;
 assign exe2lsu_ctrl  = exe2lsu_ctrl_i;
-assign mul2lsu_data  = mul2lsu_data_i;
-assign mul2lsu_ctrl  = mul2lsu_ctrl_i;
 assign dbus2lsu      = dbus2lsu_i;
 assign csr2lsu_data  = csr2lsu_data_i;
 
@@ -159,10 +150,9 @@ assign lsu2dbus.ld_req = ld_req;
 assign lsu2dbus.st_ops = exe2lsu_ctrl.st_ops;
 
 // Update data for writeback
-assign lsu2wrb_data.alu_result   = exe2lsu_data.alu_result;
-assign lsu2wrb_data.alu_m_result = mul2lsu_data.alu_m_result;
-assign lsu2wrb_data.pc_next      = exe2lsu_data.pc_next;
-assign lsu2wrb_data.rd_addr      = exe2lsu_ctrl.rd_addr;        
+assign lsu2wrb_data.alu_result = exe2lsu_data.alu_result;
+assign lsu2wrb_data.pc_next    = exe2lsu_data.pc_next;
+assign lsu2wrb_data.rd_addr    = exe2lsu_ctrl.rd_addr;        
 
 // Update control signals for writeback
 assign lsu2wrb_ctrl.rd_wrb_sel = exe2lsu_ctrl.rd_wrb_sel;
@@ -175,9 +165,8 @@ assign lsu2fwd.ld_req          = ld_req;
 assign lsu2fwd.ld_ack          = dbus2lsu.ack;
 
 // Signals for forwading to EXE module
-assign lsu2exe_fb_alu_result_o = mul2lsu_ctrl.alu_m_res 
-                               ? mul2lsu_data.alu_m_result 
-                               : exe2lsu_data.alu_result; 
+assign lsu2exe_fb_alu_result_o = exe2lsu_data.alu_result; 
+
 // Signals for MMU
 assign lsu2mmu.satp_ppn       = csr2lsu_data.satp_ppn;
 assign lsu2mmu.en_vaddr       = csr2lsu_data.en_vaddr;
