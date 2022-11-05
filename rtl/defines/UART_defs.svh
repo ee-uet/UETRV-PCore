@@ -5,6 +5,9 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
+// UART_defs.svh
+`ifndef UART_defs
+`define UART_defs
 
 localparam int unsigned UART_DATA_SIZE      = 8;
 localparam int unsigned UART_DATA_BIT_COUNT = $clog2(UART_DATA_SIZE);
@@ -42,9 +45,7 @@ typedef enum logic [1:0] {
     UART_RX_STOP  = 2'h3
 } type_uart_rx_states_e;
 
-
-
-   
+`endif  // UART_defs
 
    
 

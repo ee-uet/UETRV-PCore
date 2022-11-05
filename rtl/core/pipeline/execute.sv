@@ -210,7 +210,7 @@ always_comb begin
          alu_result = alu_operand_1 >> shift_amt;
       end
       ALU_I_OPS_SRA : begin
-         alu_result = alu_operand_1 >>> shift_amt;
+         alu_result = $signed(alu_operand_1) >>> shift_amt;
       end
       // Branch related operations
       ALU_I_OPS_COPY_OPR1 : begin

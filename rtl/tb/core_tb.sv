@@ -4,6 +4,7 @@
 
 
 module core_tb();
+parameter timeout = 18000;
 reg clk, reset;
 reg [31:0] loop_count;
 wire [7:0] count;
@@ -45,9 +46,9 @@ initial
     $dumpfile("core_tb.vcd");
     $dumpvars(0, core_tb);
 
-    write_data = $fopen("trace_data.txt");
+    write_data = $fopen("pcore.log");
 
-    for (loop_count = 0; loop_count < 200; loop_count = loop_count + 1)
+    for (loop_count = 0; loop_count < timeout; loop_count = loop_count + 1)
     begin
          repeat (1) @ (posedge clk);
 
@@ -67,12 +68,48 @@ initial
          if (loop_count == 388) uart_rx = 0; 
          if (loop_count == 404) uart_rx = 1; 
 
-         $fdisplay(write_data, "%d \t %h", loop_count, dut.pipeline_top_module.if2id_data_pipe_ff.pc);
+         $fdisplay(write_data, "%d \t %h \t %h", loop_count, dut.pipeline_top_module.if2id_data.pc, dut.imem2if.r_data);
     end
     $display("End of simulation");
     $fclose(write_data);
     $finish; 
  end
 
+ // Signature Dump for Compliance Testing
+`ifdef COMPLIANCE_TEST
+    wire sig_en  = (dut.dbus2peri.addr == 32'h88000000) & dut.dbus2peri.w_en & dut.dmem_sel;
+    wire halt_en = (dut.dbus2peri.addr == 32'h8C000000) & dut.dbus2peri.w_en & dut.dmem_sel;
+
+    reg [1023:0] signature_file;
+    reg [1023:0] firmware;
+
+    integer write_sig=0;
+
+    initial begin
+         if($value$plusargs("memfile=%s",firmware)) begin
+            $display("Loading Instruction Memory from %0s", firmware);
+            `ifdef DUALPORT_MEMORY
+               $readmemh(firmware, dut.dualport_mem_module.dualport_memory);
+            `else
+               $readmemh(firmware, dut.imem_module.inst_memory);
+            `endif
+         end
+        
+         if($value$plusargs("signature=%s",signature_file)) begin
+            $display("Writing signature to %0s", signature_file);
+            write_sig=$fopen(signature_file,"w");
+         end
+    end
+
+    always_ff @ (posedge clk) begin 
+        if(sig_en & (write_sig!=0))
+            $fwrite(write_sig,"%h\n",dut.dbus2peri.w_data);
+        else if(halt_en) begin
+            $display("Test Complete");
+            $fclose(write_sig);
+            $finish;
+        end
+    end    
+`endif
 
 endmodule

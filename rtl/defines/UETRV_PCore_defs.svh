@@ -39,7 +39,12 @@
 `define LSU2WRB_PIPELINE_STAGE       1
 
 `define INSTR_NOP                    32'h00000013
-`define PC_RESET                     32'h8000E000                      
+
+`ifdef COMPLIANCE_TEST
+    `define PC_RESET                     32'h80000000    
+`else
+    `define PC_RESET                     32'h8000E000  
+`endif           
 
 // Address ranges for different peripheral modules
 `define DBUS_ADDR_WIDTH              32
@@ -51,6 +56,8 @@
 `define UART_ADDR_MATCH              4'h1
 `define CLINT_ADDR_MATCH             4'h4
 
+// All address space for Data Memory for Compliance Testing
+`define COMPLIANCE_TEST              0
 
 typedef enum logic [3:0] {
     MTIME_LOW_R     = 4'h0,

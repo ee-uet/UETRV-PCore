@@ -51,6 +51,7 @@ type_lsu2mmu_s               lsu2mmu;
 
 
 logic [`XLEN-1:0]            rdata_word;
+logic [`XLEN-1:0]            d_addr;
 logic [15:0]                 rdata_hword;
 logic [7:0]                  rdata_byte;
 logic                        ld_req;
