@@ -40,6 +40,10 @@ logic  [`XLEN-1:0]                   alu_m_result_ff_ff;
 logic  [2*`XLEN-1:0]                 mult;
 logic  [2*`XLEN-1:0]                 mult_ss;
 logic  [2*`XLEN-1:0]                 mult_su;
+logic  [`XLEN-1:0]                   div;
+logic  [`XLEN-1:0]                   div_u;
+logic  [`XLEN-1:0]                   rem;
+logic  [`XLEN-1:0]                   rem_u;
 
 assign exe2mul_data = exe2mul_data_i;
 assign exe2mul_ctrl = exe2mul_ctrl_i;
@@ -52,6 +56,10 @@ always_comb begin
     mult    = alu_m_operand_1          * alu_m_operand_2;
     mult_ss = $signed(alu_m_operand_1) * $signed(alu_m_operand_2);
     mult_su = $signed(alu_m_operand_1) * alu_m_operand_2;
+    div_u   = alu_m_operand_1          / alu_m_operand_2;
+    div     = $signed(alu_m_operand_1) / $signed(alu_m_operand_2);
+    rem_u   = alu_m_operand_1          % alu_m_operand_2;
+    rem     = $signed(alu_m_operand_1) % $signed(alu_m_operand_2);
 end
 
 always_comb begin
@@ -73,6 +81,22 @@ always_comb begin
         ALU_M_OPS_MULHU  : begin
             alu_m_res    = 1'b1;
             alu_m_result = mult[63:32];
+        end
+        ALU_M_OPS_DIV  : begin
+            alu_m_res    = 1'b1;
+            alu_m_result = div;
+        end
+        ALU_M_OPS_DIVU  : begin
+            alu_m_res    = 1'b1;
+            alu_m_result = div_u;
+        end
+        ALU_M_OPS_REM  : begin
+            alu_m_res    = 1'b1;
+            alu_m_result = rem;
+        end
+        ALU_M_OPS_REMU  : begin
+            alu_m_res    = 1'b1;
+            alu_m_result = rem_u;
         end
         default : begin
             alu_m_res    = 1'b0;
