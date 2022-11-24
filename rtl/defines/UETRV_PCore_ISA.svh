@@ -351,13 +351,16 @@ typedef struct packed {
     logic [`RF_AWIDTH-1:0]           rd_addr;
     logic                            rd_wr_req; 
     logic                            ld_req;
-    logic                            ld_ack;     
+    logic                            ld_ack;  
+    logic                            mul_req;   
 } type_lsu2fwd_s;
 
 // Writeback-2-Forward_stall interface signals
 typedef struct packed {                            
     logic [`RF_AWIDTH-1:0]           rd_addr;
     logic                            rd_wr_req;  
+    logic                            alu_m_res;  
+    logic                            mul_req;  
 } type_wrb2fwd_s;
 
 // Execute-2-Forwarding interface signals

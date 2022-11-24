@@ -44,6 +44,9 @@ logic                                lsu_flush;
 logic                                ld_stall;
 logic                                ld_stall_ff;
 logic                                ld_stall_next;
+logic                                mul_stall;
+logic                                mul_stall_ff;
+logic                                mul_stall_next;
 logic                                id_exe_flush;
 logic                                exe_new_pc_req;
 
@@ -72,6 +75,7 @@ assign ld_csr_read_req = lsu2fwd.ld_req | csr2fwd.csr_read_req;
 
 // Check the 'ack' signal for the load operation
 assign ld_stall = ld_stall_next;                  // lsu2fwd.ld_req & (~lsu2fwd.ld_ack);
+assign mul_stall = mul_stall_next;                  // lsu2fwd.ld_req & (~lsu2fwd.ld_ack);
 
 always_ff @(negedge rst_n, posedge clk) begin
     if (~rst_n) begin
@@ -89,6 +93,24 @@ always_comb begin
     end else begin                         
         ld_stall_next = ld_stall_ff; 
     end        
+end
+
+always_ff @(negedge rst_n, posedge clk) begin
+    if (~rst_n) begin
+        mul_stall_ff <= '0;
+    end else begin
+        mul_stall_ff <= mul_stall_next;
+    end
+end
+
+always_comb begin
+    if (wrb2fwd.alu_m_res) begin
+        mul_stall_next = 0;
+    end else if (lsu2fwd.mul_req) begin                         
+        mul_stall_next = 1'b1; 
+    end else begin                         
+        mul_stall_next = mul_stall_ff; 
+    end  
 end
 
 
@@ -120,8 +142,8 @@ assign lsu_flush    = csr2fwd.new_pc_req | csr2fwd.wfi_req;
 assign fwd2ptop.if2id_pipe_flush  = id_exe_flush;
 assign fwd2ptop.id2exe_pipe_flush = id_exe_flush;
 
-assign fwd2ptop.if2id_pipe_stall   = ld_use_hazard | ld_stall;
-assign fwd2ptop.id2exe_pipe_stall  = ld_use_hazard | ld_stall;
+assign fwd2ptop.if2id_pipe_stall   = ld_use_hazard | ld_stall | mul_stall;
+assign fwd2ptop.id2exe_pipe_stall  = ld_use_hazard | ld_stall | mul_stall;
 assign fwd2ptop.exe2lsu_pipe_stall = ld_stall;
 assign fwd2ptop.exe2lsu_pipe_flush = ld_use_hazard | lsu_flush;
 
@@ -134,7 +156,7 @@ assign fwd2csr.pipe_stall          = ld_use_hazard;
 assign fwd2if.exe_new_pc_req = exe_new_pc_req & (~csr2fwd.new_pc_req);
 assign fwd2if.csr_new_pc_req = csr2fwd.new_pc_req;
 assign fwd2if.wfi_req        = csr2fwd.wfi_req;
-assign fwd2if.if_stall       = ld_use_hazard | ld_stall;
+assign fwd2if.if_stall       = ld_use_hazard | ld_stall | mul_stall;
 
 // Update the module output signals
 assign fwd2if_o   = fwd2if;

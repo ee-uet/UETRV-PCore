@@ -163,6 +163,7 @@ assign lsu2fwd.rd_addr         = exe2lsu_ctrl.rd_addr;
 assign lsu2fwd.rd_wr_req       = exe2lsu_ctrl.rd_wr_req;
 assign lsu2fwd.ld_req          = ld_req;
 assign lsu2fwd.ld_ack          = dbus2lsu.ack;
+assign lsu2fwd.mul_req         = (exe2lsu_ctrl.rd_wrb_sel == RD_WRB_M_ALU) ? '1 : '0;
 
 // Signals for forwading to EXE module
 assign lsu2exe_fb_alu_result_o = exe2lsu_data.alu_result; 
