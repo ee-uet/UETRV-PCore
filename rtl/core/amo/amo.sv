@@ -1,8 +1,7 @@
 /*********************************************************************
  * Filename :    amo.sv
  * Date     :    05-10-2022
- * Author   :    
- * Written by Dr. Muhammad Tahir
+ * Author   :    Umer Shahid
  *
  * Description:  AMO module to execute atomic instructions.
                 This module handle atomic request from core.
