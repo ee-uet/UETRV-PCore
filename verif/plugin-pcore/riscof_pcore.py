@@ -43,7 +43,7 @@ class pcore(pluginTemplate):
        utils.shellCommand(comp_pcore).run()
 
        self.sim_pcore = 'vsim -c -do "run -all" core_tb\
-        -Gtimeout=18000 -quiet\
+        -Gtimeout=30000 -quiet\
         +signature={0}/DUT-pcore.signature\
         +memfile={0}/{1}.hex'
 
