@@ -26,11 +26,13 @@ module lsu (
     // LSU <---> Forward_stall interface for forwarding
     output type_lsu2fwd_s                   lsu2fwd_o,
 
-    // LSU module to data bus (dbus) interface
-    output type_lsu2dbus_s                 lsu2dbus_o,                // Signal to data bus 
-    input  wire type_dbus2lsu_s            dbus2lsu_i,
+    // LSU <---> Data Bus (dbus) interface
+    input  wire type_dbus2lsu_s             dbus2lsu_i,
+    output type_lsu2dbus_s                  lsu2dbus_o,                // Signal to data bus 
 
-    output type_lsu2mmu_s                  lsu2mmu_o 
+    // LSU <---> MMU interface 
+    input wire type_mmu2lsu_s               mmu2lsu_i, 
+    output type_lsu2mmu_s                   lsu2mmu_o 
 
 );
 
@@ -48,8 +50,10 @@ type_csr2lsu_data_s          csr2lsu_data;
 
 type_lsu2fwd_s               lsu2fwd;
 type_lsu2mmu_s               lsu2mmu;
+type_mmu2lsu_s               mmu2lsu;
 
 
+logic [`XLEN-1:0]            ld_st_addr;
 logic [`XLEN-1:0]            rdata_word;
 logic [15:0]                 rdata_hword;
 logic [7:0]                  rdata_byte;
@@ -61,6 +65,7 @@ assign exe2lsu_data  = exe2lsu_data_i;
 assign exe2lsu_ctrl  = exe2lsu_ctrl_i;
 assign dbus2lsu      = dbus2lsu_i;
 assign csr2lsu_data  = csr2lsu_data_i;
+assign mmu2lsu       = mmu2lsu_i;
 
 // Prepare the signals to perform load/store operations      
 assign ld_ops        = exe2lsu_ctrl.ld_ops;
@@ -134,20 +139,15 @@ end
 
 //=================================== Output signals update =====================================//
 
-assign d_addr = exe2lsu_data.alu_result;
+assign ld_st_addr = exe2lsu_data.alu_result;
 
 // Update data for CSR module
 assign lsu2csr_data.pc_next   = exe2lsu_data.pc_next;
-assign lsu2csr_data.dbus_addr = d_addr;
+assign lsu2csr_data.dbus_addr = ld_st_addr;
 
 // Update control signals for CSR module
 assign lsu2csr_ctrl.ld_ops = exe2lsu_ctrl.ld_ops;
 assign lsu2csr_ctrl.st_ops = exe2lsu_ctrl.st_ops;
-
-assign lsu2dbus.addr   = d_addr;
-assign lsu2dbus.w_data = exe2lsu_data.rs2_data;
-assign lsu2dbus.ld_req = ld_req;
-assign lsu2dbus.st_ops = exe2lsu_ctrl.st_ops;
 
 // Update data for writeback
 assign lsu2wrb_data.alu_result = exe2lsu_data.alu_result;
@@ -176,7 +176,14 @@ assign lsu2mmu.tlb_flush      = csr2lsu_data.tlb_flush;
 assign lsu2mmu.lsu_flush      = csr2lsu_data.lsu_flush;
 assign lsu2mmu.d_req          = ld_req | st_req;
 assign lsu2mmu.st_req         = st_req;
-assign lsu2mmu.d_vaddr        = d_addr;
+assign lsu2mmu.d_vaddr        = ld_st_addr;
+
+// Signals to data memory interface
+assign lsu2dbus.addr   = ld_st_addr; // mmu2lsu.d_paddr[`XLEN-1:0];
+assign lsu2dbus.ld_req = ld_req; // & (mmu2lsu.d_hit);
+assign lsu2dbus.st_req = st_req; // & (mmu2lsu.d_hit);
+assign lsu2dbus.w_data = exe2lsu_data.rs2_data;
+assign lsu2dbus.st_ops = exe2lsu_ctrl.st_ops;
 
 // Update the output signals with proper assignment
 assign lsu2csr_data_o = lsu2csr_data;

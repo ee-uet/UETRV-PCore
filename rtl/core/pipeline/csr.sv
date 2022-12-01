@@ -26,6 +26,9 @@ module csr (
     input wire type_fwd2csr_s               fwd2csr_i,
     output type_csr2fwd_s                   csr2fwd_o,
 
+    // CSR <---> Decode feedback interface
+    output type_csr2id_fb_s                 csr2id_fb_o,
+
     // CSR <---> Fetch feedback interface
     output type_csr2if_fb_s                 csr2if_fb_o
 
@@ -149,7 +152,7 @@ logic                            sret_pc_req;
 // System operation related signals
 logic                            sret_req;
 logic                            mret_req;
-logic                            sfence_vma;
+logic                            sfence_vma_req;
 logic                            wfi_req;
 logic                            wfi_ff, wfi_next;
 logic                            en_ld_st_vaddr_ff, en_ld_st_vaddr_next;
@@ -341,15 +344,16 @@ end
 
 // Decode the system instructions 
 always_comb begin
-sret_req = 1'b0;
-mret_req = 1'b0;
-wfi_req  = 1'b0;
+sret_req       = 1'b0;
+mret_req       = 1'b0;
+wfi_req        = 1'b0;
+sfence_vma_req = 1'b0;
 
     case (exe2csr_ctrl.sys_ops)
-        SYS_OPS_SRET       : sret_req   = 1'b1;
-        SYS_OPS_MRET       : mret_req   = 1'b1;
-        SYS_OPS_WFI        : wfi_req    = 1'b1;
-        SYS_OPS_SFENCE_VMA : sfence_vma = 1'b1;
+        SYS_OPS_SRET       : sret_req       = 1'b1;
+        SYS_OPS_MRET       : mret_req       = 1'b1;
+        SYS_OPS_WFI        : wfi_req        = 1'b1;
+        SYS_OPS_SFENCE_VMA : sfence_vma_req = 1'b1;
         default            : begin  end 
     endcase
 end 
@@ -1098,13 +1102,13 @@ assign csr2fwd.csr_read_req = exe2csr_ctrl.csr_rd_req;
 assign csr2wrb_data.csr_rdata = csr_rdata;
 
 // CSR to LSU signals
-assign csr2lsu_data.satp_ppn = csr_satp_ff.ppn;
-assign csr2lsu_data.en_vaddr = (csr_satp_ff.mode == MODE_SV32) && (priv_mode_ff != PRIV_MODE_M)
-                             ? 1'b1 : 1'b0;
-assign csr2lsu_data.en_ld_st_vaddr = en_ld_st_vaddr_ff;
-assign csr2lsu_data.mxr = csr_mstatus_ff.mxr; 
-assign csr2lsu_data.tlb_flush = sfence_vma;
+assign csr2lsu_data.satp_ppn  = csr_satp_ff.ppn;
+assign csr2lsu_data.en_vaddr  = (csr_satp_ff.mode == MODE_SV32) && (priv_mode_ff != PRIV_MODE_M)
+                              ? 1'b1 : 1'b0;
+assign csr2lsu_data.mxr       = csr_mstatus_ff.mxr; 
+assign csr2lsu_data.tlb_flush = sfence_vma_req;
 assign csr2lsu_data.lsu_flush = csr2fwd.new_pc_req | csr2fwd.wfi_req; 
+assign csr2lsu_data.en_ld_st_vaddr = en_ld_st_vaddr_ff;
   
 // Update the module output signals
 assign csr2wrb_data_o = csr2wrb_data;

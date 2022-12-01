@@ -1,5 +1,6 @@
 `include "../../defines/UETRV_PCore_defs.svh"
 `include "../../defines/UETRV_PCore_ISA.svh"
+`include "../../defines/MMU_defs.svh"
 
 module fetch (
 
@@ -9,6 +10,10 @@ module fetch (
    // IF <---> IMEM interface
     output type_if2imem_s                           if2imem_o,       // Instruction memory request
     input wire type_imem2if_s                       imem2if_i,       // Instruction memory response
+
+   // IF <---> MMU interface
+    output type_if2mmu_s                            if2mmu_o,        // Instruction memory request
+    input wire type_mmu2if_s                        mmu2if_i,        // Instruction memory response
 
     // IF <---> ID interface
     output type_if2id_data_s                        if2id_data_o,
@@ -27,6 +32,8 @@ module fetch (
 
 // Local siganls       
 type_imem2if_s                       imem2if;
+type_if2mmu_s                        if2mmu;
+type_mmu2if_s                        mmu2if;
 
 type_if2id_data_s                    if2id_data;
 type_if2id_ctrl_s                    if2id_ctrl;
@@ -48,6 +55,8 @@ logic                                pc_misaligned;
 
 
 assign imem2if   = imem2if_i;
+assign mmu2if    = mmu2if_i;
+
 assign exe2if_fb = exe2if_fb_i;
 assign csr2if_fb = csr2if_fb_i;
 assign fwd2if    = fwd2if_i;
@@ -103,12 +112,14 @@ always_comb begin
 end
 
 
-// Update the outputs to Imem module
-assign if2imem_o.addr = pc_next;
-assign if2imem_o.req  = `IMEM_INST_REQ;
+// Update the outputs to MMU and Imem modules
+assign if2mmu.i_vaddr = pc_next;
+assign if2mmu.i_req   = `IMEM_INST_REQ;
+assign if2imem_o.addr = pc_next; // mmu2if.i_paddr[`XLEN-1:0];
+assign if2imem_o.req  = `IMEM_INST_REQ; // mmu2if.i_hit;
  
 // Update the outputs to ID stage
-assign if2id_data.instr         = imem2if.r_data;
+assign if2id_data.instr         = imem2if.ack ? imem2if.r_data : `INSTR_NOP;
 assign if2id_data.pc            = pc_ff;
 assign if2id_data.pc_next       = pc_next;
 assign if2id_data.instr_flushed = 1'b0;
@@ -118,6 +129,8 @@ assign if2id_ctrl.exc_req       = exc_req;
 
 assign if2id_data_o             = if2id_data;
 assign if2id_ctrl_o             = if2id_ctrl;
+
+assign if2mmu_o                 = if2mmu;
 
 endmodule : fetch
 

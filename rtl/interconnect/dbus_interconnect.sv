@@ -41,7 +41,7 @@ logic                                 clint_sel;
 // Assign input signals
 assign lsu2dbus = lsu2dbus_i;
 assign ld_req   = lsu2dbus.ld_req;
-assign st_req   = |lsu2dbus.st_ops;
+assign st_req   = lsu2dbus.st_req;
 
 // Connect the local signals to appropriate IOs of the module
 assign dbus_addr = lsu2dbus.addr[`DBUS_ADDR_WIDTH-1:0]; 
