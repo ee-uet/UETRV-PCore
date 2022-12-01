@@ -283,6 +283,7 @@ assign exe2lsu_ctrl.st_ops     = id2exe_ctrl.st_ops;
 assign exe2lsu_ctrl.jump_req   = id2exe_ctrl.jump_req;                          
 assign exe2lsu_ctrl.branch_req = id2exe_ctrl.branch_req; 
 
+assign exe2lsu_ctrl.amo_ops    = id2exe_ctrl.amo_ops;
 // If this is CSR operation then destination register write selection is managed 
 // by CSR read control signal
 assign exe2lsu_ctrl.rd_wr_req  = (|id2exe_ctrl.csr_ops) 

@@ -56,6 +56,9 @@ logic [7:0]                  rdata_byte;
 logic                        ld_req;
 type_ld_ops_e                ld_ops;
 
+
+logic amo_ops;
+logic amo_req;
 // Signal assignments
 assign exe2lsu_data  = exe2lsu_data_i;
 assign exe2lsu_ctrl  = exe2lsu_ctrl_i;
@@ -65,7 +68,30 @@ assign csr2lsu_data  = csr2lsu_data_i;
 // Prepare the signals to perform load/store operations      
 assign ld_ops        = exe2lsu_ctrl.ld_ops;
 assign ld_req        = |ld_ops; 
+assign amo_ops       = exe2lsu_ctrl.amo_ops;
+assign amo_req       = |amo_ops;
 assign st_req        = |(exe2lsu_ctrl.st_ops);
+assign amo_ops       = exe2lsu_ctrl.amo_ops;
+assign amo_req       = |amo_ops;
+
+
+atomic_unit amo (    
+    .clk_i (clk),
+    .rst_i (rst_n),
+    .core_addr_i (exe2lsu_data.alu_result),
+    .core_data_i (exe2lsu_data.rs2_data) ,
+    .core_done_o ,
+    .core_data_o ,
+    .core_is_amo_i (amo_req),
+    .core_amo_type_i (amo_ops),
+
+    .M_DMEM_addr_o ,
+    .M_DMEM_rw_o,
+    .M_DMEM_data_o,
+    .M_DMEM_done_i,
+    .M_DMEM_data_i
+)
+
 
 //=================================== Memory load operation =====================================//
 // Extract the right size from the read data  
