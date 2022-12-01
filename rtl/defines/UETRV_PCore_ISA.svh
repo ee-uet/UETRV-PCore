@@ -301,7 +301,7 @@ typedef struct packed {
     logic [`XLEN-1:0]                w_data;
     type_st_ops_e                    st_ops;
     logic                            ld_req;  
- //   logic                            req;  
+    logic                            st_req;  
 } type_lsu2dbus_s;
 
 // Bus interface from DBUS to LSU
@@ -338,6 +338,11 @@ typedef struct packed {
  //   logic                            new_pc_req; 
  //   logic                            wfi_req; 
 } type_csr2if_fb_s;
+
+// CSR-2-Decode interface feedback signals
+typedef struct packed {                            
+    type_priv_mode_e                 priv_mode;
+} type_csr2id_fb_s;
 
 // Writeback-2-Decode interface feedback signals
 typedef struct packed {                            

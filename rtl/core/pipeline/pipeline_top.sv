@@ -1,5 +1,6 @@
 `include "../../defines/UETRV_PCore_defs.svh"
 `include "../../defines/UETRV_PCore_ISA.svh"
+`include "../../defines/MMU_defs.svh"
 `include "../../defines/M_EXT_defs.svh"
 
 `default_nettype wire
@@ -12,6 +13,10 @@ module pipeline_top (
    // IF <---> IMEM interface
     output type_if2imem_s               if2imem_o,                // Instruction memory request
     input wire type_imem2if_s           imem2if_i,                // Instruction memory response
+
+   // MMU <---> Data cache interface
+    input wire type_dmem2mmu_s          dmem2mmu_i,   
+    output type_mmu2dmem_s              mmu2dmem_o,  
 
    // Data bus interface
     output type_lsu2dbus_s              lsu2dbus_o,                // Signal to data bus 
@@ -44,10 +49,15 @@ type_exe2csr_data_s                     exe2csr_data, exe2csr_data_next;
 type_exe2csr_ctrl_s                     exe2csr_ctrl, exe2csr_ctrl_next;
 type_lsu2csr_data_s                     lsu2csr_data;
 type_lsu2csr_ctrl_s                     lsu2csr_ctrl;
+type_csr2lsu_data_s                     csr2lsu_data;
 
 // Interfaces for data bus 
 type_lsu2dbus_s                         lsu2dbus;               // Signal to data memory 
 type_dbus2lsu_s                         dbus2lsu; 
+
+// Interfaces for instruction memory 
+type_if2imem_s                          if2imem;              
+type_imem2if_s                          imem2if;
 
 // Interfaces for writeback module
 type_lsu2wrb_ctrl_s                     lsu2wrb_ctrl;
@@ -56,8 +66,17 @@ type_csr2wrb_data_s                     csr2wrb_data;
 
 // Interfaces for feedback signals
 type_csr2if_fb_s                        csr2if_fb;
+type_csr2id_fb_s                        csr2id_fb;
 type_exe2if_fb_s                        exe2if_fb;
 type_wrb2id_fb_s                        wrb2id_fb;
+
+// Interfaces for MMU
+type_if2mmu_s                           if2mmu;
+type_mmu2if_s                           mmu2if;
+type_lsu2mmu_s                          lsu2mmu;
+type_mmu2lsu_s                          mmu2lsu;
+type_mmu2dmem_s                         mmu2dmem;
+type_dmem2mmu_s                         dmem2mmu;
 
 logic [`XLEN-1:0]                       lsu2exe_fb_alu_result;
 logic [`XLEN-1:0]                       wrb2exe_fb_rd_data;
@@ -74,6 +93,12 @@ type_fwd2exe_s                          fwd2exe;
 type_fwd2if_s                           fwd2if;
 type_fwd2csr_s                          fwd2csr;
 type_fwd2ptop_s                         fwd2ptop;
+
+// Inputs assignment to local signals
+assign dbus2lsu = dbus2lsu_i; 
+assign dmem2mmu = dmem2mmu_i;
+assign imem2if  = imem2if_i;
+
 
 //================================= Fetch to decode interface ==================================//
 // Fetch <-----> Decode pipeline/nopipeline  
@@ -119,8 +144,11 @@ fetch fetch_module (
     .clk                        (clk),
 
     // IF module interface signals 
-    .if2imem_o                  (if2imem_o),
-    .imem2if_i                  (imem2if_i),
+    .if2imem_o                  (if2imem),
+    .imem2if_i                  (imem2if),
+
+    .if2mmu_o                   (if2mmu),
+    .mmu2if_i                   (mmu2if),
 
     .if2id_data_o               (if2id_data),
     .if2id_ctrl_o               (if2id_ctrl),
@@ -145,6 +173,7 @@ decode decode_module (
 `endif
     .id2exe_ctrl_o              (id2exe_ctrl),
     .id2exe_data_o              (id2exe_data),
+    .csr2id_fb_i                (csr2id_fb),
     .wrb2id_fb_i                (wrb2id_fb)
 );
 
@@ -309,6 +338,7 @@ lsu lsu_module (
 `endif
 
     // CSR module interface signals 
+    .csr2lsu_data_i             (csr2lsu_data),
     .lsu2csr_ctrl_o             (lsu2csr_ctrl),
     .lsu2csr_data_o             (lsu2csr_data),
 
@@ -320,6 +350,10 @@ lsu lsu_module (
 
     // Forward_stall interface
     .lsu2fwd_o                  (lsu2fwd),
+
+    // LSU to MMU interface
+    .lsu2mmu_o                  (lsu2mmu),      
+    .mmu2lsu_i                  (mmu2lsu),
 
     // LSU to data bus interface
     .lsu2dbus_o                 (lsu2dbus),      
@@ -344,6 +378,7 @@ csr csr_module (
     // LSU module interface signals 
     .lsu2csr_ctrl_i             (lsu2csr_ctrl),
     .lsu2csr_data_i             (lsu2csr_data),
+    .csr2lsu_data_o             (csr2lsu_data),
 
     // Writeback module interface signals 
  //    .csr2wrb_ctrl_o            (csr2wrb_ctrl),
@@ -352,6 +387,7 @@ csr csr_module (
     .pipe2csr_i                 (core2pipe_i),
     .fwd2csr_i                  (fwd2csr),
     .csr2fwd_o                  (csr2fwd),
+    .csr2id_fb_o                (csr2id_fb),
     .csr2if_fb_o                (csr2if_fb)
 );
 
@@ -416,7 +452,22 @@ forward_stall forward_stall_module (
 );
 
 
-assign lsu2dbus_o     = lsu2dbus;
-assign dbus2lsu       = dbus2lsu_i;
+// MMU module instantiation
+mmu mmu_module (
+    .rst_n                      (rst_n),
+    .clk                        (clk),
+
+    // Forward_stall module interface signals 
+    .lsu2mmu_i                  (lsu2mmu),
+    .if2mmu_i                   (if2mmu),
+    .dmem2mmu_i                 (dmem2mmu),
+    .mmu2lsu_o                  (mmu2lsu),
+    .mmu2if_o                   (mmu2if),
+    .mmu2dmem_o                 (mmu2dmem)
+);
+
+assign lsu2dbus_o = lsu2dbus;
+assign mmu2dmem_o = mmu2dmem;
+assign if2imem_o  = if2imem;
 
 endmodule : pipeline_top

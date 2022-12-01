@@ -11,8 +11,11 @@ module decode (
     input wire type_if2id_ctrl_s              if2id_ctrl_i,
 
     // Decode <---> Execute interface
-    output  type_id2exe_data_s                id2exe_data_o,
-    output  type_id2exe_ctrl_s                id2exe_ctrl_o,          // Structure for control signals  
+    output type_id2exe_data_s                 id2exe_data_o,
+    output type_id2exe_ctrl_s                 id2exe_ctrl_o,          // Structure for control signals  
+
+    // CSR <---> Decode feedback interface
+    input wire type_csr2id_fb_s               csr2id_fb_i,
 
     // Writeback <---> Decode feedback interface
     input wire type_wrb2id_fb_s               wrb2id_fb_i
@@ -39,14 +42,16 @@ logic [4:0]                          shift_amt;
 // Control and data signal structures
 type_if2id_ctrl_s                    if2id_ctrl;
 type_if2id_data_s                    if2id_data;
-
 type_id2exe_ctrl_s                   id2exe_ctrl;
 type_id2exe_data_s                   id2exe_data;
+
+type_csr2id_fb_s                     csr2id_fb;
 type_rv_opcode_e                     instr_opcode;
 
 // Input signal assigments
-assign if2id_ctrl     = if2id_ctrl_i;
-assign if2id_data     = if2id_data_i;
+assign if2id_ctrl = if2id_ctrl_i;
+assign if2id_data = if2id_data_i;
+assign csr2id_fb  = csr2id_fb_i;
 
 // Instruction opcodes
 assign instr_codeword = if2id_data.instr;
@@ -349,6 +354,13 @@ always_comb begin
                                 case (funct5_opcode)
                                     5'b00000 : begin  // ECALL                     
                                         id2exe_ctrl.exc_req  = 1'b1;
+                                        case (csr2id_fb.priv_mode)
+                                            PRIV_MODE_M: id2exe_ctrl.exc_code = EXC_CODE_ECALL_MMODE;
+                                            PRIV_MODE_S: id2exe_ctrl.exc_code = EXC_CODE_ECALL_SMODE;
+                                            PRIV_MODE_U: id2exe_ctrl.exc_code = EXC_CODE_ECALL_UMODE;
+                                            default:       ; // this should not have happened
+                                        endcase
+
                                         id2exe_ctrl.exc_code = EXC_CODE_ECALL_MMODE;
                                     end
                                     5'b00001 : begin  // EBREAK
