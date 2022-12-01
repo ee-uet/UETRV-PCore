@@ -1,5 +1,4 @@
 
-
 `include "../../defines/MMU_defs.svh"
 
 module mmu (
@@ -16,8 +15,8 @@ module mmu (
     output type_mmu2if_s                           mmu2if_o,
 
    // MMU <---> Data cache interface
-    input wire type_dcache2mmu_s                   dcache2mmu_i,   
-    output type_mmu2dcache_s                       mmu2dcache_o       
+    input wire type_dmem2mmu_s                     dmem2mmu_i,   
+    output type_mmu2dmem_s                         mmu2dmem_o       
 
 );
 
@@ -28,8 +27,8 @@ type_mmu2lsu_s                       mmu2lsu;
 type_if2mmu_s                        if2mmu;
 type_mmu2if_s                        mmu2if;
 
-type_dcache2mmu_s                    dcache2mmu;
-type_mmu2dcache_s                    mmu2dcache;
+type_dmem2mmu_s                      dmem2mmu;
+type_mmu2dmem_s                      mmu2dmem;
 
 // Local signals
 type_mmu2ptw_s                       mmu2ptw;
@@ -42,9 +41,9 @@ type_ptw2tlb_s                       ptw2tlb;
 logic                                itlb_update;
 
 // Get the input signals
-assign if2mmu     = if2mmu_i;
-assign lsu2mmu    = lsu2mmu_i;
-assign dcache2mmu = dcache2mmu_i;
+assign if2mmu   = if2mmu_i;
+assign lsu2mmu  = lsu2mmu_i;
+assign dmem2mmu = dmem2mmu_i;
 
 //============================= ITLB instantiation and connectivity =============================//
 // Signals from MMU to TLB
@@ -53,7 +52,7 @@ assign mmu2itlb.tlb_req    = if2mmu.i_req;
 assign mmu2itlb.tlb_flush  = lsu2mmu.tlb_flush;
 
 // ITLB module instantiation
-tlb itlb_module (
+itlb itlb_module (
     .rst_n                      (rst_n),
     .clk                        (clk),
 
@@ -92,7 +91,7 @@ assign mmu2dtlb.tlb_req    = lsu2mmu.d_req;
 assign mmu2dtlb.tlb_flush  = lsu2mmu.tlb_flush;
 
 // DTLB module instantiation
-tlb dtlb_module (
+dtlb dtlb_module (
     .rst_n                      (rst_n),
     .clk                        (clk),
 
@@ -156,13 +155,38 @@ ptw ptw_module (
     .itlb_update_o              (itlb_update),
     .dtlb_update_o              (dtlb_update),
 
-    .dcache2ptw_i               (dcache2mmu),
-    .ptw2dcache_o               (mmu2dcache)            
+    .dmem2ptw_i                 (dmem2mmu),
+    .ptw2dmem_o                 (mmu2dmem)            
 );
+
+
+assign mmu2lsu_o  = mmu2lsu;
+assign mmu2if_o   = mmu2if;
+assign mmu2dmem_o = mmu2dmem;
 
 
 //============================= PMP instantiation and connectivity =============================//
 
+
+//    logic allow_access;
+//
+//    assign bad_paddr_o = ptw_access_exception_o ? ptw_pptr_q : 'b0;
+//
+//    pmp #(
+//        .PLEN       ( riscv::PLEN            ),
+//        .PMP_LEN    ( riscv::PLEN - 2        ),
+//        .NR_ENTRIES ( ArianeCfg.NrPMPEntries )
+//    ) i_pmp_ptw (
+//        .addr_i        ( ptw_pptr_q         ),
+//        // PTW access are always checked as if in S-Mode...
+//        .priv_lvl_i    ( riscv::PRIV_LVL_S  ),
+//        // ...and they are always loads
+//        .access_type_i ( riscv::ACCESS_READ ),
+//        // Configuration
+//        .conf_addr_i   ( pmpaddr_i          ),
+//        .conf_i        ( pmpcfg_i           ),
+//        .allow_o       ( allow_access       )
+//    );
 
 
 endmodule // mmu

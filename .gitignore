@@ -4,4 +4,9 @@
 *.mpf
 *.mpf_new
 work/
+<<<<<<< HEAD
 sim/
+=======
+sim/
+transcript
+>>>>>>> d62810222fb662b33be2c33273d34ca765819f8e

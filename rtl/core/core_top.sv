@@ -1,6 +1,7 @@
 
 `include "../defines/UETRV_PCore_defs.svh"
 `include "../defines/UETRV_PCore_ISA.svh"
+`include "../defines/MMU_defs.svh"
 
 module core_top (
 
@@ -19,7 +20,10 @@ module core_top (
 type_if2imem_s                          if2imem;            // Instruction memory address
 type_imem2if_s                          imem2if;  
 
-type_lsu2dbus_s                         lsu2dbus;               // Signal to data memory 
+type_mmu2dmem_s                         mmu2dmem;               
+type_dmem2mmu_s                         dmem2mmu;
+
+type_lsu2dbus_s                         lsu2dbus;           // Signal to data memory 
 type_dbus2lsu_s                         dbus2lsu; 
 
 type_dbus2peri_s                        dbus2peri;
@@ -51,13 +55,16 @@ pipeline_top pipeline_top_module (
     .clk                 (clk          ),
 
     // IMEM interface signals 
-    .if2imem_o           (if2imem),
-    
+    .if2imem_o           (if2imem),   
     .imem2if_i           (imem2if),
 
+    // 
+    .dmem2mmu_i          (dmem2mmu),
+    .mmu2dmem_o          (mmu2dmem),
+
     // DBUS interface signals
-    .lsu2dbus_o          (lsu2dbus    ),       // Signal to data bus 
-    .dbus2lsu_i          (dbus2lsu    ),
+    .lsu2dbus_o          (lsu2dbus),       // Signal to data bus 
+    .dbus2lsu_i          (dbus2lsu),
 
     // IRQ lines
     .core2pipe_i         (core2pipe)
@@ -122,8 +129,12 @@ dualport_mem dualport_mem_module (
     .dmem_sel_i           (dmem_sel),
     .dmem2dbus_o          (dmem2dbus),
 
+   // MMU <---> data memory interface signals 
+    .mmu2dmem_i           (mmu2dmem),
+    .dmem2mmu_o           (dmem2mmu),
+
    // Instruction memory interface signals 
-    .if2imem_i            (if2imem ),
+    .if2imem_i            (if2imem),
     .imem2if_o            (imem2if)
 );
 

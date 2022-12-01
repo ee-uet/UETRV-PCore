@@ -39,7 +39,7 @@
 `define LSU2WRB_PIPELINE_STAGE       1
 
 `define INSTR_NOP                    32'h00000013
-`define PC_RESET                     32'h8000E000                      
+`define PC_RESET                     32'h80000000  // 32'h8000E000                      
 
 // Address ranges for different peripheral modules
 `define DBUS_ADDR_WIDTH              32
