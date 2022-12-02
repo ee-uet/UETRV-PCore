@@ -228,6 +228,7 @@ typedef struct packed {
     type_rd_wrb_sel_e                rd_wrb_sel;
     type_ld_ops_e                    ld_ops;
     type_st_ops_e                    st_ops;
+    type_amo_ops_e                   amo_ops;
     logic                            rd_wr_req;
     logic                            jump_req;
     logic                            branch_req;
