@@ -62,8 +62,10 @@ type_ld_ops_e                ld_ops;
 type_amo_ops_e               amo_ops;
 logic                        amo_req;
 logic                        is_lr;
-logic [31:0]                 amo_buffer;
-logic [31:0]                 amo_buffer_ff;
+logic [31:0]                 amo_buffer_data;
+logic [31:0]                 amo_buffer_data_ff;
+logic [31:0]                 amo_buffer_addr;
+logic [31:0]                 amo_buffer_addr_ff;
 logic [31:0]                 amo_operand_a;
 logic [31:0]                 amo_operand_a_ff;
 logic [31:0]                 amo_operand_b;
@@ -72,10 +74,19 @@ logic                        amo_done;
 logic                        amo_load_ack_ff;
 logic                        A_SLT_B, A_USLT_B;
 logic                        is_amo;
+logic                        is_sc;
+logic                        sc_pass;
+logic                        amo_reserve;
+logic                        amo_reserve_ff;
 // Signal assignments
 assign is_amo        = |amo_ops;
 assign is_lr         = amo_ops == AMO_OPS_LR;
-assign amo_buffer    = is_lr ? lsu2wrb_data.r_data : amo_buffer_ff;
+assign is_sc         = amo_ops == AMO_OPS_SC;
+assign amo_buffer_data    = is_lr ? lsu2wrb_data.r_data : amo_buffer_data_ff;
+assign amo_buffer_addr    = is_lr ? exe2lsu_data.alu_result : amo_buffer_addr_ff;
+assign amo_reserve        = is_lr ? 1 : amo_reserve_ff;
+
+
 assign exe2lsu_data  = exe2lsu_data_i;
 assign exe2lsu_ctrl  = exe2lsu_ctrl_i;
 assign dbus2lsu      = dbus2lsu_i;
@@ -89,10 +100,11 @@ assign ld_ops        = is_amo ? LD_OPS_LW : exe2lsu_ctrl.ld_ops;
 assign ld_req        = |ld_ops; 
 assign st_req        = |(exe2lsu_ctrl.st_ops);
 assign amo_ops       = exe2lsu_ctrl.amo_ops;
-assign amo_req       = |amo_ops;
 assign A_SLT_B = $signed(amo_operand_a) < $signed(amo_operand_b);
 assign A_USLT_B = amo_operand_a < amo_operand_b;
 assign amo_done = is_lr ? dbus2lsu.ack : amo_load_ack_ff;
+assign sc_pass  = (is_sc & amo_reserve & (amo_buffer_addr_ff == exe2lsu_data.alu_result) & (amo_buffer_data_ff == amo_operand_a_ff));
+
 always_comb begin
     case (amo_ops)
         AMO_OPS_SC  : amo_result_o = amo_operand_b;
@@ -175,10 +187,18 @@ always_comb begin
     end
 end
 always_ff @( posedge clk ) begin 
-   if (~rst_n)
-      amo_buffer_ff <= 0;
-   else if(is_lr)
-      amo_buffer_ff <= lsu2wrb_data.r_data;   
+   if (~rst_n | sc_pass)
+   begin
+      amo_buffer_data_ff <= 0;
+      amo_buffer_addr_ff <= 0;
+      amo_reserve_ff     <= 0;
+   end
+   else if(is_lr) 
+   begin
+      amo_buffer_data_ff <= lsu2wrb_data.r_data;
+      amo_buffer_addr_ff <= exe2lsu_data.alu_result;
+      amo_reserve_ff     <= 1;
+   end   
 end
 always_ff @( posedge clk ) begin 
    if (~rst_n | is_lr)
@@ -206,12 +226,12 @@ assign lsu2csr_ctrl.ld_ops = exe2lsu_ctrl.ld_ops;
 assign lsu2csr_ctrl.st_ops = exe2lsu_ctrl.st_ops;
 
 // Update data for writeback
-assign lsu2wrb_data.alu_result = exe2lsu_data.alu_result;
+assign lsu2wrb_data.alu_result = is_sc ? sc_pass ? 0 : 1: exe2lsu_data.alu_result;
 assign lsu2wrb_data.pc_next    = exe2lsu_data.pc_next;
 assign lsu2wrb_data.rd_addr    = exe2lsu_ctrl.rd_addr;        
 
 // Update control signals for writeback
-assign lsu2wrb_ctrl.rd_wrb_sel = exe2lsu_ctrl.rd_wrb_sel;
+assign lsu2wrb_ctrl.rd_wrb_sel = is_sc ? RD_WRB_ALU: exe2lsu_ctrl.rd_wrb_sel;
 assign lsu2wrb_ctrl.rd_wr_req  = exe2lsu_ctrl.rd_wr_req;
 
 // Signals for forwarding module
@@ -237,9 +257,9 @@ assign lsu2mmu.d_vaddr        = ld_st_addr;
 // Signals to data memory interface
 assign lsu2dbus.addr   = ld_st_addr; // mmu2lsu.d_paddr[`XLEN-1:0];
 assign lsu2dbus.ld_req = ld_req; // & (mmu2lsu.d_hit);
-assign lsu2dbus.st_req = (is_amo & amo_load_ack_ff) ? 1 : st_req; // & (mmu2lsu.d_hit);
-assign lsu2dbus.w_data = (is_amo & amo_load_ack_ff) ? amo_result_o : exe2lsu_data.rs2_data;
-assign lsu2dbus.st_ops = (is_amo & amo_load_ack_ff) ? ST_OPS_SW : exe2lsu_ctrl.st_ops;
+assign lsu2dbus.st_req = ((is_amo & amo_load_ack_ff) | (sc_pass)) ? 1 : st_req; // & (mmu2lsu.d_hit);
+assign lsu2dbus.w_data = ((is_amo & amo_load_ack_ff) | (sc_pass)) ? amo_result_o : exe2lsu_data.rs2_data;
+assign lsu2dbus.st_ops = ((is_amo & amo_load_ack_ff) | (sc_pass)) ? ST_OPS_SW : exe2lsu_ctrl.st_ops;
 
 // Update the output signals with proper assignment
 assign lsu2csr_data_o = lsu2csr_data;
