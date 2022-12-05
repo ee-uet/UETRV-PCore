@@ -103,7 +103,7 @@ assign amo_ops       = exe2lsu_ctrl.amo_ops;
 assign A_SLT_B = $signed(amo_operand_a) < $signed(amo_operand_b);
 assign A_USLT_B = amo_operand_a < amo_operand_b;
 assign amo_done = is_lr ? dbus2lsu.ack : amo_load_ack_ff;
-assign sc_pass  = (is_sc & amo_reserve & (amo_buffer_addr_ff == exe2lsu_data.alu_result) & (amo_buffer_data_ff == amo_operand_a_ff));
+assign sc_pass  = (is_sc & amo_reserve & (amo_buffer_addr_ff == exe2lsu_data.alu_result) & (amo_buffer_data_ff == amo_operand_a) && amo_done);
 
 always_comb begin
     case (amo_ops)
@@ -187,7 +187,7 @@ always_comb begin
     end
 end
 always_ff @( posedge clk ) begin 
-   if (~rst_n | sc_pass)
+   if (~rst_n | (is_sc & amo_done))
    begin
       amo_buffer_data_ff <= 0;
       amo_buffer_addr_ff <= 0;
@@ -226,17 +226,17 @@ assign lsu2csr_ctrl.ld_ops = exe2lsu_ctrl.ld_ops;
 assign lsu2csr_ctrl.st_ops = exe2lsu_ctrl.st_ops;
 
 // Update data for writeback
-assign lsu2wrb_data.alu_result = is_sc ? sc_pass ? 0 : 1: exe2lsu_data.alu_result;
+assign lsu2wrb_data.alu_result = is_sc ? !sc_pass : exe2lsu_data.alu_result;
 assign lsu2wrb_data.pc_next    = exe2lsu_data.pc_next;
 assign lsu2wrb_data.rd_addr    = exe2lsu_ctrl.rd_addr;        
 
 // Update control signals for writeback
 assign lsu2wrb_ctrl.rd_wrb_sel = is_sc ? RD_WRB_ALU: exe2lsu_ctrl.rd_wrb_sel;
-assign lsu2wrb_ctrl.rd_wr_req  = exe2lsu_ctrl.rd_wr_req;
+assign lsu2wrb_ctrl.rd_wr_req  = is_sc ? 1: exe2lsu_ctrl.rd_wr_req;
 
 // Signals for forwarding module
 assign lsu2fwd.rd_addr         = exe2lsu_ctrl.rd_addr; 
-assign lsu2fwd.rd_wr_req       = exe2lsu_ctrl.rd_wr_req;
+assign lsu2fwd.rd_wr_req       = is_sc ? 1: exe2lsu_ctrl.rd_wr_req;
 assign lsu2fwd.ld_req          = ld_req;
 assign lsu2fwd.ld_ack          = is_amo ? amo_done : dbus2lsu.ack;
 
