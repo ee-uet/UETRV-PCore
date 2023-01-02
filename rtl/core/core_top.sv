@@ -2,6 +2,7 @@
 `include "../defines/UETRV_PCore_defs.svh"
 `include "../defines/UETRV_PCore_ISA.svh"
 `include "../defines/MMU_defs.svh"
+`include "../defines/PLIC_defs.svh"
 
 module core_top (
 
@@ -33,19 +34,25 @@ type_pipe2csr_s                         core2pipe;
 logic                                   dmem_sel;
 logic                                   uart_sel;
 logic                                   clint_sel;
+logic                                   plic_sel;
+logic                                   bmem_sel;
+
 
 // IRQ ignals
 logic                                   irq_uart;
 logic                                   irq_clint_timer;
+logic                                   irq_plic_target_0, irq_plic_target_1;
 
 // Interfaces for different peripheral modules (for read mux)
 type_peri2dbus_s                        dmem2dbus;              // Signals from data memory 
 type_peri2dbus_s                        uart2dbus; 
-type_peri2dbus_s                        clint2dbus; 
+type_peri2dbus_s                        clint2dbus;
+type_peri2dbus_s                        plic2dbus; 
+type_peri2dbus_s                        bmem2dbus;              // Signals from boot memory 
 
 // Input assignment to local signals
 assign core2pipe.csr_mhartid = `CSR_MHARTID;
-assign core2pipe.ext_irq     = irq_ext_i;
+assign core2pipe.ext_irq     = irq_plic_target_0 | irq_plic_target_1;
 assign core2pipe.timer_irq   = irq_clint_timer;
 assign core2pipe.soft_irq    = irq_soft_i;
 assign core2pipe.uart_irq    = irq_uart;
@@ -58,7 +65,7 @@ pipeline_top pipeline_top_module (
     .if2imem_o           (if2imem),   
     .imem2if_i           (imem2if),
 
-    // 
+    // MMU interface signals
     .dmem2mmu_i          (dmem2mmu),
     .mmu2dmem_o          (mmu2dmem),
 
@@ -83,22 +90,26 @@ dbus_interconnect dbus_interconnect_module (
     .dmem_sel_o            (dmem_sel),
     .uart_sel_o            (uart_sel),
     .clint_sel_o           (clint_sel), 
+    .plic_sel_o            (plic_sel),
+    .bmem_sel_o            (bmem_sel), 
 
     // Signals from dbus to peripherals
     .dbus2peri_o           (dbus2peri),
 
-   // Data memory and GPIO interface signals 
+   // Data memory and peripheral interface signals 
     .dmem2dbus_i           (dmem2dbus),
     .uart2dbus_i           (uart2dbus),
-    .clint2dbus_i          (clint2dbus)
+    .clint2dbus_i          (clint2dbus),
+    .plic2dbus_i           (plic2dbus),
+    .bmem2dbus_i           (bmem2dbus)
 );
 
 
 uart uart_module (
-    .rst_n                (rst_n    ),
-    .clk                  (clk      ),
+    .rst_n                 (rst_n    ),
+    .clk                   (clk      ),
 
-    // Data memory interface signals 
+    // Data bus and IO interface signals 
     .dbus2uart_i           (dbus2peri),  // This should be updated after the WB/AHBL bus interface is used
     .uart_sel_i            (uart_sel),
     .uart2dbus_o           (uart2dbus),
@@ -108,19 +119,31 @@ uart uart_module (
 );
 
 clint clint_module (
-    .rst_n                (rst_n    ),
-    .clk                  (clk      ),
+    .rst_n                 (rst_n    ),
+    .clk                   (clk      ),
 
-    // Data memory interface signals 
+    // Data bus and peripheral interface signals 
     .dbus2clint_i          (dbus2peri),  // This should be updated if the bus interface is updated
     .clint_sel_i           (clint_sel),
     .clint2dbus_o          (clint2dbus),
     .clint_timer_irq_o     (irq_clint_timer)
 );
 
+plic plic_module (
+    .rst_n                 (rst_n    ),
+    .clk                   (clk      ),
 
-`ifdef DUALPORT_MEMORY
-dualport_mem dualport_mem_module (
+    // Data bus interface signals 
+    .dbus2plic_i           (dbus2peri),  // This should be updated if the bus interface is updated
+    .plic_sel_i            (plic_sel),
+    .plic2dbus_o           (plic2dbus),
+    .edge_select_i         (PLIC_SOURCE_COUNT'(3)),
+    .irq_src_i             ({irq_uart, irq_ext_i}),
+    .irq_targets_o         ({irq_plic_target_1, irq_plic_target_0})
+);
+
+
+mem_top mem_top_module (
     .rst_n                (rst_n    ),
     .clk                  (clk      ),
 
@@ -128,6 +151,7 @@ dualport_mem dualport_mem_module (
     .dbus2dmem_i          (dbus2peri),
     .dmem_sel_i           (dmem_sel),
     .dmem2dbus_o          (dmem2dbus),
+    .bmem2dbus_o          (bmem2dbus),
 
    // MMU <---> data memory interface signals 
     .mmu2dmem_i           (mmu2dmem),
@@ -135,33 +159,9 @@ dualport_mem dualport_mem_module (
 
    // Instruction memory interface signals 
     .if2imem_i            (if2imem),
+    .bmem_sel_i           (bmem_sel),
     .imem2if_o            (imem2if)
 );
-
-`else
-// Data memory
-dmem dmem_module (
-    .rst_n                (rst_n    ),
-    .clk                  (clk      ),
-
-    // Data memory interface signals 
-    .dbus2dmem_i          (dbus2peri),
-    .dmem_sel_i           (dmem_sel),
-    .dmem2dbus_o          (dmem2dbus)
-);
-
-
-// Instruction memory
-imem imem_module (
-    .rst_n               (rst_n        ),
-    .clk                 (clk          ),
-
-    // Instruction memory interface signals 
-    .if2imem_req_i       (if2imem_req  ),
-    .if2imem_addr_i      (if2imem_addr ),
-    .imem2if_rdata_o     (imem2if_rdata)
-);
-`endif
 
 
 endmodule : core_top

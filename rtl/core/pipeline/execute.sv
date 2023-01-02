@@ -2,6 +2,7 @@
 
 `include "../../defines/UETRV_PCore_defs.svh"
 `include "../../defines/UETRV_PCore_ISA.svh"
+`include "../../defines/M_EXT_defs.svh"
 
 module execute (
 
@@ -11,6 +12,10 @@ module execute (
     // ID <---> EXE interface
     input  wire type_id2exe_data_s       id2exe_data_i,
     input  wire type_id2exe_ctrl_s       id2exe_ctrl_i,            // Structure for control signals from decode to execute 
+
+    // EXE <---> M-Extension interface
+    output type_exe2mul_data_s           exe2mul_data_o,
+    output type_exe2mul_ctrl_s           exe2mul_ctrl_o,
 
     // EXE <---> LSU interface
     output type_exe2lsu_data_s           exe2lsu_data_o,
@@ -42,6 +47,10 @@ type_exe2lsu_ctrl_s                  exe2lsu_ctrl;
 type_exe2lsu_data_s                  exe2lsu_data;
 type_exe2csr_ctrl_s                  exe2csr_ctrl;
 type_exe2csr_data_s                  exe2csr_data;
+
+// Signals for M-extension
+type_exe2mul_ctrl_s                  exe2mul_ctrl;
+type_exe2mul_data_s                  exe2mul_data;
 
 type_exe2if_fb_s                     exe2if_fb;
 type_alu_i_ops_e                     alu_i_operator;
@@ -256,6 +265,14 @@ end
 
 
 //==================================== Output signals update ======================================// 
+
+// Update the output data signals for M-Extension
+assign exe2mul_data.alu_operand_1 = alu_operand_1;
+assign exe2mul_data.alu_operand_2 = alu_operand_2;
+
+// Assign the output control signals for M-Extension
+assign exe2mul_ctrl.alu_m_ops  = id2exe_ctrl.alu_m_ops;
+
 // Update the output data signals for LSU
 assign exe2lsu_data.alu_result = alu_result;
 assign exe2lsu_data.pc_next    = id2exe_data.pc_next;
@@ -268,6 +285,7 @@ assign exe2lsu_ctrl.ld_ops     = id2exe_ctrl.ld_ops;
 assign exe2lsu_ctrl.st_ops     = id2exe_ctrl.st_ops;
 assign exe2lsu_ctrl.jump_req   = id2exe_ctrl.jump_req;                          
 assign exe2lsu_ctrl.branch_req = id2exe_ctrl.branch_req; 
+assign exe2lsu_ctrl.amo_ops    = id2exe_ctrl.amo_ops;
 
 // If this is CSR operation then destination register write selection is managed 
 // by CSR read control signal
@@ -311,6 +329,9 @@ assign exe2lsu_data_o  = exe2lsu_data;
 assign exe2csr_ctrl_o  = exe2csr_ctrl;
 assign exe2csr_data_o  = exe2csr_data;
 assign exe2fwd_o       = exe2fwd;
+
+assign exe2mul_ctrl_o  = exe2mul_ctrl;
+assign exe2mul_data_o  = exe2mul_data;
 
 // Update the feedback signals from EXE to IF stage                         
 assign exe2if_fb.pc_new = fence_i_req ? id2exe_data.pc_next : alu_result;                          

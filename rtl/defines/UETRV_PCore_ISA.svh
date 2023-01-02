@@ -104,8 +104,9 @@ typedef enum logic [2:0] {
     RD_WRB_NONE = '0,
     RD_WRB_ALU,                           // Writeback ALU result
     RD_WRB_INC_PC,                        // Writeback PC (return address) for JAL/JALR
-    RD_WRB_DMEM,                           // Writeback selection for Load operation from DMEM
-    RD_WRB_CSR                            // Writeback for reading CSR
+    RD_WRB_DMEM,                          // Writeback selection for Load operation from DMEM
+    RD_WRB_CSR,                           // Writeback for reading CSR
+    RD_WRB_M_ALU                          // Writeback from M-Extension
 } type_rd_wrb_sel_e;
 
 
@@ -228,6 +229,7 @@ typedef struct packed {
     type_rd_wrb_sel_e                rd_wrb_sel;
     type_ld_ops_e                    ld_ops;
     type_st_ops_e                    st_ops;
+    type_amo_ops_e                   amo_ops;
     logic                            rd_wr_req;
     logic                            jump_req;
     logic                            branch_req;
@@ -257,6 +259,9 @@ typedef struct packed {
 typedef struct packed {                           
     type_ld_ops_e                    ld_ops;
     type_st_ops_e                    st_ops;
+    logic                            ld_page_fault;
+    logic                            st_page_fault; 
+    logic                            inst_page_fault; 
 } type_lsu2csr_ctrl_s;
 
 typedef struct packed {                            
@@ -354,14 +359,18 @@ typedef struct packed {
 typedef struct packed {                        
     logic [`RF_AWIDTH-1:0]           rd_addr;
     logic                            rd_wr_req; 
+    logic                            st_stall;  
     logic                            ld_req;
-    logic                            ld_ack;     
+    logic                            ld_ack;  
+    logic                            mul_req;   
 } type_lsu2fwd_s;
 
 // Writeback-2-Forward_stall interface signals
 typedef struct packed {                            
     logic [`RF_AWIDTH-1:0]           rd_addr;
     logic                            rd_wr_req;  
+    logic                            alu_m_res;  
+    logic                            mul_req;  
 } type_wrb2fwd_s;
 
 // Execute-2-Forwarding interface signals
@@ -411,7 +420,7 @@ typedef struct packed {
     logic                            pipe_fwd_wrb_rs2;                          
 } type_fwd2ptop_s;
 
-// Forwarding-2-Pipeline top interface signals
+// Forwarding-2-CSR interface signals
 typedef struct packed {  
     logic                            pipe_stall;                            
 } type_fwd2csr_s;
@@ -425,5 +434,12 @@ typedef struct packed {
     logic                            lsu_flush;  
     logic                            tlb_flush;
 } type_csr2lsu_data_s;
+
+typedef enum logic [1:0] {
+    AMO_IDLE  = 2'h0,
+    AMO_LOAD  = 2'h1,
+    AMO_OP    = 2'h2,
+    AMO_ST    = 2'h3
+} type_amo_states_e;
 
 `endif // UETRV_PCORE_ISA

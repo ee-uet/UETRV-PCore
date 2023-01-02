@@ -5,16 +5,19 @@
 `include "UETRV_PCore_defs.svh"
 
 // ISA implementation related details
+`define RVA_EXTENTION               `XLEN'h0001
 `define RVI_BASE                    `XLEN'h0100
 `define RVM_EXTENTION               `XLEN'h1000
-`define MISA_MXL_32                 `XLEN'h10000000
+`define RVS_MODE                    `XLEN'h40000
+`define RVU_MODE                    `XLEN'h100000
+`define MISA_MXL_32                 `XLEN'h40000000
 
 // Processor core identifiers
 `define CSR_MVENDORID               `XLEN'h00000000
 `define CSR_MHARTID                  0
 
 // Machine ISA info
-`define CSR_MISA                    `MISA_MXL_32 | `RVI_BASE | `RVM_EXTENTION
+`define CSR_MISA                    `MISA_MXL_32 | `RVI_BASE | `RVM_EXTENTION | `RVA_EXTENTION | `RVS_MODE | `RVU_MODE
 
 // Local parameters for setting up interrupt enable register
 localparam int unsigned S_SOFT_INT_IDX  = 1;
@@ -102,7 +105,10 @@ typedef enum logic [EXC_CODE_WIDTH-1:0] {
     EXC_CODE_ECALL_UMODE           = 4'd8,     // Ecall from user mode
     EXC_CODE_ECALL_SMODE           = 4'd9,     // Ecall from supervisor mode
     EXC_CODE_ECALL_MMODE           = 4'd11,    // Ecall from machine mode
-    EXC_CODE_NO_EXCEPTION          = 4'd15     // No exception, normal behavior
+    EXC_CODE_INST_PAGE_FAULT       = 4'd12,    // Exception from MMU module
+    EXC_CODE_LD_PAGE_FAULT         = 4'd13,    // Exception from MMU module
+    EXC_CODE_ST_PAGE_FAULT         = 4'd15,    // Exception from MMU module
+    EXC_CODE_NO_EXCEPTION          = 4'd10     // No exception, normal behavior
 } type_exc_code_e;
 
 //============================= Interrupt request codes ============================//

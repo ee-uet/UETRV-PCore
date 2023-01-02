@@ -26,7 +26,8 @@ module fetch (
     input wire type_csr2if_fb_s                     csr2if_fb_i,
     
     // Forward <---> Fetch interface
-    input wire type_fwd2if_s                        fwd2if_i
+    input wire type_fwd2if_s                        fwd2if_i,
+    output logic                                    if2fwd_stall_o
 );
 
 
@@ -115,9 +116,9 @@ end
 // Update the outputs to MMU and Imem modules
 assign if2mmu.i_vaddr = pc_next;
 assign if2mmu.i_req   = `IMEM_INST_REQ;
-assign if2imem_o.addr = pc_next; // mmu2if.i_paddr[`XLEN-1:0];
-assign if2imem_o.req  = `IMEM_INST_REQ; // mmu2if.i_hit;
- 
+assign if2imem_o.addr = mmu2if.i_paddr[`XLEN-1:0]; // pc_next; 
+assign if2imem_o.req  = mmu2if.i_hit;              // `IMEM_INST_REQ; 
+
 // Update the outputs to ID stage
 assign if2id_data.instr         = imem2if.ack ? imem2if.r_data : `INSTR_NOP;
 assign if2id_data.pc            = pc_ff;
@@ -126,6 +127,9 @@ assign if2id_data.instr_flushed = 1'b0;
 
 assign if2id_ctrl.exc_code      = exc_code;
 assign if2id_ctrl.exc_req       = exc_req;
+
+// Generate stall request to forward_stall module
+assign if2fwd_stall_o           = (~mmu2if.i_hit | (mmu2if.i_hit & ~imem2if.ack));
 
 assign if2id_data_o             = if2id_data;
 assign if2id_ctrl_o             = if2id_ctrl;

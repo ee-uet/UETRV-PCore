@@ -13,27 +13,27 @@
 `include "../../defines/UART_defs.svh"
 
 
- module uart ( 
-     input logic                                    rst_n,                    // reset
-     input logic                                    clk,                      // clock
+module uart ( 
+    input logic                                    rst_n,                    // reset
+    input logic                                    clk,                      // clock
 
-     // Dbus to UART module interface
-     input wire type_dbus2peri_s                    dbus2uart_i,              // GPIO dbus input signals
-     output type_peri2dbus_s                        uart2dbus_o,              // GPIO dbus output signals
+    // Dbus to UART module interface
+    input wire type_dbus2peri_s                    dbus2uart_i,              
+    output type_peri2dbus_s                        uart2dbus_o,              
 
-     // Selection signal from address decoder of dbus interconnect 
-     input   logic                                  uart_sel_i,
+    // Selection signal from address decoder of dbus interconnect 
+    input logic                                    uart_sel_i,
 	
-     // Interrupt signal from Uart
-     output	logic				    uart_irq_o,
+    // Interrupt signal from Uart
+    output logic                                   uart_irq_o,
      
-     // Rx Tx signals from Uart 
-     input     logic                 		    uart_rxd_i,
-     output    logic		                    uart_txd_o
+    // Rx Tx signals from Uart 
+    input logic                                    uart_rxd_i,
+    output logic                                   uart_txd_o
 );
 
 
-// Signal definitions for dbus interface
+// Signal definitions for Dbus interface
 logic [5:0]                             reg_addr;
 logic                                   reg_rd_req;
 logic                                   reg_wr_req;
@@ -52,7 +52,7 @@ logic                                   two_stop_bits;
 logic [UART_DATA_SIZE-1:0]              uart_reg_rx_ff, uart_reg_rx_next;	
 logic [UART_DATA_SIZE-1:0]              uart_reg_tx_ff, uart_reg_tx_next;
 logic [UART_BAUD_DIV_SIZE-1:0]          uart_reg_baud_ff, uart_reg_baud_next;
-logic [UART_DATA_SIZE-1:0]              uart_reg_control_ff, uart_reg_control_next;
+logic [UART_DATA_SIZE-1:0]              uart_reg_txctrl_ff, uart_reg_txctrl_next;
 logic [UART_DATA_SIZE-1:0]              uart_reg_status_ff, uart_reg_status_next;
 logic [UART_DATA_SIZE-1:0]              uart_reg_int_mask_ff, uart_reg_int_mask_next;
    
@@ -60,7 +60,7 @@ logic [UART_DATA_SIZE-1:0]              uart_reg_int_mask_ff, uart_reg_int_mask_
 logic                                   rx_reg_wr_flag;
 logic                                   tx_reg_wr_flag;
 logic                                   baud_reg_wr_flag;
-logic                                   control_reg_wr_flag;
+logic                                   txctrl_reg_wr_flag;
 logic                                   status_reg_wr_flag;
 logic                                   int_mask_reg_wr_flag; 
 	
@@ -75,18 +75,18 @@ always_comb begin
     if(reg_rd_req) begin
         case (reg_addr)
             // UART data receive and trnsmit registers
-            UART_RXDATA_R   : reg_r_data = uart_reg_rx_ff;
             UART_TXDATA_R   : reg_r_data = uart_reg_tx_ff;
+            UART_RXDATA_R   : reg_r_data = uart_reg_rx_ff;
             
             // UART baud rate configuration register
-            UART_BAUD_R     : reg_r_data = uart_reg_status_ff;
+            UART_BAUD_R     : reg_r_data = uart_reg_baud_ff;
 
             // UART control and status registers
             UART_STATUS_R   : reg_r_data = uart_reg_status_ff;
-            UART_CONTROL_R  : reg_r_data = uart_reg_status_ff;
+            UART_TXCTRL_R   : reg_r_data = uart_reg_txctrl_ff;
  
             // UART interrupt masking register
-            UART_INT_MASK_R : reg_r_data = uart_reg_status_ff;
+            UART_INT_MASK_R : reg_r_data = uart_reg_int_mask_ff;
             default         : reg_r_data = '0;
         endcase // reg_addr
     end
@@ -98,7 +98,7 @@ always_comb begin
     rx_reg_wr_flag       = 1'b0;
     tx_reg_wr_flag       = 1'b0;
     baud_reg_wr_flag     = 1'b0;
-    control_reg_wr_flag  = 1'b0;
+    txctrl_reg_wr_flag  = 1'b0;
     status_reg_wr_flag   = 1'b0;
     int_mask_reg_wr_flag = 1'b0;
 
@@ -113,7 +113,7 @@ always_comb begin
             UART_BAUD_R     : baud_reg_wr_flag     = 1'b1;
 
             // UART control and status registers
-            UART_CONTROL_R  : control_reg_wr_flag  = 1'b1;
+            UART_TXCTRL_R   : txctrl_reg_wr_flag  = 1'b1;
             UART_STATUS_R   : status_reg_wr_flag   = 1'b1;
  
             // UART interrupt masking register
@@ -187,18 +187,18 @@ end
 // ----------------------------
 always_ff @(negedge rst_n, posedge clk) begin
     if (~rst_n) begin
-        uart_reg_control_ff <= '0;        
+        uart_reg_txctrl_ff <= '0;        
     end else begin
-        uart_reg_control_ff <= uart_reg_control_next;
+        uart_reg_txctrl_ff <= uart_reg_txctrl_next;
     end
 end
 
 always_comb begin 
 
-    if (control_reg_wr_flag) begin
-        uart_reg_control_next = reg_w_data[7:0];          
+    if (txctrl_reg_wr_flag) begin
+        uart_reg_txctrl_next = reg_w_data[7:0];          
     end else begin                         
-        uart_reg_control_next = uart_reg_control_ff;         
+        uart_reg_txctrl_next = uart_reg_txctrl_ff;         
     end       
 end
 
@@ -254,7 +254,7 @@ end
 type_peri2dbus_s                      uart2dbus_ff;
 
 // Signal interface to Wishbone bus
-assign reg_addr   = type_uart_regs_e'(dbus2uart_i.addr[7:2]);
+assign reg_addr   = type_uart_regs_e'(dbus2uart_i.addr[5:2]);
 assign reg_w_data = dbus2uart_i.w_data[15:0];
 assign reg_rd_req = !dbus2uart_i.w_en && dbus2uart_i.cyc && uart_sel_i;
 assign reg_wr_req = dbus2uart_i.w_en  && dbus2uart_i.cyc && uart_sel_i;
@@ -269,6 +269,11 @@ always_ff @(posedge clk) begin
     end  
 end  
 
+// Response signals to dbus 
+assign uart2dbus_o.r_data = uart2dbus_ff.r_data;
+assign uart2dbus_o.ack = reg_wr_req ? 1'b1 : uart2dbus_ff.ack;
+
+
 // Prepare the output signals
 assign two_stop_bits = 1'b1;
 assign tx_valid      = tx_valid_ff;
@@ -276,9 +281,6 @@ assign uart_tx_byte  = uart_reg_tx_ff;
 
 // UART interrupt generation
 assign uart_irq_o  = |(uart_reg_status_ff && uart_reg_int_mask_ff);
-
-// Response signals to dbus 
-assign uart2dbus_o = uart2dbus_ff;
 
 // Instantiation of UART transmt and receive modules
 uart_tx uart_tx_module (

@@ -126,8 +126,9 @@ always_comb begin : ptw_walker
                 // Wait for the read valid signal from data memory
                 if (r_data_valid_ff) begin
 
-                    // Latch the global mapping bit
+                    // Latch the global mapping bit and clear the data memory req
                     gmap_bit_next = pte.g;
+                    r_req_next = '0;
                
                     // Validate the PTE for page fault
                     if (!pte.v || (!pte.r && pte.w))

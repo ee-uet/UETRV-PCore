@@ -124,7 +124,10 @@ typedef struct packed {
 // Address translation response from MMU to LSU  
 typedef struct packed {                            
     logic [`PALEN-1:0]               d_paddr;
-    logic                            d_hit;   
+    logic                            d_hit;  
+    logic                            ld_page_fault;
+    logic                            st_page_fault; 
+    logic                            inst_page_fault;
 } type_mmu2lsu_s;
 
 // Address translation request from IF module to MMU

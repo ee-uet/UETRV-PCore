@@ -32,7 +32,7 @@
 // Read and write signals for registers
 logic [`XLEN-1:0]                       r_data; 
 logic [`XLEN-1:0]                       w_data;
-logic [3:0]                             addr_offset;
+logic [`CLINT_ADDR_WIDTH-1:0]           addr_offset;
 logic                                   r_req;
 logic                                   w_req;
 	
@@ -151,7 +151,7 @@ end
 type_peri2dbus_s                      clint2dbus_ff;
 
 // Signal interface to Wishbone bus
-assign addr_offset = type_mtime_regs_e'(dbus2clint_i.addr[5:2]);
+assign addr_offset = type_mtime_regs_e'(dbus2clint_i.addr[`CLINT_ADDR_WIDTH-1:0]);
 assign w_data      = dbus2clint_i.w_data;
 assign r_req       = !dbus2clint_i.w_en && dbus2clint_i.cyc && clint_sel_i;
 assign w_req       = dbus2clint_i.w_en  && dbus2clint_i.cyc && clint_sel_i;
@@ -171,7 +171,8 @@ end
 assign clint_timer_irq_o = timer_overflow_ff;
 
 // Response signals to dbus 
-assign clint2dbus_o = clint2dbus_ff;
+assign clint2dbus_o.r_data = clint2dbus_ff.r_data;
+assign clint2dbus_o.ack = (w_req) ? 1'b1 : clint2dbus_ff.ack;
 
         
 endmodule	

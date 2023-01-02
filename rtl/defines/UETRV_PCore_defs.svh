@@ -15,22 +15,38 @@
 
 
 `define RF_AWIDTH                    5
-`define RF_SIZE                     32
+`define RF_SIZE                      32
 
 // Memory related parameters
 
-`define IMEM_SIZE                    4096
+`define IMEM_SIZE                    24'hFFFFFF
 `define IMEM_INST_REQ                1
 
 `define DMEM_SIZE                    4096
-`define IDMEM_SIZE                   24'hFFFFFF
-`define MEM_ADDR_WIDTH               24
+
+`define BMEM_SIZE                    4096
+
+`define IDMEM_SIZE                   28'h7FFFFFF
+`define MEM_ADDR_WIDTH               28
 
 `define DEV_SEL_ADDR_HIGH            31
 `define DEV_SEL_ADDR_LOW             28
 
+`define CLINT_SEL_ADDR_HIGH          31
+`define CLINT_SEL_ADDR_LOW           24
 
-`define DUALPORT_MEMORY              1
+`define BMEM_SEL_ADDR_HIGH           31
+`define BMEM_SEL_ADDR_LOW            16
+
+
+`define IMEM_ADDR_MATCH              4'h8
+`define DMEM_ADDR_MATCH              4'h8
+`define UART_ADDR_MATCH              4'h9
+`define PLIC_ADDR_MATCH              4'h6
+
+`define CLINT_ADDR_MATCH             8'h02
+`define BMEM_ADDR_MATCH              16'h0001
+
 
 // Pipeline stage definitions
 `define IF2ID_PIPELINE_STAGE         1
@@ -39,24 +55,29 @@
 `define LSU2WRB_PIPELINE_STAGE       1
 
 `define INSTR_NOP                    32'h00000013
-`define PC_RESET                     32'h80000000  // 32'h8000E000                      
+
+// Boot mode selection
+`define LINUX_BOOT                   1
+
+`ifdef LINUX_BOOT
+`define PC_RESET                     32'h00010000  // Booting from boot memory to pass the device tree pointer                    
+`else
+`define PC_RESET                     32'h80000000  // Booting from data memory
+`endif
 
 // Address ranges for different peripheral modules
 `define DBUS_ADDR_WIDTH              32
-`define IMEM_ADDR_MASK               `DBUS_ADDR_WIDTH'h0FFFF
-`define DMEM_ADDR_MASK               `DBUS_ADDR_WIDTH'hF0000
-`define UART_ADDR_MASK               `DBUS_ADDR_WIDTH'hF0000
-`define IMEM_ADDR_MATCH              4'h8
-`define DMEM_ADDR_MATCH              4'h8
-`define UART_ADDR_MATCH              4'h1
-`define CLINT_ADDR_MATCH             4'h4
+//`define IMEM_ADDR_MASK               `DBUS_ADDR_WIDTH'h0FFFF
+//`define DMEM_ADDR_MASK               `DBUS_ADDR_WIDTH'hF0000
+//`define UART_ADDR_MASK               `DBUS_ADDR_WIDTH'hF0000
 
+`define CLINT_ADDR_WIDTH             16
 
-typedef enum logic [3:0] {
-    MTIME_LOW_R     = 4'h0,
-    MTIME_HIGH_R    = 4'h4,
-    MTIMECMP_LOW_R  = 4'h8,
-    MTIMECMP_HIGH_R = 4'hC
+typedef enum logic [`CLINT_ADDR_WIDTH-1:0] {
+    MTIME_LOW_R     = 16'hbff8,
+    MTIME_HIGH_R    = 16'hbffc,
+    MTIMECMP_LOW_R  = 16'h4000,
+    MTIMECMP_HIGH_R = 16'h4004
 } type_mtime_regs_e;
 
 

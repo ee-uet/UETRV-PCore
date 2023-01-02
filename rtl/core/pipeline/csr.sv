@@ -45,6 +45,7 @@ type_csr2lsu_data_s              csr2lsu_data;
          
 type_csr2wrb_data_s              csr2wrb_data;
 type_csr2if_fb_s                 csr2if_fb;
+type_csr2id_fb_s                 csr2id_fb;
 type_csr2fwd_s                   csr2fwd;
 type_fwd2csr_s                   fwd2csr;
 
@@ -85,9 +86,10 @@ type_mip_reg_s                   csr_mip_ff,      csr_mip_next;
 
 // Supervisor mode CSRs for trap setup and handling 
 type_tvec_reg_s                  csr_stvec_ff,    csr_stvec_next; 
-logic [`XLEN-1:0]                csr_stval_ff,    csr_stval_next;
+logic [`XLEN-1:0]                csr_sscratch_ff, csr_sscratch_next;
 logic [`XLEN-1:0]                csr_sepc_ff,     csr_sepc_next;
 logic [`XLEN-1:0]                csr_scause_ff,   csr_scause_next;
+logic [`XLEN-1:0]                csr_stval_ff,    csr_stval_next;
 type_satp_reg_s                  csr_satp_ff,     csr_satp_next;
 
 // Machine mode CSR write update flags for cycle and performance counter registers 
@@ -112,6 +114,7 @@ logic                            csr_mip_wr_flag;
 
 // Supervisor mode CSR write update flags for trap setup and handling registers
 logic                            csr_sstatus_wr_flag;
+logic                            csr_sscratch_wr_flag;
 logic                            csr_stvec_wr_flag;
 logic                            csr_sepc_wr_flag;
 logic                            csr_scause_wr_flag;
@@ -140,6 +143,7 @@ logic                            m_mode_global_ie;
 logic                            m_mode_exc_req;
 logic                            m_mode_irq_req;
 logic                            m_mode_pc_req;
+logic                            m_mode_pf_exc_req;
 logic                            mret_pc_req;
 
 // S-mode interrupt/exception related signals
@@ -147,7 +151,15 @@ logic                            s_mode_global_ie;
 logic                            s_mode_exc_req;
 logic                            s_mode_irq_req;
 logic                            s_mode_pc_req;
+logic                            s_mode_enabled;
+logic                            s_mode_pf_exc_req;
 logic                            sret_pc_req;
+
+// Exception requests from MMU
+logic                            st_pf_exc_req;
+logic                            ld_pf_exc_req;
+logic                            inst_pf_exc_req;
+logic                            pf_exc_req;
 
 // System operation related signals
 logic                            sret_req;
@@ -239,6 +251,7 @@ always_comb begin
            // Read supervisor mode trap setup and handling registers
             CSR_ADDR_SSTATUS        : csr_rdata    = (csr_mstatus_ff & SSTATUS_READ_MASK);           
             CSR_ADDR_SIE            : csr_rdata    = csr_mie_ff & csr_mideleg_ff;
+            CSR_ADDR_SSCRATCH       : csr_rdata    = csr_sscratch_ff;
             CSR_ADDR_STVEC          : csr_rdata    = csr_stvec_ff;
             CSR_ADDR_SCAUSE         : csr_rdata    = csr_scause_ff;
             CSR_ADDR_STVAL          : csr_rdata    = csr_stval_ff;
@@ -285,6 +298,7 @@ always_comb begin
     csr_mtval_wr_flag          = 1'b0;
     csr_mip_wr_flag            = 1'b0;
 
+    csr_sscratch_wr_flag       = 1'b0;
     csr_sstatus_wr_flag        = 1'b0;
     csr_stvec_wr_flag          = 1'b0;
     csr_sepc_wr_flag           = 1'b0;
@@ -320,6 +334,7 @@ always_comb begin
 
             // Supervisor mode flags for trap setup and handling registers write operation
             CSR_ADDR_SSTATUS        : csr_sstatus_wr_flag  = 1'b1;
+            CSR_ADDR_SSCRATCH       : csr_sscratch_wr_flag = 1'b1;
             CSR_ADDR_STVEC          : csr_stvec_wr_flag    = 1'b1; 
             CSR_ADDR_SEPC           : csr_sepc_wr_flag     = 1'b1;
             CSR_ADDR_STVAL          : csr_stval_wr_flag    = 1'b1;
@@ -738,7 +753,7 @@ always_comb begin
             csr_mepc_next = csr_pc_next;  // Incase of IRQ use pc+4
         end
         m_mode_exc_req   : begin
-            csr_mepc_next = csr_pc_next;
+            csr_mepc_next = csr_pc_ff;
         end
         csr_mepc_wr_flag : begin  
             csr_mepc_next = {csr_wdata[`XLEN-1:2], 2'b00};
@@ -803,6 +818,7 @@ end
 
 // Make sure the misalign request is in machine mode
 assign m_mode_misalign_exc_req = m_mode_global_ie & (ld_misalign_exc_req | st_misalign_exc_req);
+assign m_mode_pf_exc_req       = m_mode_global_ie & pf_exc_req;
 
 always_comb begin
     case (1'b1)
@@ -811,6 +827,9 @@ always_comb begin
         // captured to mtval CSR.
         m_mode_misalign_exc_req: begin
             csr_mtval_next = lsu2csr_data.dbus_addr;
+        end
+        m_mode_pf_exc_req      : begin
+            csr_mtval_next = csr_pc_ff;
         end
         csr_mtval_wr_flag      : begin  
             csr_mtval_next = csr_wdata;
@@ -848,6 +867,23 @@ always_comb begin
     endcase
 end
 
+// Update the sscratch (supervisor scratch) CSR 
+// --------------------------------------------
+always_ff @(negedge rst_n, posedge clk) begin
+    if (~rst_n) begin
+        csr_sscratch_ff <= {`XLEN{1'b0}}; 
+    end else begin
+        csr_sscratch_ff <= csr_sscratch_next;
+    end
+end
+
+always_comb begin
+    if (csr_sscratch_wr_flag) begin
+        csr_sscratch_next = csr_wdata;
+    end else begin
+        csr_sscratch_next = csr_sscratch_ff;
+    end
+end
 
 // Update the stval (supervisor trap value) CSR 
 // --------------------------------------------
@@ -860,15 +896,20 @@ always_ff @(negedge rst_n, posedge clk) begin
 end
 
 // Make sure the misalign request is in supervisor mode
-assign s_mode_misalign_exc_req = s_mode_global_ie & (ld_misalign_exc_req | st_misalign_exc_req);
+assign s_mode_misalign_exc_req = s_mode_enabled & (ld_misalign_exc_req | st_misalign_exc_req);
+assign s_mode_pf_exc_req       = s_mode_exc_req & pf_exc_req; 
 
 always_comb begin
     case (1'b1)
-        // MT: Currently implements only for load-store address misalign exceptions. 
+        // MT: Currently implements only for load-store address misalign and load/store
+        // page fault exceptions. 
         // When faluting exception is trapped, the corresponding virtual address is 
         // captured to stval CSR.
         s_mode_misalign_exc_req: begin
             csr_stval_next = lsu2csr_data.dbus_addr;
+        end
+        s_mode_pf_exc_req      : begin
+            csr_stval_next = csr_pc_ff;
         end
         csr_stval_wr_flag      : begin  
             csr_stval_next = csr_wdata;
@@ -897,7 +938,7 @@ always_comb begin
             csr_sepc_next = csr_pc_next;  
         end
         s_mode_exc_req   : begin
-            csr_sepc_next = csr_pc_next;
+            csr_sepc_next = csr_pc_ff;
         end
         csr_sepc_wr_flag : begin  
             csr_sepc_next = {csr_wdata[`XLEN-1:2], 2'b00};
@@ -984,15 +1025,23 @@ end : wfi
 //=============================== Interrupt/Exception response ===============================//
 
 // Exception requests from any source including CSR and earlier stages
-assign csr_exc_req = csr_rd_exc_req | csr_wr_exc_req | csr_satp_exc_req;  // 
-assign exc_req     = exe2csr_ctrl.exc_req | csr_exc_req
-                   | ld_misalign_exc_req  | st_misalign_exc_req;
+assign csr_exc_req     = csr_rd_exc_req | csr_wr_exc_req | csr_satp_exc_req;  
+assign ld_pf_exc_req   = lsu2csr_ctrl.ld_page_fault;
+assign st_pf_exc_req   = lsu2csr_ctrl.st_page_fault; 
+assign inst_pf_exc_req = lsu2csr_ctrl.inst_page_fault; 
+assign pf_exc_req      = ld_pf_exc_req | st_pf_exc_req | inst_pf_exc_req;
+
+assign exc_req       = exe2csr_ctrl.exc_req | csr_exc_req | pf_exc_req
+                     | ld_misalign_exc_req  | st_misalign_exc_req;
 
 // Exception code corresponding to selected exception, priority is given to earlier exceptions
 always_comb begin
     case (1'b1)
         exe2csr_ctrl.exc_req: exc_code = exe2csr_data.exc_code;
         csr_exc_req         : exc_code = EXC_CODE_ILLEGAL_INSTR;
+        ld_pf_exc_req       : exc_code = EXC_CODE_LD_PAGE_FAULT;
+        st_pf_exc_req       : exc_code = EXC_CODE_ST_PAGE_FAULT;
+        inst_pf_exc_req     : exc_code = EXC_CODE_INST_PAGE_FAULT;
         ld_misalign_exc_req : exc_code = EXC_CODE_LD_ADDR_MISALIGN;
         st_misalign_exc_req : exc_code = EXC_CODE_ST_ADDR_MISALIGN;
         default             : exc_code = exe2csr_data.exc_code;
@@ -1055,8 +1104,10 @@ end
 assign irq_delegated_req = m_irq_req & csr_mideleg_ff[m_irq_code];
 assign exc_delegated_req = exc_req & csr_medeleg_ff[exc_code];
 
-assign s_mode_global_ie = ((trap_priv_mode == PRIV_MODE_S) && csr_mstatus_ff.sie);
-assign s_mode_exc_req   = s_mode_global_ie && exc_delegated_req;
+assign s_mode_enabled   = (trap_priv_mode == PRIV_MODE_S);
+assign s_mode_exc_req   = s_mode_enabled & exc_delegated_req;
+
+assign s_mode_global_ie = (s_mode_enabled && csr_mstatus_ff.sie);
 assign s_mode_irq_req   = s_mode_global_ie && irq_delegated_req;
 assign sret_pc_req      = sret_req & ~s_mode_exc_req & ~s_mode_irq_req;
 
@@ -1109,11 +1160,15 @@ assign csr2lsu_data.mxr       = csr_mstatus_ff.mxr;
 assign csr2lsu_data.tlb_flush = sfence_vma_req;
 assign csr2lsu_data.lsu_flush = csr2fwd.new_pc_req | csr2fwd.wfi_req; 
 assign csr2lsu_data.en_ld_st_vaddr = en_ld_st_vaddr_ff;
+
+// CSR to ID feedback signal
+assign csr2id_fb.priv_mode = priv_mode_ff;
   
 // Update the module output signals
 assign csr2wrb_data_o = csr2wrb_data;
 assign csr2fwd_o      = csr2fwd;
 assign csr2if_fb_o    = csr2if_fb;
+assign csr2id_fb_o    = csr2id_fb;
 assign csr2lsu_data_o = csr2lsu_data;
 
 endmodule : csr

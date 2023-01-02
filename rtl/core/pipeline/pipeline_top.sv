@@ -1,6 +1,6 @@
-`include "../../defines/UETRV_PCore_defs.svh"
 `include "../../defines/UETRV_PCore_ISA.svh"
 `include "../../defines/MMU_defs.svh"
+`include "../../defines/M_EXT_defs.svh"
 
 `default_nettype wire
 
@@ -36,6 +36,14 @@ type_id2exe_data_s                      id2exe_data, id2exe_data_next;
 
 type_exe2lsu_ctrl_s                     exe2lsu_ctrl, exe2lsu_ctrl_next;
 type_exe2lsu_data_s                     exe2lsu_data, exe2lsu_data_next;
+
+// M-Extension related signals
+type_exe2mul_ctrl_s                     exe2mul_ctrl;
+type_exe2mul_data_s                     exe2mul_data;
+
+type_mul2wrb_data_s                     mul2wrb_data;
+type_mul2wrb_ctrl_s                     mul2wrb_ctrl;
+
 
 // Interfaces for CSR module
 type_exe2csr_data_s                     exe2csr_data, exe2csr_data_next;
@@ -73,6 +81,7 @@ type_dmem2mmu_s                         dmem2mmu;
 
 logic [`XLEN-1:0]                       lsu2exe_fb_alu_result;
 logic [`XLEN-1:0]                       wrb2exe_fb_rd_data;
+logic                                   if2fwd_stall;
 
 // Interfaces for forwarding module
 // To forwarding module
@@ -147,7 +156,8 @@ fetch fetch_module (
     .if2id_ctrl_o               (if2id_ctrl),
     .exe2if_fb_i                (exe2if_fb),
     .csr2if_fb_i                (csr2if_fb),
-    .fwd2if_i                   (fwd2if)
+    .fwd2if_i                   (fwd2if),
+    .if2fwd_stall_o             (if2fwd_stall)
 );
 
 
@@ -235,6 +245,10 @@ execute execute_module (
     .id2exe_ctrl_i              (id2exe_ctrl),
 `endif
 
+    // EXE <---> M-Extension interface signals
+    .exe2mul_ctrl_o             (exe2mul_ctrl),
+    .exe2mul_data_o             (exe2mul_data),
+
     // EXE <---> LSU module interface signals
     .exe2lsu_ctrl_o             (exe2lsu_ctrl),
     .exe2lsu_data_o             (exe2lsu_data),
@@ -254,6 +268,19 @@ execute execute_module (
     .lsu2exe_fb_alu_result_i    (lsu2exe_fb_alu_result),
     .wrb2exe_fb_rd_data_i       (wrb2exe_fb_rd_data)
  
+);
+
+muldiv muldiv_module(
+    .rst_n                      (rst_n        ),            // reset
+    .clk                        (clk          ),            // clock
+
+    // EXE <---> MUL interface
+    .exe2mul_data_i             (exe2mul_data ),
+    .exe2mul_ctrl_i             (exe2mul_ctrl ),            // Control signals from execute to M-Extension 
+
+    // MUL <---> WRB interface
+    .mul2wrb_data_o             (mul2wrb_data ),
+    .mul2wrb_ctrl_o             (mul2wrb_ctrl )
 );
 
 //================================= Execute to LSU interface ==================================//
@@ -289,7 +316,7 @@ always_comb begin
     end else if (fwd2ptop.exe2lsu_pipe_stall) begin
         exe2lsu_ctrl_next = exe2lsu_ctrl_pipe_ff;
         exe2csr_ctrl_next = exe2csr_ctrl_pipe_ff;
-        exe2lsu_data_next.alu_result = exe2lsu_data_pipe_ff.alu_result;
+        exe2lsu_data_next = exe2lsu_data_pipe_ff;
     end else begin
         exe2lsu_ctrl_next = exe2lsu_ctrl;
         exe2csr_ctrl_next = exe2csr_ctrl; 
@@ -404,6 +431,9 @@ writeback writeback_module (
     .csr2wrb_data_i             (csr2wrb_data),
 `endif
 
+    .mul2wrb_data_i             (mul2wrb_data),
+    .mul2wrb_ctrl_i             (mul2wrb_ctrl),
+
     .wrb2id_fb_o                (wrb2id_fb),
     .wrb2exe_fb_rd_data_o       (wrb2exe_fb_rd_data),
     .wrb2fwd_o                  (wrb2fwd)
@@ -420,6 +450,8 @@ forward_stall forward_stall_module (
     .lsu2fwd_i                  (lsu2fwd),
     .exe2fwd_i                  (exe2fwd),
     .csr2fwd_i                  (csr2fwd),
+    .if2fwd_stall_i             (if2fwd_stall),
+
     .fwd2if_o                   (fwd2if),
     .fwd2exe_o                  (fwd2exe),
     .fwd2csr_o                  (fwd2csr),

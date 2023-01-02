@@ -137,15 +137,17 @@ always_comb begin
                             3'b111 : id2exe_ctrl.alu_i_ops = ALU_I_OPS_AND;   // AND Logical
                         endcase // funct3_opcode
                     end // 7'b0000000
-                     7'b0100000 : begin
+                    7'b0100000 : begin
                         case (funct3_opcode)
                             3'b000  : id2exe_ctrl.alu_i_ops = ALU_I_OPS_SUB;
                             3'b101  : id2exe_ctrl.alu_i_ops = ALU_I_OPS_SRA;
-                            default : illegal_instr       = 1'b1;
+                            default : illegal_instr         = 1'b1;
                         endcase // funct3_opcode
                     end // 7'b0100000
 
                     7'b0000001 : begin
+                        id2exe_ctrl.rd_wrb_sel             = RD_WRB_M_ALU;
+
                         case (funct3_opcode)
                             3'b000 : id2exe_ctrl.alu_m_ops = ALU_M_OPS_MUL;
                             3'b001 : id2exe_ctrl.alu_m_ops = ALU_M_OPS_MULH;
@@ -397,18 +399,21 @@ always_comb begin
 
              // Atomic memory operations (AMO)
             OPCODE_AMO_INST : begin
-             //   id2exe_ctrl.rd_wrb_sel   = RD_WRB_DMEM;
+                id2exe_ctrl.rd_wrb_sel   = RD_WRB_DMEM;  // MT: Uncomment for proper AMO operation ???
                 id2exe_ctrl.alu_opr1_sel = ALU_OPR1_REG;
                 id2exe_ctrl.alu_opr2_sel = ALU_OPR2_REG;
+                id2exe_ctrl.ld_ops       = LD_OPS_LW;     
+                id2exe_ctrl.st_ops       = ST_OPS_SW;    // All AMO instructions perfrom SW
                 id2exe_ctrl.alu_i_ops    = ALU_I_OPS_COPY_OPR1;
-             //   id2exe_ctrl.rd_wr_req    = 1'b1;  
+                id2exe_ctrl.rd_wr_req    = 1'b1;        //  MT: Uncomment for proper AMO operation ???
 
                 if (funct3_opcode == 3'b010) begin              
                     case (funct7_opcode[6:2])
                         5'b00000  : id2exe_ctrl.amo_ops = AMO_OPS_ADD;                  // Atomic addition
                         5'b00001  : id2exe_ctrl.amo_ops = AMO_OPS_SWAP;                 // Atomic swap
                         5'b00010  : begin 
-                            id2exe_ctrl.amo_ops = AMO_OPS_LR;                           // Load restricted                            
+                            id2exe_ctrl.amo_ops = AMO_OPS_LR;                           // Load restricted        
+                            id2exe_ctrl.st_ops  = ST_OPS_NONE;                          // LR does not perform store                      
                             if (funct5_opcode != '0) illegal_instr = 1'b1;
                         end
                         5'b00011  : id2exe_ctrl.amo_ops = AMO_OPS_SC;                   // Store conditional

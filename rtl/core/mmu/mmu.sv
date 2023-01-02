@@ -1,3 +1,4 @@
+`timescale 1 ns / 100 ps
 
 `include "../../defines/MMU_defs.svh"
 
@@ -75,12 +76,12 @@ always_comb begin
         mmu2if.i_paddr = {itlb2mmu.pte.ppn, if2mmu.i_vaddr[11:0]};
         mmu2if.i_hit   = itlb2mmu.hit;
 
-        // In case this is a superpage
+        // In case this is a superpage, the page-offset field will be of 22 bits
         if (itlb2mmu.page_4M) begin
             mmu2if.i_paddr[21:12] = if2mmu.i_vaddr[21:12];
         end
     end
-
+  
 end
 
 
@@ -118,9 +119,25 @@ always_comb begin
         if (dtlb2mmu.page_4M) begin
             mmu2lsu.d_paddr[21:12] = lsu2mmu.d_vaddr[21:12];
         end
+        
+        
     end
 
 end
+
+// Handling page faults
+always_comb begin
+
+    if (lsu2mmu.st_req) begin
+        mmu2lsu.st_page_fault = ptw2mmu.pte_error;
+    end else if (~lsu2mmu.st_req & lsu2mmu.d_req) begin
+        mmu2lsu.ld_page_fault = ptw2mmu.pte_error;
+    end else begin
+        mmu2lsu.inst_page_fault = ptw2mmu.pte_error;
+    end
+
+end
+
 
 //============================= PTW instantiation and connectivity =============================//
 // Signals from MMU to PTW
@@ -161,33 +178,8 @@ ptw ptw_module (
 
 
 assign mmu2lsu_o  = mmu2lsu;
-assign mmu2if_o   = mmu2if;
+assign #1 mmu2if_o   = mmu2if;
 assign mmu2dmem_o = mmu2dmem;
-
-
-//============================= PMP instantiation and connectivity =============================//
-
-
-//    logic allow_access;
-//
-//    assign bad_paddr_o = ptw_access_exception_o ? ptw_pptr_q : 'b0;
-//
-//    pmp #(
-//        .PLEN       ( riscv::PLEN            ),
-//        .PMP_LEN    ( riscv::PLEN - 2        ),
-//        .NR_ENTRIES ( ArianeCfg.NrPMPEntries )
-//    ) i_pmp_ptw (
-//        .addr_i        ( ptw_pptr_q         ),
-//        // PTW access are always checked as if in S-Mode...
-//        .priv_lvl_i    ( riscv::PRIV_LVL_S  ),
-//        // ...and they are always loads
-//        .access_type_i ( riscv::ACCESS_READ ),
-//        // Configuration
-//        .conf_addr_i   ( pmpaddr_i          ),
-//        .conf_i        ( pmpcfg_i           ),
-//        .allow_o       ( allow_access       )
-//    );
-
 
 endmodule // mmu
 
