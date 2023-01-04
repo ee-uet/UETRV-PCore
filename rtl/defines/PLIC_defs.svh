@@ -6,6 +6,9 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
+`ifndef PLIC_DEFS
+`define PLIC_DEFS
+
 parameter int PLIC_SOURCE_COUNT = 2;
 parameter int PLIC_TARGET_COUNT = 2;
 
@@ -36,4 +39,4 @@ typedef struct packed {
   logic [PLIC_TARGET_COUNT-1:0][PLIC_SOURCE_WIDTH-1:0]     complete_idx;
 } type_regs2gateway_s; 
 
-
+`endif // PLIC_DEFS
