@@ -129,7 +129,7 @@ assign if2id_ctrl.exc_code      = exc_code;
 assign if2id_ctrl.exc_req       = exc_req;
 
 // Generate stall request to forward_stall module
-assign if2fwd_stall_o           = (~mmu2if.i_hit | (mmu2if.i_hit & ~imem2if.ack));
+assign if2fwd_stall_o           = if2mmu.i_req & ~imem2if.ack;
 
 assign if2id_data_o             = if2id_data;
 assign if2id_ctrl_o             = if2id_ctrl;
