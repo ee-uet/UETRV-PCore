@@ -178,7 +178,7 @@ ptw ptw_module (
 
 
 assign mmu2lsu_o  = mmu2lsu;
-assign #1 mmu2if_o   = mmu2if;
+assign mmu2if_o   = mmu2if;
 assign mmu2dmem_o = mmu2dmem;
 
 endmodule // mmu
