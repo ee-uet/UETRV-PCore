@@ -260,7 +260,10 @@ always_comb begin
             OPCODE_MEM_FENCE_INST : begin
  
                 case (funct3_opcode)
-                    3'b000  : begin      end                             // fence instruction is effectively NOP
+                    3'b000  : begin      end                             // fence instruction is currently NOP
+                                                                         // but will become write buffer flush
+                                                                         // in case of write through cache and 
+                                                                         // cache flush for writeback cache
                     3'b001  : id2exe_ctrl.fence_i_req = 1'b1;            // fence.i leads to pipeline flush                     
                     default : illegal_instr           = 1'b1;            // Default case  
                 endcase // funct3_opcode                
@@ -355,14 +358,14 @@ always_comb begin
                                 case (funct5_opcode)
                                     5'b00000 : begin  // ECALL                     
                                         id2exe_ctrl.exc_req  = 1'b1;
+                                        id2exe_ctrl.exc_code = EXC_CODE_ECALL_MMODE;
                                         case (csr2id_fb.priv_mode)
                                             PRIV_MODE_M: id2exe_ctrl.exc_code = EXC_CODE_ECALL_MMODE;
                                             PRIV_MODE_S: id2exe_ctrl.exc_code = EXC_CODE_ECALL_SMODE;
                                             PRIV_MODE_U: id2exe_ctrl.exc_code = EXC_CODE_ECALL_UMODE;
                                             default:       ; // this should not have happened
                                         endcase
-
-                                        id2exe_ctrl.exc_code = EXC_CODE_ECALL_MMODE;
+                                       
                                     end
                                     5'b00001 : begin  // EBREAK
                                         id2exe_ctrl.exc_req  = 1'b1;

@@ -753,7 +753,7 @@ always_comb begin
             csr_mepc_next = csr_pc_next;  // Incase of IRQ use pc+4
         end
         m_mode_exc_req   : begin
-            csr_mepc_next = csr_pc_ff;
+            csr_mepc_next = csr_pc_next;
         end
         csr_mepc_wr_flag : begin  
             csr_mepc_next = {csr_wdata[`XLEN-1:2], 2'b00};
@@ -938,7 +938,7 @@ always_comb begin
             csr_sepc_next = csr_pc_next;  
         end
         s_mode_exc_req   : begin
-            csr_sepc_next = csr_pc_ff;
+            csr_sepc_next = csr_pc_next;
         end
         csr_sepc_wr_flag : begin  
             csr_sepc_next = {csr_wdata[`XLEN-1:2], 2'b00};
@@ -1078,8 +1078,8 @@ end
 
 // Signals for machine mode exception/interrupt response generation
 assign m_mode_global_ie = ((trap_priv_mode == PRIV_MODE_M) && csr_mstatus_ff.mie);
-assign m_mode_exc_req   = m_mode_global_ie && exc_req;
 assign m_mode_irq_req   = m_mode_global_ie && m_irq_req;
+assign m_mode_exc_req   = exc_req && (exc_code == EXC_CODE_ECALL_SMODE) && (trap_priv_mode == PRIV_MODE_M);
 assign mret_pc_req      = mret_req & ~m_mode_exc_req & ~m_mode_irq_req;
 
 // New pc for machine mode
@@ -1153,13 +1153,13 @@ assign csr2fwd.csr_read_req = exe2csr_ctrl.csr_rd_req;
 assign csr2wrb_data.csr_rdata = csr_rdata;
 
 // CSR to LSU signals
-assign csr2lsu_data.satp_ppn  = csr_satp_ff.ppn;
-assign csr2lsu_data.en_vaddr  = (csr_satp_ff.mode == MODE_SV32) && (priv_mode_ff != PRIV_MODE_M)
+assign csr2lsu_data.satp_ppn  = csr_satp_next.ppn;
+assign csr2lsu_data.en_vaddr  = (csr_satp_next.mode == MODE_SV32) && (priv_mode_next != PRIV_MODE_M)
                               ? 1'b1 : 1'b0;
 assign csr2lsu_data.mxr       = csr_mstatus_ff.mxr; 
 assign csr2lsu_data.tlb_flush = sfence_vma_req;
 assign csr2lsu_data.lsu_flush = csr2fwd.new_pc_req | csr2fwd.wfi_req; 
-assign csr2lsu_data.en_ld_st_vaddr = en_ld_st_vaddr_ff;
+assign csr2lsu_data.en_ld_st_vaddr = en_ld_st_vaddr_next;
 
 // CSR to ID feedback signal
 assign csr2id_fb.priv_mode = priv_mode_ff;

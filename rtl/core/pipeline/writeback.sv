@@ -14,10 +14,6 @@ module writeback (
     // CSR <---> Writeback interface
     input wire type_csr2wrb_data_s           csr2wrb_data_i,
 
-    // MUL <---> Writeback interface
-    input wire type_mul2wrb_data_s           mul2wrb_data_i,
-    input wire type_mul2wrb_ctrl_s           mul2wrb_ctrl_i,
-
     // Writeback <---> ID interface for feedback signals
     output type_wrb2id_fb_s                  wrb2id_fb_o,
 
@@ -35,22 +31,15 @@ type_csr2wrb_data_s            csr2wrb_data;
 type_wrb2id_fb_s               wrb2id_fb;
 logic [`XLEN-1:0]              wrb_rd_data;
 
-type_mul2wrb_data_s            mul2wrb_data;
-type_mul2wrb_ctrl_s            mul2wrb_ctrl;
-logic                          mul_req;
-
 // Assign appropriate values to the output signals
 assign lsu2wrb_data = lsu2wrb_data_i;
 assign lsu2wrb_ctrl = lsu2wrb_ctrl_i;
 assign csr2wrb_data = csr2wrb_data_i;
-
-assign mul2wrb_data = mul2wrb_data_i;
-assign mul2wrb_ctrl = mul2wrb_ctrl_i;
  
 // Writeback MUX for output signal selection
 always_comb begin
      wrb_rd_data = '0;
-     mul_req = '0;
+
       case (lsu2wrb_ctrl.rd_wrb_sel)
          RD_WRB_ALU    : begin
              wrb_rd_data = lsu2wrb_data.alu_result;
@@ -65,10 +54,9 @@ always_comb begin
              wrb_rd_data = csr2wrb_data.csr_rdata;
          end
          RD_WRB_M_ALU  : begin
-             wrb_rd_data = mul2wrb_data.alu_m_result;
-             mul_req     = '1;
+             wrb_rd_data = lsu2wrb_data.alu_m_result;
          end
-         default       : wrb_rd_data  = '0; // default case 
+         default       : wrb_rd_data  = '0;              // default case 
      endcase
 end
 
@@ -82,9 +70,6 @@ assign wrb2fwd_o.rd_addr    = lsu2wrb_data.rd_addr;
 assign wrb2fwd_o.rd_wr_req  = lsu2wrb_ctrl.rd_wr_req;
 assign wrb2exe_fb_rd_data_o = wrb_rd_data;
 assign wrb2id_fb_o          = wrb2id_fb;
-
-assign wrb2fwd_o.alu_m_res  = mul2wrb_ctrl.alu_m_res;
-assign wrb2fwd_o.mul_req    = mul_req;
 
 endmodule : writeback
 

@@ -33,7 +33,7 @@ logic [PLIC_TARGET_COUNT-1:0]                          complete_req; // Target w
 logic [PLIC_TARGET_COUNT-1:0][PLIC_SOURCE_WIDTH-1:0]   complete_idx;
 
 // Signal definitions for Dbus interface
-logic [PLIC_REG_OFFSET_WIDTH-1:0]                      reg_addr;
+logic [`PLIC_REG_OFFSET_WIDTH-1:0]                     reg_addr;
 logic                                                  reg_rd_req;
 logic                                                  reg_wr_req;
 
@@ -191,7 +191,7 @@ end
 type_peri2dbus_s                      plic2dbus_ff;
 
 // Signal interface to data bus
-assign reg_addr   = type_plic_regs_e'(dbus2plic_i.addr[PLIC_REG_OFFSET_WIDTH-1:0]);
+assign reg_addr   = type_plic_regs_e'(dbus2plic_i.addr[`PLIC_REG_OFFSET_WIDTH-1:0]);
 assign reg_w_data = dbus2plic_i.w_data;
 assign reg_rd_req = !dbus2plic_i.w_en && dbus2plic_i.cyc && plic_sel_i;
 assign reg_wr_req = dbus2plic_i.w_en  && dbus2plic_i.cyc && plic_sel_i;
@@ -211,7 +211,8 @@ assign regs2gateway.complete_req = complete_req;
 assign regs2gateway.complete_idx = complete_idx;
 
 // Response signals to dbus 
-assign plic2dbus_o = plic2dbus_ff;
+assign plic2dbus_o.r_data = plic2dbus_ff.r_data;
+assign plic2dbus_o.ack = (reg_wr_req) ? 1'b1 : plic2dbus_ff.ack;
 
 // Output signals for different modules
 assign regs_ie_o      = plic_reg_ie_ff;

@@ -38,11 +38,8 @@ type_exe2lsu_ctrl_s                     exe2lsu_ctrl, exe2lsu_ctrl_next;
 type_exe2lsu_data_s                     exe2lsu_data, exe2lsu_data_next;
 
 // M-Extension related signals
-type_exe2mul_ctrl_s                     exe2mul_ctrl;
-type_exe2mul_data_s                     exe2mul_data;
-
-type_mul2wrb_data_s                     mul2wrb_data;
-type_mul2wrb_ctrl_s                     mul2wrb_ctrl;
+type_exe2mul_s                          exe2mul;
+type_mul2lsu_s                          mul2lsu;
 
 
 // Interfaces for CSR module
@@ -246,8 +243,7 @@ execute execute_module (
 `endif
 
     // EXE <---> M-Extension interface signals
-    .exe2mul_ctrl_o             (exe2mul_ctrl),
-    .exe2mul_data_o             (exe2mul_data),
+    .exe2mul_o                  (exe2mul),
 
     // EXE <---> LSU module interface signals
     .exe2lsu_ctrl_o             (exe2lsu_ctrl),
@@ -275,12 +271,14 @@ muldiv muldiv_module(
     .clk                        (clk          ),            // clock
 
     // EXE <---> MUL interface
-    .exe2mul_data_i             (exe2mul_data ),
-    .exe2mul_ctrl_i             (exe2mul_ctrl ),            // Control signals from execute to M-Extension 
+    .exe2mul_i                  (exe2mul), 
 
-    // MUL <---> WRB interface
-    .mul2wrb_data_o             (mul2wrb_data ),
-    .mul2wrb_ctrl_o             (mul2wrb_ctrl )
+    // Stall and Flush signals
+    .fwd2mul_stall_i            (fwd2ptop.exe2lsu_pipe_stall),
+    .fwd2mul_flush_i            (fwd2ptop.exe2lsu_pipe_flush),
+
+    // MUL <---> LSU interface
+    .mul2lsu_o                  (mul2lsu)
 );
 
 //================================= Execute to LSU interface ==================================//
@@ -345,6 +343,9 @@ lsu lsu_module (
     .lsu2csr_ctrl_o             (lsu2csr_ctrl),
     .lsu2csr_data_o             (lsu2csr_data),
 
+    // M-extension interface 
+    .mul2lsu_i                  (mul2lsu),
+
     // Writeback module interface signals 
     .lsu2wrb_ctrl_o             (lsu2wrb_ctrl),
     .lsu2wrb_data_o             (lsu2wrb_data),
@@ -406,6 +407,8 @@ type_csr2wrb_data_s                     csr2wrb_data_pipe_ff;
         lsu2wrb_data_pipe_ff <= '0;
         lsu2wrb_ctrl_pipe_ff <= '0;
         csr2wrb_data_pipe_ff <= '0;
+    end else if (fwd2ptop.exe2lsu_pipe_stall) begin // On LSU stall, we flush WRB stage
+        lsu2wrb_ctrl_pipe_ff <= '0;
     end else begin
         lsu2wrb_data_pipe_ff <= lsu2wrb_data;
         lsu2wrb_ctrl_pipe_ff <= lsu2wrb_ctrl;
@@ -430,9 +433,6 @@ writeback writeback_module (
     .lsu2wrb_data_i             (lsu2wrb_data),
     .csr2wrb_data_i             (csr2wrb_data),
 `endif
-
-    .mul2wrb_data_i             (mul2wrb_data),
-    .mul2wrb_ctrl_i             (mul2wrb_ctrl),
 
     .wrb2id_fb_o                (wrb2id_fb),
     .wrb2exe_fb_rd_data_o       (wrb2exe_fb_rd_data),

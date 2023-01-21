@@ -70,7 +70,6 @@ always_ff @ (negedge rst_n, posedge clk) begin
     end
 end
 
-// Synchronous memory read operation
 always_comb  begin 
     bmem2if_next = '0;
     if (bmem_i_sel & ~bmem_d_sel) begin                         

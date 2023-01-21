@@ -65,7 +65,7 @@ logic                                   status_reg_wr_flag;
 logic                                   int_mask_reg_wr_flag; 
 	
 // Read and write signals for UART registers
-logic [15:0]                            reg_r_data; 
+logic [`XLEN-1:0]                       reg_r_data; 
 logic [`XLEN-1:0]                       reg_w_data;
 	
 //================================= UART register read operations ==================================//
@@ -75,7 +75,7 @@ always_comb begin
     if(reg_rd_req) begin
         case (reg_addr)
             // UART data receive and trnsmit registers
-            UART_TXDATA_R   : reg_r_data = uart_reg_tx_ff;
+            UART_TXDATA_R   : reg_r_data = {~tx_ready, 31'b0};
             UART_RXDATA_R   : reg_r_data = uart_reg_rx_ff;
             
             // UART baud rate configuration register
@@ -264,7 +264,7 @@ always_ff @(posedge clk) begin
     uart2dbus_ff <= '0;
     if ( reg_rd_req &  ~uart2dbus_ff.ack) begin
             uart2dbus_ff.ack <= 1'b1;
-            uart2dbus_ff.r_data <= {16'b0, reg_r_data};  
+            uart2dbus_ff.r_data <= reg_r_data;  
         
     end  
 end  

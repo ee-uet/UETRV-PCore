@@ -46,9 +46,8 @@ typedef enum logic [1:0] {
     UART_RX_STOP  = 2'h3
 } type_uart_rx_states_e;
 
-`endif // UART_DEFS
 
-   
+`endif // UART_DEFS 
 
    
 

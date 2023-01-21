@@ -60,12 +60,12 @@ assign dbus_req  = st_req | ld_req;
 // Does the address fall in instruction memory address space
 //assign addr_instr_space = (ld_req) & (|(dbus_addr & `IMEM_ADDR_MASK));
 
-assign dmem_addr_match  = (dbus_addr[`DEV_SEL_ADDR_HIGH:`DEV_SEL_ADDR_LOW] == `DMEM_ADDR_MATCH);
-assign uart_addr_match  = (dbus_addr[`DEV_SEL_ADDR_HIGH:`DEV_SEL_ADDR_LOW] == `UART_ADDR_MATCH);
-assign plic_addr_match  = (dbus_addr[`DEV_SEL_ADDR_HIGH:`DEV_SEL_ADDR_LOW] == `PLIC_ADDR_MATCH);
-
-assign clint_addr_match = (dbus_addr[`CLINT_SEL_ADDR_HIGH:`CLINT_SEL_ADDR_LOW] == `CLINT_ADDR_MATCH);
+assign dmem_addr_match  = (dbus_addr[`DEV_SEL_ADDR_HIGH:`DEV_SEL_ADDR_LOW]   == `DMEM_ADDR_MATCH);
 assign bmem_addr_match  = (dbus_addr[`BMEM_SEL_ADDR_HIGH:`BMEM_SEL_ADDR_LOW] == `BMEM_ADDR_MATCH);
+
+assign uart_addr_match  = (dbus_addr[`PERI_SEL_ADDR_HIGH:`PERI_SEL_ADDR_LOW] == `UART_ADDR_MATCH);
+assign plic_addr_match  = (dbus_addr[`PERI_SEL_ADDR_HIGH:`PERI_SEL_ADDR_LOW] == `PLIC_ADDR_MATCH);
+assign clint_addr_match = (dbus_addr[`PERI_SEL_ADDR_HIGH:`PERI_SEL_ADDR_LOW] == `CLINT_ADDR_MATCH);
 //assign imem_read_req   = (dbus_addr[`DEV_SEL_ADDR_HIGH:`DEV_SEL_ADDR_LOW] == `IMEM_ADDR_MATCH) 
 //                       & ld_req;
 

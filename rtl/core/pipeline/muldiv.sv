@@ -10,33 +10,33 @@ module muldiv (
     input   logic                        clk,                      // clock
 
     // EXE <---> MUL interface
-    input  wire type_exe2mul_data_s      exe2mul_data_i,
-    input  wire type_exe2mul_ctrl_s      exe2mul_ctrl_i,            // Structure for control signals from decode to execute 
+    input  wire type_exe2mul_s           exe2mul_i,
+
+    input wire                           fwd2mul_stall_i,
+    input wire                           fwd2mul_flush_i,
 
     // MUL <---> LSU interface
-    output type_mul2wrb_data_s           mul2wrb_data_o,
-    output type_mul2wrb_ctrl_s           mul2wrb_ctrl_o
+    output type_mul2lsu_s                mul2lsu_o
 );
 
 
 //============================= Local signals and their assignments =============================//
 // Local control and data signal structures 
-type_exe2mul_ctrl_s                  exe2mul_ctrl;
-type_exe2mul_data_s                  exe2mul_data;
-type_mul2wrb_ctrl_s                  mul2wrb_ctrl;
-type_mul2wrb_data_s                  mul2wrb_data;
+type_exe2mul_s                       exe2mul;
+type_mul2lsu_s                       mul2lsu;
 
-type_alu_m_ops_e                     alu_m_operator;
+type_alu_m_ops_e                     alu_m_ops;
 
 // ALU_M signals
-logic                                alu_m_res;
-logic                                alu_m_res_ff;
-logic                                alu_m_res_ff_ff;
 logic  [`XLEN-1:0]                   alu_m_operand_1;
 logic  [`XLEN-1:0]                   alu_m_operand_2;
-logic  [`XLEN-1:0]                   alu_m_result;
+
+
+logic                                alu_m_req_next, alu_m_req_ff;
+logic                                alu_m_ack_next, alu_m_ack_ff, alu_m_ack_ff_ff;
+logic  [`XLEN-1:0]                   alu_m_result_next;
 logic  [`XLEN-1:0]                   alu_m_result_ff;
-logic  [`XLEN-1:0]                   alu_m_result_ff_ff;
+
 logic  [2*`XLEN-1:0]                 mult;
 logic  [2*`XLEN-1:0]                 mult_ss;
 logic  [2*`XLEN-1:0]                 mult_su;
@@ -45,12 +45,13 @@ logic  [`XLEN-1:0]                   div_u;
 logic  [`XLEN-1:0]                   rem;
 logic  [`XLEN-1:0]                   rem_u;
 
-assign exe2mul_data = exe2mul_data_i;
-assign exe2mul_ctrl = exe2mul_ctrl_i;
+assign exe2mul = exe2mul_i;
 
-assign alu_m_operator  = type_alu_m_ops_e'(exe2mul_ctrl.alu_m_ops);
-assign alu_m_operand_1 = exe2mul_data.alu_operand_1;
-assign alu_m_operand_2 = exe2mul_data.alu_operand_2;
+assign alu_m_ops       = type_alu_m_ops_e'(exe2mul.alu_m_ops);
+assign alu_m_operand_1 = exe2mul.alu_operand_1;
+assign alu_m_operand_2 = exe2mul.alu_operand_2;
+
+assign alu_m_req_next            = |alu_m_ops;
 
 always_comb begin
     mult    = alu_m_operand_1          * alu_m_operand_2;
@@ -63,62 +64,90 @@ always_comb begin
 end
 
 always_comb begin
-    alu_m_result = '0;
-    alu_m_res    = '0;
-    case (alu_m_operator)
+    alu_m_result_next = '0;
+    alu_m_ack_next    = '0;
+
+    case (alu_m_ops)
         ALU_M_OPS_MUL    : begin
-            alu_m_res    = 1'b1;
-            alu_m_result = mult_ss[31:0];
+            alu_m_ack_next    = 1'b1;
+            alu_m_result_next = mult_ss[31:0];
         end
         ALU_M_OPS_MULH   : begin
-            alu_m_res    = 1'b1;
-            alu_m_result = mult_ss[63:32];
+            alu_m_ack_next    = 1'b1;
+            alu_m_result_next = mult_ss[63:32];
         end
         ALU_M_OPS_MULHSU : begin
-            alu_m_res    = 1'b1;
-            alu_m_result = mult_su[63:32];
+            alu_m_ack_next    = 1'b1;
+            alu_m_result_next = mult_su[63:32];
         end
         ALU_M_OPS_MULHU  : begin
-            alu_m_res    = 1'b1;
-            alu_m_result = mult[63:32];
+            alu_m_ack_next    = 1'b1;
+            alu_m_result_next = mult[63:32];
         end
         ALU_M_OPS_DIV  : begin
-            alu_m_res    = 1'b1;
-            alu_m_result = div;
+            alu_m_ack_next    = 1'b1;
+            alu_m_result_next = div;
         end
         ALU_M_OPS_DIVU  : begin
-            alu_m_res    = 1'b1;
-            alu_m_result = div_u;
+            alu_m_ack_next    = 1'b1;
+            alu_m_result_next = div_u;
         end
         ALU_M_OPS_REM  : begin
-            alu_m_res    = 1'b1;
-            alu_m_result = rem;
+            alu_m_ack_next    = 1'b1;
+            alu_m_result_next = rem;
         end
         ALU_M_OPS_REMU  : begin
-            alu_m_res    = 1'b1;
-            alu_m_result = rem_u;
+            alu_m_ack_next    = 1'b1;
+            alu_m_result_next = rem_u;
         end
         default : begin
-            alu_m_res    = 1'b0;
-            alu_m_result = '0;
+            alu_m_ack_next    = 1'b0;
+            alu_m_result_next = '0;
         end
     endcase
 end
 
-always_ff @( posedge clk ) begin
-    alu_m_result_ff <= alu_m_result; 
-    alu_m_res_ff    <= alu_m_res;
+always_ff @(negedge rst_n, posedge clk ) begin
+
+    if (~rst_n | fwd2mul_flush_i) begin
+        alu_m_req_ff    <= 1'b0;
+        alu_m_result_ff <= '0;
+    end else if (fwd2mul_stall_i) begin
+        alu_m_result_ff <= alu_m_result_ff; 
+        alu_m_req_ff    <= alu_m_req_ff;
+    end else begin
+        alu_m_result_ff <= alu_m_result_next; 
+        alu_m_req_ff    <= alu_m_req_next;
+    end
 end
 
-always_ff @( posedge clk ) begin
-    alu_m_result_ff_ff <= alu_m_result_ff; 
-    alu_m_res_ff_ff    <= alu_m_res_ff;
+
+always_ff @(negedge rst_n, posedge clk ) begin
+
+    if (~rst_n) begin
+        alu_m_ack_ff <= 1'b0;       
+    end else begin
+        alu_m_ack_ff <= alu_m_req_next; 
+    end
 end
 
-assign mul2wrb_data.alu_m_result = alu_m_result_ff_ff;
-assign mul2wrb_ctrl.alu_m_res    = alu_m_res_ff_ff;
 
-assign mul2wrb_data_o = mul2wrb_data;
-assign mul2wrb_ctrl_o = mul2wrb_ctrl;
+always_ff @(negedge rst_n, posedge clk ) begin
+
+    if (~rst_n) begin
+        alu_m_ack_ff_ff <= 1'b0;       
+    end else begin
+        alu_m_ack_ff_ff <= alu_m_ack_ff; 
+    end
+end
+
+// Request from M-Extension
+assign mul2lsu.alu_m_req    = alu_m_req_ff;
+assign mul2lsu.alu_m_result = alu_m_result_ff;
+
+// Response from M-Extension
+assign mul2lsu.alu_m_ack    = alu_m_ack_ff_ff;
+
+assign mul2lsu_o = mul2lsu;
 
 endmodule

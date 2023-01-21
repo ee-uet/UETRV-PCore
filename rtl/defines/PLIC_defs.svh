@@ -16,8 +16,6 @@ parameter int PLIC_PRIO_LEVELS  = 7;
 parameter int PLIC_SOURCE_WIDTH = $clog2(PLIC_SOURCE_COUNT + 1);
 parameter int PLIC_PRIO_WIDTH   = $clog2(PLIC_PRIO_LEVELS + 1);
 
-parameter int PLIC_REG_OFFSET_WIDTH = 24;
-
 typedef enum logic [23:0] {
     PLIC_PRIORITY_OFFSET_R  = 24'h000000,
     PLIC_PRIORITY_OFFSET2_R = 24'h000004,
@@ -38,5 +36,7 @@ typedef struct packed {
   logic [PLIC_TARGET_COUNT-1:0]                            complete_req; //Target write indicator
   logic [PLIC_TARGET_COUNT-1:0][PLIC_SOURCE_WIDTH-1:0]     complete_idx;
 } type_regs2gateway_s; 
+
+
 
 `endif // PLIC_DEFS

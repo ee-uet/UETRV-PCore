@@ -100,9 +100,10 @@ always_comb begin : ptw_walker
 
             PTW_IDLE: begin
                 // By default start with the top level page table
-                ptw_lvl_next  = LEVEL_1;
-                gmap_bit_next = 1'b0;
-                iwalk_active_next   = 1'b0;
+                ptw_lvl_next      = LEVEL_1;
+                gmap_bit_next     = 1'b0;
+                iwalk_active_next = 1'b0;
+                r_req_next        = 1'b0;
 
                 // Handle the ITLB miss
                 if (itlb_miss) begin

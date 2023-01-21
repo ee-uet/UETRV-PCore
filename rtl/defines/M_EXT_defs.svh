@@ -15,19 +15,15 @@
 typedef struct packed {                            
     logic [`XLEN-1:0]                alu_operand_1;     
     logic [`XLEN-1:0]                alu_operand_2; 
-} type_exe2mul_data_s;
-
-typedef struct packed {                        
     type_alu_m_ops_e                 alu_m_ops;
-} type_exe2mul_ctrl_s;
+} type_exe2mul_s;
 
 typedef struct packed {                            
     logic [`XLEN-1:0]                alu_m_result; 
-} type_mul2wrb_data_s;
+    logic                            alu_m_req;
+    logic                            alu_m_ack;
+} type_mul2lsu_s;
 
-typedef struct packed {                        
-    logic                            alu_m_res;
-} type_mul2wrb_ctrl_s;
 
 `endif // M_EXT_DEFS
 

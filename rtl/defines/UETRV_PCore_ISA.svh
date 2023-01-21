@@ -290,7 +290,8 @@ typedef struct packed {
     logic [`XLEN-1:0]                alu_result;
     logic [`XLEN-1:0]                pc_next;
     logic [`XLEN-1:0]                r_data;  
-    logic [`RF_AWIDTH-1:0]           rd_addr;    
+    logic [`RF_AWIDTH-1:0]           rd_addr; 
+   logic  [`XLEN-1:0]                alu_m_result;   
 } type_lsu2wrb_data_s;
 
 typedef struct packed {                           
@@ -362,15 +363,14 @@ typedef struct packed {
     logic                            st_stall;  
     logic                            ld_req;
     logic                            ld_ack;  
-    logic                            mul_req;   
+    logic                            mul_req;  
+    logic                            mul_ack;   
 } type_lsu2fwd_s;
 
 // Writeback-2-Forward_stall interface signals
 typedef struct packed {                            
     logic [`RF_AWIDTH-1:0]           rd_addr;
-    logic                            rd_wr_req;  
-    logic                            alu_m_res;  
-    logic                            mul_req;  
+    logic                            rd_wr_req;    
 } type_wrb2fwd_s;
 
 // Execute-2-Forwarding interface signals
@@ -435,11 +435,12 @@ typedef struct packed {
     logic                            tlb_flush;
 } type_csr2lsu_data_s;
 
-typedef enum logic [1:0] {
-    AMO_IDLE  = 2'h0,
-    AMO_LOAD  = 2'h1,
-    AMO_OP    = 2'h2,
-    AMO_ST    = 2'h3
+typedef enum logic [2:0] {
+    AMO_IDLE  = 3'h0,
+    AMO_LOAD  = 3'h1,
+    AMO_OP    = 3'h2,
+    AMO_ST    = 3'h3,
+    AMO_DONE  = 3'h4
 } type_amo_states_e;
 
 `endif // UETRV_PCORE_ISA

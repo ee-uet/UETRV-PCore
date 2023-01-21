@@ -14,8 +14,7 @@ module execute (
     input  wire type_id2exe_ctrl_s       id2exe_ctrl_i,            // Structure for control signals from decode to execute 
 
     // EXE <---> M-Extension interface
-    output type_exe2mul_data_s           exe2mul_data_o,
-    output type_exe2mul_ctrl_s           exe2mul_ctrl_o,
+    output type_exe2mul_s                exe2mul_o,
 
     // EXE <---> LSU interface
     output type_exe2lsu_data_s           exe2lsu_data_o,
@@ -49,8 +48,7 @@ type_exe2csr_ctrl_s                  exe2csr_ctrl;
 type_exe2csr_data_s                  exe2csr_data;
 
 // Signals for M-extension
-type_exe2mul_ctrl_s                  exe2mul_ctrl;
-type_exe2mul_data_s                  exe2mul_data;
+type_exe2mul_s                       exe2mul;
 
 type_exe2if_fb_s                     exe2if_fb;
 type_alu_i_ops_e                     alu_i_operator;
@@ -219,7 +217,7 @@ always_comb begin
          alu_result = alu_operand_1 >> shift_amt;
       end
       ALU_I_OPS_SRA : begin
-         alu_result = alu_operand_1 >>> shift_amt;
+         alu_result = $signed(alu_operand_1) >>> shift_amt;
       end
       // Branch related operations
       ALU_I_OPS_COPY_OPR1 : begin
@@ -267,11 +265,11 @@ end
 //==================================== Output signals update ======================================// 
 
 // Update the output data signals for M-Extension
-assign exe2mul_data.alu_operand_1 = alu_operand_1;
-assign exe2mul_data.alu_operand_2 = alu_operand_2;
+assign exe2mul.alu_operand_1 = alu_operand_1;
+assign exe2mul.alu_operand_2 = alu_operand_2;
 
 // Assign the output control signals for M-Extension
-assign exe2mul_ctrl.alu_m_ops  = id2exe_ctrl.alu_m_ops;
+assign exe2mul.alu_m_ops  = id2exe_ctrl.alu_m_ops;
 
 // Update the output data signals for LSU
 assign exe2lsu_data.alu_result = alu_result;
@@ -330,8 +328,7 @@ assign exe2csr_ctrl_o  = exe2csr_ctrl;
 assign exe2csr_data_o  = exe2csr_data;
 assign exe2fwd_o       = exe2fwd;
 
-assign exe2mul_ctrl_o  = exe2mul_ctrl;
-assign exe2mul_data_o  = exe2mul_data;
+assign exe2mul_o       = exe2mul;
 
 // Update the feedback signals from EXE to IF stage                         
 assign exe2if_fb.pc_new = fence_i_req ? id2exe_data.pc_next : alu_result;                          

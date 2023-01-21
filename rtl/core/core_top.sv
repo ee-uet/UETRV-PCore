@@ -55,7 +55,7 @@ assign core2pipe.csr_mhartid = `CSR_MHARTID;
 assign core2pipe.ext_irq     = irq_plic_target_0 | irq_plic_target_1;
 assign core2pipe.timer_irq   = irq_clint_timer;
 assign core2pipe.soft_irq    = irq_soft_i;
-assign core2pipe.uart_irq    = irq_uart;
+assign core2pipe.uart_irq    = '0; // irq_uart
 
 pipeline_top pipeline_top_module (
     .rst_n               (rst_n        ),

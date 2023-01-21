@@ -26,14 +26,14 @@
 
 `define BMEM_SIZE                    4096
 
-`define IDMEM_SIZE                   28'h7FFFFFF
+`define IDMEM_SIZE                   28'h2000000
 `define MEM_ADDR_WIDTH               28
 
 `define DEV_SEL_ADDR_HIGH            31
 `define DEV_SEL_ADDR_LOW             28
 
-`define CLINT_SEL_ADDR_HIGH          31
-`define CLINT_SEL_ADDR_LOW           24
+`define PERI_SEL_ADDR_HIGH           31
+`define PERI_SEL_ADDR_LOW            24
 
 `define BMEM_SEL_ADDR_HIGH           31
 `define BMEM_SEL_ADDR_LOW            16
@@ -41,9 +41,10 @@
 
 `define IMEM_ADDR_MATCH              4'h8
 `define DMEM_ADDR_MATCH              4'h8
-`define UART_ADDR_MATCH              4'h9
-`define PLIC_ADDR_MATCH              4'h6
 
+
+`define UART_ADDR_MATCH              8'h90
+`define PLIC_ADDR_MATCH              8'h94
 `define CLINT_ADDR_MATCH             8'h02
 `define BMEM_ADDR_MATCH              16'h0001
 
@@ -71,6 +72,10 @@
 //`define DMEM_ADDR_MASK               `DBUS_ADDR_WIDTH'hF0000
 //`define UART_ADDR_MASK               `DBUS_ADDR_WIDTH'hF0000
 
+
+
+`define UART_REG_OFFSET_WIDTH        12
+`define PLIC_REG_OFFSET_WIDTH        24
 `define CLINT_ADDR_WIDTH             16
 
 typedef enum logic [`CLINT_ADDR_WIDTH-1:0] {

@@ -1,6 +1,7 @@
 `include "../../defines/UETRV_PCore_defs.svh"
 `include "../../defines/UETRV_PCore_ISA.svh"
 `include "../../defines/MMU_defs.svh"
+`include "../../defines/M_EXT_defs.svh"
 
 module lsu (
 
@@ -10,6 +11,9 @@ module lsu (
     // EXE <---> LSU interface
     input  wire type_exe2lsu_data_s         exe2lsu_data_i,
     input  wire type_exe2lsu_ctrl_s         exe2lsu_ctrl_i,            // Structure for control signals from execute to memory 
+
+    // M-extension <---> LSU interface
+    input  wire type_mul2lsu_s              mul2lsu_i,
 
     // LSU <---> CSR interface
     input wire type_csr2lsu_data_s          csr2lsu_data_i,
@@ -52,6 +56,7 @@ type_lsu2fwd_s               lsu2fwd;
 type_lsu2mmu_s               lsu2mmu;
 type_mmu2lsu_s               mmu2lsu;
 
+type_mul2lsu_s               mul2lsu;
 
 logic [`XLEN-1:0]            ld_st_addr;
 logic [`XLEN-1:0]            rdata_word;
@@ -60,6 +65,12 @@ logic [7:0]                  rdata_byte;
 logic                        ld_req;
 type_ld_ops_e                ld_ops;
 logic                        st_req;
+
+// Signals for LSU request/response
+logic                        st_stall;                                                           
+logic                        ld_amo_req;
+logic                        ld_amo_ack; 
+
 
 // A-Extension signals
 type_amo_ops_e               amo_ops;              // Signal added for AMO instructions
@@ -81,6 +92,8 @@ logic                        sc_pass;              // A flag to verify if SC ins
 logic                        amo_reserve;          // A flag to keep track if Data buffer and address buffer has valid value or not
 logic                        amo_reserve_ff;       // Signal used for latching the reserve signal.
 logic                        amo_save;
+
+
 // Signals for AMO State Machine
 type_amo_states_e            state, state_next;
 
@@ -90,6 +103,8 @@ assign exe2lsu_ctrl  = exe2lsu_ctrl_i;
 assign dbus2lsu      = dbus2lsu_i;
 assign csr2lsu_data  = csr2lsu_data_i;
 assign mmu2lsu       = mmu2lsu_i;
+
+assign mul2lsu       = mul2lsu_i;
 
 // Prepare the signals to perform load/store operations      
 assign ld_ops        = exe2lsu_ctrl.ld_ops;
@@ -240,7 +255,7 @@ always_comb begin
     endcase
 end
 
-always_ff @( posedge clk ) begin 
+always_ff @( posedge clk or negedge rst_n) begin 
    if (~rst_n | (is_sc & amo_done))
    begin
       amo_buffer_data_ff <= 0;
@@ -255,7 +270,7 @@ always_ff @( posedge clk ) begin
    end   
 end
 
-always_ff @( posedge clk ) begin 
+always_ff @( posedge clk or negedge rst_n) begin 
    if (~rst_n | is_lr)
       amo_load_ack_ff <= 0;
    else
@@ -266,7 +281,9 @@ always_ff @( posedge clk ) begin
    if (~rst_n)
       amo_operand_a_ff <= 0;
    else if(ld_req & dbus2lsu.ack)
-      amo_operand_a_ff <= dbus2lsu.r_data;   
+      amo_operand_a_ff <= dbus2lsu.r_data; 
+   else 
+      amo_operand_a_ff <= amo_operand_a_ff;   
 end
 
 // State register synchronous update
@@ -313,23 +330,38 @@ always_comb begin
 
       AMO_OP: begin
             lsu2wrb_ctrl.rd_wr_req  = 0;
-            state_next = AMO_ST;
+          //  state_next = AMO_ST;
             ld_req     = 0;
+            st_req     = 0;
             // Donot Store in case of LR or when SC fails
             if(is_lr | (is_sc && !sc_pass)) begin
-               st_req     = 0;
+               state_next = AMO_DONE;
             end else  begin
-               st_req     = 1;
-               if(is_sc) begin
-                  lsu2dbus.w_data = exe2lsu_data.rs2_data;
-               end else  begin
-                  lsu2dbus.w_data = amo_result_o;
-               end
+             //  st_req     = 1;
+               state_next = AMO_ST;
             end
       end
 
       AMO_ST: begin
-            lsu2wrb_ctrl.rd_wr_req  = 1;
+         lsu2wrb_ctrl.rd_wr_req  = 0;
+         ld_req     = 0;
+         st_req     = 1;
+
+         if(is_sc) begin
+            lsu2dbus.w_data = exe2lsu_data.rs2_data;
+         end else  begin
+            lsu2dbus.w_data = amo_result_o;
+         end
+     
+         if(dbus2lsu.ack) begin
+            state_next = AMO_DONE;
+         end else begin
+            state_next = AMO_ST;         
+         end
+      end
+
+      AMO_DONE: begin
+            lsu2wrb_ctrl.rd_wr_req = 1;
             state_next = AMO_IDLE;
             ld_req     = 0;
             st_req     = 0;
@@ -362,21 +394,29 @@ assign lsu2csr_ctrl.inst_page_fault = mmu2lsu.inst_page_fault;
 // assign lsu2wrb_data.alu_result = is_sc ? !sc_pass : exe2lsu_data.alu_result;  
 assign lsu2wrb_data.alu_result = exe2lsu_data.alu_result;  
 assign lsu2wrb_data.pc_next    = exe2lsu_data.pc_next;
-assign lsu2wrb_data.rd_addr    = exe2lsu_ctrl.rd_addr;              
+assign lsu2wrb_data.rd_addr    = exe2lsu_ctrl.rd_addr; 
+assign lsu2wrb_data.alu_m_result = mul2lsu.alu_m_result;              
 
 // Update control signals for writeback
 // If instruction is SC, then write back control signals will be updated to propagate 1 or 0 into rd
 assign lsu2wrb_ctrl.rd_wrb_sel = exe2lsu_ctrl.rd_wrb_sel;
 
 // Signals for forwarding module
-assign lsu2fwd.mul_req   = (exe2lsu_ctrl.rd_wrb_sel == RD_WRB_M_ALU) ? '1 : '0;
 assign lsu2fwd.rd_addr   = exe2lsu_ctrl.rd_addr; 
 assign lsu2fwd.rd_wr_req = exe2lsu_ctrl.rd_wr_req;  // For SC, forwarding loop will also be updated
 
-assign lsu2fwd.st_stall = st_req & ~dbus2lsu.ack;                                                              // (similar to any R-type instruction)
-assign lsu2fwd.ld_req   = ld_req | is_amo;
-assign lsu2fwd.ld_ack  = is_amo ? amo_done : dbus2lsu.ack;   // Ack will be based on amo_done in case of 
-                                                               // amo_instruction
+assign st_stall   = st_req & ~dbus2lsu.ack;                                                              // (similar to any R-type instruction)
+assign ld_amo_req = ld_req | is_amo;
+assign ld_amo_ack = is_amo ? amo_done : dbus2lsu.ack;   // Ack will be based on amo_done in case of 
+                                                             // amo_instruction
+
+//assign lsu2fwd.mul_req   = (exe2lsu_ctrl.rd_wrb_sel == RD_WRB_M_ALU) ? '1 : '0;
+assign lsu2fwd.st_stall = st_stall;
+assign lsu2fwd.ld_req   = ld_amo_req;
+assign lsu2fwd.ld_ack   = ld_amo_ack;
+
+assign lsu2fwd.mul_req  = mul2lsu.alu_m_req;
+assign lsu2fwd.mul_ack  = mul2lsu.alu_m_ack;
 
 // Signals to data memory interface
 assign lsu2dbus.addr   =  mmu2lsu.d_paddr[`XLEN-1:0]; // ld_st_addr;

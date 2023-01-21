@@ -136,7 +136,7 @@ assign dmem_addr = {2'b0, dbus2dmem.addr[`MEM_ADDR_WIDTH-1:2]};
 // The memory address is captured on the negative edge of the clock, 
 // while the read data is made available asynchronously on the next 
 // positive edge
-always_ff @(negedge clk)
+always_ff @(negedge rst_n, negedge clk)
   begin
    if (~rst_n) begin
        dmem_sel_ff     <= '0;

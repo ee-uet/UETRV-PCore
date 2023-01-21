@@ -151,13 +151,13 @@ assign mmu2ptw.flush_req       = lsu2mmu.lsu_flush;
 
 // Signals related to DTLB
 assign mmu2ptw.dtlb_vaddr      = lsu2mmu.d_vaddr;
-assign mmu2ptw.dtlb_req        = lsu2mmu.d_req;
+assign mmu2ptw.dtlb_req        = lsu2mmu.d_req & lsu2mmu.en_ld_st_vaddr;
 assign mmu2ptw.dtlb_hit        = dtlb2mmu.hit;
 assign mmu2ptw.is_store        = lsu2mmu.st_req;
 
 // Signals related to ITLB
 assign mmu2ptw.itlb_vaddr      = if2mmu.i_vaddr;
-assign mmu2ptw.itlb_req        = if2mmu.i_req;
+assign mmu2ptw.itlb_req        = if2mmu.i_req & lsu2mmu.en_vaddr;
 assign mmu2ptw.itlb_hit        = itlb2mmu.hit;
 
 // PTW module instantiation
