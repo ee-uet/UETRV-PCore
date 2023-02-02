@@ -1,5 +1,10 @@
+`ifndef VERILATOR
 `include "../../defines/UETRV_PCore_ISA.svh"
 `include "../../defines/PLIC_defs.svh"
+`else
+`include "UETRV_PCore_ISA.svh"
+`include "PLIC_defs.svh"
+`endif
 
 module plic (
     input logic                                    rst_n,               // reset

@@ -1,6 +1,10 @@
-
+`ifndef VERILATOR
 `include "../../defines/UETRV_PCore_defs.svh"
 `include "../../defines/UETRV_PCore_ISA.svh"
+`else
+`include "UETRV_PCore_defs.svh"
+`include "UETRV_PCore_ISA.svh"
+`endif
 
 module csr (
 

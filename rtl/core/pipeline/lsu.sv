@@ -1,7 +1,14 @@
+`ifndef VERILATOR
 `include "../../defines/UETRV_PCore_defs.svh"
 `include "../../defines/UETRV_PCore_ISA.svh"
 `include "../../defines/MMU_defs.svh"
 `include "../../defines/M_EXT_defs.svh"
+`else
+`include "UETRV_PCore_defs.svh"
+`include "UETRV_PCore_ISA.svh"
+`include "MMU_defs.svh"
+`include "M_EXT_defs.svh"
+`endif
 
 module lsu (
 
@@ -366,6 +373,14 @@ always_comb begin
             ld_req     = 0;
             st_req     = 0;
             amo_done   = 1;
+      end
+
+      default: begin
+         state_next              = AMO_IDLE;
+         ld_req                  = |ld_ops; 
+         st_req                  = |(exe2lsu_ctrl.st_ops);
+         lsu2dbus.w_data         = exe2lsu_data.rs2_data;
+         lsu2wrb_ctrl.rd_wr_req  = exe2lsu_ctrl.rd_wr_req;
       end
    endcase
 end

@@ -1,5 +1,9 @@
-
+`ifndef VERILATOR
 `include "../../defines/MMU_defs.svh"
+`else
+`include "MMU_defs.svh"
+`endif
+
 
 module ptw (
 

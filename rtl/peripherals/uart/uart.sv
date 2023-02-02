@@ -8,9 +8,15 @@
  *               buad register.
  *********************************************************************/
 
+`ifndef VERILATOR
 `include "../../defines/UETRV_PCore_defs.svh"
 `include "../../defines/UETRV_PCore_ISA.svh"
 `include "../../defines/UART_defs.svh"
+`else
+`include "UETRV_PCore_defs.svh"
+`include "UETRV_PCore_ISA.svh"
+`include "UART_defs.svh"
+`endif
 
 
 module uart ( 

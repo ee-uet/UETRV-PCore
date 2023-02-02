@@ -1,5 +1,9 @@
 // reg_file.sv
-`include "../../defines/UETRV_PCore_defs.svh"
+`ifndef VERILATOR
+`include "../../defines/UETRV_PCore_defs.svh"\
+`else
+`include "UETRV_PCore_defs.svh"
+`endif
 
 module reg_file (
 

@@ -1,7 +1,11 @@
 // Include some licensing info and file header 
-
+`ifndef VERILATOR
 `include "../../defines/UETRV_PCore_defs.svh"
 `include "../../defines/UETRV_PCore_ISA.svh"
+`else
+`include "UETRV_PCore_defs.svh"
+`include "UETRV_PCore_ISA.svh"
+`endif
 
 module forward_stall (
 

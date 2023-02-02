@@ -1,6 +1,10 @@
+`ifndef VERILATOR
 `include "../../defines/UETRV_PCore_ISA.svh"
-`include "../../defines/MMU_defs.svh"
 `include "../../defines/M_EXT_defs.svh"
+`else
+`include "UETRV_PCore_ISA.svh"
+`include "M_EXT_defs.svh"
+`endif
 
 `default_nettype wire
 
