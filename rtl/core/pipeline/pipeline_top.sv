@@ -1,8 +1,11 @@
+
 `ifndef VERILATOR
 `include "../../defines/UETRV_PCore_ISA.svh"
+`include "../../defines/MMU_defs.svh"
 `include "../../defines/M_EXT_defs.svh"
 `else
 `include "UETRV_PCore_ISA.svh"
+`include "MMU_defs.svh"
 `include "M_EXT_defs.svh"
 `endif
 
@@ -24,6 +27,9 @@ module pipeline_top (
    // Data bus interface
     output type_lsu2dbus_s              lsu2dbus_o,                // Signal to data bus 
     input  wire type_dbus2lsu_s         dbus2lsu_i,
+
+   //
+   input wire type_clint2csr_s          clint2csr_i,
 
    // IRQ interface
    input wire type_pipe2csr_s           core2pipe_i 
@@ -204,7 +210,7 @@ always_comb begin
         id2exe_ctrl_next = '0;
 
         // When pipeline decode and execute stages are flushed in case of jump/branch
-        // instructions on incase of interrupt/return-from-interrupt, the PC in those 
+        // instructions or incase of interrupt/return-from-interrupt, the PC in those 
         // flushed states should have a valid value to ensure that proper value of PC  
         // is saved in case of an (high-priority) interrupt occurence. This is achieved 
         // using instruction flushed flag signal.
@@ -391,6 +397,8 @@ csr csr_module (
     // Writeback module interface signals 
  //    .csr2wrb_ctrl_o            (csr2wrb_ctrl),
     .csr2wrb_data_o             (csr2wrb_data),
+
+    .clint2csr_i                (clint2csr_i),
 
     .pipe2csr_i                 (core2pipe_i),
     .fwd2csr_i                  (fwd2csr),

@@ -1,3 +1,4 @@
+
 `ifndef VERILATOR
 `include "../../defines/MMU_defs.svh"
 `else
@@ -180,10 +181,10 @@ always_comb begin : ptw_walker
                             if (ptw_lvl_ff == LEVEL_1) begin
                                 // Move to next level page table, 
                                 // and initiate next PTE read request
-                                ptw_lvl_next   = LEVEL_2;
-                                ptw_paddr_next = {pte.ppn, vaddr_ff[21:12], 2'b0};  
                                 r_req_next     = 1'b1;  
-                                ptw_state_next = PTW_PROCESS_PTE;                               
+                                ptw_lvl_next   = LEVEL_2;
+                                ptw_state_next = PTW_LEVEL_TWO_REQ; 
+                                ptw_paddr_next = {pte.ppn, vaddr_ff[21:12], 2'b0};                               
                             end else if (ptw_lvl_ff == LEVEL_2) begin
                               // Should not have ended up here,
                               // must have been the last level page table
@@ -204,7 +205,12 @@ always_comb begin : ptw_walker
                 end
                 
             end
-            
+            PTW_LEVEL_TWO_REQ: begin
+                ptw_lvl_next   = LEVEL_2;
+                ptw_state_next = PTW_PROCESS_PTE;
+                ptw_paddr_next = ptw_paddr_ff;  
+                r_req_next     = r_req_ff; 
+            end
             // Report error to MMU
             PTW_PAGE_ERR: begin
                 ptw_state_next = PTW_IDLE;
@@ -246,7 +252,7 @@ always_ff @(posedge clk, negedge rst_n) begin
     end else begin
         ptw_state_ff    <= ptw_state_next;
         ptw_paddr_ff    <= ptw_paddr_next;
-        r_req_ff        <= r_req_next;
+        r_req_ff        <= r_req_next & (~dmem2ptw.r_valid);
         iwalk_active_ff <= iwalk_active_next;
         ptw_lvl_ff      <= ptw_lvl_next; 
         vaddr_ff        <= vaddr_next;

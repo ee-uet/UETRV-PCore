@@ -1,4 +1,5 @@
 // Include some licensing info and file header 
+
 `ifndef VERILATOR
 `include "../../defines/UETRV_PCore_defs.svh"
 `include "../../defines/UETRV_PCore_ISA.svh"
@@ -6,6 +7,7 @@
 `include "UETRV_PCore_defs.svh"
 `include "UETRV_PCore_ISA.svh"
 `endif
+
 
 module forward_stall (
 
@@ -63,6 +65,7 @@ logic                                id_exe_flush;
 logic                                exe_new_pc_req;
 
 logic                                if2fwd_stall;
+logic                                if2fwd_stall_ff;
 
 // Signals driving outputs to different modules
 type_fwd2if_s                        fwd2if;
@@ -93,6 +96,14 @@ always_ff @(posedge clk) begin
     end
 end
 ///////////////////////////////////////////
+
+always_ff @(posedge clk) begin
+    if (~rst_n) begin
+        if2fwd_stall_ff <= '0;
+    end else begin
+        if2fwd_stall_ff <= if2fwd_stall;
+    end
+end
 
 // LSU related stall signal using the 'ack' from data memory
 assign ld_stall = ld_stall_next;                  // lsu2fwd.ld_req & (~lsu2fwd.ld_ack);
@@ -148,11 +159,11 @@ assign ld_csr_mul_read_req = lsu2fwd.ld_req | csr2fwd.csr_read_req | lsu2fwd.mul
 // can not be resolved by forwarding from LSU-2-execute stage. Rather one cycle stall is
 // generated and the data read using DBUS is forwarded from writeback stage to execute
 // stage to resolve the hazard. 
-assign fwd2exe.fwd_lsu_rs1 = lsu2rs1_hazard & (~ld_csr_mul_read_req);
-assign fwd2exe.fwd_lsu_rs2 = lsu2rs2_hazard & (~ld_csr_mul_read_req);
+assign fwd2exe.fwd_lsu_rs1 = lsu2rs1_hazard & (~ld_csr_mul_read_req) & (~(if2fwd_stall | if2fwd_stall_ff));
+assign fwd2exe.fwd_lsu_rs2 = lsu2rs2_hazard & (~ld_csr_mul_read_req) & (~(if2fwd_stall | if2fwd_stall_ff));
      
-assign fwd2exe.fwd_wrb_rs1 = ((exe2fwd.rs1_addr == wrb2fwd.rd_addr) & wrb2fwd.rd_wr_req) & rs1_valid;
-assign fwd2exe.fwd_wrb_rs2 = ((exe2fwd.rs2_addr == wrb2fwd.rd_addr) & wrb2fwd.rd_wr_req) & rs2_valid;
+assign fwd2exe.fwd_wrb_rs1 = ((exe2fwd.rs1_addr == wrb2fwd.rd_addr) & wrb2fwd.rd_wr_req) & rs1_valid & (~(if2fwd_stall | if2fwd_stall_ff));
+assign fwd2exe.fwd_wrb_rs2 = ((exe2fwd.rs2_addr == wrb2fwd.rd_addr) & wrb2fwd.rd_wr_req) & rs2_valid & (~(if2fwd_stall | if2fwd_stall_ff));
 
 // Load, CSR or M-Extension hazard detection
 assign ld_use_rs1_hazard = lsu2rs1_hazard & exe2fwd.use_rs1 & (ld_csr_mul_read_req);

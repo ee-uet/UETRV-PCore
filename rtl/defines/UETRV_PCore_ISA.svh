@@ -435,6 +435,12 @@ typedef struct packed {
     logic                            tlb_flush;
 } type_csr2lsu_data_s;
 
+// Clint-2-CSR machine timer signals
+typedef struct packed {                            
+    logic [`XLEN-1:0]                time_lo;  
+    logic [`XLEN-1:0]                time_hi;
+} type_clint2csr_s;
+
 typedef enum logic [2:0] {
     AMO_IDLE  = 3'h0,
     AMO_LOAD  = 3'h1,

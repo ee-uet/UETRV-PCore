@@ -29,6 +29,7 @@ typedef enum logic[2:0] {
     PTW_IDLE,
     PTW_WAIT_R_VALID,
     PTW_PROCESS_PTE,
+    PTW_LEVEL_TWO_REQ,
     PTW_PAGE_ERR,
     PTW_PAGE_ACCESS_ERR
 } type_ptw_state_e;

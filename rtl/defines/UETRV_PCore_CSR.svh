@@ -19,24 +19,6 @@
 // Machine ISA info
 `define CSR_MISA                    `MISA_MXL_32 | `RVI_BASE | `RVM_EXTENTION | `RVA_EXTENTION | `RVS_MODE | `RVU_MODE
 
-// Local parameters for setting up interrupt enable register
-localparam int unsigned S_SOFT_INT_IDX  = 1;
-localparam int unsigned M_SOFT_INT_IDX  = 3;
-localparam int unsigned S_TIMER_INT_IDX = 5;
-localparam int unsigned M_TIMER_INT_IDX = 7;
-localparam int unsigned S_EXT_INT_IDX   = 9;
-localparam int unsigned M_EXT_INT_IDX   = 11;
-
-localparam logic [`XLEN-1:0] MIE_SSIP = 1 << S_SOFT_INT_IDX;
-localparam logic [`XLEN-1:0] MIE_MSIP = 1 << M_SOFT_INT_IDX;
-localparam logic [`XLEN-1:0] MIE_STIP = 1 << S_TIMER_INT_IDX;
-localparam logic [`XLEN-1:0] MIE_MTIP = 1 << M_TIMER_INT_IDX;
-localparam logic [`XLEN-1:0] MIE_SEIP = 1 << S_EXT_INT_IDX;
-localparam logic [`XLEN-1:0] MIE_MEIP = 1 << M_EXT_INT_IDX;
-
-localparam logic [`XLEN-1:0] MIE_MASK = MIE_SSIP | MIE_STIP | MIE_SEIP | MIE_MSIP | MIE_MTIP | MIE_MEIP;
-
-
 // Parameters for trap setup and handling
 localparam int unsigned CSR_MTVEC_BASE_ALIGN_VECTOR = 6;
 localparam int unsigned CSR_MTVEC_BASE_ALIGN_DIRECT = 2;
@@ -86,7 +68,16 @@ typedef enum logic [11:0] {
     CSR_ADDR_MCYCLEH        = 12'hB80,
     CSR_ADDR_MINSTRET       = 12'hB02,
     CSR_ADDR_MINSTRETH      = 12'hB82,
-    CSR_ADDR_MCOUNTINHIBIT  = 12'h320
+    CSR_ADDR_MCOUNTINHIBIT  = 12'h320,
+
+    // User mode read-only shadow counters and timers 
+    CSR_ADDR_CYCLE          = 12'hC00,
+    CSR_ADDR_TIME           = 12'hC01,
+    CSR_ADDR_INSTRET        = 12'hC02,
+
+    CSR_ADDR_CYCLEH         = 12'hC80,
+    CSR_ADDR_TIMEH          = 12'hC81,
+    CSR_ADDR_INSTRETH       = 12'hC82
 } type_csr_addr_e;
 
 
@@ -112,9 +103,33 @@ typedef enum logic [EXC_CODE_WIDTH-1:0] {
 } type_exc_code_e;
 
 //============================= Interrupt request codes ============================//
+// Local parameters for setting up interrupt enable register
+localparam int unsigned S_SOFT_INT_IDX  = 1;
+localparam int unsigned M_SOFT_INT_IDX  = 3;
+localparam int unsigned S_TIMER_INT_IDX = 5;
+localparam int unsigned M_TIMER_INT_IDX = 7;
+localparam int unsigned S_EXT_INT_IDX   = 9;
+localparam int unsigned M_EXT_INT_IDX   = 11;
+
+localparam logic [`XLEN-1:0] MIE_SSIP = 1 << S_SOFT_INT_IDX;
+localparam logic [`XLEN-1:0] MIE_MSIP = 1 << M_SOFT_INT_IDX;
+localparam logic [`XLEN-1:0] MIE_STIP = 1 << S_TIMER_INT_IDX;
+localparam logic [`XLEN-1:0] MIE_MTIP = 1 << M_TIMER_INT_IDX;
+localparam logic [`XLEN-1:0] MIE_SEIP = 1 << S_EXT_INT_IDX;
+localparam logic [`XLEN-1:0] MIE_MEIP = 1 << M_EXT_INT_IDX;
+
+localparam logic [`XLEN-1:0] MIE_MASK = MIE_SSIP | MIE_STIP | MIE_SEIP | MIE_MSIP | MIE_MTIP | MIE_MEIP;
+localparam logic [`XLEN-1:0] MIP_MASK = MIE_MASK;
+localparam logic [`XLEN-1:0] SIE_MASK = MIE_SSIP | MIE_STIP | MIE_SEIP;
+localparam logic [`XLEN-1:0] SIP_MASK = SIE_MASK;
+localparam logic [`XLEN-1:0] SIE_SSIP = MIE_SSIP;
+localparam logic [`XLEN-1:0] SIP_SSIP = SIE_SSIP;
+
+
 localparam int unsigned IRQ_CODE_WIDTH = 4;
 
 typedef enum logic [IRQ_CODE_WIDTH-1:0] {
+    IRQ_CODE_NONE       = 4'd0,
     IRQ_CODE_S_SOFTWARE = 4'd1,     // S-mode software IRQ code 
     IRQ_CODE_M_SOFTWARE = 4'd3,     // M-mode software IRQ code 
     IRQ_CODE_S_TIMER    = 4'd5,     // S-mode timer IRQ code 
@@ -122,9 +137,6 @@ typedef enum logic [IRQ_CODE_WIDTH-1:0] {
     IRQ_CODE_S_EXTERNAL = 4'd9,     // S-mode external IRQ code
     IRQ_CODE_M_EXTERNAL = 4'd11     // M-mode external IRQ code
 } type_irq_code_e;
-
-localparam logic [`XLEN-1:0] MIP_MASK = MIE_SSIP | MIE_STIP | MIE_SEIP | MIE_MSIP | MIE_MTIP | MIE_MEIP;
-
 
 //=========================== Register bitfield definitions ==========================//
 
@@ -182,10 +194,9 @@ localparam logic [`XLEN-1:0] SSTATUS_READ_MASK  = STATUS_SIE | STATUS_SPIE
                                                    
                                                   
 localparam logic [`XLEN-1:0] SSTATUS_WRITE_MASK = STATUS_SIE | STATUS_SPIE
-                                                | STATUS_UBE | STATUS_SPP
-                                                | STATUS_VS  | STATUS_FS
-                                                | STATUS_XS  | STATUS_SUM
-                                                | STATUS_MXR | STATUS_SD;
+                                                | STATUS_SPP | STATUS_FS
+                                                | STATUS_SUM | STATUS_MXR;
+
 
 // Bitwidth parameters and bitfield definition for SATP register
 localparam SATP_MODE_WIDTH = 1;

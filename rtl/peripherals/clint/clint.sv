@@ -19,7 +19,6 @@
 `endif
 
 
-
  module clint ( 
      input logic                                    rst_n,                    // reset
      input logic                                    clk,                      // clock
@@ -31,6 +30,8 @@
 
      // Selection signal from address decoder of dbus interconnect 
      input logic                                    clint_sel_i,
+
+     output type_clint2csr_s                        clint2csr_o,
 	
      // Interrupt signal from memory mapped timer that will be wired MTIP bit of MIP
      output logic				    clint_timer_irq_o
@@ -56,6 +57,12 @@ logic                                   mtimecmp_hi_wr_flag;
 	
 // Local sinals for internal use
 logic                                   timer_overflow_ff, timer_overflow_next;
+
+// Timer prescaler
+logic                                timer_clk_ff, timer_clk_next;
+logic [6:0]                          timer_prescaler_ff, timer_prescaler_next;
+
+
 	
 //============================ Memory mapped timer register read operations =============================//
 always_comb begin
@@ -115,7 +122,7 @@ always_comb begin
     end
 end
 
-always_ff @(posedge clk, negedge rst_n) begin
+always_ff @(posedge timer_clk_ff, negedge rst_n) begin
     if (~rst_n) begin
         mtime_ff <= '0;
     end else begin       
@@ -155,6 +162,29 @@ always_ff @(posedge clk, negedge rst_n) begin
         timer_overflow_ff <= timer_overflow_next;
     end
 end
+
+//================================= Timer Prescaler ==================================//
+always_comb begin
+
+    if (timer_prescaler_ff == 7'd99) begin
+        timer_clk_next = ~timer_clk_ff;
+        timer_prescaler_next = '0;
+    end else begin
+        timer_clk_next = timer_clk_ff;
+        timer_prescaler_next = timer_prescaler_ff + 7'd1;
+    end
+end
+
+always_ff @(posedge clk, negedge rst_n) begin
+    if (~rst_n) begin
+        timer_clk_ff <= '0;
+        timer_prescaler_ff <= '0;
+    end else begin       
+        timer_clk_ff <= timer_clk_next;
+        timer_prescaler_ff <= timer_prescaler_next;
+    end
+end
+
 	
 //================================= Dbus interface ==================================//
 type_peri2dbus_s                      clint2dbus_ff;
@@ -178,6 +208,9 @@ end
 
 // Update output signals 
 assign clint_timer_irq_o = timer_overflow_ff;
+
+assign clint2csr_o.time_lo = mtime_ff[31:0];
+assign clint2csr_o.time_hi = mtime_ff[63:32];
 
 // Response signals to dbus 
 assign clint2dbus_o.r_data = clint2dbus_ff.r_data;

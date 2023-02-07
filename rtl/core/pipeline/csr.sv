@@ -1,3 +1,4 @@
+
 `ifndef VERILATOR
 `include "../../defines/UETRV_PCore_defs.svh"
 `include "../../defines/UETRV_PCore_ISA.svh"
@@ -5,6 +6,7 @@
 `include "UETRV_PCore_defs.svh"
 `include "UETRV_PCore_ISA.svh"
 `endif
+
 
 module csr (
 
@@ -19,6 +21,8 @@ module csr (
     input  wire type_lsu2csr_data_s         lsu2csr_data_i,
     input  wire type_lsu2csr_ctrl_s         lsu2csr_ctrl_i,
     output type_csr2lsu_data_s              csr2lsu_data_o,
+
+    input wire type_clint2csr_s             clint2csr_i,
 
     // Pipeline <---> CSR interface
     input wire type_pipe2csr_s              pipe2csr_i,
@@ -96,6 +100,8 @@ logic [`XLEN-1:0]                csr_scause_ff,   csr_scause_next;
 logic [`XLEN-1:0]                csr_stval_ff,    csr_stval_next;
 type_satp_reg_s                  csr_satp_ff,     csr_satp_next;
 
+logic [`XLEN-1:0]                sip_mask;
+
 // Machine mode CSR write update flags for cycle and performance counter registers 
 logic                            csr_mcycle_wr_flag;
 logic                            csr_mcycleh_wr_flag;
@@ -119,10 +125,12 @@ logic                            csr_mip_wr_flag;
 // Supervisor mode CSR write update flags for trap setup and handling registers
 logic                            csr_sstatus_wr_flag;
 logic                            csr_sscratch_wr_flag;
+logic                            csr_sie_wr_flag;
 logic                            csr_stvec_wr_flag;
 logic                            csr_sepc_wr_flag;
 logic                            csr_scause_wr_flag;
 logic                            csr_stval_wr_flag;
+logic                            csr_sip_wr_flag;
 logic                            csr_satp_wr_flag;
 
 // Privilge mode definition to keep track of processor state 
@@ -133,10 +141,12 @@ logic                            exc_delegated_req;
                   
 // IRQ related signals
 type_pipe2csr_s                  pipe2csr;
-type_irq_code_e                  m_irq_code; 
+type_irq_code_e                  irq_code; 
 logic [`XLEN-1:0]                m_mode_new_pc;
 logic [`XLEN-1:0]                s_mode_new_pc;
 logic                            m_irq_req;
+logic                            s_irq_req;
+logic                            irq_req;
 logic                            meip_irq_req;
 logic                            mtip_irq_req;
 logic                            msip_irq_req;
@@ -148,6 +158,7 @@ logic                            m_mode_exc_req;
 logic                            m_mode_irq_req;
 logic                            m_mode_pc_req;
 logic                            m_mode_pf_exc_req;
+logic                            m_mode_ecall_req;
 logic                            mret_pc_req;
 
 // S-mode interrupt/exception related signals
@@ -230,10 +241,16 @@ always_comb begin
             CSR_ADDR_MHARTID        : csr_rdata    = pipe2csr.csr_mhartid;
 
             // Machine mode cycle and performance counter registers
-            CSR_ADDR_MCYCLE         : csr_rdata    = csr_mcycle_ff;
-            CSR_ADDR_MCYCLEH        : csr_rdata    = csr_mcycleh_ff;
-            CSR_ADDR_MINSTRET       : csr_rdata    = csr_minstret_ff;
-            CSR_ADDR_MINSTRETH      : csr_rdata    = csr_minstreth_ff;
+            CSR_ADDR_MCYCLE,
+            CSR_ADDR_CYCLE          : csr_rdata    = csr_mcycle_ff;
+            CSR_ADDR_MCYCLEH,
+            CSR_ADDR_CYCLEH         : csr_rdata    = csr_mcycleh_ff;
+            CSR_ADDR_TIME           : csr_rdata    = clint2csr_i.time_lo;
+            CSR_ADDR_TIMEH          : csr_rdata    = clint2csr_i.time_hi;
+            CSR_ADDR_MINSTRET,
+            CSR_ADDR_INSTRET        : csr_rdata    = csr_minstret_ff;
+            CSR_ADDR_MINSTRETH,
+            CSR_ADDR_INSTRET        : csr_rdata    = csr_minstreth_ff;
             CSR_ADDR_MCOUNTEREN     : csr_rdata    = csr_mcounteren_ff;
             CSR_ADDR_MCOUNTINHIBIT  : csr_rdata    = csr_mcountinhibit_ff;
 
@@ -254,13 +271,13 @@ always_comb begin
 
            // Read supervisor mode trap setup and handling registers
             CSR_ADDR_SSTATUS        : csr_rdata    = (csr_mstatus_ff & SSTATUS_READ_MASK);           
-            CSR_ADDR_SIE            : csr_rdata    = csr_mie_ff & csr_mideleg_ff;
+            CSR_ADDR_SIE            : csr_rdata    = csr_mie_ff & SIE_MASK;
             CSR_ADDR_SSCRATCH       : csr_rdata    = csr_sscratch_ff;
             CSR_ADDR_STVEC          : csr_rdata    = csr_stvec_ff;
             CSR_ADDR_SCAUSE         : csr_rdata    = csr_scause_ff;
             CSR_ADDR_STVAL          : csr_rdata    = csr_stval_ff;
             CSR_ADDR_SEPC           : csr_rdata    = csr_sepc_ff;
-
+            CSR_ADDR_SIP            : csr_rdata    = csr_mip_ff & SIP_MASK;
             CSR_ADDR_SATP           : begin
                 // Reading SATP when in S-Mode and TVM = 1 is not permitted
                 if ((priv_mode_ff == PRIV_MODE_S) && csr_mstatus_ff.tvm) begin
@@ -304,17 +321,19 @@ always_comb begin
 
     csr_sscratch_wr_flag       = 1'b0;
     csr_sstatus_wr_flag        = 1'b0;
+    csr_sie_wr_flag            = 1'b0;
     csr_stvec_wr_flag          = 1'b0;
     csr_sepc_wr_flag           = 1'b0;
     csr_scause_wr_flag         = 1'b0;
     csr_stval_wr_flag          = 1'b0;
+    csr_sip_wr_flag            = 1'b0;
     csr_satp_wr_flag           = 1'b0;
 
     if (exe2csr_ctrl.csr_wr_req) begin
         case (exe2csr_data.csr_addr)
 
             // Machine mode cycle and performance counter registers
-            CSR_ADDR_MCYCLE         : csr_mstatus_wr_flag        = 1'b1;
+            CSR_ADDR_MCYCLE         : csr_mcycle_wr_flag         = 1'b1;
             CSR_ADDR_MCYCLEH        : csr_mcycleh_wr_flag        = 1'b1;
             CSR_ADDR_MINSTRET       : csr_minstret_wr_flag       = 1'b1;
             CSR_ADDR_MINSTRETH      : csr_minstreth_wr_flag      = 1'b1;
@@ -339,9 +358,11 @@ always_comb begin
             // Supervisor mode flags for trap setup and handling registers write operation
             CSR_ADDR_SSTATUS        : csr_sstatus_wr_flag  = 1'b1;
             CSR_ADDR_SSCRATCH       : csr_sscratch_wr_flag = 1'b1;
+            CSR_ADDR_SIE            : csr_sie_wr_flag      = 1'b1;
             CSR_ADDR_STVEC          : csr_stvec_wr_flag    = 1'b1; 
             CSR_ADDR_SEPC           : csr_sepc_wr_flag     = 1'b1;
             CSR_ADDR_STVAL          : csr_stval_wr_flag    = 1'b1;
+            CSR_ADDR_SIP            : csr_sip_wr_flag      = 1'b1;
             CSR_ADDR_SATP           : csr_satp_wr_flag     = 1'b1; 
 
             default                 : begin
@@ -388,7 +409,11 @@ end
 
 always_comb begin 
 
-    if (exe2csr_data.instr_flushed) begin
+    if (mret_pc_req ) begin
+        csr_pc_next = m_mode_new_pc; 
+    end else if (sret_pc_req) begin
+        csr_pc_next = s_mode_new_pc; 
+    end else if (exe2csr_data.instr_flushed) begin
         csr_pc_next = csr_pc_ff; 
     end else if (wfi_req) begin
         csr_pc_next = lsu2csr_data.pc_next;
@@ -636,8 +661,8 @@ always_comb begin
     end       
 end
 
-// Update the mie (machine interrupt enable) CSR 
-// ---------------------------------------------
+// Update the mie/sie (machine/supervisor interrupt enable) CSR 
+// ------------------------------------------------------------
 always_ff @(negedge rst_n, posedge clk) begin
     if (~rst_n) begin
         csr_mie_ff <= '0;
@@ -651,6 +676,8 @@ always_comb begin
 
     if (csr_mie_wr_flag) begin
         csr_mie_next = (csr_wdata & MIE_MASK);  // | (csr_mie_ff & ~MIE_MASK) -- (do we need this)
+    end else if (csr_sie_wr_flag) begin
+        csr_mie_next = (csr_wdata & csr_mideleg_ff) | (csr_mie_ff & ~csr_mideleg_ff);  
     end else begin
         csr_mie_next = csr_mie_ff;
     end
@@ -729,7 +756,7 @@ always_comb begin
             csr_mcause_next = {1'b0, {`XLEN-EXC_CODE_WIDTH-1{1'b0}}, exc_code};
         end
         m_mode_irq_req     : begin
-            csr_mcause_next = {1'b1, {`XLEN-EXC_CODE_WIDTH-1{1'b0}}, m_irq_code};
+            csr_mcause_next = {1'b1, {`XLEN-EXC_CODE_WIDTH-1{1'b0}}, irq_code};
         end
         csr_mcause_wr_flag : begin  
             csr_mcause_next = {csr_wdata[`XLEN-1], {`XLEN-EXC_CODE_WIDTH-1{1'b0}}, csr_wdata[EXC_CODE_WIDTH-1:0]};
@@ -780,14 +807,17 @@ always_ff @(negedge rst_n, posedge clk) begin
 end
 
 always_comb begin
-    csr_mip_next      = '0;
+    sip_mask = '0;
+    csr_mip_next = csr_mip_ff;
     csr_mip_next.meip = pipe2csr.ext_irq;
-    csr_mip_next.mtip = pipe2csr.timer_irq;
+    csr_mip_next.mtip = '0; //pipe2csr.timer_irq;
     csr_mip_next.msip = pipe2csr.soft_irq;
-    csr_mip_next.uart = pipe2csr.uart_irq;
 
     if (csr_mip_wr_flag) begin
-        csr_mip_next = (csr_wdata & MIP_MASK);
+        csr_mip_next = (csr_wdata & SIP_MASK) | (csr_mip_ff & ~SIP_MASK);
+    end else if (csr_sip_wr_flag) begin
+        sip_mask     = SIP_MASK & csr_mideleg_ff;
+        csr_mip_next = (csr_wdata & sip_mask) | (csr_mip_ff & ~sip_mask);
     end
 end
 
@@ -835,6 +865,9 @@ always_comb begin
         m_mode_pf_exc_req      : begin
             csr_mtval_next = csr_pc_ff;
         end
+        m_mode_ecall_req       : begin
+            csr_mtval_next = '0;
+        end
         csr_mtval_wr_flag      : begin  
             csr_mtval_next = csr_wdata;
         end
@@ -860,7 +893,7 @@ always_comb begin
             csr_scause_next = {1'b0, {`XLEN-EXC_CODE_WIDTH-1{1'b0}}, exc_code};
         end
         s_mode_irq_req     : begin
-            csr_scause_next = {1'b1, {`XLEN-EXC_CODE_WIDTH-1{1'b0}}, m_irq_code};
+            csr_scause_next = {1'b1, {`XLEN-EXC_CODE_WIDTH-1{1'b0}}, irq_code};
         end
         csr_scause_wr_flag : begin  
             csr_scause_next = {csr_wdata[`XLEN-1], {`XLEN-EXC_CODE_WIDTH-1{1'b0}}, csr_wdata[EXC_CODE_WIDTH-1:0]};
@@ -1027,6 +1060,14 @@ always_comb begin : wfi
 end : wfi
 
 //=============================== Interrupt/Exception response ===============================//
+// Trap privilege mode
+always_comb begin
+    trap_priv_mode = PRIV_MODE_M;
+
+    if ((irq_delegated_req || exc_delegated_req) && ~m_mode_exc_req && ~m_mode_irq_req) begin
+        trap_priv_mode = (priv_mode_ff == PRIV_MODE_M) ? PRIV_MODE_M : PRIV_MODE_S;
+    end 
+end
 
 // Exception requests from any source including CSR and earlier stages
 assign csr_exc_req     = csr_rd_exc_req | csr_wr_exc_req | csr_satp_exc_req;  
@@ -1040,6 +1081,7 @@ assign exc_req       = exe2csr_ctrl.exc_req | csr_exc_req | pf_exc_req
 
 // Exception code corresponding to selected exception, priority is given to earlier exceptions
 always_comb begin
+    exc_code = EXC_CODE_NO_EXCEPTION;
     case (1'b1)
         exe2csr_ctrl.exc_req: exc_code = exe2csr_data.exc_code;
         csr_exc_req         : exc_code = EXC_CODE_ILLEGAL_INSTR;
@@ -1048,7 +1090,6 @@ always_comb begin
         inst_pf_exc_req     : exc_code = EXC_CODE_INST_PAGE_FAULT;
         ld_misalign_exc_req : exc_code = EXC_CODE_LD_ADDR_MISALIGN;
         st_misalign_exc_req : exc_code = EXC_CODE_ST_ADDR_MISALIGN;
-        default             : exc_code = exe2csr_data.exc_code;
     endcase
 end
 
@@ -1056,34 +1097,35 @@ end
 assign meip_irq_req = csr_mip_ff.meip & csr_mie_ff.meie;
 assign mtip_irq_req = csr_mip_ff.mtip & csr_mie_ff.mtie;
 assign msip_irq_req = csr_mip_ff.msip & csr_mie_ff.msie;
-assign uart_irq_req = csr_mip_ff.uart & csr_mie_ff.uart;
+// assign uart_irq_req = csr_mip_ff.uart & csr_mie_ff.uart;
 
+assign seip_irq_req = csr_mip_ff.seip & csr_mie_ff.seie;
+assign stip_irq_req = csr_mip_ff.stip & csr_mie_ff.stie;
+assign ssip_irq_req = csr_mip_ff.ssip & csr_mie_ff.ssie;
 
-assign m_irq_req = meip_irq_req | mtip_irq_req | msip_irq_req | uart_irq_req;
-
-// Trap privilege mode
-always_comb begin
-    trap_priv_mode = PRIV_MODE_M;
-
-    if (irq_delegated_req || exc_delegated_req) begin
-        trap_priv_mode = (priv_mode_ff == PRIV_MODE_M) ? PRIV_MODE_M : PRIV_MODE_S;
-    end 
-end
+assign m_irq_req = meip_irq_req | mtip_irq_req | msip_irq_req;
+assign s_irq_req = seip_irq_req | stip_irq_req | ssip_irq_req;
+assign irq_req   = m_irq_req | s_irq_req;
 
 // IRQ codes for cause register 
 always_comb begin
+    irq_code = type_irq_code_e'(IRQ_CODE_NONE);
     case (1'b1)
-        meip_irq_req: m_irq_code = type_irq_code_e'(IRQ_CODE_M_EXTERNAL);
-        msip_irq_req: m_irq_code = type_irq_code_e'(IRQ_CODE_M_SOFTWARE);
-        mtip_irq_req: m_irq_code = type_irq_code_e'(IRQ_CODE_M_TIMER);
-        default     : m_irq_code = type_irq_code_e'(IRQ_CODE_M_EXTERNAL);
+        meip_irq_req: irq_code = type_irq_code_e'(IRQ_CODE_M_EXTERNAL);
+        msip_irq_req: irq_code = type_irq_code_e'(IRQ_CODE_M_SOFTWARE);
+        mtip_irq_req: irq_code = type_irq_code_e'(IRQ_CODE_M_TIMER);
+        seip_irq_req: irq_code = type_irq_code_e'(IRQ_CODE_S_EXTERNAL);
+        ssip_irq_req: irq_code = type_irq_code_e'(IRQ_CODE_S_SOFTWARE);
+        stip_irq_req: irq_code = type_irq_code_e'(IRQ_CODE_S_TIMER);
     endcase
 end
 
 // Signals for machine mode exception/interrupt response generation
-assign m_mode_global_ie = ((trap_priv_mode == PRIV_MODE_M) && csr_mstatus_ff.mie);
-assign m_mode_irq_req   = m_mode_global_ie && m_irq_req;
-assign m_mode_exc_req   = exc_req && (exc_code == EXC_CODE_ECALL_SMODE) && (trap_priv_mode == PRIV_MODE_M);
+assign m_mode_global_ie = ((priv_mode_ff == PRIV_MODE_M) & csr_mstatus_ff.mie) | (priv_mode_ff != PRIV_MODE_M) ; //// to be done
+assign m_mode_irq_req   = irq_req && ~irq_delegated_req && m_mode_global_ie ;
+// assign m_mode_exc_req   = exc_req && ((exc_code == EXC_CODE_ECALL_SMODE) || (exc_code == EXC_CODE_ECALL_MMODE)) && (trap_priv_mode == PRIV_MODE_M); // || (exc_code == EXC_CODE_ECALL_MMODE)
+assign m_mode_ecall_req = ((exc_code == EXC_CODE_ECALL_SMODE) || (exc_code == EXC_CODE_ECALL_MMODE));
+assign m_mode_exc_req   = exc_req && ~exc_delegated_req && m_mode_ecall_req;
 assign mret_pc_req      = mret_req & ~m_mode_exc_req & ~m_mode_irq_req;
 
 // New pc for machine mode
@@ -1094,7 +1136,7 @@ always_comb begin
         if (csr_mtvec_ff.mode[0]) begin  // vector mode
             case (1'b1)
                 m_mode_exc_req: m_mode_new_pc = {csr_mtvec_ff.base, 2'd0};
-                m_mode_irq_req: m_mode_new_pc = {csr_mtvec_ff.base[(TVEC_BASE_WIDTH-1):IRQ_CODE_WIDTH], m_irq_code, 2'd0};
+                m_mode_irq_req: m_mode_new_pc = {csr_mtvec_ff.base[(TVEC_BASE_WIDTH-1):IRQ_CODE_WIDTH], irq_code, 2'd0};
                 default       : m_mode_new_pc = {csr_mtvec_ff.base, 2'd0};
             endcase
         end else begin                  // direct mode
@@ -1105,13 +1147,15 @@ end
 
 
 // Signals for supervisor mode exception/interrupt response generation
-assign irq_delegated_req = m_irq_req & csr_mideleg_ff[m_irq_code];
+assign irq_delegated_req = s_irq_req & csr_mideleg_ff[irq_code];
 assign exc_delegated_req = exc_req & csr_medeleg_ff[exc_code];
 
-assign s_mode_enabled   = (trap_priv_mode == PRIV_MODE_S);
+assign s_mode_enabled   = (priv_mode_ff == PRIV_MODE_S);
 assign s_mode_exc_req   = s_mode_enabled & exc_delegated_req;
+// assign s_mode_exc_req   = exc_req && (exc_code == EXC_CODE_ECALL_UMODE) && (trap_priv_mode == PRIV_MODE_S);
 
-assign s_mode_global_ie = (s_mode_enabled && csr_mstatus_ff.sie);
+
+assign s_mode_global_ie = ((priv_mode_ff == PRIV_MODE_S) && csr_mstatus_ff.sie);
 assign s_mode_irq_req   = s_mode_global_ie && irq_delegated_req;
 assign sret_pc_req      = sret_req & ~s_mode_exc_req & ~s_mode_irq_req;
 
@@ -1123,7 +1167,7 @@ always_comb begin
         if (csr_stvec_ff.mode[0]) begin  // vector mode
             case (1'b1)
                 s_mode_exc_req: s_mode_new_pc = {csr_stvec_ff.base, 2'd0};
-                s_mode_irq_req: s_mode_new_pc = {csr_stvec_ff.base[(TVEC_BASE_WIDTH-1):IRQ_CODE_WIDTH], m_irq_code, 2'd0};
+                s_mode_irq_req: s_mode_new_pc = {csr_stvec_ff.base[(TVEC_BASE_WIDTH-1):IRQ_CODE_WIDTH], irq_code, 2'd0};
                 default       : s_mode_new_pc = {csr_stvec_ff.base, 2'd0};
             endcase
         end else begin                   // direct mode

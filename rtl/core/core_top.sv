@@ -1,3 +1,4 @@
+
 `ifndef VERILATOR
 `include "../defines/UETRV_PCore_defs.svh"
 `include "../defines/UETRV_PCore_ISA.svh"
@@ -35,6 +36,9 @@ type_dbus2lsu_s                         dbus2lsu;
 
 type_dbus2peri_s                        dbus2peri;
 type_pipe2csr_s                         core2pipe;
+
+
+type_clint2csr_s                        clint2csr;
 
 // Peripheral module selection lines from the address decoder
 logic                                   dmem_sel;
@@ -78,6 +82,8 @@ pipeline_top pipeline_top_module (
     // DBUS interface signals
     .lsu2dbus_o          (lsu2dbus),       // Signal to data bus 
     .dbus2lsu_i          (dbus2lsu),
+
+    .clint2csr_i         (clint2csr),
 
     // IRQ lines
     .core2pipe_i         (core2pipe)
@@ -132,6 +138,8 @@ clint clint_module (
     .dbus2clint_i          (dbus2peri),  // This should be updated if the bus interface is updated
     .clint_sel_i           (clint_sel),
     .clint2dbus_o          (clint2dbus),
+
+    .clint2csr_o           (clint2csr),
     .clint_timer_irq_o     (irq_clint_timer)
 );
 

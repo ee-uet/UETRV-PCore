@@ -15,8 +15,9 @@ module core_tb(input bit clk);
 `ifdef VERILATOR
 reg clk;
 `endif
+
 reg reset;
-reg [31:0] loop_count;
+reg [35:0] loop_count;
 wire [7:0] count;
 reg  irq_ext, irq_soft;
 reg  uart_rx;
@@ -53,6 +54,7 @@ irq_soft = 0;
 uart_rx = 1;
 end
 
+
 `ifndef VERILATOR
 initial
  begin
@@ -62,14 +64,13 @@ initial
     tracelog_filepointer = $fopen("trace_logdata.txt");
     uartlog_filepointer = $fopen("uart_logdata.txt");
 
-    for (loop_count = 0; loop_count < 80000000; loop_count = loop_count + 1)
+    for (loop_count = 0; loop_count < 64'd8000000000; loop_count = loop_count + 1)
     begin
          repeat (1) @ (posedge clk);
 
-
+                        	  
          if (dut.uart_module.tx_valid_ff == 1)
              $fwrite(uartlog_filepointer, "%c", dut.uart_module.uart_reg_tx_ff);
-
 
     end
 
@@ -78,6 +79,7 @@ initial
     $fclose(uartlog_filepointer);
     $finish; 
  end
+
 `else
 initial
  begin
@@ -119,6 +121,5 @@ always_ff@(posedge clk) begin
 end
 
 `endif
-
 
 endmodule
