@@ -31,6 +31,7 @@ module forward_stall (
     output type_fwd2if_s                  fwd2if_o,
     output type_fwd2exe_s                 fwd2exe_o,
     output type_fwd2csr_s                 fwd2csr_o,
+    output type_fwd2lsu_s                 fwd2lsu_o,
     output type_fwd2ptop_s                fwd2ptop_o
 );
 
@@ -51,7 +52,7 @@ logic                                ld_use_hazard;
 logic                                ld_csr_mul_read_req;
 
 logic                                if_id_exe_stall;
-logic                                lsu_stall;
+logic                                lsu_mul_stall;
 logic                                lsu_flush;
 
 logic                                ld_stall;
@@ -71,6 +72,7 @@ logic                                if2fwd_stall_ff;
 type_fwd2if_s                        fwd2if;
 type_fwd2exe_s                       fwd2exe;
 type_fwd2csr_s                       fwd2csr;
+type_fwd2lsu_s                       fwd2lsu;
 type_fwd2ptop_s                      fwd2ptop;                                                                
 
 // Instantiate the local signals from inputs
@@ -86,13 +88,13 @@ assign rs1_valid = |exe2fwd.rs1_addr;
 assign rs2_valid = |exe2fwd.rs2_addr;                     
 ///////////////////////////////////////////
 // Only implemented for testing purpose
-logic lsu_stall_ff;
+logic lsu_mul_stall_ff;
 
 always_ff @(posedge clk) begin
     if (~rst_n) begin
-        lsu_stall_ff <= '0;
+        lsu_mul_stall_ff <= '0;
     end else begin
-        lsu_stall_ff <= lsu_stall;
+        lsu_mul_stall_ff <= lsu_mul_stall;
     end
 end
 ///////////////////////////////////////////
@@ -159,11 +161,11 @@ assign ld_csr_mul_read_req = lsu2fwd.ld_req | csr2fwd.csr_read_req | lsu2fwd.mul
 // can not be resolved by forwarding from LSU-2-execute stage. Rather one cycle stall is
 // generated and the data read using DBUS is forwarded from writeback stage to execute
 // stage to resolve the hazard. 
-assign fwd2exe.fwd_lsu_rs1 = lsu2rs1_hazard & (~ld_csr_mul_read_req) & (~(if2fwd_stall | if2fwd_stall_ff));
-assign fwd2exe.fwd_lsu_rs2 = lsu2rs2_hazard & (~ld_csr_mul_read_req) & (~(if2fwd_stall | if2fwd_stall_ff));
+assign fwd2exe.fwd_lsu_rs1 = lsu2rs1_hazard & (~ld_csr_mul_read_req); // & (~(if2fwd_stall | if2fwd_stall_ff));
+assign fwd2exe.fwd_lsu_rs2 = lsu2rs2_hazard & (~ld_csr_mul_read_req); // & (~(if2fwd_stall | if2fwd_stall_ff));
      
-assign fwd2exe.fwd_wrb_rs1 = ((exe2fwd.rs1_addr == wrb2fwd.rd_addr) & wrb2fwd.rd_wr_req) & rs1_valid & (~(if2fwd_stall | if2fwd_stall_ff));
-assign fwd2exe.fwd_wrb_rs2 = ((exe2fwd.rs2_addr == wrb2fwd.rd_addr) & wrb2fwd.rd_wr_req) & rs2_valid & (~(if2fwd_stall | if2fwd_stall_ff));
+assign fwd2exe.fwd_wrb_rs1 = ((exe2fwd.rs1_addr == wrb2fwd.rd_addr) & wrb2fwd.rd_wr_req) & rs1_valid; // & (~(if2fwd_stall | if2fwd_stall_ff));
+assign fwd2exe.fwd_wrb_rs2 = ((exe2fwd.rs2_addr == wrb2fwd.rd_addr) & wrb2fwd.rd_wr_req) & rs2_valid; // & (~(if2fwd_stall | if2fwd_stall_ff));
 
 // Load, CSR or M-Extension hazard detection
 assign ld_use_rs1_hazard = lsu2rs1_hazard & exe2fwd.use_rs1 & (ld_csr_mul_read_req);
@@ -182,19 +184,20 @@ assign lsu_flush    = csr2fwd.new_pc_req | csr2fwd.wfi_req;
 
 assign fwd2ptop.if2id_pipe_flush   = id_exe_flush;
 assign fwd2ptop.id2exe_pipe_flush  = id_exe_flush;
-assign fwd2ptop.exe2lsu_pipe_flush = ld_use_hazard | lsu_flush;
+assign fwd2ptop.exe2lsu_pipe_flush = ld_use_hazard | lsu_flush | (if2fwd_stall & ~lsu_mul_stall);
 
 assign if_id_exe_stall             = ld_use_hazard | ld_stall | mul_stall | if2fwd_stall | lsu2fwd.st_stall;
-assign lsu_stall                   = ld_stall | mul_stall | lsu2fwd.st_stall; // | (if2fwd_stall ) & ~(lsu2fwd.ld_req & lsu2fwd.ld_ack)
+assign lsu_mul_stall               = ld_stall | mul_stall | lsu2fwd.st_stall; // | (if2fwd_stall ) & ~(lsu2fwd.ld_req & lsu2fwd.ld_ack)
 
 assign fwd2ptop.if2id_pipe_stall   = if_id_exe_stall;
 assign fwd2ptop.id2exe_pipe_stall  = if_id_exe_stall;
-assign fwd2ptop.exe2lsu_pipe_stall = lsu_stall;
+assign fwd2ptop.exe2lsu_pipe_stall = lsu_mul_stall;
 
 assign fwd2ptop.pipe_fwd_wrb_rs1   = fwd2exe.fwd_wrb_rs1;
 assign fwd2ptop.pipe_fwd_wrb_rs2   = fwd2exe.fwd_wrb_rs2;
 
-assign fwd2csr.pipe_stall          = ld_use_hazard;
+assign fwd2csr.pipe_stall          = lsu_mul_stall_ff;
+assign fwd2csr.irq_stall           = lsu_mul_stall | if2fwd_stall;
 
 // Generate different PC update or stall signals for IF stage
 assign fwd2if.exe_new_pc_req = exe_new_pc_req & (~csr2fwd.new_pc_req);
@@ -202,10 +205,14 @@ assign fwd2if.csr_new_pc_req = csr2fwd.new_pc_req;
 assign fwd2if.wfi_req        = csr2fwd.wfi_req;
 assign fwd2if.if_stall       = if_id_exe_stall;
 
+
+assign fwd2lsu.lsu_flush     = lsu_flush; 
+
 // Update the module output signals
 assign fwd2if_o   = fwd2if;
 assign fwd2exe_o  = fwd2exe; 
 assign fwd2csr_o  = fwd2csr; 
+assign fwd2lsu_o  = fwd2lsu; 
 assign fwd2ptop_o = fwd2ptop;     
 
 endmodule : forward_stall

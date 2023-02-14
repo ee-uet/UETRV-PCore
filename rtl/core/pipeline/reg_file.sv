@@ -1,6 +1,6 @@
 // reg_file.sv
 `ifndef VERILATOR
-`include "../../defines/UETRV_PCore_defs.svh"\
+`include "../../defines/UETRV_PCore_defs.svh"
 `else
 `include "UETRV_PCore_defs.svh"
 `endif

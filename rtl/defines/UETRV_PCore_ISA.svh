@@ -422,8 +422,14 @@ typedef struct packed {
 
 // Forwarding-2-CSR interface signals
 typedef struct packed {  
-    logic                            pipe_stall;                            
+    logic                            pipe_stall; 
+    logic                            irq_stall;                           
 } type_fwd2csr_s;
+
+// Forwarding-2-LSU interface signals
+typedef struct packed {  
+    logic                            lsu_flush;                           
+} type_fwd2lsu_s;
 
 // CSR-2-LSU data signals
 typedef struct packed {                            

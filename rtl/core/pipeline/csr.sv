@@ -413,7 +413,7 @@ always_comb begin
         csr_pc_next = m_mode_new_pc; 
     end else if (sret_pc_req) begin
         csr_pc_next = s_mode_new_pc; 
-    end else if (exe2csr_data.instr_flushed) begin
+    end else if (exe2csr_data.instr_flushed | fwd2csr.pipe_stall) begin
         csr_pc_next = csr_pc_ff; 
     end else if (wfi_req) begin
         csr_pc_next = lsu2csr_data.pc_next;
@@ -809,9 +809,9 @@ end
 always_comb begin
     sip_mask = '0;
     csr_mip_next = csr_mip_ff;
-    csr_mip_next.meip = pipe2csr.ext_irq;
-    csr_mip_next.mtip = '0; //pipe2csr.timer_irq;
-    csr_mip_next.msip = pipe2csr.soft_irq;
+    csr_mip_next.meip = '0; // pipe2csr.ext_irq;
+    csr_mip_next.mtip = pipe2csr.timer_irq & (~fwd2csr.irq_stall);
+    csr_mip_next.msip = '0; // pipe2csr.soft_irq;
 
     if (csr_mip_wr_flag) begin
         csr_mip_next = (csr_wdata & SIP_MASK) | (csr_mip_ff & ~SIP_MASK);

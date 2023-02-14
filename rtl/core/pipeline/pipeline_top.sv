@@ -101,6 +101,7 @@ type_csr2fwd_s                          csr2fwd;
 type_fwd2exe_s                          fwd2exe;
 type_fwd2if_s                           fwd2if;
 type_fwd2csr_s                          fwd2csr;
+type_fwd2lsu_s                          fwd2lsu;
 type_fwd2ptop_s                         fwd2ptop;
 
 // Inputs assignment to local signals
@@ -364,6 +365,7 @@ lsu lsu_module (
 
     // Forward_stall interface
     .lsu2fwd_o                  (lsu2fwd),
+    .fwd2lsu_i                  (fwd2lsu),
 
     // LSU to MMU interface
     .lsu2mmu_o                  (lsu2mmu),      
@@ -467,6 +469,7 @@ forward_stall forward_stall_module (
     .fwd2if_o                   (fwd2if),
     .fwd2exe_o                  (fwd2exe),
     .fwd2csr_o                  (fwd2csr),
+    .fwd2lsu_o                  (fwd2lsu),
     .fwd2ptop_o                 (fwd2ptop)
 );
 

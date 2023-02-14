@@ -36,6 +36,7 @@ module lsu (
 
     // LSU <---> Forward_stall interface for forwarding
     output type_lsu2fwd_s                   lsu2fwd_o,
+    input wire type_fwd2lsu_s               fwd2lsu_i,
 
     // LSU <---> Data Bus (dbus) interface
     input  wire type_dbus2lsu_s             dbus2lsu_i,
@@ -295,7 +296,7 @@ end
 
 // State register synchronous update
 always_ff @ (posedge clk or negedge rst_n) begin
-    if (!rst_n) begin
+    if (!rst_n | fwd2lsu_i.lsu_flush) begin
 	     state        <= AMO_IDLE;
     end else begin
 	     state        <= state_next;
