@@ -32,6 +32,18 @@ typedef enum logic [3:0] {
     UART_BAUD_R     = 4'h6
 } type_uart_regs_e;
 
+
+typedef enum logic [3:0] {
+    UART_TXRXDATA_R = 4'h0,
+    UART_IE_R       = 4'h1,
+    UART_IS_FIFO_R  = 4'h2,
+    UART_LINECTRL_R = 4'h3,
+    UART_MCTRL_R    = 4'h4,
+    UART_LSTATUS_R  = 4'h5,
+    UART_MSTATUS_R  = 4'h6,
+    UART_SCRATCH_R  = 4'h7
+} type_uart_ns_regs_e;
+
 typedef enum logic [1:0] {
     UART_TX_IDLE  = 2'h0,
     UART_TX_START = 2'h1,

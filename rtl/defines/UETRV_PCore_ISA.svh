@@ -262,6 +262,7 @@ typedef struct packed {
     logic                            ld_page_fault;
     logic                            st_page_fault; 
     logic                            inst_page_fault; 
+    logic [`VALEN-1:0]               vaddr; 
 } type_lsu2csr_ctrl_s;
 
 typedef struct packed {                            

@@ -38,9 +38,9 @@ assign ptw2tlb = ptw2tlb_i;
 
 // Check for super-page to decide the index field place in the virtual address
 // to be used by TLB
-assign sp_index = mmu2tlb.vpage_addr[11:10];
-assign sp_sel   = tlb_array_ff[sp_index].page_4M && tlb_array_ff[sp_index].valid;
-assign r_index  = sp_sel ? sp_index : mmu2tlb.vpage_addr[1:0];
+assign r_index = mmu2tlb.vpage_addr[11:10];
+// assign sp_sel   = tlb_array_ff[sp_index].page_4M && tlb_array_ff[sp_index].valid;
+// assign r_index  = sp_sel ? sp_index : mmu2tlb.vpage_addr[1:0];
 
 // Virtual page address is 20-bit 
 assign vpn_0 = mmu2tlb.vpage_addr[9:0];
@@ -66,7 +66,8 @@ end
 
 always_comb begin
     tlb_array_next = tlb_array_ff;
-    w_index = ptw2tlb.vpn[1:0];
+  //  w_index = ptw2tlb.vpn[1:0];
+  w_index = ptw2tlb.vpn[11:10];
 
     if (mmu2tlb.tlb_flush) begin             // Flush all the enteries of the TLB
         for (int unsigned i = 0; i < TLB_ENTRIES; i++) begin         
@@ -74,9 +75,9 @@ always_comb begin
         end
     end else if (tlb_update_i) begin   // Update the corresponding TLB entry 
 
-        if (ptw2tlb.page_4M) begin
-            w_index = ptw2tlb.vpn[11:10];
-        end
+     //   if (ptw2tlb.page_4M) begin
+     //       w_index = ptw2tlb.vpn[11:10];
+     //   end
         tlb_array_next[w_index].pte     = ptw2tlb.pte;
         tlb_array_next[w_index].page_4M = ptw2tlb.page_4M;
         tlb_array_next[w_index].vpn_1   = ptw2tlb.vpn[19:10];

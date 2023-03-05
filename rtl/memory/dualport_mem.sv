@@ -172,8 +172,10 @@ always_ff @(posedge clk) begin
             if (dmem_selbyte_ff[3]) dualport_memory[dmem_addr_ff][31:24] <= dmem_wdata_ff[31:24];
         end else begin
             dmem2dbus_ff.r_data <= dualport_memory[dmem_addr_ff];
-            dmem2dbus_ff.ack <= 1'b1;
+            
         end
+
+        dmem2dbus_ff.ack <= 1'b1;
     end else begin
         dmem2dbus_ff <= '0;
     end
@@ -201,7 +203,7 @@ always_comb begin
 end
  */                     
 assign dmem2dbus_o.r_data = dmem2dbus_ff.r_data;
-assign dmem2dbus_o.ack =  (dbus2dmem.w_en & dmem_sel_i) ? 1'b1 : dmem2dbus_ff.ack;
+assign dmem2dbus_o.ack =  dmem2dbus_ff.ack;
 
 
 endmodule : dualport_mem

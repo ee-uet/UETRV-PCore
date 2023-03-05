@@ -1,3 +1,4 @@
+`timescale 1 ns / 100 ps
 
 `ifndef VERILATOR
 `include "../../defines/UETRV_PCore_defs.svh"
@@ -151,6 +152,8 @@ logic                            meip_irq_req;
 logic                            mtip_irq_req;
 logic                            msip_irq_req;
 logic                            uart_irq_req;
+logic                            timer_irq_ff;
+logic                            ext_irq_ff;
 
 // M-mode interrupt/exception related signals
 logic                            m_mode_global_ie;
@@ -158,7 +161,7 @@ logic                            m_mode_exc_req;
 logic                            m_mode_irq_req;
 logic                            m_mode_pc_req;
 logic                            m_mode_pf_exc_req;
-logic                            m_mode_ecall_req;
+logic                            ms_mode_ecall_req;
 logic                            mret_pc_req;
 
 // S-mode interrupt/exception related signals
@@ -168,6 +171,8 @@ logic                            s_mode_irq_req;
 logic                            s_mode_pc_req;
 logic                            s_mode_enabled;
 logic                            s_mode_pf_exc_req;
+logic                            s_mode_inst_pf_req;
+logic                            u_mode_ecall_req;
 logic                            sret_pc_req;
 
 // Exception requests from MMU
@@ -175,6 +180,7 @@ logic                            st_pf_exc_req;
 logic                            ld_pf_exc_req;
 logic                            inst_pf_exc_req;
 logic                            pf_exc_req;
+logic                            break_exc_req;
 
 // System operation related signals
 logic                            sret_req;
@@ -809,8 +815,8 @@ end
 always_comb begin
     sip_mask = '0;
     csr_mip_next = csr_mip_ff;
-    csr_mip_next.meip = '0; // pipe2csr.ext_irq;
-    csr_mip_next.mtip = pipe2csr.timer_irq & (~fwd2csr.irq_stall);
+    csr_mip_next.meip = ext_irq_ff;
+    csr_mip_next.mtip = timer_irq_ff;
     csr_mip_next.msip = '0; // pipe2csr.soft_irq;
 
     if (csr_mip_wr_flag) begin
@@ -818,6 +824,16 @@ always_comb begin
     end else if (csr_sip_wr_flag) begin
         sip_mask     = SIP_MASK & csr_mideleg_ff;
         csr_mip_next = (csr_wdata & sip_mask) | (csr_mip_ff & ~sip_mask);
+    end
+end
+
+always_ff @(negedge rst_n, posedge clk) begin
+    if (~rst_n) begin
+        ext_irq_ff   <= 1'b0; 
+        timer_irq_ff <= 1'b0; 
+    end else begin
+        ext_irq_ff   <= pipe2csr.ext_irq & (~fwd2csr.irq_stall);
+        timer_irq_ff <= pipe2csr.timer_irq & (~fwd2csr.irq_stall);
     end
 end
 
@@ -851,8 +867,8 @@ always_ff @(negedge rst_n, posedge clk) begin
 end
 
 // Make sure the misalign request is in machine mode
-assign m_mode_misalign_exc_req = m_mode_global_ie & (ld_misalign_exc_req | st_misalign_exc_req);
-assign m_mode_pf_exc_req       = m_mode_global_ie & pf_exc_req;
+assign m_mode_misalign_exc_req = (~exc_delegated_req) & (ld_misalign_exc_req | st_misalign_exc_req);
+assign m_mode_pf_exc_req       = (~exc_delegated_req) & pf_exc_req;
 
 always_comb begin
     case (1'b1)
@@ -863,9 +879,10 @@ always_comb begin
             csr_mtval_next = lsu2csr_data.dbus_addr;
         end
         m_mode_pf_exc_req      : begin
-            csr_mtval_next = csr_pc_ff;
+            csr_mtval_next = lsu2csr_ctrl.vaddr;
         end
-        m_mode_ecall_req       : begin
+        (ms_mode_ecall_req 
+         | m_mode_irq_req) : begin
             csr_mtval_next = '0;
         end
         csr_mtval_wr_flag      : begin  
@@ -933,8 +950,7 @@ always_ff @(negedge rst_n, posedge clk) begin
 end
 
 // Make sure the misalign request is in supervisor mode
-assign s_mode_misalign_exc_req = s_mode_enabled & (ld_misalign_exc_req | st_misalign_exc_req);
-assign s_mode_pf_exc_req       = s_mode_exc_req & pf_exc_req; 
+assign s_mode_misalign_exc_req = exc_delegated_req & (ld_misalign_exc_req | st_misalign_exc_req);
 
 always_comb begin
     case (1'b1)
@@ -945,8 +961,13 @@ always_comb begin
         s_mode_misalign_exc_req: begin
             csr_stval_next = lsu2csr_data.dbus_addr;
         end
-        s_mode_pf_exc_req      : begin
-            csr_stval_next = csr_pc_ff;
+        (s_mode_exc_req & pf_exc_req) : begin
+            csr_stval_next = lsu2csr_ctrl.vaddr;
+        end
+        ((s_mode_exc_req & (u_mode_ecall_req 
+        | break_exc_req)) 
+        | s_mode_irq_req)           : begin
+            csr_stval_next = '0;
         end
         csr_stval_wr_flag      : begin  
             csr_stval_next = csr_wdata;
@@ -1049,7 +1070,7 @@ end
 always_comb begin : wfi
 
     // If any enabled interrupt becomes pending un-stall the core? Should it be enabled?
-    if (m_irq_req) begin
+    if (irq_req) begin
         wfi_next = 1'b0;
     // raise the wait for interrupt flag here
     end else if (wfi_req) begin
@@ -1083,13 +1104,13 @@ assign exc_req       = exe2csr_ctrl.exc_req | csr_exc_req | pf_exc_req
 always_comb begin
     exc_code = EXC_CODE_NO_EXCEPTION;
     case (1'b1)
-        exe2csr_ctrl.exc_req: exc_code = exe2csr_data.exc_code;
-        csr_exc_req         : exc_code = EXC_CODE_ILLEGAL_INSTR;
-        ld_pf_exc_req       : exc_code = EXC_CODE_LD_PAGE_FAULT;
-        st_pf_exc_req       : exc_code = EXC_CODE_ST_PAGE_FAULT;
-        inst_pf_exc_req     : exc_code = EXC_CODE_INST_PAGE_FAULT;
-        ld_misalign_exc_req : exc_code = EXC_CODE_LD_ADDR_MISALIGN;
-        st_misalign_exc_req : exc_code = EXC_CODE_ST_ADDR_MISALIGN;
+        exe2csr_ctrl.exc_req : exc_code = exe2csr_data.exc_code;
+        csr_exc_req          : exc_code = EXC_CODE_ILLEGAL_INSTR;
+        ld_pf_exc_req        : exc_code = EXC_CODE_LD_PAGE_FAULT;
+        st_pf_exc_req        : exc_code = EXC_CODE_ST_PAGE_FAULT;
+        inst_pf_exc_req      : exc_code = EXC_CODE_INST_PAGE_FAULT;
+        ld_misalign_exc_req  : exc_code = EXC_CODE_LD_ADDR_MISALIGN;
+        st_misalign_exc_req  : exc_code = EXC_CODE_ST_ADDR_MISALIGN;
     endcase
 end
 
@@ -1124,8 +1145,8 @@ end
 assign m_mode_global_ie = ((priv_mode_ff == PRIV_MODE_M) & csr_mstatus_ff.mie) | (priv_mode_ff != PRIV_MODE_M) ; //// to be done
 assign m_mode_irq_req   = irq_req && ~irq_delegated_req && m_mode_global_ie ;
 // assign m_mode_exc_req   = exc_req && ((exc_code == EXC_CODE_ECALL_SMODE) || (exc_code == EXC_CODE_ECALL_MMODE)) && (trap_priv_mode == PRIV_MODE_M); // || (exc_code == EXC_CODE_ECALL_MMODE)
-assign m_mode_ecall_req = ((exc_code == EXC_CODE_ECALL_SMODE) || (exc_code == EXC_CODE_ECALL_MMODE));
-assign m_mode_exc_req   = exc_req && ~exc_delegated_req && m_mode_ecall_req;
+assign ms_mode_ecall_req = ((exc_code == EXC_CODE_ECALL_SMODE) || (exc_code == EXC_CODE_ECALL_MMODE));
+assign m_mode_exc_req   = exc_req && ~exc_delegated_req && ms_mode_ecall_req;
 assign mret_pc_req      = mret_req & ~m_mode_exc_req & ~m_mode_irq_req;
 
 // New pc for machine mode
@@ -1151,11 +1172,13 @@ assign irq_delegated_req = s_irq_req & csr_mideleg_ff[irq_code];
 assign exc_delegated_req = exc_req & csr_medeleg_ff[exc_code];
 
 assign s_mode_enabled   = (priv_mode_ff == PRIV_MODE_S);
-assign s_mode_exc_req   = s_mode_enabled & exc_delegated_req;
-// assign s_mode_exc_req   = exc_req && (exc_code == EXC_CODE_ECALL_UMODE) && (trap_priv_mode == PRIV_MODE_S);
+// assign s_mode_exc_req   = s_mode_enabled & exc_delegated_req;
+assign u_mode_ecall_req = (exc_code == EXC_CODE_ECALL_UMODE);
+assign break_exc_req    = (exc_code == EXC_CODE_BREAKPOINT);
+assign s_mode_exc_req   = (break_exc_req | pf_exc_req | u_mode_ecall_req) & exc_delegated_req;
 
 
-assign s_mode_global_ie = ((priv_mode_ff == PRIV_MODE_S) && csr_mstatus_ff.sie);
+assign s_mode_global_ie = ((priv_mode_ff == PRIV_MODE_S) & csr_mstatus_ff.sie) | (priv_mode_ff == PRIV_MODE_U);
 assign s_mode_irq_req   = s_mode_global_ie && irq_delegated_req;
 assign sret_pc_req      = sret_req & ~s_mode_exc_req & ~s_mode_irq_req;
 

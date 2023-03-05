@@ -27,19 +27,19 @@ type_tlb2mmu_s                      tlb2mmu;
 type_ptw2tlb_s                      ptw2tlb;
 
 logic [9:0]                         vpn_0, vpn_1;
-logic [1:0]                         r_index, w_index, sp_index;
+logic [DTLB_WIDTH-1:0]              r_index, w_index, sp_index;
 logic                               sp_sel; 
 
-type_tlb_entry_s [TLB_ENTRIES-1:0]  tlb_array_ff, tlb_array_next;
+type_tlb_entry_s [DTLB_ENTRIES-1:0]  tlb_array_ff, tlb_array_next;
 
 assign mmu2tlb = mmu2tlb_i;
 assign ptw2tlb = ptw2tlb_i;
 
 // Check for super-page to decide the index field place in the virtual address
 // to be used by TLB
-assign sp_index = mmu2tlb.vpage_addr[11:10];
-assign sp_sel   = tlb_array_ff[sp_index].page_4M && tlb_array_ff[sp_index].valid;
-assign r_index  = sp_sel ? sp_index : mmu2tlb.vpage_addr[1:0];
+assign r_index = mmu2tlb.vpage_addr[DTLB_WIDTH+9:10];
+//assign sp_sel   = tlb_array_ff[sp_index].page_4M && tlb_array_ff[sp_index].valid;
+//assign r_index  = sp_sel ? sp_index : mmu2tlb.vpage_addr[DTLB_WIDTH-1:0];
 
 // Virtual page address is 20-bit 
 assign vpn_0 = mmu2tlb.vpage_addr[9:0];
@@ -65,17 +65,18 @@ end
 
 always_comb begin
     tlb_array_next = tlb_array_ff;
-    w_index = ptw2tlb.vpn[1:0];
+  //  w_index = ptw2tlb.vpn[DTLB_WIDTH-1:0];
+    w_index = ptw2tlb.vpn[DTLB_WIDTH+9:10];
 
     if (mmu2tlb.tlb_flush) begin             // Flush all the enteries of the TLB
-        for (int unsigned i = 0; i < TLB_ENTRIES; i++) begin         
+        for (int unsigned i = 0; i < DTLB_ENTRIES; i++) begin         
             tlb_array_next[i].valid = 1'b0;
         end
     end else if (tlb_update_i) begin   // Update the corresponding TLB entry 
 
-        if (ptw2tlb.page_4M) begin
-            w_index = ptw2tlb.vpn[11:10];
-        end
+    //    if (ptw2tlb.page_4M) begin
+   //         w_index = ptw2tlb.vpn[DTLB_WIDTH+9:10];
+   //     end
         tlb_array_next[w_index].pte     = ptw2tlb.pte;
         tlb_array_next[w_index].page_4M = ptw2tlb.page_4M;
         tlb_array_next[w_index].vpn_1   = ptw2tlb.vpn[19:10];

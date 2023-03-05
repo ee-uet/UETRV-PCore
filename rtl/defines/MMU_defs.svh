@@ -11,7 +11,9 @@
 
 `include "UETRV_PCore_defs.svh"
 
-localparam int unsigned TLB_ENTRIES = 4;
+parameter int unsigned TLB_ENTRIES = 4;
+parameter int unsigned DTLB_ENTRIES = 16;
+parameter int unsigned DTLB_WIDTH = $clog2(DTLB_ENTRIES);
 
 typedef enum logic [1:0] {
     TLB_REQ_NONE = 2'h0,
@@ -103,7 +105,8 @@ typedef struct packed {
     logic                            ptw_active;
     logic                            iwalk_active;
     logic                            pte_error;         // Set in case of error    
-    logic                            access_exc;            
+    logic                            access_exc; 
+    logic [`VALEN-1:0]               vaddr;              
 } type_ptw2mmu_s;
 
 
@@ -129,6 +132,7 @@ typedef struct packed {
     logic                            ld_page_fault;
     logic                            st_page_fault; 
     logic                            inst_page_fault;
+    logic [`VALEN-1:0]               vaddr; 
 } type_mmu2lsu_s;
 
 // Address translation request from IF module to MMU

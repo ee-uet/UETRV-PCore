@@ -103,7 +103,7 @@ always_comb begin
     complete_req        = '0;
   
  
-    if (reg_wr_req) begin
+    if (reg_wr_req & ~plic2dbus_ff.ack) begin
         unique case(reg_addr)
         24'h000000:                              ; // IRQ 0 is reserved
         24'h000004: prio_reg_wr_flag[0]    = 1'b1;
@@ -204,8 +204,9 @@ assign reg_wr_req = dbus2plic_i.w_en  && dbus2plic_i.cyc && plic_sel_i;
 // PLIC synchronous read operation 
 always_ff @(posedge clk) begin  
     plic2dbus_ff <= '0;
-    if ( reg_rd_req & ~plic2dbus_ff.ack) begin
+    if ((reg_wr_req | reg_rd_req) & ~plic2dbus_ff.ack) begin
         plic2dbus_ff.ack <= 1'b1;
+        if (reg_rd_req)
         plic2dbus_ff.r_data <= reg_r_data;  
         
     end 
@@ -217,7 +218,7 @@ assign regs2gateway.complete_idx = complete_idx;
 
 // Response signals to dbus 
 assign plic2dbus_o.r_data = plic2dbus_ff.r_data;
-assign plic2dbus_o.ack = (reg_wr_req) ? 1'b1 : plic2dbus_ff.ack;
+assign plic2dbus_o.ack = plic2dbus_ff.ack;
 
 // Output signals for different modules
 assign regs_ie_o      = plic_reg_ie_ff;

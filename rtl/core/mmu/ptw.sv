@@ -265,7 +265,7 @@ end
 // Update the outputs
 assign ptw2mmu.ptw_active   = (ptw_state_ff != PTW_IDLE); 
 assign ptw2mmu.iwalk_active = iwalk_active_ff;
-// assign update_vaddr_o = vaddr_ff;
+assign ptw2mmu.vaddr        = vaddr_ff;
 
 assign itlb_update_o = itlb_update;
 assign dtlb_update_o = dtlb_update;

@@ -131,6 +131,9 @@ end
 
 // Handling page faults
 always_comb begin
+mmu2lsu.ld_page_fault = '0;
+mmu2lsu.st_page_fault = '0;
+mmu2lsu.vaddr         = ptw2mmu.vaddr;
 
     if (lsu2mmu.st_req) begin
         mmu2lsu.st_page_fault = ptw2mmu.pte_error;

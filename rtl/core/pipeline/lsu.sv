@@ -404,6 +404,7 @@ assign lsu2csr_ctrl.st_ops = exe2lsu_ctrl.st_ops;
 assign lsu2csr_ctrl.ld_page_fault   = mmu2lsu.ld_page_fault;
 assign lsu2csr_ctrl.st_page_fault   = mmu2lsu.st_page_fault;
 assign lsu2csr_ctrl.inst_page_fault = mmu2lsu.inst_page_fault;
+assign lsu2csr_ctrl.vaddr           = mmu2lsu.vaddr;
 
 // Update data for writeback
 // If instruction is SC, then either 1 (in case of fail) or 0 (in case of PASS) will be provided to write back stage
@@ -421,8 +422,8 @@ assign lsu2wrb_ctrl.rd_wrb_sel = exe2lsu_ctrl.rd_wrb_sel;
 assign lsu2fwd.rd_addr   = exe2lsu_ctrl.rd_addr; 
 assign lsu2fwd.rd_wr_req = exe2lsu_ctrl.rd_wr_req;  // For SC, forwarding loop will also be updated
 
-assign st_stall   = st_req & ~dbus2lsu.ack;                                                              // (similar to any R-type instruction)
-assign ld_amo_req = ld_req | is_amo;
+assign st_stall   = '0;  // st_req & ~dbus2lsu.ack;                                                              // (similar to any R-type instruction)
+assign ld_amo_req = ld_req | is_amo | st_req;
 assign ld_amo_ack = is_amo ? amo_done : dbus2lsu.ack;   // Ack will be based on amo_done in case of 
                                                              // amo_instruction
 

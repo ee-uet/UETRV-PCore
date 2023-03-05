@@ -91,7 +91,7 @@ always_comb begin
     mtimecmp_hi_wr_flag = 1'b0;
   
     // Register write flag evaluation
-    if(w_req) begin
+    if(w_req & ~clint2dbus_ff.ack) begin
         case (addr_offset)
             // mtime low 32-bits write flag
             MTIME_LOW_R     : mtime_lo_wr_flag = 1'b1;
@@ -166,7 +166,7 @@ end
 //================================= Timer Prescaler ==================================//
 always_comb begin
 
-    if (timer_prescaler_ff == 7'd99) begin
+    if (timer_prescaler_ff == 7'd90) begin
         timer_clk_next = ~timer_clk_ff;
         timer_prescaler_next = '0;
     end else begin
@@ -198,8 +198,9 @@ assign w_req       = dbus2clint_i.w_en  && dbus2clint_i.cyc && clint_sel_i;
 // Synchronous read operation 
 always_ff @(posedge clk) begin  
     clint2dbus_ff <= '0;
-    if (r_req &  ~clint2dbus_ff.ack) begin
+    if ((r_req | w_req) &  ~clint2dbus_ff.ack) begin
             clint2dbus_ff.ack <= 1'b1;
+            if (r_req)
             clint2dbus_ff.r_data <= r_data;  
         
     end  
@@ -214,7 +215,7 @@ assign clint2csr_o.time_hi = mtime_ff[63:32];
 
 // Response signals to dbus 
 assign clint2dbus_o.r_data = clint2dbus_ff.r_data;
-assign clint2dbus_o.ack = (w_req) ? 1'b1 : clint2dbus_ff.ack;
+assign clint2dbus_o.ack =  clint2dbus_ff.ack;
 
         
 endmodule	
