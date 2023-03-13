@@ -414,6 +414,7 @@ always_ff @(negedge rst_n, posedge clk) begin
 end
 
 always_comb begin 
+    csr_pc_next = exe2csr_data.pc;
 
     if (mret_pc_req ) begin
         csr_pc_next = m_mode_new_pc; 
@@ -423,8 +424,6 @@ always_comb begin
         csr_pc_next = csr_pc_ff; 
     end else if (wfi_req) begin
         csr_pc_next = lsu2csr_data.pc_next;
-    end else begin                         
-        csr_pc_next = exe2csr_data.pc; 
     end       
 end
 
@@ -585,6 +584,9 @@ always_ff @(negedge rst_n, posedge clk) begin
 end
 
 always_comb begin
+    csr_mstatus_next = csr_mstatus_ff;
+    priv_mode_next   = priv_mode_ff;
+
     case (1'b1)
         s_mode_exc_req,
         s_mode_irq_req      : begin
@@ -640,12 +642,11 @@ always_ff @(negedge rst_n, posedge clk) begin
 end
 
 always_comb begin 
+    csr_medeleg_next = csr_medeleg_ff;
 
     if (csr_medeleg_wr_flag) begin
         csr_medeleg_next = csr_wdata; 
-    end else begin
-        csr_medeleg_next = csr_medeleg_ff; 
-    end       
+    end      
 end
 
 // Update the mideleg (machine interrupt delegation) CSR 
@@ -659,12 +660,11 @@ always_ff @(negedge rst_n, posedge clk) begin
 end
 
 always_comb begin 
+    csr_mideleg_next = csr_mideleg_ff;
 
     if (csr_mideleg_wr_flag) begin
         csr_mideleg_next = csr_wdata; 
-    end else begin
-        csr_mideleg_next = csr_mideleg_ff; 
-    end       
+    end        
 end
 
 // Update the mie/sie (machine/supervisor interrupt enable) CSR 
@@ -679,14 +679,13 @@ end
 
 // Apply a mask to ensure that only writeable bits are updated.
 always_comb begin   
+    csr_mie_next = csr_mie_ff;
 
     if (csr_mie_wr_flag) begin
         csr_mie_next = (csr_wdata & MIE_MASK);  // | (csr_mie_ff & ~MIE_MASK) -- (do we need this)
     end else if (csr_sie_wr_flag) begin
         csr_mie_next = (csr_wdata & csr_mideleg_ff) | (csr_mie_ff & ~csr_mideleg_ff);  
-    end else begin
-        csr_mie_next = csr_mie_ff;
-    end
+    end 
 end
 
 
@@ -704,6 +703,8 @@ end
 // implemented, while for vectored mode we have imposed 64-byte alignment to manage  
 // 16 interrupts in vectored mode.
 always_comb begin
+    csr_mtvec_next = csr_mtvec_ff;
+
     if(csr_mtvec_wr_flag) begin
         if (csr_wdata[MODE_BIT]) begin   
             csr_mtvec_next = {csr_wdata[(`XLEN-1):CSR_MTVEC_BASE_ALIGN_VECTOR], 
@@ -712,9 +713,7 @@ always_comb begin
             csr_mtvec_next = {csr_wdata[(`XLEN-1):CSR_MTVEC_BASE_ALIGN_DIRECT], 
                               {CSR_MTVEC_BASE_ALIGN_DIRECT-1{1'b0}}, csr_wdata[MODE_BIT]}; 
         end   
-    end else begin
-        csr_mtvec_next = csr_mtvec_ff;
-    end
+    end 
 end
 
 
@@ -731,6 +730,8 @@ end
 // Need to ensure that alignment is preserved. The argument for csr_mtvec is also
 // applicable to this CSR
 always_comb begin
+    csr_stvec_next = csr_stvec_ff;
+
     if(csr_stvec_wr_flag) begin
         if (csr_wdata[MODE_BIT]) begin   
             csr_stvec_next = {csr_wdata[(`XLEN-1):CSR_STVEC_BASE_ALIGN_VECTOR], 
@@ -739,9 +740,7 @@ always_comb begin
             csr_stvec_next = {csr_wdata[(`XLEN-1):CSR_STVEC_BASE_ALIGN_DIRECT], 
                               {CSR_STVEC_BASE_ALIGN_DIRECT-1{1'b0}}, csr_wdata[MODE_BIT]}; 
         end   
-    end else begin
-        csr_stvec_next = csr_stvec_ff;
-    end
+    end 
 end
 
 //=============================== Update trap handling CSRs ===============================//
@@ -757,6 +756,8 @@ always_ff @(negedge rst_n, posedge clk) begin
 end
 
 always_comb begin
+    csr_mcause_next = csr_mcause_ff;
+
     case (1'b1)
         m_mode_exc_req     : begin
             csr_mcause_next = {1'b0, {`XLEN-EXC_CODE_WIDTH-1{1'b0}}, exc_code};
@@ -784,6 +785,7 @@ always_ff @(negedge rst_n, posedge clk) begin
 end
 
 always_comb begin
+    csr_mepc_next = csr_mepc_ff;
 
     case (1'b1)
         m_mode_irq_req   : begin
@@ -964,8 +966,7 @@ always_comb begin
         (s_mode_exc_req & pf_exc_req) : begin
             csr_stval_next = lsu2csr_ctrl.vaddr;
         end
-        ((s_mode_exc_req & (u_mode_ecall_req 
-        | break_exc_req)) 
+        ((s_mode_exc_req & (u_mode_ecall_req | break_exc_req)) 
         | s_mode_irq_req)           : begin
             csr_stval_next = '0;
         end
@@ -1019,6 +1020,7 @@ end
 
 always_comb begin
     csr_satp_exc_req = 1'b0;
+    csr_satp_next = csr_satp_ff;
 
     // We need to know the mode setting as write to SATP is dependent on the mode
     satp_mode = csr_wdata[31];
@@ -1031,9 +1033,7 @@ always_comb begin
         end else begin
             csr_satp_next = '0;
         end 
-    end else begin
-        csr_satp_next = csr_satp_ff;
-    end
+    end 
 end
 
 
@@ -1068,6 +1068,7 @@ always_ff @(negedge rst_n, posedge clk) begin
 end
 
 always_comb begin : wfi
+    wfi_next = wfi_ff;
 
     // If any enabled interrupt becomes pending un-stall the core? Should it be enabled?
     if (irq_req) begin
@@ -1075,9 +1076,7 @@ always_comb begin : wfi
     // raise the wait for interrupt flag here
     end else if (wfi_req) begin
         wfi_next = 1'b1;
-    end else begin
-        wfi_next = wfi_ff;
-    end
+    end 
 end : wfi
 
 //=============================== Interrupt/Exception response ===============================//

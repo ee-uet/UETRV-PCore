@@ -93,7 +93,6 @@ always_comb begin
     id2exe_ctrl.alu_opr2_sel     = ALU_OPR2_IMM;
     id2exe_ctrl.alu_cmp_opr2_sel = ALU_CMP_OPR2_REG;
     id2exe_ctrl.csr_opr_sel      = CSR_OPR_REG;
-    id2exe_ctrl.sys_ops          = SYS_OPS_NONE;
     id2exe_ctrl.rd_wrb_sel       = RD_WRB_NONE;
     id2exe_ctrl.exc_code         = EXC_CODE_NO_EXCEPTION;
     id2exe_ctrl.rd_wr_req        = 1'b0;

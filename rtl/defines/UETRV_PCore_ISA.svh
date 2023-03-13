@@ -241,7 +241,7 @@ typedef struct packed {
 //    logic [1:0]                      dbus_addr;
     logic [11:0]                     csr_addr;
     logic [`XLEN-1:0]                pc;
-//    logic [`XLEN-1:0]                pc_next;
+    logic [`XLEN-1:0]                instr;
     logic [`XLEN-1:0]                csr_wdata;  
     type_exc_code_e                  exc_code; 
     logic                            instr_flushed;     
@@ -360,8 +360,7 @@ typedef struct packed {
 // LSU-2-Forward_stall interface signals
 typedef struct packed {                        
     logic [`RF_AWIDTH-1:0]           rd_addr;
-    logic                            rd_wr_req; 
-    logic                            st_stall;  
+    logic                            rd_wr_req;  
     logic                            ld_req;
     logic                            ld_ack;  
     logic                            mul_req;  

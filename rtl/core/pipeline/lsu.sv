@@ -74,8 +74,7 @@ logic                        ld_req;
 type_ld_ops_e                ld_ops;
 logic                        st_req;
 
-// Signals for LSU request/response
-logic                        st_stall;                                                           
+// Signals for LSU request/response                                                          
 logic                        ld_amo_req;
 logic                        ld_amo_ack; 
 
@@ -171,15 +170,16 @@ end
 
 // Extend the load data for sign/zero
 always_comb begin
-   // for A-Extensions
-    if (amo_done) begin
-        // In case of SC passes writeback 0 else writeback 1 (non-zero value)
+    lsu2wrb_data.r_data = '0;
+   
+    if (amo_done) begin // // A-Extension
+        // In case SC passes return 0 else return 1 (non-zero value)
         if (is_sc) begin
-            lsu2wrb_data.r_data = !sc_pass;
+            lsu2wrb_data.r_data = { 31'b0, ~sc_pass};
         end else begin
             lsu2wrb_data.r_data = amo_operand_a; // For other AMO operations send the load data
         end
-    end else if (dbus2lsu.ack) begin
+    end else if (dbus2lsu.ack) begin // Normal load operation
         case (ld_ops)
             LD_OPS_LB  : lsu2wrb_data.r_data = {{24{rdata_byte[7]}},   rdata_byte};
             LD_OPS_LBU : lsu2wrb_data.r_data = { 24'b0,                rdata_byte};
@@ -188,9 +188,7 @@ always_comb begin
             LD_OPS_LW  : lsu2wrb_data.r_data = {                       rdata_word};
             default    : lsu2wrb_data.r_data = '0;
         endcase // ld_ops
-    end else begin
-        lsu2wrb_data.r_data = '0;
-    end
+    end 
 end
 
 //=================================== A-Extension implementation =====================================//
@@ -248,6 +246,8 @@ assign sc_pass  =  is_sc
 
 // AMO operation
 always_comb begin
+    amo_result_o = '0;
+
     case (amo_ops)
         AMO_OPS_SC  : amo_result_o = amo_operand_b;
         AMO_OPS_SWAP: amo_result_o = amo_operand_b;
@@ -307,6 +307,12 @@ end
 always_comb begin
    amo_done = 0; 
    amo_save = 0; 
+   state_next              = AMO_IDLE;
+   ld_req                  = |ld_ops; 
+   st_req                  = |(exe2lsu_ctrl.st_ops);
+   lsu2dbus.w_data         = exe2lsu_data.rs2_data;
+   lsu2wrb_ctrl.rd_wr_req  = exe2lsu_ctrl.rd_wr_req;
+
    case (state)
       AMO_IDLE: begin   
          if(is_amo) begin
@@ -422,13 +428,11 @@ assign lsu2wrb_ctrl.rd_wrb_sel = exe2lsu_ctrl.rd_wrb_sel;
 assign lsu2fwd.rd_addr   = exe2lsu_ctrl.rd_addr; 
 assign lsu2fwd.rd_wr_req = exe2lsu_ctrl.rd_wr_req;  // For SC, forwarding loop will also be updated
 
-assign st_stall   = '0;  // st_req & ~dbus2lsu.ack;                                                              // (similar to any R-type instruction)
 assign ld_amo_req = ld_req | is_amo | st_req;
 assign ld_amo_ack = is_amo ? amo_done : dbus2lsu.ack;   // Ack will be based on amo_done in case of 
                                                              // amo_instruction
 
 //assign lsu2fwd.mul_req   = (exe2lsu_ctrl.rd_wrb_sel == RD_WRB_M_ALU) ? '1 : '0;
-assign lsu2fwd.st_stall = st_stall;
 assign lsu2fwd.ld_req   = ld_amo_req;
 assign lsu2fwd.ld_ack   = ld_amo_ack;
 

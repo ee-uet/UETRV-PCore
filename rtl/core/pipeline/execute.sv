@@ -198,6 +198,7 @@ end
  
 always_comb begin
    alu_result = '0;
+
    case (alu_i_operator)
       ALU_I_OPS_AND : begin
          alu_result = alu_operand_1 & alu_operand_2;
@@ -304,6 +305,7 @@ assign exe2csr_ctrl.sys_ops    = id2exe_ctrl.sys_ops;
 // Update the output data signals for CSR
 assign exe2csr_data.csr_addr   = id2exe_data.instr[31:20];
 assign exe2csr_data.pc         = id2exe_data.pc;
+assign exe2csr_data.instr      = id2exe_data.instr;
 assign exe2csr_data.exc_code   = id2exe_ctrl.exc_code;
 assign exe2csr_data.instr_flushed = id2exe_data.instr_flushed;
 

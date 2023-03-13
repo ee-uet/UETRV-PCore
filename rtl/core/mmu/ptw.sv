@@ -231,9 +231,9 @@ always_comb begin : ptw_walker
         
         if (mmu2ptw.flush_req) begin
             // Before flushing check if PTE is being looked up 
-            if ((ptw_state_ff == PTW_PROCESS_PTE) && (!r_data_valid_ff))
+        /*    if ((ptw_state_ff == PTW_PROCESS_PTE) && (!r_data_valid_ff))
                 ptw_state_next = PTW_WAIT_R_VALID;
-            else
+            else */
                 ptw_state_next = PTW_IDLE;
         end
 end : ptw_walker

@@ -133,14 +133,13 @@ end
 // Update mtimecmp register 
 // ----------------------------
 always_comb begin
+    mtimecmp_next = mtimecmp_ff;
 
     if (mtimecmp_lo_wr_flag) begin
         mtimecmp_next[31:0] = w_data;
     end else if (mtimecmp_hi_wr_flag) begin
         mtimecmp_next[63:32] = w_data;
-    end else begin
-        mtimecmp_next = mtimecmp_ff;
-    end
+    end 
 end
 
 always_ff @(posedge clk, negedge rst_n) begin
@@ -166,7 +165,7 @@ end
 //================================= Timer Prescaler ==================================//
 always_comb begin
 
-    if (timer_prescaler_ff == 7'd90) begin
+    if (timer_prescaler_ff == 7'd80) begin
         timer_clk_next = ~timer_clk_ff;
         timer_prescaler_next = '0;
     end else begin

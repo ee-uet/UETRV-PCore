@@ -24,7 +24,7 @@ reg  uart_rx;
 wire uart_tx;
 
 integer tracelog_filepointer, uartlog_filepointer;
-logic flag = 0;
+logic flag = 0, flag2 = 0;
 
 core_top dut (
 .clk                     (clk),
@@ -194,10 +194,16 @@ always_ff@(posedge clk) begin
             $fwrite(tracelog_filepointer, "%d \t %h \n", loop_count, dut.pipeline_top_module.csr_module.exe2csr_data.pc);
    end
 
-  if (dut.pipeline_top_module.csr_module.exe2csr_data.pc == 32'hc003ffa8) // c027517c
+ /* if ((dut.clint_module.mtimecmp_ff[35:32] == 3'h3) || ((dut.clint_module.timer_clk_ff == 1'b0) &&
+             (dut.clint_module.timer_clk_next == 1'b1) && flag)) begin
+            $fwrite(tracelog_filepointer, "%d \t %h \t %h \n", loop_count, dut.clint_module.mtimecmp_ff[35:0],  	
+                                                                           dut.clint_module.mtime_ff[35:0]);
+   end */
+
+  if (dut.pipeline_top_module.csr_module.exe2csr_data.pc == 32'hc003ffa8 ) // c027517c   hc003ffa8 hc0268c74
 		flag = 1; 
 
-  if(loop_count == {32'h10000000}) begin
+  if(loop_count == {32'h08000000}) begin
     $display("End of simulation");
     $fclose(tracelog_filepointer);
     $fclose(uartlog_filepointer);

@@ -119,12 +119,12 @@ always_ff @(posedge clk) begin
 end
 
 always_comb begin 
+    ld_stall_next = ld_stall_ff; 
+
     if (lsu2fwd.ld_ack ) begin
         ld_stall_next = 1'b0;
     end else if (lsu2fwd.ld_req) begin                         
         ld_stall_next = 1'b1; 
-    end else begin                         
-        ld_stall_next = ld_stall_ff; 
     end        
 end
 
@@ -140,13 +140,13 @@ always_ff @(negedge rst_n, posedge clk) begin
 end
 
 always_comb begin
+    mul_stall_next = mul_stall_ff; 
+
     if (lsu2fwd.mul_ack) begin
         mul_stall_next = 0;
     end else if (lsu2fwd.mul_req) begin                         
         mul_stall_next = 1'b1; 
-    end else begin                         
-        mul_stall_next = mul_stall_ff; 
-    end  
+    end   
 end
 
 
@@ -176,7 +176,7 @@ assign ld_use_hazard     = (ld_use_rs1_hazard | ld_use_rs2_hazard) & ~ld_stall &
 // instruction in EXE stage due to operand dependency on the data from LSU stage, nor there is 
 // a stall from LSU stage 
 // MT: added "mul_stall" here as well, need to verify  
-assign exe_new_pc_req = exe2fwd.new_pc_req & ~(ld_use_hazard | ld_stall | mul_stall | if2fwd_stall | lsu2fwd.st_stall); 
+assign exe_new_pc_req = exe2fwd.new_pc_req & ~(ld_use_hazard | ld_stall | mul_stall | if2fwd_stall); 
 
 // Pipeline stall and flush signal for ID, EXE and LSU stages
 assign id_exe_flush = exe_new_pc_req | csr2fwd.new_pc_req | csr2fwd.wfi_req;
@@ -186,8 +186,8 @@ assign fwd2ptop.if2id_pipe_flush   = id_exe_flush;
 assign fwd2ptop.id2exe_pipe_flush  = id_exe_flush;
 assign fwd2ptop.exe2lsu_pipe_flush = ld_use_hazard | lsu_flush | (if2fwd_stall & ~lsu_mul_stall);
 
-assign if_id_exe_stall             = ld_use_hazard | ld_stall | mul_stall | if2fwd_stall | lsu2fwd.st_stall;
-assign lsu_mul_stall               = ld_stall | mul_stall | lsu2fwd.st_stall; // | (if2fwd_stall ) & ~(lsu2fwd.ld_req & lsu2fwd.ld_ack)
+assign if_id_exe_stall             = ld_use_hazard | ld_stall | mul_stall | if2fwd_stall;
+assign lsu_mul_stall               = ld_stall | mul_stall; // | (if2fwd_stall ) & ~(lsu2fwd.ld_req & lsu2fwd.ld_ack)
 
 assign fwd2ptop.if2id_pipe_stall   = if_id_exe_stall;
 assign fwd2ptop.id2exe_pipe_stall  = if_id_exe_stall;

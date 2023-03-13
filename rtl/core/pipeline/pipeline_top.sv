@@ -59,6 +59,7 @@ type_lsu2csr_data_s                     lsu2csr_data;
 type_lsu2csr_ctrl_s                     lsu2csr_ctrl;
 type_csr2lsu_data_s                     csr2lsu_data;
 
+
 // Interfaces for data bus 
 type_lsu2dbus_s                         lsu2dbus;               // Signal to data memory 
 type_dbus2lsu_s                         dbus2lsu; 
@@ -71,6 +72,10 @@ type_imem2if_s                          imem2if;
 type_lsu2wrb_ctrl_s                     lsu2wrb_ctrl;
 type_lsu2wrb_data_s                     lsu2wrb_data;
 type_csr2wrb_data_s                     csr2wrb_data;
+
+type_lsu2wrb_data_s                     lsu2wrb_data_next;
+type_lsu2wrb_ctrl_s                     lsu2wrb_ctrl_next;
+type_csr2wrb_data_s                     csr2wrb_data_next;
 
 // Interfaces for feedback signals
 type_csr2if_fb_s                        csr2if_fb;
@@ -111,6 +116,27 @@ assign imem2if  = imem2if_i;
 
 
 //================================= Fetch to decode interface ==================================//
+
+// Instruction Fetch module instantiation
+fetch fetch_module (
+    .rst_n                      (rst_n),
+    .clk                        (clk),
+
+    // IF module interface signals 
+    .if2imem_o                  (if2imem),
+    .imem2if_i                  (imem2if),
+
+    .if2mmu_o                   (if2mmu),
+    .mmu2if_i                   (mmu2if),
+
+    .if2id_data_o               (if2id_data),
+    .if2id_ctrl_o               (if2id_ctrl),
+    .exe2if_fb_i                (exe2if_fb),
+    .csr2if_fb_i                (csr2if_fb),
+    .fwd2if_i                   (fwd2if),
+    .if2fwd_stall_o             (if2fwd_stall)
+);
+
 // Fetch <-----> Decode pipeline/nopipeline  
 `ifdef IF2ID_PIPELINE_STAGE
 type_if2id_data_s                       if2id_data_pipe_ff;
@@ -132,6 +158,8 @@ always_ff @(posedge clk) begin
 end
 
 always_comb begin
+    if2id_data_next = if2id_data;
+    if2id_ctrl_next = if2id_ctrl;
 
     if (fwd2ptop.if2id_pipe_flush) begin
         if2id_data_next.instr = `INSTR_NOP;
@@ -140,33 +168,9 @@ always_comb begin
     end else if (fwd2ptop.if2id_pipe_stall) begin
         if2id_data_next = if2id_data_pipe_ff;
         if2id_ctrl_next = if2id_ctrl_pipe_ff;
-
-    end else begin
-        if2id_data_next = if2id_data;
-        if2id_ctrl_next = if2id_ctrl;
     end   
 end 
 `endif // IF2ID_PIPELINE_STAGE
-
-// Instruction Fetch module instantiation
-fetch fetch_module (
-    .rst_n                      (rst_n),
-    .clk                        (clk),
-
-    // IF module interface signals 
-    .if2imem_o                  (if2imem),
-    .imem2if_i                  (imem2if),
-
-    .if2mmu_o                   (if2mmu),
-    .mmu2if_i                   (mmu2if),
-
-    .if2id_data_o               (if2id_data),
-    .if2id_ctrl_o               (if2id_ctrl),
-    .exe2if_fb_i                (exe2if_fb),
-    .csr2if_fb_i                (csr2if_fb),
-    .fwd2if_i                   (fwd2if),
-    .if2fwd_stall_o             (if2fwd_stall)
-);
 
 
 // Instruction Decode module instantiation
@@ -206,6 +210,8 @@ type_id2exe_ctrl_s                      id2exe_ctrl_pipe_ff;
 end
 
 always_comb begin
+    id2exe_data_next = id2exe_data;
+    id2exe_ctrl_next = id2exe_ctrl;
 
     if (fwd2ptop.id2exe_pipe_flush) begin
         id2exe_ctrl_next = '0;
@@ -232,10 +238,7 @@ always_comb begin
         if (fwd2ptop.pipe_fwd_wrb_rs2) begin
             id2exe_data_next.rs2_data = wrb2id_fb.rd_data;
         end 
-    end else begin
-        id2exe_data_next = id2exe_data;
-        id2exe_ctrl_next = id2exe_ctrl;
-    end
+    end 
 end 
 `endif // ID2EXE_PIPELINE_STAGE
 
@@ -315,22 +318,21 @@ always_ff @(posedge clk) begin
 end
 
 always_comb begin
-    exe2csr_data_next = exe2csr_data;     
+    exe2csr_data_next = exe2csr_data;
+    exe2lsu_ctrl_next = exe2lsu_ctrl;
+    exe2csr_ctrl_next = exe2csr_ctrl; 
+    exe2lsu_data_next = exe2lsu_data;
+     
     if (fwd2ptop.exe2lsu_pipe_flush) begin
         exe2lsu_ctrl_next = '0;
         exe2csr_ctrl_next = '0;
         exe2csr_data_next.instr_flushed = 1'b1;
         exe2lsu_data_next.alu_result = exe2lsu_data_pipe_ff.alu_result;
-    // Stall the exe2lsu/csr stage
-    end else if (fwd2ptop.exe2lsu_pipe_stall) begin
+    end else if (fwd2ptop.exe2lsu_pipe_stall) begin  // Stall the exe2lsu/csr stage
         exe2lsu_ctrl_next = exe2lsu_ctrl_pipe_ff;
         exe2csr_ctrl_next = exe2csr_ctrl_pipe_ff;
         exe2lsu_data_next = exe2lsu_data_pipe_ff;
-    end else begin
-        exe2lsu_ctrl_next = exe2lsu_ctrl;
-        exe2csr_ctrl_next = exe2csr_ctrl; 
-        exe2lsu_data_next = exe2lsu_data;
-    end
+    end 
 end 
 `endif // EXE2LSU_PIPELINE_STAGE
 
@@ -421,14 +423,24 @@ type_csr2wrb_data_s                     csr2wrb_data_pipe_ff;
         lsu2wrb_data_pipe_ff <= '0;
         lsu2wrb_ctrl_pipe_ff <= '0;
         csr2wrb_data_pipe_ff <= '0;
-    end else if (fwd2ptop.exe2lsu_pipe_stall) begin // On LSU stall, we flush WRB stage
-        lsu2wrb_ctrl_pipe_ff <= '0;
     end else begin
-        lsu2wrb_data_pipe_ff <= lsu2wrb_data;
-        lsu2wrb_ctrl_pipe_ff <= lsu2wrb_ctrl;
-        csr2wrb_data_pipe_ff <= csr2wrb_data;
+        lsu2wrb_data_pipe_ff <= lsu2wrb_data_next;
+        lsu2wrb_ctrl_pipe_ff <= lsu2wrb_ctrl_next;
+        csr2wrb_data_pipe_ff <= csr2wrb_data_next;
     end
 end
+
+always_comb begin
+    lsu2wrb_data_next = lsu2wrb_data;
+    lsu2wrb_ctrl_next = lsu2wrb_ctrl;
+    csr2wrb_data_next = csr2wrb_data; 
+     
+    if (fwd2ptop.exe2lsu_pipe_stall) begin // On LSU stall, we flush WRB stage
+        lsu2wrb_ctrl_next = '0;
+        lsu2wrb_data_next = '0;
+    end 
+end 
+
 `endif // LSU2WRB_PIPELINE_STAGE
 
 
