@@ -3,7 +3,7 @@
 `include "../defines/MMU_defs.svh"
 `else
 `include "UETRV_PCore_ISA.svh"
-// `include "cache_pkg.svh"
+`include "cache_pkg.svh"
 `include "MMU_defs.svh"
 `endif
 
@@ -39,8 +39,8 @@ type_icache2if_s                          bmem2if;
 type_mmu2dmem_s                         mmu2dmem;               
 type_dmem2mmu_s                         dmem2mmu;
 
-type_dbus2peri_s                        dbus2peri;
-type_peri2dbus_s                        dmem2dbus;          // Signals from data memory
+type_dbus2peri_s                        dbus2peri,lsummu2dmem;
+type_peri2dbus_s                        dmem2dbus, dmem2lsummu;          // Signals from data memory
 type_peri2dbus_s                        bmem2dbus;  
 
 type_icache2imem_s                    icache2imem;
@@ -79,20 +79,46 @@ bmem_interface bmem_interface_module (
     
 );
 
+//============================= Data bus arbitration =============================//
+// Arbitration between LSU and MMU interfaces for data bus
+
+always_comb begin
+lsummu2dmem = '0;
+
+    if (dmem_sel) begin
+        lsummu2dmem = dbus2peri;
+    end else if (~dmem_sel & mmu2dmem.r_req) begin
+        lsummu2dmem.addr     = mmu2dmem.paddr;
+        lsummu2dmem.w_data   = '0;
+        lsummu2dmem.sel_byte = '0;
+        lsummu2dmem.w_en     = '0;
+        lsummu2dmem.stb      = 1'b1;
+        lsummu2dmem.cyc      = 1'b1;
+    end 
+end
+
+always_comb begin
+dmem2dbus = '0;
+dmem2mmu  = '0;
+
+    if (dmem_sel) begin
+        dmem2dbus = dmem2lsummu;
+    end else if (~dmem_sel & mmu2dmem.r_req) begin
+        dmem2mmu.r_data  = dmem2lsummu.r_data;
+        dmem2mmu.r_valid = dmem2lsummu.ack;
+    end 
+end
+
 
 dualport_mem dualport_mem_module (
     .rst_n                (rst_n    ),
     .clk                  (clk      ),
 
     // Data memory interface signals 
-    .dbus2dmem_i          (dbus2peri),
-    .dmem_sel_i           (dmem_sel),
-    .dmem2dbus_o          (dmem2dbus),
-
-   // MMU <---> data memory interface signals 
-    .mmu2dmem_i           (mmu2dmem),
-    .dmem2mmu_o           (dmem2mmu),
-
+    .dbus2dmem_i          (lsummu2dmem),
+    .dmem_sel_i           (dmem_sel | mmu2dmem.r_req),
+    .dmem2dbus_o          (dmem2lsummu),
+    
    // Instruction memory interface signals 
     .icache2imem_i            (icache2imem),
     .imem_sel_i           (~bmem_iaddr_match),

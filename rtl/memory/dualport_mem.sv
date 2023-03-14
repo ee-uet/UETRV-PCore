@@ -19,10 +19,6 @@ module dualport_mem (
     input  wire type_icache2imem_s                      icache2imem_i,                 // Bus interface from IF to imem 
     output type_imem2icache_s                           imem2icache_o,                 // From imem to IF
 
-  // MMU interface
-    input  wire type_mmu2dmem_s                     mmu2dmem_i,                 // Interface from MMU 
-    output type_dmem2mmu_s                          dmem2mmu_o,                 // From data memory to MMU
-
   // DBus <---> Data memory interface
     input   wire type_dbus2peri_s                   dbus2dmem_i,               // Data memory input signals
     output  type_peri2dbus_s                        dmem2dbus_o,               // Data memory output signals
@@ -90,47 +86,6 @@ end
 assign imem2icache_o = imem2icache_ff;    
 
 
-//================================= MMU Interface ==================================//
-// Local signals
-type_mmu2dmem_s                        mmu2dmem;               
-type_dmem2mmu_s                        dmem2mmu_ff;
-
-logic [`MEM_ADDR_WIDTH-1:0]            mmu_addr, mmu_addr_ff;
-logic                                  mmu_rd_req, mmu_rd_req_ff;
-
-// Local signal assignments
-assign mmu2dmem   = mmu2dmem_i;
-assign mmu_rd_req = mmu2dmem.r_req;
-assign mmu_addr   = {2'b0, mmu2dmem.paddr[`MEM_ADDR_WIDTH-1:2]};  // Memory is word addressable
-
-// The memory address is captured on the negative edge of the clock, 
-// while the read data is made available synchronously on the next 
-// positive edge
-always_ff @(negedge clk) begin
-   if (~rst_n) begin
-       mmu_rd_req_ff  <= '0;
-       mmu_addr_ff    <= '0;
-    end 
-    else begin
-       mmu_rd_req_ff  <= mmu_rd_req;
-       mmu_addr_ff    <= mmu_addr;              // Memory is word addressable
-    end
-end
-
-
-// Synchronous memory read operation
-always_ff @ (posedge clk) begin 
-     
-    if (mmu_rd_req_ff & ~dmem2mmu_ff.r_valid) begin                         
-        dmem2mmu_ff.r_valid <= 1'b1;
-        dmem2mmu_ff.r_data  <= dualport_memory[mmu_addr_ff];   
-    end else begin
-        dmem2mmu_ff <= '0;
-    end
-end
-
-
-assign dmem2mmu_o = dmem2mmu_ff;    
 
 //================================= Dbus interface ==================================//
 
@@ -180,8 +135,9 @@ always_ff @(posedge clk) begin
             if (dmem_selbyte_ff[3]) dualport_memory[dmem_addr_ff][31:24] <= dmem_wdata_ff[31:24];
         end else begin
             dmem2dbus_ff.r_data <= dualport_memory[dmem_addr_ff];
-            dmem2dbus_ff.ack <= 1'b1;
+            
         end
+        dmem2dbus_ff.ack <= 1'b1;
     end else begin
         dmem2dbus_ff <= '0;
     end
@@ -209,7 +165,7 @@ always_comb begin
 end
  */                     
 assign dmem2dbus_o.r_data = dmem2dbus_ff.r_data;
-assign dmem2dbus_o.ack =  (dbus2dmem.w_en & dmem_sel_i) ? 1'b1 : dmem2dbus_ff.ack;
+assign dmem2dbus_o.ack = dmem2dbus_ff.ack;
 
 
 endmodule : dualport_mem
