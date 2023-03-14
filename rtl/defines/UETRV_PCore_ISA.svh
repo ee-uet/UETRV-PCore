@@ -153,20 +153,20 @@ typedef enum logic {
 //======== Data and control signals among different pairs of communicating modules/stages =========//
 
 // Bus interface from IF to imem  
-typedef struct packed {                            
-    logic [`XLEN-1:0]                addr;
- //   logic [`XLEN-1:0]                w_data;
- //   logic [3:0]                      sel_byte;  
- //   logic                            w_en;  
- //   logic                            stb; 
-    logic                            req; 
-} type_if2imem_s;
+// typedef struct packed {                            
+//     logic [`XLEN-1:0]                addr;
+//  //   logic [`XLEN-1:0]                w_data;
+//  //   logic [3:0]                      sel_byte;  
+//  //   logic                            w_en;  
+//  //   logic                            stb; 
+//     logic                            req; 
+// } type_if2icache_s;
 
 // Bus interface from peripheral device to DBUS
-typedef struct packed {                            
-    logic [`XLEN-1:0]                r_data;
-    logic                            ack;  
-} type_imem2if_s;
+// typedef struct packed {                            
+//     logic [`XLEN-1:0]                r_data;
+//     logic                            ack;  
+// } type_icache2if_s;
 
 
 // Fetch-2-Decode data signals

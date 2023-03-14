@@ -9,7 +9,7 @@
 `ifndef VERILATOR
 module core_tb();
 `else
-module core_tb(input bit clk, output reg flag2);
+module core_tb(input bit clk);
 `endif
 
 `ifndef VERILATOR

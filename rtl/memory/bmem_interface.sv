@@ -1,7 +1,9 @@
 `ifndef VERILATOR
 `include "../defines/UETRV_PCore_ISA.svh"
+`include "../defines/cache_pkg.svh"
 `else
 `include "UETRV_PCore_ISA.svh"
+`include "cache_pkg.svh"
 `endif
 
 module bmem_interface (
@@ -10,8 +12,8 @@ module bmem_interface (
     input   logic                                   clk,                        // clock
 
   // Instruction (boot) memory interface
-    input  wire type_if2imem_s                      if2bmem_i,                 // Bus interface from IF  
-    output type_imem2if_s                           bmem2if_o,                 // From boot memory to IF
+    input  wire type_if2icache_s                      if2bmem_i,                 // Bus interface from IF  
+    output type_icache2if_s                           bmem2if_o,                 // From boot memory to IF
   //  output logic                                    bmem_i_sel_o,
 
   // DBus <---> Boot memory interface
@@ -34,8 +36,8 @@ end
 
 //================================= Ibus interface ==================================//
 // Local signals
-type_if2imem_s                        if2bmem;               
-type_imem2if_s                        bmem2if_ff, bmem2if_next;
+type_if2icache_s                        if2bmem;               
+type_icache2if_s                        bmem2if_ff, bmem2if_next;
 
 type_dbus2peri_s                      dbus2bmem;
 type_peri2dbus_s                      bmem2dbus_ff, bmem2dbus_next;

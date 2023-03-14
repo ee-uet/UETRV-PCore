@@ -17,8 +17,8 @@ module pipeline_top (
     input   logic                       clk,                      // clock
 
    // IF <---> IMEM interface
-    output type_if2imem_s               if2imem_o,                // Instruction memory request
-    input wire type_imem2if_s           imem2if_i,                // Instruction memory response
+    output type_if2icache_s               if2icache_o,                // Instruction memory request
+    input wire type_icache2if_s           icache2if_i,                // Instruction memory response
 
    // MMU <---> Data cache interface
     input wire type_dmem2mmu_s          dmem2mmu_i,   
@@ -65,8 +65,8 @@ type_lsu2dbus_s                         lsu2dbus;               // Signal to dat
 type_dbus2lsu_s                         dbus2lsu; 
 
 // Interfaces for instruction memory 
-type_if2imem_s                          if2imem;              
-type_imem2if_s                          imem2if;
+type_if2icache_s                          if2icache;              
+type_icache2if_s                          icache2if;
 
 // Interfaces for writeback module
 type_lsu2wrb_ctrl_s                     lsu2wrb_ctrl;
@@ -112,7 +112,7 @@ type_fwd2ptop_s                         fwd2ptop;
 // Inputs assignment to local signals
 assign dbus2lsu = dbus2lsu_i; 
 assign dmem2mmu = dmem2mmu_i;
-assign imem2if  = imem2if_i;
+assign icache2if  = icache2if_i;
 
 
 //================================= Fetch to decode interface ==================================//
@@ -123,8 +123,8 @@ fetch fetch_module (
     .clk                        (clk),
 
     // IF module interface signals 
-    .if2imem_o                  (if2imem),
-    .imem2if_i                  (imem2if),
+    .if2icache_o                  (if2icache),
+    .icache2if_i                  (icache2if),
 
     .if2mmu_o                   (if2mmu),
     .mmu2if_i                   (mmu2if),
@@ -502,7 +502,7 @@ mmu mmu_module (
 
 assign lsu2dbus_o = lsu2dbus;
 assign mmu2dmem_o = mmu2dmem;
-assign if2imem_o  = if2imem;
+assign if2icache_o  = if2icache;
 
 endmodule : pipeline_top
 

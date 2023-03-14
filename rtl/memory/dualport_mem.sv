@@ -2,10 +2,12 @@
 `include "../defines/UETRV_PCore_defs.svh"
 `include "../defines/UETRV_PCore_ISA.svh"
 `include "../defines/MMU_defs.svh"
+`include "../defines/cache_pkg.svh"
 `else
 `include "UETRV_PCore_defs.svh"
 `include "UETRV_PCore_ISA.svh"
 `include "MMU_defs.svh"
+`include "cache_pkg.svh"
 `endif
 
 module dualport_mem (
@@ -14,8 +16,12 @@ module dualport_mem (
     input   logic                                  clk,                        // clock
 
   // Instruction memory interface
-    input  wire type_if2imem_s                      if2imem_i,                 // Bus interface from IF to imem 
-    output type_imem2if_s                           imem2if_o,                 // From imem to IF
+    input  wire type_icache2imem_s                      icache2imem_i,                 // Bus interface from IF to imem 
+    output type_imem2icache_s                           imem2icache_o,                 // From imem to IF
+
+  // MMU interface
+    input  wire type_mmu2dmem_s                     mmu2dmem_i,                 // Interface from MMU 
+    output type_dmem2mmu_s                          dmem2mmu_o,                 // From data memory to MMU
 
   // DBus <---> Data memory interface
     input   wire type_dbus2peri_s                   dbus2dmem_i,               // Data memory input signals
@@ -38,16 +44,16 @@ end
 
 //================================= Ibus interface ==================================//
 // Local signals
-type_if2imem_s                        if2imem;               
-type_imem2if_s                        imem2if_ff;
+type_icache2imem_s                        icache2imem;               
+type_imem2icache_s                        imem2icache_ff;
 
 logic [`MEM_ADDR_WIDTH-1:0]           imem_addr, imem_addr_ff;
 logic                                 imem_rd_req, imem_rd_req_ff;
 
 // Local signal assignments
-assign if2imem     = if2imem_i;
-assign imem_rd_req = if2imem.req & imem_sel_i;
-assign imem_addr   = {2'b0, if2imem.addr[`MEM_ADDR_WIDTH-1:2]};  // Memory is word addressable
+assign icache2imem     = icache2imem_i;
+assign imem_rd_req = icache2imem.req & imem_sel_i;
+assign imem_addr   = {2'b0, icache2imem.addr[`MEM_ADDR_WIDTH-1:2]};  // Memory is word addressable
 
 // The memory address is captured on the negative edge of the clock, 
 // while the read data is made available synchronously on the next 
@@ -66,17 +72,65 @@ end
 
 // Synchronous memory read operation
 always_ff @ (posedge clk) begin 
-    if (imem_rd_req_ff) begin                         // & ~imem2if_ff.ack
-        imem2if_ff.ack    <= 1'b1;
-        imem2if_ff.r_data <= dualport_memory[imem_addr_ff];   
+    if (imem_rd_req_ff) begin                         // & ~imem2icache_ff.ack
+        imem2icache_ff.ack    <= 1'b1;
+        // imem2icache_ff.data <= {4{dualport_memory[imem_addr_ff]}};   
+        // imem2icache_ff.data <= 128'h00000013000000130000001300000013;   
+        imem2icache_ff.data[31:0]   <= dualport_memory[{imem_addr_ff[`MEM_ADDR_WIDTH-1:2],2'b00}];   
+        imem2icache_ff.data[63:32]  <= dualport_memory[{imem_addr_ff[`MEM_ADDR_WIDTH-1:2],2'b00}+1];   
+        imem2icache_ff.data[95:64]  <= dualport_memory[{imem_addr_ff[`MEM_ADDR_WIDTH-1:2],2'b00}+2];   
+        imem2icache_ff.data[127:96] <= dualport_memory[{imem_addr_ff[`MEM_ADDR_WIDTH-1:2],2'b00}+3];   
+        // imem2icache_ff.data <= dualport_memory[imem_addr_ff];   
     end else begin
-        imem2if_ff.ack    <= 1'b0;
+        imem2icache_ff.ack    <= 1'b0;
     end 
 end
 
 
-assign imem2if_o = imem2if_ff;    
+assign imem2icache_o = imem2icache_ff;    
 
+
+//================================= MMU Interface ==================================//
+// Local signals
+type_mmu2dmem_s                        mmu2dmem;               
+type_dmem2mmu_s                        dmem2mmu_ff;
+
+logic [`MEM_ADDR_WIDTH-1:0]            mmu_addr, mmu_addr_ff;
+logic                                  mmu_rd_req, mmu_rd_req_ff;
+
+// Local signal assignments
+assign mmu2dmem   = mmu2dmem_i;
+assign mmu_rd_req = mmu2dmem.r_req;
+assign mmu_addr   = {2'b0, mmu2dmem.paddr[`MEM_ADDR_WIDTH-1:2]};  // Memory is word addressable
+
+// The memory address is captured on the negative edge of the clock, 
+// while the read data is made available synchronously on the next 
+// positive edge
+always_ff @(negedge clk) begin
+   if (~rst_n) begin
+       mmu_rd_req_ff  <= '0;
+       mmu_addr_ff    <= '0;
+    end 
+    else begin
+       mmu_rd_req_ff  <= mmu_rd_req;
+       mmu_addr_ff    <= mmu_addr;              // Memory is word addressable
+    end
+end
+
+
+// Synchronous memory read operation
+always_ff @ (posedge clk) begin 
+     
+    if (mmu_rd_req_ff & ~dmem2mmu_ff.r_valid) begin                         
+        dmem2mmu_ff.r_valid <= 1'b1;
+        dmem2mmu_ff.r_data  <= dualport_memory[mmu_addr_ff];   
+    end else begin
+        dmem2mmu_ff <= '0;
+    end
+end
+
+
+assign dmem2mmu_o = dmem2mmu_ff;    
 
 //================================= Dbus interface ==================================//
 
@@ -126,18 +180,36 @@ always_ff @(posedge clk) begin
             if (dmem_selbyte_ff[3]) dualport_memory[dmem_addr_ff][31:24] <= dmem_wdata_ff[31:24];
         end else begin
             dmem2dbus_ff.r_data <= dualport_memory[dmem_addr_ff];
-            
+            dmem2dbus_ff.ack <= 1'b1;
         end
-
-        dmem2dbus_ff.ack <= 1'b1;
     end else begin
         dmem2dbus_ff <= '0;
     end
 end
 
-                     
+// Synchronous read operation (the 'r_data' and 'ack' signals are updated on the
+// negative edge of the clock)
+/*
+always_ff @(negedge rst_n, posedge clk) begin
+    if (~rst_n) begin
+        dmem2dbus_ff <= '0;
+    end else begin
+        dmem2dbus_ff <= dmem2dbus_next;
+    end
+end
+
+always_comb begin 
+
+    dmem2dbus_next = '0;
+    // The read data in response to load operation
+    if (cyc_ff & r_en & (~dmem2dbus_ff.ack)) begin
+        dmem2dbus_next.ack = 1'b1;
+        dmem2dbus_next.r_data = dualport_memory[addr];
+    end 
+end
+ */                     
 assign dmem2dbus_o.r_data = dmem2dbus_ff.r_data;
-assign dmem2dbus_o.ack =  dmem2dbus_ff.ack;
+assign dmem2dbus_o.ack =  (dbus2dmem.w_en & dmem_sel_i) ? 1'b1 : dmem2dbus_ff.ack;
 
 
 endmodule : dualport_mem

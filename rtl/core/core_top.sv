@@ -25,8 +25,8 @@ module core_top (
 );
 
 // Local signals
-type_if2imem_s                          if2imem;            // Instruction memory address
-type_imem2if_s                          imem2if;  
+type_if2icache_s                          if2icache;            // Instruction memory address
+type_icache2if_s                          icache2if;  
 
 type_mmu2dmem_s                         mmu2dmem;               
 type_dmem2mmu_s                         dmem2mmu;
@@ -77,8 +77,8 @@ pipeline_top pipeline_top_module (
     .clk                 (clk          ),
 
     // IMEM interface signals 
-    .if2imem_o           (if2imem),   
-    .imem2if_i           (imem2if),
+    .if2icache_o           (if2icache),   
+    .icache2if_i           (icache2if),
 
     // MMU interface signals
     .dmem2mmu_i          (dmem2mmu),
@@ -192,9 +192,9 @@ mem_top mem_top_module (
     .dmem2mmu_o           (dmem2mmu),
 
    // Instruction memory interface signals 
-    .if2imem_i            (if2imem),
+    .if2icache_i            (if2icache),
     .bmem_sel_i           (bmem_sel),
-    .imem2if_o            (imem2if)
+    .icache2if_o            (icache2if)
 );
 
 

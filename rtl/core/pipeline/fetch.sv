@@ -14,8 +14,8 @@ module fetch (
     input   logic                                   clk,             // clock
 
    // IF <---> IMEM interface
-    output type_if2imem_s                           if2imem_o,       // Instruction memory request
-    input wire type_imem2if_s                       imem2if_i,       // Instruction memory response
+    output type_if2icache_s                           if2icache_o,       // Instruction memory request
+    input wire type_icache2if_s                       icache2if_i,       // Instruction memory response
 
    // IF <---> MMU interface
     output type_if2mmu_s                            if2mmu_o,        // Instruction memory request
@@ -38,7 +38,7 @@ module fetch (
 
 
 // Local siganls       
-type_imem2if_s                       imem2if;
+type_icache2if_s                       icache2if;
 type_if2mmu_s                        if2mmu;
 type_mmu2if_s                        mmu2if;
 
@@ -61,7 +61,7 @@ logic                                if_stall;
 logic                                pc_misaligned;
 
 
-assign imem2if   = imem2if_i;
+assign icache2if   = icache2if_i;
 assign mmu2if    = mmu2if_i;
 
 assign exe2if_fb = exe2if_fb_i;
@@ -72,7 +72,7 @@ assign fwd2if    = fwd2if_i;
 assign pc_misaligned = pc_ff[1] | pc_ff[0];
 
 // Stall signal for IF stage
-assign if_stall = fwd2if.if_stall | (~imem2if.ack);
+assign if_stall = fwd2if.if_stall | (~icache2if.ack);
 
 // PC update state machine
 always_ff @(posedge clk) begin
@@ -122,11 +122,11 @@ end
 // Update the outputs to MMU and Imem modules
 assign if2mmu.i_vaddr = pc_next;
 assign if2mmu.i_req   = `IMEM_INST_REQ;
-assign if2imem_o.addr = mmu2if.i_paddr[`XLEN-1:0]; // pc_next; 
-assign if2imem_o.req  = mmu2if.i_hit;              // `IMEM_INST_REQ; 
+assign if2icache_o.addr = mmu2if.i_paddr[`XLEN-1:0]; // pc_next; 
+assign if2icache_o.req  = mmu2if.i_hit;              // `IMEM_INST_REQ; 
 
 // Update the outputs to ID stage
-assign if2id_data.instr         = imem2if.ack ? imem2if.r_data : `INSTR_NOP;
+assign if2id_data.instr         = icache2if.ack ? icache2if.r_data : `INSTR_NOP;
 assign if2id_data.pc            = pc_ff;
 assign if2id_data.pc_next       = pc_next;
 assign if2id_data.instr_flushed = 1'b0;
@@ -135,7 +135,7 @@ assign if2id_ctrl.exc_code      = exc_code;
 assign if2id_ctrl.exc_req       = exc_req;
 
 // Generate stall request to forward_stall module
-assign if2fwd_stall_o           = if2mmu.i_req & ~imem2if.ack;
+assign if2fwd_stall_o           = if2mmu.i_req & ~icache2if.ack;
 
 assign if2id_data_o             = if2id_data;
 assign if2id_ctrl_o             = if2id_ctrl;
