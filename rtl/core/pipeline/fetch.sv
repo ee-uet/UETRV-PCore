@@ -123,7 +123,8 @@ end
 assign if2mmu.i_vaddr = pc_next;
 assign if2mmu.i_req   = `IMEM_INST_REQ;
 assign if2icache_o.addr = mmu2if.i_paddr[`XLEN-1:0]; // pc_next; 
-assign if2icache_o.req  = mmu2if.i_hit;              // `IMEM_INST_REQ; 
+assign if2icache_o.req  = mmu2if.i_hit;              // `IMEM_INST_REQ;
+assign if2icache_o.icache_flush = exe2if_fb.icache_flush;   // Cache flush due to fence.i 
 
 // Update the outputs to ID stage
 assign if2id_data.instr         = icache2if.ack ? icache2if.r_data : `INSTR_NOP;

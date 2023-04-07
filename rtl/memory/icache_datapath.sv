@@ -13,6 +13,7 @@
 module icache_datapath(
   input  wire logic       clk_i,
   input  wire logic       rst_ni,
+  input  wire logic       icache_flush,
   input  wire logic       cache_rw_i,
   output logic            cache_hit_o,
 
@@ -70,6 +71,7 @@ module icache_datapath(
   icache_ram ram(
     .clk_i,
     .rst_ni,
+    .icache_flush,
     .cache_rw_i     (cache_rw_i               ),
     .index_i        (cache_indx               ),
     .write_tag_i    (cache_ram_write.tag      ),

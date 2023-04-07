@@ -86,6 +86,7 @@ module icache(
   .cache_hit_o(cache_hit),
 
   // Instruction Fetch to Instruction Cache Interface
+  .icache_flush(if2icache.icache_flush),
   .if2icache_addr_i(if2icache.addr),
   .icache2if_data_o(icache2if.r_data),
   

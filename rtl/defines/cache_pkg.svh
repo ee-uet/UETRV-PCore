@@ -14,7 +14,8 @@
 // Bus interface from IF to icache  
 typedef struct packed {                            
     logic [AddrWidth-1:0]            addr;
-    logic                            req; 
+    logic                            req;
+    logic                            icache_flush; 
 } type_if2icache_s;
 
 // Bus interface from Icache to IF

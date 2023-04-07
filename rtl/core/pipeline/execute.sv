@@ -338,7 +338,8 @@ assign exe2fwd_o       = exe2fwd;
 assign exe2mul_o       = exe2mul;
 
 // Update the feedback signals from EXE to IF stage                         
-assign exe2if_fb.pc_new = fence_i_req ? id2exe_data.pc_next : alu_result;                          
+assign exe2if_fb.pc_new = fence_i_req ? id2exe_data.pc_next : alu_result;
+assign exe2if_fb.icache_flush = fence_i_req;                          
 assign exe2if_fb_o      = exe2if_fb;                  
 
 endmodule : execute

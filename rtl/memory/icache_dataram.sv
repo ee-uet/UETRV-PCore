@@ -13,6 +13,7 @@
 module data_ram (
     input  wire logic                 clk_i, 
     input  wire logic                 rst_ni,
+    input  wire logic                 icache_flush,
     input  wire logic                 write_en_i,
     input  wire logic [IndexBits-1:0] data_addr_i,
     input  wire logic [LineWidth-1:0] data_write_i,
@@ -25,7 +26,7 @@ module data_ram (
 
   assign data_read_o =  DATA_RAM[data_addr_i] ;
 
-  always_ff @(posedge(clk_i) or negedge(rst_ni)) begin
+  always_ff @(posedge(clk_i) or negedge(rst_ni) or posedge(icache_flush)) begin
     if (!rst_ni) begin
       for (integer i = 0; i < (n_of_Sets-1); i = i + 1) begin
             DATA_RAM[i] = {LineWidth{1'b0}};

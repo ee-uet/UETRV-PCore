@@ -28,7 +28,7 @@ module icache_controller (
   );
 
   typedef enum {
-    StIdle, StRead, StReadMiss, StReadMemory, StAllocate
+    StRead, StReadMiss, StReadMemory, StAllocate
   } states_e;
 
   states_e state_d, state_q;
@@ -47,22 +47,18 @@ module icache_controller (
     cache_rw_o = '0;
     unique case (state_d)
 
-        StIdle: begin
-            if (if2icache_request_i) begin
-                    state_q = StRead;
-                    icache2if_ack_ff = 1'b0;
-            end else begin
-                state_q = StIdle;
-            end
-        end
-
         StRead: begin
-            if (cache_hit_i) begin
-                state_q = StIdle;
-                icache2if_ack_ff = 1;
-            end else begin
+            if (if2icache_request_i) begin
                 icache2if_ack_ff = 1'b0;
-                state_q = StReadMiss;
+                if (cache_hit_i) begin
+                    state_q = StRead;
+                    icache2if_ack_ff = 1;
+                end else begin
+                    icache2if_ack_ff = 1'b0;
+                    state_q = StReadMiss;
+                end
+            end else begin
+                state_q = StRead;
             end
         end
 
@@ -84,7 +80,7 @@ module icache_controller (
 
         StAllocate: begin
             if (cache_hit_i) begin
-                state_q = StIdle;
+                state_q = StRead;
                 icache2if_ack_ff = 1;
             end else begin
                 state_q = StAllocate;
@@ -94,9 +90,9 @@ module icache_controller (
     endcase
   end
 
-   always_ff @(posedge clk_i or negedge rst_ni ) begin
+   always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni || ~imem_sel_i) begin
-        state_d <= StIdle;
+        state_d <= StRead;
     end else begin
         state_d <= state_q;
     end

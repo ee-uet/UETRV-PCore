@@ -5,4 +5,5 @@
 *.mpf_new
 work/
 sim/
+sim_verilator/
 transcript

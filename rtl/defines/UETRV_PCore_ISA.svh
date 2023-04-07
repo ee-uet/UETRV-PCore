@@ -335,6 +335,7 @@ typedef struct packed {
 // Execute-2-Fetch interface feedback signals
 typedef struct packed {                            
     logic [`XLEN-1:0]                pc_new;
+    logic                            icache_flush;
  //   logic                            jump_br_taken;  
 } type_exe2if_fb_s;
 

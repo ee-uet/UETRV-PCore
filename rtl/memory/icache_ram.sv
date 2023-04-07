@@ -13,6 +13,7 @@
 module icache_ram (
   input  wire logic                  clk_i,
   input  wire logic                  rst_ni,
+  input  wire logic                  icache_flush,
   input  wire logic                  cache_rw_i,
   input  wire logic [IndexBits-1:0]  index_i,
   input  wire logic [TagBits-1:0]    write_tag_i,
@@ -27,6 +28,7 @@ module icache_ram (
   tag_ram ctag(
     .clk_i, 
     .rst_ni,
+    .icache_flush,
     .write_en_i   (cache_rw_i ),
     .tag_addr_i   (index_i    ),
     .tag_write_i  (write_tag_i),
@@ -35,6 +37,7 @@ module icache_ram (
   valid_ram cvalid(
     .clk_i, 
     .rst_ni,
+    .icache_flush,
     .write_en_i     (cache_rw_i   ),
     .valid_addr_i   (index_i      ),
     .valid_write_i  (write_valid_i),
@@ -43,6 +46,7 @@ module icache_ram (
   data_ram cdata(
     .clk_i, 
     .rst_ni,
+    .icache_flush,
     .write_en_i   (cache_rw_i    ),
     .data_addr_i  (index_i       ),
     .data_write_i (write_cldata_i),
