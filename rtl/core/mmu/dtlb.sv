@@ -27,8 +27,7 @@ type_tlb2mmu_s                      tlb2mmu;
 type_ptw2tlb_s                      ptw2tlb;
 
 logic [9:0]                         vpn_0, vpn_1;
-logic [DTLB_WIDTH-1:0]              r_index, w_index, sp_index;
-logic                               sp_sel; 
+logic [DTLB_WIDTH-1:0]              r_index, w_index;
 
 type_tlb_entry_s [DTLB_ENTRIES-1:0]  tlb_array_ff, tlb_array_next;
 
@@ -41,7 +40,7 @@ assign r_index = mmu2tlb.vpage_addr[DTLB_WIDTH+9:10];
 //assign sp_sel   = tlb_array_ff[sp_index].page_4M && tlb_array_ff[sp_index].valid;
 //assign r_index  = sp_sel ? sp_index : mmu2tlb.vpage_addr[DTLB_WIDTH-1:0];
 
-// Virtual page address is 20-bit 
+// Virtual page number is 20-bit 
 assign vpn_0 = mmu2tlb.vpage_addr[9:0];
 assign vpn_1 = mmu2tlb.vpage_addr[19:10];
  

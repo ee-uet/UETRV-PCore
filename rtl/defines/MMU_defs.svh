@@ -122,6 +122,7 @@ typedef struct packed {
     logic                            lsu_flush;
     logic                            d_req;
     logic                            st_req;
+    logic                            is_amo;
     logic [`VALEN-1:0]               d_vaddr;   
 } type_lsu2mmu_s;
 
@@ -131,8 +132,6 @@ typedef struct packed {
     logic                            d_hit;  
     logic                            ld_page_fault;
     logic                            st_page_fault; 
-    logic                            inst_page_fault;
-    logic [`VALEN-1:0]               vaddr; 
 } type_mmu2lsu_s;
 
 // Address translation request from IF module to MMU
@@ -144,7 +143,8 @@ typedef struct packed {
 // Address translation response from MMU to IF module 
 typedef struct packed {                            
     logic [`PALEN-1:0]               i_paddr;
-    logic                            i_hit;   
+    logic                            i_hit; 
+    logic                            i_page_fault; 
 } type_mmu2if_s;
 
 // Data request from MMU to Dcache

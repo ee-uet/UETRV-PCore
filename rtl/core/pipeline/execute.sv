@@ -290,6 +290,7 @@ assign exe2lsu_ctrl.st_ops     = id2exe_ctrl.st_ops;
 assign exe2lsu_ctrl.jump_req   = id2exe_ctrl.jump_req;                          
 assign exe2lsu_ctrl.branch_req = id2exe_ctrl.branch_req; 
 assign exe2lsu_ctrl.amo_ops    = id2exe_ctrl.amo_ops;
+assign exe2lsu_ctrl.dcache_flush_req = id2exe_ctrl.fence_req;
 
 // If this is CSR operation then destination register write selection is managed 
 // by CSR read control signal
@@ -306,7 +307,7 @@ assign exe2csr_ctrl.sys_ops    = id2exe_ctrl.sys_ops;
 assign exe2csr_data.csr_addr   = id2exe_data.instr[31:20];
 assign exe2csr_data.pc         = id2exe_data.pc;
 assign exe2csr_data.instr      = id2exe_data.instr;
-assign exe2csr_data.exc_code   = id2exe_ctrl.exc_code;
+assign exe2csr_data.exc_code   = id2exe_data.exc_code;
 assign exe2csr_data.instr_flushed = id2exe_data.instr_flushed;
 
 // MT: The register operand below can be routed through ALU for optimization purpose. The 
@@ -338,9 +339,9 @@ assign exe2fwd_o       = exe2fwd;
 assign exe2mul_o       = exe2mul;
 
 // Update the feedback signals from EXE to IF stage                         
-assign exe2if_fb.pc_new = fence_i_req ? id2exe_data.pc_next : alu_result;
-assign exe2if_fb.icache_flush = fence_i_req;                          
-assign exe2if_fb_o      = exe2if_fb;                  
+assign exe2if_fb.pc_new       = fence_i_req ? id2exe_data.pc_next : alu_result;  
+assign exe2if_fb.icache_flush = fence_i_req;                         
+assign exe2if_fb_o            = exe2if_fb;                  
 
 endmodule : execute
 

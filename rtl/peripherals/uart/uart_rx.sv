@@ -33,6 +33,7 @@ logic [UART_DATA_BIT_COUNT:0]           bit_count_ff, bit_count_next;
 logic                                   rx_busy;
 logic                                   sample_pulse;
 logic                                   sbit_mid_point;
+logic                                   rx_pin_ff;
 
 // Use baud divisor to divide the clock and generate pulses as bit sampling points
 logic [UART_BAUD_DIV_SIZE-1:0]          sample_count_ff, sample_count_next;
@@ -52,6 +53,15 @@ assign rx_busy      = (bit_count_ff != 0);
 
 // Creating the mid point of the start bit and also achieving debouncing
 assign sbit_mid_point = (sbit_sample_count_ff == baud_div_i[UART_BAUD_DIV_SIZE-1:1]);
+
+
+always_ff @ (negedge clk) begin
+    if (!rst_n) begin
+        rx_pin_ff <= 1'b1;
+    end else begin
+        rx_pin_ff <= rx_pin_in;
+    end
+end
 
 // State register update
 always_ff @ (posedge clk or negedge rst_n) begin
@@ -87,7 +97,7 @@ always_comb begin
             frame_err_next         = 1'b0;
             state_next             = UART_RX_IDLE;
 
-            if (!rx_pin_in) begin 
+            if (!rx_pin_ff) begin 
                 state_next = UART_RX_START;
             end
 	end
@@ -109,7 +119,7 @@ always_comb begin
 
                 // If we are done with receving the data byte, resent and go to the idle state
                 if (rx_busy) begin				
-                    shifter_next   = {rx_pin_in, shifter_ff[UART_DATA_SIZE-1:1]};
+                    shifter_next   = {rx_pin_ff, shifter_ff[UART_DATA_SIZE-1:1]};
                     bit_count_next = bit_count_ff - 1;
                 end else begin
                     sbit_sample_count_next = '0;                
@@ -123,7 +133,7 @@ always_comb begin
         UART_RX_STOP : begin   		
             if (sample_pulse) begin
                 state_next = UART_RX_IDLE;
-                if (rx_pin_in) begin                
+                if (rx_pin_ff) begin                
                     valid_next     = 1'b1;                    
                 end else begin
                     frame_err_next = 1'b1;

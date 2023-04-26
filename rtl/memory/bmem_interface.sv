@@ -1,20 +1,19 @@
 `ifndef VERILATOR
 `include "../defines/UETRV_PCore_ISA.svh"
-`include "../defines/cache_pkg.svh"
+`include "../defines/cache_defs.svh"
 `else
 `include "UETRV_PCore_ISA.svh"
-`include "cache_pkg.svh"
+`include "cache_defs.svh"
 `endif
 
 module bmem_interface (
 
-    input   logic                                   rst_n,                      // reset
-    input   logic                                   clk,                        // clock
+    input   logic                                   rst_n,                     // reset
+    input   logic                                   clk,                       // clock
 
   // Instruction (boot) memory interface
-    input  wire type_if2icache_s                      if2bmem_i,                 // Bus interface from IF  
-    output type_icache2if_s                           bmem2if_o,                 // From boot memory to IF
-  //  output logic                                    bmem_i_sel_o,
+    input  wire type_if2icache_s                    if2bmem_i,                 // Bus interface from IF  
+    output type_icache2if_s                         bmem2if_o,                 // From boot memory to IF
 
   // DBus <---> Boot memory interface
     input   wire type_dbus2peri_s                   dbus2bmem_i,               // Boot memory input signals
@@ -26,7 +25,7 @@ module bmem_interface (
 
 
 // Boot memory instantiation and initialization
-logic [`XLEN-1:0]          bmem[`BMEM_SIZE];
+logic [`XLEN-1:0]          bmem[`BMEM_SIZE/4];
 
 initial
 begin
@@ -36,15 +35,15 @@ end
 
 //================================= Ibus interface ==================================//
 // Local signals
-type_if2icache_s                        if2bmem;               
-type_icache2if_s                        bmem2if_ff, bmem2if_next;
+type_if2icache_s                      if2bmem;               
+type_icache2if_s                      bmem2if_ff, bmem2if_next;
 
 type_dbus2peri_s                      dbus2bmem;
 type_peri2dbus_s                      bmem2dbus_ff, bmem2dbus_next;
 
 logic [`XLEN-1:0]                     bmem_i_addr;
 logic [`XLEN-1:0]                     bmem_d_addr;
-logic [15:0]                          bmem_rd_addr;
+logic [11:0]                          bmem_rd_addr;
 logic [`XLEN-1:0]                     bmem_rdata;
 
 logic                                 bmem_i_sel;
@@ -61,8 +60,8 @@ assign bmem_iaddr_match = bmem_iaddr_match_i;
 assign bmem_i_sel  = (if2bmem.req & bmem_iaddr_match); 
 assign bmem_d_sel  = (dbus2bmem.cyc & bmem_d_sel_i);
 
-assign bmem_rd_addr = bmem_d_sel ? {2'b0, bmem_d_addr[15:2]} 
-                    : bmem_i_sel ? {2'b0, bmem_i_addr[15:2]} : '0; 
+assign bmem_rd_addr = bmem_d_sel ? {2'b0, bmem_d_addr[11:2]} 
+                    : bmem_i_sel ? {2'b0, bmem_i_addr[11:2]} : '0; 
 
 assign bmem_rdata = bmem[bmem_rd_addr];
 

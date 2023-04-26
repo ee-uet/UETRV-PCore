@@ -84,7 +84,7 @@ always_comb begin
     if(reg_rd_req) begin
         case (reg_addr)
             // UART data receive and trnsmit registers
-            UART_TXDATA_R   : reg_r_data = {~tx_ready, 31'b0};
+            UART_TXDATA_R   : reg_r_data =  {~tx_ready, 31'b0};
             UART_RXDATA_R   : begin 
                                   reg_r_data = {~uart_reg_status_ff[1], 23'b0, uart_reg_rx_ff};
                                   rx_empty   = 1'b1;
@@ -296,8 +296,7 @@ always_ff @(posedge clk) begin
     if ((reg_wr_req | reg_rd_req) &  ~uart2dbus_ff.ack) begin
             uart2dbus_ff.ack <= 1'b1;
         if (reg_rd_req)
-            uart2dbus_ff.r_data <= reg_r_data;  
-        
+            uart2dbus_ff.r_data <= reg_r_data;         
     end  
 end  
 
@@ -312,7 +311,7 @@ assign tx_valid      = tx_valid_ff;
 assign uart_tx_byte  = uart_reg_tx_ff;
 
 // UART interrupt generation
-assign uart_irq_o  = |(uart_reg_status_ff && uart_reg_int_mask_ff);
+assign uart_irq_o  = |(uart_reg_status_ff & uart_reg_int_mask_ff);
 
 // Instantiation of UART transmt and receive modules
 uart_tx uart_tx_module (

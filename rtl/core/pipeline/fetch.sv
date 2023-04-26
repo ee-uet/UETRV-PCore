@@ -2,10 +2,13 @@
 `include "../../defines/UETRV_PCore_defs.svh"
 `include "../../defines/UETRV_PCore_ISA.svh"
 `include "../../defines/MMU_defs.svh"
+`include "../../defines/cache_defs.svh"
+
 `else
 `include "UETRV_PCore_defs.svh"
 `include "UETRV_PCore_ISA.svh"
 `include "MMU_defs.svh"
+`include "cache_defs.svh"
 `endif
 
 module fetch (
@@ -13,9 +16,9 @@ module fetch (
     input   logic                                   rst_n,           // reset
     input   logic                                   clk,             // clock
 
-   // IF <---> IMEM interface
-    output type_if2icache_s                           if2icache_o,       // Instruction memory request
-    input wire type_icache2if_s                       icache2if_i,       // Instruction memory response
+   // IF <---> ICACHE MEM interface
+    output type_if2icache_s                         if2icache_o,     // Instruction cache memory request
+    input wire type_icache2if_s                     icache2if_i,     // Instruction cache memory response
 
    // IF <---> MMU interface
     output type_if2mmu_s                            if2mmu_o,        // Instruction memory request
@@ -38,7 +41,7 @@ module fetch (
 
 
 // Local siganls       
-type_icache2if_s                       icache2if;
+type_icache2if_s                     icache2if;
 type_if2mmu_s                        if2mmu;
 type_mmu2if_s                        mmu2if;
 
@@ -51,8 +54,10 @@ type_csr2if_fb_s                     csr2if_fb;
 type_fwd2if_s                        fwd2if;
 
 // Exception related signals
-type_exc_code_e                      exc_code;
-logic                                exc_req;
+type_exc_code_e                      exc_code_next, exc_code_ff;
+logic                                exc_req_next, exc_req_ff;
+logic [`XLEN-1:0]                    exc_vaddr_next, exc_vaddr_ff;
+
 
 // Imem address generation
 logic [`XLEN-1:0]                    pc_ff;              // Current value of program counter (PC)
@@ -61,7 +66,7 @@ logic                                if_stall;
 logic                                pc_misaligned;
 
 
-assign icache2if   = icache2if_i;
+assign icache2if = icache2if_i;
 assign mmu2if    = mmu2if_i;
 
 assign exe2if_fb = exe2if_fb_i;
@@ -84,7 +89,7 @@ always_ff @(posedge clk) begin
 end
 
 always_comb begin
-    pc_next = '0;
+    pc_next = (pc_ff + 32'd4);
 
     case (1'b1)
         fwd2if.csr_new_pc_req : begin
@@ -99,32 +104,54 @@ always_comb begin
         if_stall              : begin  
             pc_next = pc_ff;
         end
-        default                 : begin
-            pc_next = (pc_ff + 32'd4);
-        end
+        default                 : begin       end
     endcase
 end
 
-always_comb begin
-    exc_req  = 1'b0;
-    exc_code = EXC_CODE_NO_EXCEPTION;
-
-    // Instruction address generated is misaligned
-    if (pc_misaligned) begin
-        exc_req  = 1'b1;
-        exc_code = EXC_CODE_INSTR_MISALIGN; 
+// Instruction fetch related exceptions including address misaligned, instruction page fault 
+// as well as instruction access fault
+always_ff @(negedge rst_n, posedge clk) begin
+    if (~rst_n) begin
+        exc_req_ff  <= '0; 
+        exc_code_ff <= EXC_CODE_NO_EXCEPTION;
+    end else begin
+        exc_req_ff  <= exc_req_next;
+        exc_code_ff <= exc_code_next;
     end
+end
 
-    // Deal with instruction access fault as well (EXC_CODE_INSTR_ACCESS_FAULT)
+
+always_comb begin
+exc_req_next   = exc_req_ff;
+exc_code_next  = exc_code_ff;
+   
+    if (fwd2if.csr_new_pc_req | fwd2if.exe_new_pc_req | fwd2if.wfi_req | (~fwd2if.if_stall & exc_req_ff)) begin    
+        exc_req_next  = 1'b0;
+        exc_code_next = EXC_CODE_NO_EXCEPTION;
+    end else if (pc_misaligned) begin
+        exc_req_next  = 1'b1;
+        exc_code_next = EXC_CODE_INSTR_MISALIGN; 
+    end else if (mmu2if.i_page_fault & ~exc_req_ff) begin
+        exc_req_next   = 1'b1;
+        exc_code_next  = EXC_CODE_INST_PAGE_FAULT; 
+    end 
+
+    // TODO : Deal with instruction access fault as well (EXC_CODE_INSTR_ACCESS_FAULT) for that 
+    // purpose need a separate signal from MMU
 end
 
 
 // Update the outputs to MMU and Imem modules
 assign if2mmu.i_vaddr = pc_next;
 assign if2mmu.i_req   = `IMEM_INST_REQ;
+//assign if2imem_o.addr = mmu2if.i_paddr[`XLEN-1:0]; // pc_next; 
+//assign if2imem_o.req  = mmu2if.i_hit;              // `IMEM_INST_REQ; 
+
 assign if2icache_o.addr = mmu2if.i_paddr[`XLEN-1:0]; // pc_next; 
 assign if2icache_o.req  = mmu2if.i_hit;              // `IMEM_INST_REQ;
-assign if2icache_o.icache_flush = exe2if_fb.icache_flush;   // Cache flush due to fence.i 
+
+assign if2icache_o.req_kill     = fwd2if.csr_new_pc_req | fwd2if.exe_new_pc_req;
+assign if2icache_o.icache_flush = exe2if_fb.icache_flush;   
 
 // Update the outputs to ID stage
 assign if2id_data.instr         = icache2if.ack ? icache2if.r_data : `INSTR_NOP;
@@ -132,8 +159,8 @@ assign if2id_data.pc            = pc_ff;
 assign if2id_data.pc_next       = pc_next;
 assign if2id_data.instr_flushed = 1'b0;
 
-assign if2id_ctrl.exc_code      = exc_code;
-assign if2id_ctrl.exc_req       = exc_req;
+assign if2id_data.exc_code      = exc_code_next;
+assign if2id_ctrl.exc_req       = exc_req_next;
 
 // Generate stall request to forward_stall module
 assign if2fwd_stall_o           = if2mmu.i_req & ~icache2if.ack;

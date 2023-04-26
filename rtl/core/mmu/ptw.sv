@@ -70,8 +70,8 @@ assign dmem2ptw = dmem2ptw_i;
 assign pte = type_pte_sv32_s'(r_data_ff);
 
 // Output the physical address directly from PTW 
-assign ptw2dmem.paddr = ptw_paddr_ff[`PALEN-1:0];
-assign ptw2dmem.r_req = r_req_ff;
+assign ptw2dmem.paddr = ptw_paddr_next[`PALEN-1:0];
+assign ptw2dmem.r_req = r_req_next;
     
 // Configure the signals for respective TLB entry update
 assign ptw2tlb.vpn     = vaddr_ff[`VALEN-1:12];
@@ -131,10 +131,11 @@ always_comb begin : ptw_walker
 
                 // Wait for the read valid signal from data memory
                 if (r_data_valid_ff) begin
+                    r_req_next = '0;
 
                     // Latch the global mapping bit and clear the data memory req
-                    gmap_bit_next = pte.g;
-                    r_req_next = '0;
+                    if (pte.g) 
+                        gmap_bit_next = 1'b1;                    
                
                     // Validate the PTE for page fault
                     if (!pte.v || (!pte.r && pte.w))
@@ -181,7 +182,7 @@ always_comb begin : ptw_walker
                             if (ptw_lvl_ff == LEVEL_1) begin
                                 // Move to next level page table, 
                                 // and initiate next PTE read request
-                                r_req_next     = 1'b1;  
+                                r_req_next     = 1'b0;  
                                 ptw_lvl_next   = LEVEL_2;
                                 ptw_state_next = PTW_LEVEL_TWO_REQ; 
                                 ptw_paddr_next = {pte.ppn, vaddr_ff[21:12], 2'b0};                               
@@ -193,15 +194,6 @@ always_comb begin : ptw_walker
                             end
                         end
                     end
-
-                    // PMP check to verify the access permission
-//                    if (!pmp2ptw.allow_access) begin
-//                        itlb_update = 1'b0;
-//                        dtlb_update = 1'b0;
-//                        // Return page access error with faulting address
-//                        ptw_paddr_next = ptw_paddr_ff;
-//                        ptw_state_next = PTW_PAGE_ACCESS_ERR;
-//                    end
                 end
                 
             end
@@ -209,7 +201,7 @@ always_comb begin : ptw_walker
                 ptw_lvl_next   = LEVEL_2;
                 ptw_state_next = PTW_PROCESS_PTE;
                 ptw_paddr_next = ptw_paddr_ff;  
-                r_req_next     = r_req_ff; 
+                r_req_next     = 1'b1; 
             end
             // Report error to MMU
             PTW_PAGE_ERR: begin
@@ -252,12 +244,12 @@ always_ff @(posedge clk, negedge rst_n) begin
     end else begin
         ptw_state_ff    <= ptw_state_next;
         ptw_paddr_ff    <= ptw_paddr_next;
-        r_req_ff        <= r_req_next & (~dmem2ptw.r_valid);
+        r_req_ff        <= r_req_next; 
         iwalk_active_ff <= iwalk_active_next;
         ptw_lvl_ff      <= ptw_lvl_next; 
         vaddr_ff        <= vaddr_next;
         gmap_bit_ff     <= gmap_bit_next;
-        r_data_valid_ff <= dmem2ptw.r_valid;
+        r_data_valid_ff <= dmem2ptw.r_valid; 
         r_data_ff       <= dmem2ptw.r_data;
     end
 end

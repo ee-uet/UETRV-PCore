@@ -3,22 +3,24 @@
 `include "../../defines/UETRV_PCore_ISA.svh"
 `include "../../defines/MMU_defs.svh"
 `include "../../defines/M_EXT_defs.svh"
+`include "../../defines/cache_defs.svh"
 `else
 `include "UETRV_PCore_ISA.svh"
 `include "MMU_defs.svh"
 `include "M_EXT_defs.svh"
+`include "cache_defs.svh"
 `endif
 
 `default_nettype wire
 
 module pipeline_top (
 
-    input   logic                       rst_n,                    // reset
-    input   logic                       clk,                      // clock
+    input   wire                        rst_n,                    // reset
+    input   wire                        clk,                      // clock
 
    // IF <---> IMEM interface
-    output type_if2icache_s               if2icache_o,                // Instruction memory request
-    input wire type_icache2if_s           icache2if_i,                // Instruction memory response
+    output type_if2icache_s             if2icache_o,              // Instruction memory request
+    input wire type_icache2if_s         icache2if_i,              // Instruction memory response
 
    // MMU <---> Data cache interface
     input wire type_dmem2mmu_s          dmem2mmu_i,   
@@ -27,12 +29,16 @@ module pipeline_top (
    // Data bus interface
     output type_lsu2dbus_s              lsu2dbus_o,                // Signal to data bus 
     input  wire type_dbus2lsu_s         dbus2lsu_i,
+    output logic                        dcache_flush_o,
 
    //
    input wire type_clint2csr_s          clint2csr_i,
+   output type_csr2clint_s              csr2clint_o,
 
    // IRQ interface
-   input wire type_pipe2csr_s           core2pipe_i 
+   input wire type_pipe2csr_s           core2pipe_i,
+
+   input wire type_debug_port_s         debug_port_i 
 );
 
 
@@ -65,8 +71,8 @@ type_lsu2dbus_s                         lsu2dbus;               // Signal to dat
 type_dbus2lsu_s                         dbus2lsu; 
 
 // Interfaces for instruction memory 
-type_if2icache_s                          if2icache;              
-type_icache2if_s                          icache2if;
+type_if2icache_s                        if2icache;              
+type_icache2if_s                        icache2if;
 
 // Interfaces for writeback module
 type_lsu2wrb_ctrl_s                     lsu2wrb_ctrl;
@@ -112,7 +118,7 @@ type_fwd2ptop_s                         fwd2ptop;
 // Inputs assignment to local signals
 assign dbus2lsu = dbus2lsu_i; 
 assign dmem2mmu = dmem2mmu_i;
-assign icache2if  = icache2if_i;
+assign icache2if = icache2if_i;
 
 
 //================================= Fetch to decode interface ==================================//
@@ -123,8 +129,8 @@ fetch fetch_module (
     .clk                        (clk),
 
     // IF module interface signals 
-    .if2icache_o                  (if2icache),
-    .icache2if_i                  (icache2if),
+    .if2icache_o                (if2icache),
+    .icache2if_i                (icache2if),
 
     .if2mmu_o                   (if2mmu),
     .mmu2if_i                   (mmu2if),
@@ -148,6 +154,7 @@ always_ff @(posedge clk) begin
         if2id_data_pipe_ff.pc      <= '0;
         if2id_data_pipe_ff.pc_next <= '0;
         if2id_data_pipe_ff.instr_flushed <= 1'b0;
+        if2id_data_pipe_ff.exc_code <= EXC_CODE_NO_EXCEPTION;
 
         if2id_ctrl_pipe_ff <= '0;
     end else begin
@@ -162,9 +169,11 @@ always_comb begin
     if2id_ctrl_next = if2id_ctrl;
 
     if (fwd2ptop.if2id_pipe_flush) begin
-        if2id_data_next.instr = `INSTR_NOP;
+        if2id_data_next.instr         = `INSTR_NOP;
         if2id_data_next.instr_flushed = 1'b1;
-     
+        if2id_ctrl_next.exc_req       = 1'b0;
+        if2id_data_next.exc_code      = EXC_CODE_NO_EXCEPTION;
+
     end else if (fwd2ptop.if2id_pipe_stall) begin
         if2id_data_next = if2id_data_pipe_ff;
         if2id_ctrl_next = if2id_ctrl_pipe_ff;
@@ -189,7 +198,8 @@ decode decode_module (
     .id2exe_ctrl_o              (id2exe_ctrl),
     .id2exe_data_o              (id2exe_data),
     .csr2id_fb_i                (csr2id_fb),
-    .wrb2id_fb_i                (wrb2id_fb)
+    .wrb2id_fb_i                (wrb2id_fb),
+    .debug_port_i               (debug_port_i)
 );
 
 
@@ -223,7 +233,7 @@ always_comb begin
         // using instruction flushed flag signal.
     
         id2exe_data_next.instr_flushed = 1'b1;
-        id2exe_data_next.pc_next = '0;
+     //   id2exe_data_next.pc_next = '0;
 
     end else if (fwd2ptop.id2exe_pipe_stall) begin
         id2exe_data_next = id2exe_data_pipe_ff;
@@ -289,7 +299,7 @@ muldiv muldiv_module(
 
     // Stall and Flush signals
     .fwd2mul_stall_i            (fwd2ptop.exe2lsu_pipe_stall),
-    .fwd2mul_flush_i            (fwd2ptop.exe2lsu_pipe_flush),
+    .fwd2mul_flush_i            (fwd2ptop.exe2lsu_pipe_flush | fwd2ptop.lsu2wrb_pipe_flush),
 
     // MUL <---> LSU interface
     .mul2lsu_o                  (mul2lsu)
@@ -375,7 +385,8 @@ lsu lsu_module (
 
     // LSU to data bus interface
     .lsu2dbus_o                 (lsu2dbus),      
-    .dbus2lsu_i                 (dbus2lsu)
+    .dbus2lsu_i                 (dbus2lsu),
+    .dcache_flush_o             (dcache_flush_o)
 );
   
 
@@ -403,6 +414,7 @@ csr csr_module (
     .csr2wrb_data_o             (csr2wrb_data),
 
     .clint2csr_i                (clint2csr_i),
+    .csr2clint_o                (csr2clint_o),
 
     .pipe2csr_i                 (core2pipe_i),
     .fwd2csr_i                  (fwd2csr),
@@ -435,7 +447,7 @@ always_comb begin
     lsu2wrb_ctrl_next = lsu2wrb_ctrl;
     csr2wrb_data_next = csr2wrb_data; 
      
-    if (fwd2ptop.exe2lsu_pipe_stall) begin // On LSU stall, we flush WRB stage
+    if (fwd2ptop.exe2lsu_pipe_stall | fwd2ptop.lsu2wrb_pipe_flush) begin // On LSU stall, we flush WRB stage
         lsu2wrb_ctrl_next = '0;
         lsu2wrb_data_next = '0;
     end 
@@ -502,7 +514,7 @@ mmu mmu_module (
 
 assign lsu2dbus_o = lsu2dbus;
 assign mmu2dmem_o = mmu2dmem;
-assign if2icache_o  = if2icache;
+assign if2icache_o = if2icache;
 
 endmodule : pipeline_top
 

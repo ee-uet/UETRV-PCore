@@ -4,11 +4,13 @@
 `include "../defines/UETRV_PCore_ISA.svh"
 `include "../defines/MMU_defs.svh"
 `include "../defines/PLIC_defs.svh"
+`include "../defines/cache_defs.svh"
 `else
 `include "UETRV_PCore_defs.svh"
 `include "UETRV_PCore_ISA.svh"
 `include "MMU_defs.svh"
 `include "PLIC_defs.svh"
+`include "cache_defs.svh"
 `endif
 
 module core_top (
@@ -20,13 +22,14 @@ module core_top (
     input   logic                        irq_soft_i,
     
     input   logic                        uart_rxd_i,
-    output                               uart_txd_o 
+    output                               uart_txd_o,
 
+    input wire type_debug_port_s         debug_port_i
 );
 
 // Local signals
-type_if2icache_s                          if2icache;            // Instruction memory address
-type_icache2if_s                          icache2if;  
+type_if2icache_s                        if2icache;            // Instruction memory address
+type_icache2if_s                        icache2if;   
 
 type_mmu2dmem_s                         mmu2dmem;               
 type_dmem2mmu_s                         dmem2mmu;
@@ -39,6 +42,7 @@ type_pipe2csr_s                         core2pipe;
 
 
 type_clint2csr_s                        clint2csr;
+type_csr2clint_s                        csr2clint;
 
 // Peripheral module selection lines from the address decoder
 logic                                   dmem_sel;
@@ -47,6 +51,8 @@ logic                                   clint_sel;
 logic                                   plic_sel;
 logic                                   bmem_sel;
 logic                                   uart_ns_sel;
+
+logic                                   dcache_flush;
 
 logic                                   uart_ns_rxd_i;
 logic                                   uart_ns_txd_o; 
@@ -67,7 +73,7 @@ type_peri2dbus_s                        uartns2dbus;
 
 // Input assignment to local signals
 assign core2pipe.csr_mhartid = `CSR_MHARTID;
-assign core2pipe.ext_irq     = irq_plic_target_0;
+assign core2pipe.ext_irq     = {irq_plic_target_1, irq_plic_target_0};
 assign core2pipe.timer_irq   = irq_clint_timer;
 assign core2pipe.soft_irq    = irq_soft_i;
 assign core2pipe.uart_irq    = '0; // irq_uart
@@ -77,8 +83,8 @@ pipeline_top pipeline_top_module (
     .clk                 (clk          ),
 
     // IMEM interface signals 
-    .if2icache_o           (if2icache),   
-    .icache2if_i           (icache2if),
+    .if2icache_o         (if2icache),   
+    .icache2if_i         (icache2if),
 
     // MMU interface signals
     .dmem2mmu_i          (dmem2mmu),
@@ -87,11 +93,15 @@ pipeline_top pipeline_top_module (
     // DBUS interface signals
     .lsu2dbus_o          (lsu2dbus),       // Signal to data bus 
     .dbus2lsu_i          (dbus2lsu),
+    .dcache_flush_o      (dcache_flush),
 
     .clint2csr_i         (clint2csr),
+    .csr2clint_o         (csr2clint),
 
     // IRQ lines
-    .core2pipe_i         (core2pipe)
+    .core2pipe_i         (core2pipe),
+
+    .debug_port_i        (debug_port_i)
 );
 
 
@@ -159,6 +169,7 @@ clint clint_module (
     .clint_sel_i           (clint_sel),
     .clint2dbus_o          (clint2dbus),
 
+    .csr2clint_i           (csr2clint),
     .clint2csr_o           (clint2csr),
     .clint_timer_irq_o     (irq_clint_timer)
 );
@@ -171,8 +182,8 @@ plic plic_module (
     .dbus2plic_i           (dbus2peri),  // This should be updated if the bus interface is updated
     .plic_sel_i            (plic_sel),
     .plic2dbus_o           (plic2dbus),
-    .edge_select_i         (PLIC_SOURCE_COUNT'(3)),
-    .irq_src_i             ({irq_uart, irq_ns_uart}),
+    .edge_select_i         (PLIC_SOURCE_COUNT'(0)),
+    .irq_src_i             ({irq_ns_uart, irq_uart}),
     .irq_targets_o         ({irq_plic_target_1, irq_plic_target_0})
 );
 
@@ -186,15 +197,16 @@ mem_top mem_top_module (
     .dmem_sel_i           (dmem_sel),
     .dmem2dbus_o          (dmem2dbus),
     .bmem2dbus_o          (bmem2dbus),
+    .dcache_flush_i       (dcache_flush),
 
    // MMU <---> data memory interface signals 
     .mmu2dmem_i           (mmu2dmem),
     .dmem2mmu_o           (dmem2mmu),
 
    // Instruction memory interface signals 
-    .if2icache_i            (if2icache),
+    .if2icache_i          (if2icache),
     .bmem_sel_i           (bmem_sel),
-    .icache2if_o            (icache2if)
+    .icache2if_o          (icache2if)
 );
 
 

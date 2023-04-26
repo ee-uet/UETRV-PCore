@@ -28,8 +28,7 @@ type_tlb2mmu_s                      tlb2mmu;
 type_ptw2tlb_s                      ptw2tlb;
 
 logic [9:0]                         vpn_0, vpn_1;
-logic [1:0]                         r_index, w_index, sp_index;
-logic                               sp_sel; 
+logic [1:0]                         r_index, w_index;
 
 type_tlb_entry_s [TLB_ENTRIES-1:0]  tlb_array_ff, tlb_array_next;
 

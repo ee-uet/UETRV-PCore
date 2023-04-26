@@ -308,7 +308,7 @@ assign tx_valid      = tx_valid_ff;
 assign uart_tx_byte  = uart_reg_tx_ff;
 
 // UART interrupt generation
-assign uart_ns_irq_o  = |(uart_reg_lstatus_ff && uart_reg_ie_ff);
+assign uart_ns_irq_o  = |(uart_reg_lstatus_ff & uart_reg_ie_ff);
 
 // Instantiation of UART transmt and receive modules
 uart_ns_tx uart_ns_tx_module (

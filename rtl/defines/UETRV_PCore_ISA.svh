@@ -153,20 +153,20 @@ typedef enum logic {
 //======== Data and control signals among different pairs of communicating modules/stages =========//
 
 // Bus interface from IF to imem  
-// typedef struct packed {                            
-//     logic [`XLEN-1:0]                addr;
-//  //   logic [`XLEN-1:0]                w_data;
-//  //   logic [3:0]                      sel_byte;  
-//  //   logic                            w_en;  
-//  //   logic                            stb; 
-//     logic                            req; 
-// } type_if2icache_s;
+typedef struct packed {                            
+    logic [`XLEN-1:0]                addr;
+ //   logic [`XLEN-1:0]                w_data;
+ //   logic [3:0]                      sel_byte;  
+ //   logic                            w_en;  
+ //   logic                            stb; 
+    logic                            req; 
+} type_if2imem_s;
 
 // Bus interface from peripheral device to DBUS
-// typedef struct packed {                            
-//     logic [`XLEN-1:0]                r_data;
-//     logic                            ack;  
-// } type_icache2if_s;
+typedef struct packed {                            
+    logic [`XLEN-1:0]                r_data;
+    logic                            ack;  
+} type_imem2if_s;
 
 
 // Fetch-2-Decode data signals
@@ -174,12 +174,12 @@ typedef struct packed {
     logic [`XLEN-1:0]                instr;
     logic [`XLEN-1:0]                pc;
     logic [`XLEN-1:0]                pc_next;
+    type_exc_code_e                  exc_code;
     logic                            instr_flushed;
 } type_if2id_data_s;
 
 // Fetch-2-Decode control signals
 typedef struct packed {                            
-    type_exc_code_e                  exc_code;
     logic                            exc_req;
 } type_if2id_ctrl_s;
 
@@ -191,6 +191,7 @@ typedef struct packed {
     logic [`XLEN-1:0]                pc;
     logic [`XLEN-1:0]                pc_next;
     logic [`XLEN-1:0]                imm;  
+    type_exc_code_e                  exc_code;
     logic                            instr_flushed;   
 } type_id2exe_data_s;
 
@@ -209,12 +210,13 @@ typedef struct packed {
     type_alu_cmp_opr2_sel_e          alu_cmp_opr2_sel;
     type_csr_opr_sel_e               csr_opr_sel;
     type_rd_wrb_sel_e                rd_wrb_sel;
-    type_exc_code_e                  exc_code;
+
     logic                            exc_req;
     logic                            rd_wr_req;
     logic                            jump_req;
     logic                            branch_req;
     logic                            fence_i_req;
+    logic                            fence_req;
 } type_id2exe_ctrl_s;
 
 // Execute-2-Memory data and control signals
@@ -233,6 +235,7 @@ typedef struct packed {
     logic                            rd_wr_req;
     logic                            jump_req;
     logic                            branch_req;
+    logic                            dcache_flush_req;
 } type_exe2lsu_ctrl_s;
 
 
@@ -260,9 +263,7 @@ typedef struct packed {
     type_ld_ops_e                    ld_ops;
     type_st_ops_e                    st_ops;
     logic                            ld_page_fault;
-    logic                            st_page_fault; 
-    logic                            inst_page_fault; 
-    logic [`VALEN-1:0]               vaddr; 
+    logic                            st_page_fault;  
 } type_lsu2csr_ctrl_s;
 
 typedef struct packed {                            
@@ -279,7 +280,7 @@ typedef struct packed {
 // Pipeline-2-CSR IRQ signals
 typedef struct packed { 
     logic [`XLEN-1:0]                csr_mhartid;                           
-    logic                            ext_irq;   
+    logic [1:0]                      ext_irq;   
     logic                            timer_irq;   
     logic                            soft_irq; 
     logic                            uart_irq;    
@@ -362,8 +363,8 @@ typedef struct packed {
 typedef struct packed {                        
     logic [`RF_AWIDTH-1:0]           rd_addr;
     logic                            rd_wr_req;  
-    logic                            ld_req;
-    logic                            ld_ack;  
+    logic                            lsu_req;
+    logic                            lsu_ack;  
     logic                            mul_req;  
     logic                            mul_ack;   
 } type_lsu2fwd_s;
@@ -386,6 +387,7 @@ typedef struct packed {
 // CSR-2-Forward interface signals
 typedef struct packed {                            
     logic                            new_pc_req; 
+    logic                            irq_flush_lsu;
     logic                            wfi_req; 
     logic                            csr_read_req;
 } type_csr2fwd_s;
@@ -415,7 +417,9 @@ typedef struct packed {
     logic                            id2exe_pipe_stall; 
 
     logic                            exe2lsu_pipe_stall;
-    logic                            exe2lsu_pipe_flush; 
+    logic                            exe2lsu_pipe_flush;
+
+    logic                            lsu2wrb_pipe_flush; 
 
     logic                            pipe_fwd_wrb_rs1; 
     logic                            pipe_fwd_wrb_rs2;                          
@@ -448,6 +452,11 @@ typedef struct packed {
     logic [`XLEN-1:0]                time_hi;
 } type_clint2csr_s;
 
+
+typedef struct packed {  
+    logic                            pipe_stall_flush;                           
+} type_csr2clint_s;
+
 typedef enum logic [2:0] {
     AMO_IDLE  = 3'h0,
     AMO_LOAD  = 3'h1,
@@ -455,5 +464,19 @@ typedef enum logic [2:0] {
     AMO_ST    = 3'h3,
     AMO_DONE  = 3'h4
 } type_amo_states_e;
+
+
+typedef enum logic [1:0] {
+    DMEM_IDLE = 2'h0,
+    DMEM_LSU  = 2'h1,
+    DMEM_MMU  = 2'h2
+} type_dmem_bus_states_e;
+
+typedef struct packed {                            
+    logic [`XLEN-1:0]                reg_data;
+    logic [`RF_AWIDTH-1:0]           reg_addr;
+    logic                            reg_wr_req;  
+} type_debug_port_s;
+
 
 `endif // UETRV_PCORE_ISA

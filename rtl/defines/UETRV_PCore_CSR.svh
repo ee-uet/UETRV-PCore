@@ -13,7 +13,8 @@
 `define MISA_MXL_32                 `XLEN'h40000000
 
 // Processor core identifiers
-`define CSR_MVENDORID               `XLEN'h00000000
+`define UETLHR_MVENDORID            `XLEN'h0702
+`define PCORE_MARCHID               `XLEN'd3
 `define CSR_MHARTID                  0
 
 // Machine ISA info
@@ -62,22 +63,32 @@ typedef enum logic [11:0] {
     CSR_ADDR_STVAL      = 12'h143,
     CSR_ADDR_SIP        = 12'h144,
     CSR_ADDR_SATP       = 12'h180,
+
+   // PMP register address definitions
+    CSR_ADDR_PMPCFG0   = 12'h3A0,
+    CSR_ADDR_PMPADDR0  = 12'h3B0,
+    CSR_ADDR_PMPADDR1  = 12'h3B1,
+    CSR_ADDR_PMPADDR2  = 12'h3B2,
+    CSR_ADDR_PMPADDR3  = 12'h3B3,
    
     // Machine mode cycle count, instruction retire and other counter registers 
-    CSR_ADDR_MCYCLE         = 12'hB00,
-    CSR_ADDR_MCYCLEH        = 12'hB80,
-    CSR_ADDR_MINSTRET       = 12'hB02,
-    CSR_ADDR_MINSTRETH      = 12'hB82,
-    CSR_ADDR_MCOUNTINHIBIT  = 12'h320,
+    CSR_ADDR_MCYCLE        = 12'hB00,
+    CSR_ADDR_MCYCLEH       = 12'hB80,
+    CSR_ADDR_MINSTRET      = 12'hB02,
+    CSR_ADDR_MINSTRETH     = 12'hB82,
+    CSR_ADDR_MHPMCOUNTER3  = 12'hB03,
+    CSR_ADDR_MHPMCOUNTER3H = 12'hB83,
+
+    CSR_ADDR_MCOUNTINHIBIT = 12'h320,
 
     // User mode read-only shadow counters and timers 
-    CSR_ADDR_CYCLE          = 12'hC00,
-    CSR_ADDR_TIME           = 12'hC01,
-    CSR_ADDR_INSTRET        = 12'hC02,
+    CSR_ADDR_CYCLE         = 12'hC00,
+    CSR_ADDR_TIME          = 12'hC01,
+    CSR_ADDR_INSTRET       = 12'hC02,
 
-    CSR_ADDR_CYCLEH         = 12'hC80,
-    CSR_ADDR_TIMEH          = 12'hC81,
-    CSR_ADDR_INSTRETH       = 12'hC82
+    CSR_ADDR_CYCLEH        = 12'hC80,
+    CSR_ADDR_TIMEH         = 12'hC81,
+    CSR_ADDR_INSTRETH      = 12'hC82
 } type_csr_addr_e;
 
 
@@ -99,7 +110,7 @@ typedef enum logic [EXC_CODE_WIDTH-1:0] {
     EXC_CODE_INST_PAGE_FAULT       = 4'd12,    // Exception from MMU module
     EXC_CODE_LD_PAGE_FAULT         = 4'd13,    // Exception from MMU module
     EXC_CODE_ST_PAGE_FAULT         = 4'd15,    // Exception from MMU module
-    EXC_CODE_NO_EXCEPTION          = 4'd10     // No exception, normal behavior
+    EXC_CODE_NO_EXCEPTION          = 4'd14     // No exception, normal behavior
 } type_exc_code_e;
 
 //============================= Interrupt request codes ============================//
@@ -199,6 +210,7 @@ localparam logic [`XLEN-1:0] SSTATUS_WRITE_MASK = STATUS_SIE | STATUS_SPIE
 
 
 // Bitwidth parameters and bitfield definition for SATP register
+localparam logic [`XLEN-1:0] SATP_ASID_MASK  = 'h803FFFFF;
 localparam SATP_MODE_WIDTH = 1;
 localparam SATP_ASID_WIDTH = 9;
 localparam SATP_PPN_WIDTH  = 22;

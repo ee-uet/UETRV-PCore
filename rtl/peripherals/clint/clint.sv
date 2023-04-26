@@ -31,6 +31,7 @@
      // Selection signal from address decoder of dbus interconnect 
      input logic                                    clint_sel_i,
 
+     input wire type_csr2clint_s                    csr2clint_i,
      output type_clint2csr_s                        clint2csr_o,
 	
      // Interrupt signal from memory mapped timer that will be wired MTIP bit of MIP

@@ -1,8 +1,8 @@
 // reg_file.sv
 `ifndef VERILATOR
-`include "../../defines/UETRV_PCore_defs.svh"
+`include "../../defines/UETRV_PCore_ISA.svh"
 `else
-`include "UETRV_PCore_defs.svh"
+`include "UETRV_PCore_ISA.svh"
 `endif
 
 module reg_file (
@@ -18,8 +18,9 @@ module reg_file (
 
     input   logic                      id2rf_rd_wr_req_i,   // write request
     input   logic [`RF_AWIDTH-1:0]     id2rf_rd_addr_i,     // rd write address
-    input   logic [`XLEN-1:0]          id2rf_rd_data_i      // rd write data
+    input   logic [`XLEN-1:0]          id2rf_rd_data_i,     // rd write data
 
+    input wire type_debug_port_s       debug_port_i
 );
 
 // register file instantiation
@@ -49,6 +50,10 @@ always_ff @( negedge clk) begin
         register_file <= '{default: '0};
     end else if (rf_wr_valid) begin
         register_file[id2rf_rd_addr_i] <= id2rf_rd_data_i;
+    end
+
+    if (debug_port_i.reg_wr_req) begin
+        register_file[debug_port_i.reg_addr] <= debug_port_i.reg_data;
     end
 end
 

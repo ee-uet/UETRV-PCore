@@ -22,7 +22,9 @@ module decode (
     input wire type_csr2id_fb_s               csr2id_fb_i,
 
     // Writeback <---> Decode feedback interface
-    input wire type_wrb2id_fb_s               wrb2id_fb_i
+    input wire type_wrb2id_fb_s               wrb2id_fb_i,
+
+    input wire type_debug_port_s              debug_port_i
 );
 
 //============================= Local signals and their assignments =============================//
@@ -94,12 +96,12 @@ always_comb begin
     id2exe_ctrl.alu_cmp_opr2_sel = ALU_CMP_OPR2_REG;
     id2exe_ctrl.csr_opr_sel      = CSR_OPR_REG;
     id2exe_ctrl.rd_wrb_sel       = RD_WRB_NONE;
-    id2exe_ctrl.exc_code         = EXC_CODE_NO_EXCEPTION;
     id2exe_ctrl.rd_wr_req        = 1'b0;
     id2exe_ctrl.jump_req         = 1'b0;
     id2exe_ctrl.branch_req       = 1'b0;
     id2exe_ctrl.exc_req          = 1'b0;
     id2exe_ctrl.fence_i_req      = 1'b0;
+    id2exe_ctrl.fence_req        = 1'b0;
 
     // Default values for datapath signals
     id2exe_data.imm      = {{21{instr_codeword[31]}}, instr_codeword[30:20]};
@@ -108,6 +110,7 @@ always_comb begin
     id2exe_data.instr    = instr_codeword;
     id2exe_data.pc       = if2id_data.pc;
     id2exe_data.pc_next  = if2id_data.pc_next;
+    id2exe_data.exc_code = EXC_CODE_NO_EXCEPTION;
     id2exe_data.instr_flushed = if2id_data.instr_flushed;
     
     // Default values for local signals
@@ -116,7 +119,7 @@ always_comb begin
     // Check for instruction memory access fault
     if (if2id_ctrl.exc_req) begin
         id2exe_ctrl.exc_req  = 1'b1;
-        id2exe_ctrl.exc_code = if2id_ctrl.exc_code;    
+        id2exe_data.exc_code = if2id_data.exc_code;    
         
     end else begin  // no instruction memory access fault
         case (instr_opcode)
@@ -263,7 +266,7 @@ always_comb begin
             OPCODE_MEM_FENCE_INST : begin
  
                 case (funct3_opcode)
-                    3'b000  : begin      end                             // fence instruction is currently NOP
+                    3'b000  : id2exe_ctrl.fence_req = 1'b1;              // fence instruction is currently NOP
                                                                          // but will become write buffer flush
                                                                          // in case of write through cache and 
                                                                          // cache flush for writeback cache
@@ -361,18 +364,18 @@ always_comb begin
                                 case (funct5_opcode)
                                     5'b00000 : begin  // ECALL                     
                                         id2exe_ctrl.exc_req  = 1'b1;
-                                        id2exe_ctrl.exc_code = EXC_CODE_ECALL_MMODE;
+                                        id2exe_data.exc_code = EXC_CODE_ECALL_MMODE;
                                         case (csr2id_fb.priv_mode)
-                                            PRIV_MODE_M: id2exe_ctrl.exc_code = EXC_CODE_ECALL_MMODE;
-                                            PRIV_MODE_S: id2exe_ctrl.exc_code = EXC_CODE_ECALL_SMODE;
-                                            PRIV_MODE_U: id2exe_ctrl.exc_code = EXC_CODE_ECALL_UMODE;
+                                            PRIV_MODE_M: id2exe_data.exc_code = EXC_CODE_ECALL_MMODE;
+                                            PRIV_MODE_S: id2exe_data.exc_code = EXC_CODE_ECALL_SMODE;
+                                            PRIV_MODE_U: id2exe_data.exc_code = EXC_CODE_ECALL_UMODE;
                                             default:       ; // this should not have happened
                                         endcase
                                        
                                     end
                                     5'b00001 : begin  // EBREAK
                                         id2exe_ctrl.exc_req  = 1'b1;
-                                        id2exe_ctrl.exc_code = EXC_CODE_BREAKPOINT;
+                                        id2exe_data.exc_code = EXC_CODE_BREAKPOINT;
                                     end
                                     default : illegal_instr  =  1'b1; 
                                 endcase // funct5_opcode
@@ -455,12 +458,14 @@ always_comb begin
      id2exe_ctrl.sys_ops     = SYS_OPS_NONE;
 
      id2exe_ctrl.rd_wrb_sel  = RD_WRB_NONE;
-     id2exe_ctrl.exc_code    = EXC_CODE_ILLEGAL_INSTR;
      id2exe_ctrl.exc_req     = 1'b1;
      id2exe_ctrl.rd_wr_req   = 1'b0;
      id2exe_ctrl.jump_req    = 1'b0;
      id2exe_ctrl.branch_req  = 1'b0;
      id2exe_ctrl.fence_i_req = 1'b0;
+     id2exe_ctrl.fence_req   = 1'b0;
+
+     id2exe_data.exc_code    = EXC_CODE_ILLEGAL_INSTR;
    end
 
     
@@ -485,7 +490,8 @@ reg_file rf_module (
    .rf2id_rs2_data_o     (rf2id_rs2_data),
    .id2rf_rd_wr_req_i    (wrb2id_fb_i.rd_wr_req),
    .id2rf_rd_addr_i      (wrb2id_fb_i.rd_addr ),
-   .id2rf_rd_data_i      (wrb2id_fb_i.rd_data)
+   .id2rf_rd_data_i      (wrb2id_fb_i.rd_data),
+   .debug_port_i         (debug_port_i)        
 );
 
 
