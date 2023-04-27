@@ -25,8 +25,8 @@ module icache_controller (
   output logic                          icache2if_ack_o,
 
   // Instruction Memory to Instruction Cache Interface
-  input  wire                           imem2icache_ack_i,
-  output logic                          icache2imem_req_o
+  input  wire                           mem2icache_ack_i,
+  output logic                          icache2mem_req_o
 );
 
 type_icache_states_e                  icache_state_ff, icache_state_next;
@@ -35,8 +35,8 @@ logic                                 icache_hit;
 logic                                 icache_miss;
 
 
-assign icache_hit = if2icache_req_i & cache_hit_i;
-assign icache_miss = if2icache_req_i & ~cache_hit_i;
+assign icache_hit = if2icache_req_i & imem_sel_i & cache_hit_i;
+assign icache_miss = if2icache_req_i & imem_sel_i & ~cache_hit_i;
 
 // Cache controller state machine
 always_ff @(posedge clk_i) begin
@@ -50,14 +50,14 @@ end
  
 always_comb begin
     icache_state_next = icache_state_ff;
-    icache2imem_req_o = '0;
+    icache2mem_req_o  = '0;
     cache_rw_o = '0;
     
     unique case (icache_state_ff)
         ICACHE_IDLE: begin
             // In case of miss, initiate main memory read cycle   
             if (icache_miss) begin           
-                icache2imem_req_o = 1'b1;
+                icache2mem_req_o = 1'b1;
                 icache_state_next = ICACHE_READ_MEMORY;
             end else begin
                 icache_state_next = ICACHE_IDLE;
@@ -65,13 +65,13 @@ always_comb begin
         end
         ICACHE_READ_MEMORY: begin  
             // Response from main memory is received          
-            if (imem2icache_ack_i) begin
+            if (mem2icache_ack_i) begin
                 icache_state_next = ICACHE_IDLE;
                 cache_rw_o = 1'b1;
-                icache2imem_req_o = 1'b0;
+                icache2mem_req_o = 1'b0;
             end else begin
                 icache_state_next = ICACHE_READ_MEMORY;
-                 icache2imem_req_o = 1'b1;
+                 icache2mem_req_o = 1'b1;
             end
         end
     endcase
@@ -82,7 +82,7 @@ always_comb begin
     if (~imem_sel_i | if2icache_req_kill_i) begin
         icache_state_next = ICACHE_IDLE;
         cache_rw_o = 1'b0;
-        icache2imem_req_o = 1'b0;
+        icache2mem_req_o = 1'b0;
     end
 
 end

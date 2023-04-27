@@ -31,8 +31,8 @@ module core_top (
 type_if2icache_s                        if2icache;            // Instruction memory address
 type_icache2if_s                        icache2if;   
 
-type_mmu2dmem_s                         mmu2dmem;               
-type_dmem2mmu_s                         dmem2mmu;
+type_mmu2dcache_s                       mmu2dcache;               
+type_dcache2mmu_s                       dcache2mmu;
 
 type_lsu2dbus_s                         lsu2dbus;           // Signal to data memory 
 type_dbus2lsu_s                         dbus2lsu; 
@@ -64,7 +64,7 @@ logic                                   irq_clint_timer;
 logic                                   irq_plic_target_0, irq_plic_target_1;
 
 // Interfaces for different peripheral modules (for read mux)
-type_peri2dbus_s                        dmem2dbus;              // Signals from data memory 
+type_peri2dbus_s                        dcache2dbus;              // Signals from data memory 
 type_peri2dbus_s                        uart2dbus; 
 type_peri2dbus_s                        clint2dbus;
 type_peri2dbus_s                        plic2dbus; 
@@ -87,8 +87,8 @@ pipeline_top pipeline_top_module (
     .icache2if_i         (icache2if),
 
     // MMU interface signals
-    .dmem2mmu_i          (dmem2mmu),
-    .mmu2dmem_o          (mmu2dmem),
+    .dcache2mmu_i          (dcache2mmu),
+    .mmu2dcache_o          (mmu2dcache),
 
     // DBUS interface signals
     .lsu2dbus_o          (lsu2dbus),       // Signal to data bus 
@@ -125,7 +125,7 @@ dbus_interconnect dbus_interconnect_module (
     .dbus2peri_o           (dbus2peri),
 
    // Data memory and peripheral interface signals 
-    .dmem2dbus_i           (dmem2dbus),
+    .dcache2dbus_i         (dcache2dbus),
     .uart2dbus_i           (uart2dbus),
     .clint2dbus_i          (clint2dbus),
     .plic2dbus_i           (plic2dbus),
@@ -192,16 +192,16 @@ mem_top mem_top_module (
     .rst_n                (rst_n    ),
     .clk                  (clk      ),
 
-    // Data memory interface signals 
-    .dbus2dmem_i          (dbus2peri),
+    // Data cache interface signals 
+    .dbus2peri_i          (dbus2peri),
     .dmem_sel_i           (dmem_sel),
-    .dmem2dbus_o          (dmem2dbus),
+    .dcache2dbus_o        (dcache2dbus),
     .bmem2dbus_o          (bmem2dbus),
     .dcache_flush_i       (dcache_flush),
 
-   // MMU <---> data memory interface signals 
-    .mmu2dmem_i           (mmu2dmem),
-    .dmem2mmu_o           (dmem2mmu),
+   // MMU <---> data cache interface signals 
+    .mmu2dcache_i           (mmu2dcache),
+    .dcache2mmu_o           (dcache2mmu),
 
    // Instruction memory interface signals 
     .if2icache_i          (if2icache),

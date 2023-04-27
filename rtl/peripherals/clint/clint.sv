@@ -192,8 +192,8 @@ type_peri2dbus_s                      clint2dbus_ff;
 // Signal interface to Wishbone bus
 assign addr_offset = type_mtime_regs_e'(dbus2clint_i.addr[`CLINT_ADDR_WIDTH-1:0]);
 assign w_data      = dbus2clint_i.w_data;
-assign r_req       = !dbus2clint_i.w_en && dbus2clint_i.cyc && clint_sel_i;
-assign w_req       = dbus2clint_i.w_en  && dbus2clint_i.cyc && clint_sel_i;
+assign r_req       = !dbus2clint_i.w_en && dbus2clint_i.req && clint_sel_i;
+assign w_req       = dbus2clint_i.w_en  && dbus2clint_i.req && clint_sel_i;
 
 // Synchronous read operation 
 always_ff @(posedge clk) begin  

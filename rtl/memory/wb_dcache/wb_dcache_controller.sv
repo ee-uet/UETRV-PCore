@@ -28,9 +28,9 @@ module wb_dcache_controller (
     output logic                          dcache2lsummu_ack_o,
 
     // Data memory to data cache interface
-    input  wire                           dmem2dcache_ack_i,
-    output logic                          dcache2dmem_req_o,
-    output logic                          dcache2dmem_wr_o,
+    input  wire                           mem2dcache_ack_i,
+    output logic                          dcache2mem_req_o,
+    output logic                          dcache2mem_wr_o,
     input wire                            dmem_sel_i
 );
          
@@ -62,8 +62,8 @@ end
 always_comb begin
     dcache_state_next = dcache_state_ff;
     dcache2lsummu_ack = 1'b0;
-    dcache2dmem_req_o = 1'b0;
-    dcache2dmem_wr_o  = 1'b0;
+    dcache2mem_req_o = 1'b0;
+    dcache2mem_wr_o  = 1'b0;
     cache_writeback_req_o = 1'b0;
     cache_line_wr_o   = 1'b0;
     cache_wr_o        = 1'b0;
@@ -81,8 +81,8 @@ always_comb begin
             end else if (dcache_miss) begin           
                if (dcache_dirty) begin
                     dcache_state_next = DCACHE_WRITE_BACK;
-                    dcache2dmem_req_o = 1'b1;
-                    dcache2dmem_wr_o = 1'b1;
+                    dcache2mem_req_o  = 1'b1;
+                    dcache2mem_wr_o   = 1'b1;
                     cache_writeback_req_o = 1'b1;
                 end else begin 
                     dcache_state_next = DCACHE_ALLOCATE;
@@ -103,22 +103,22 @@ always_comb begin
         end
         DCACHE_ALLOCATE: begin  
             // Response from main memory is received          
-            if (dmem2dcache_ack_i) begin
+            if (mem2dcache_ack_i) begin
                 dcache_state_next = DCACHE_IDLE;
                 cache_line_wr_o   = 1'b1;
             end else begin
                dcache_state_next = DCACHE_ALLOCATE;
-               dcache2dmem_req_o = 1'b1;
+               dcache2mem_req_o = 1'b1;
             end
         end
         DCACHE_WRITE_BACK: begin  
             // Response from main memory is received          
-            if (dmem2dcache_ack_i) begin
+            if (mem2dcache_ack_i) begin
                 dcache_state_next = DCACHE_ALLOCATE;
             end else begin
                 dcache_state_next = DCACHE_WRITE_BACK;
-                dcache2dmem_req_o = 1'b1;
-                dcache2dmem_wr_o = 1'b1;
+                dcache2mem_req_o = 1'b1;
+                dcache2mem_wr_o = 1'b1;
                 cache_writeback_req_o = 1'b1;
             end
         end 
@@ -128,7 +128,7 @@ always_comb begin
     if (~dmem_sel_i) begin
         dcache_state_next = DCACHE_IDLE;
         cache_wr_o        = 1'b0;
-        dcache2dmem_req_o = 1'b0;
+        dcache2mem_req_o = 1'b0;
     end
 
 end

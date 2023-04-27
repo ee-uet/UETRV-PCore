@@ -155,10 +155,6 @@ typedef enum logic {
 // Bus interface from IF to imem  
 typedef struct packed {                            
     logic [`XLEN-1:0]                addr;
- //   logic [`XLEN-1:0]                w_data;
- //   logic [3:0]                      sel_byte;  
- //   logic                            w_en;  
- //   logic                            stb; 
     logic                            req; 
 } type_if2imem_s;
 
@@ -241,7 +237,6 @@ typedef struct packed {
 
 // Execute-2-CSR data and control signals
 typedef struct packed {                            
-//    logic [1:0]                      dbus_addr;
     logic [11:0]                     csr_addr;
     logic [`XLEN-1:0]                pc;
     logic [`XLEN-1:0]                instr;
@@ -323,8 +318,7 @@ typedef struct packed {
     logic [`XLEN-1:0]                w_data;
     logic [3:0]                      sel_byte;  
     logic                            w_en;  
-    logic                            stb; 
-    logic                            cyc; 
+    logic                            req;
 } type_dbus2peri_s;
 
 // Bus interface from peripheral device to DBUS
@@ -465,12 +459,6 @@ typedef enum logic [2:0] {
     AMO_DONE  = 3'h4
 } type_amo_states_e;
 
-
-typedef enum logic [1:0] {
-    DMEM_IDLE = 2'h0,
-    DMEM_LSU  = 2'h1,
-    DMEM_MMU  = 2'h2
-} type_dmem_bus_states_e;
 
 typedef struct packed {                            
     logic [`XLEN-1:0]                reg_data;

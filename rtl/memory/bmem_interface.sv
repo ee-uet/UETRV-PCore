@@ -58,7 +58,7 @@ assign bmem_d_addr = dbus2bmem.addr;
 assign bmem_iaddr_match = bmem_iaddr_match_i;
 
 assign bmem_i_sel  = (if2bmem.req & bmem_iaddr_match); 
-assign bmem_d_sel  = (dbus2bmem.cyc & bmem_d_sel_i);
+assign bmem_d_sel  = (dbus2bmem.req & bmem_d_sel_i);
 
 assign bmem_rd_addr = bmem_d_sel ? {2'b0, bmem_d_addr[11:2]} 
                     : bmem_i_sel ? {2'b0, bmem_i_addr[11:2]} : '0; 
@@ -75,7 +75,7 @@ always_ff @ (negedge rst_n, posedge clk) begin
     end
 end
 
-always_comb  begin 
+always_comb begin 
     bmem2if_next = '0;
     if (bmem_i_sel & ~bmem_d_sel) begin                         
         bmem2if_next.ack    = 1'b1;

@@ -23,14 +23,14 @@ module icache_datapath(
   output logic [ICACHE_DATA_WIDTH-1:0]   icache2if_data_o,
   
   // Intruction Cache to Instruction Memory Interface
-  input  wire  [ICACHE_LINE_WIDTH-1:0]   imem2icache_data_i,
-  output logic [ICACHE_ADDR_WIDTH-1:0]   icache2imem_addr_o
+  input  wire  [ICACHE_LINE_WIDTH-1:0]   mem2icache_data_i,
+  output logic [ICACHE_ADDR_WIDTH-1:0]   icache2mem_addr_o
   
 );
 
 
 type_if2icache_s                     if2icache;
-type_icache2imem_s                   icache2imem;
+type_icache2mem_s                    icache2mem;
 
 type_icache_line_s                   icache[0:ICACHE_NO_OF_SETS-1];
 type_icache_line_s                   icache_rd_buf, icache_wr_buff;
@@ -46,7 +46,7 @@ assign addr_offset              = if2icache_addr_i[ICACHE_OFFSET_BITS-1:2];
 
 assign icache_wr_buff.tag       = addr_tag;
 assign icache_wr_buff.valid     = 1'b1;
-assign icache_wr_buff.data_line = imem2icache_data_i;
+assign icache_wr_buff.data_line = mem2icache_data_i;
 
 always_ff@(posedge clk_i) begin
    if(!rst_ni) begin
@@ -88,7 +88,7 @@ end
 
 // Output signals update
 assign cache_hit_o        = (addr_tag == icache_rd_buf.tag) && icache_rd_buf.valid;
-assign icache2imem_addr_o = if2icache_addr_i;
+assign icache2mem_addr_o = if2icache_addr_i;
 assign icache2if_data_o   = icache2if_data_ff;
 
 endmodule

@@ -151,12 +151,12 @@ typedef struct packed {
 typedef struct packed {                            
     logic [`XLEN-1:0]                paddr;
     logic                            r_req;  
-} type_mmu2dmem_s;
+} type_mmu2dcache_s;
 
 // Response from Dcache to MMU 
 typedef struct packed {                            
     logic [`XLEN-1:0]                r_data;
     logic                            r_valid;  
-} type_dmem2mmu_s;
+} type_dcache2mmu_s;
  
 `endif // MMU_DEFS

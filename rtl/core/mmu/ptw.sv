@@ -21,8 +21,8 @@ module ptw (
     output logic                                   dtlb_update_o,
 
    // MMU <---> Data memory interface
-    input wire type_dmem2mmu_s                     dmem2ptw_i,   
-    output type_mmu2dmem_s                         ptw2dmem_o       
+    input wire type_dcache2mmu_s                     dcache2ptw_i,   
+    output type_mmu2dcache_s                         ptw2dcache_o       
 
 );
 
@@ -31,11 +31,8 @@ type_mmu2ptw_s                       mmu2ptw;
 type_ptw2mmu_s                       ptw2mmu;
 
 type_ptw2tlb_s                       ptw2tlb;
-type_dmem2mmu_s                      dmem2ptw;
-type_mmu2dmem_s                      ptw2dmem;
-
-//logic [9:0]                         vpn_0, vpn_1;
-//logic [1:0]                         index;
+type_dcache2mmu_s                    dcache2ptw;
+type_mmu2dcache_s                    ptw2dcache;
 
 type_ptw_state_e                     ptw_state_ff, ptw_state_next;
 type_ptw_levels_e                    ptw_lvl_ff, ptw_lvl_next;
@@ -65,13 +62,13 @@ logic r_req_ff, r_req_next;
 
 // Read the inputs
 assign mmu2ptw  = mmu2ptw_i;
-assign dmem2ptw = dmem2ptw_i;
+assign dcache2ptw = dcache2ptw_i;
 
 assign pte = type_pte_sv32_s'(r_data_ff);
 
 // Output the physical address directly from PTW 
-assign ptw2dmem.paddr = ptw_paddr_next[`PALEN-1:0];
-assign ptw2dmem.r_req = r_req_next;
+assign ptw2dcache.paddr = ptw_paddr_next[`PALEN-1:0];
+assign ptw2dcache.r_req = r_req_next;
     
 // Configure the signals for respective TLB entry update
 assign ptw2tlb.vpn     = vaddr_ff[`VALEN-1:12];
@@ -249,8 +246,8 @@ always_ff @(posedge clk, negedge rst_n) begin
         ptw_lvl_ff      <= ptw_lvl_next; 
         vaddr_ff        <= vaddr_next;
         gmap_bit_ff     <= gmap_bit_next;
-        r_data_valid_ff <= dmem2ptw.r_valid; 
-        r_data_ff       <= dmem2ptw.r_data;
+        r_data_valid_ff <= dcache2ptw.r_valid; 
+        r_data_ff       <= dcache2ptw.r_data;
     end
 end
 
@@ -263,7 +260,7 @@ assign itlb_update_o = itlb_update;
 assign dtlb_update_o = dtlb_update;
 assign ptw2tlb_o     = ptw2tlb;
 
-assign ptw2dmem_o    = ptw2dmem;
+assign ptw2dcache_o    = ptw2dcache;
 assign ptw2mmu_o     = ptw2mmu;
 
 endmodule // ptw

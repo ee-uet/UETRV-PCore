@@ -287,8 +287,8 @@ type_peri2dbus_s                      uart2dbus_ff;
 // Signal interface to Wishbone bus
 assign reg_addr   = type_uart_regs_e'(dbus2uart_i.addr[5:2]);
 assign reg_w_data = dbus2uart_i.w_data[15:0];
-assign reg_rd_req = !dbus2uart_i.w_en && dbus2uart_i.cyc && uart_sel_i;
-assign reg_wr_req = dbus2uart_i.w_en  && dbus2uart_i.cyc && uart_sel_i;
+assign reg_rd_req = !dbus2uart_i.w_en && dbus2uart_i.req && uart_sel_i;
+assign reg_wr_req = dbus2uart_i.w_en  && dbus2uart_i.req && uart_sel_i;
 
 // UART synchronous read operation 
 always_ff @(posedge clk) begin  

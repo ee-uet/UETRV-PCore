@@ -30,9 +30,9 @@ module wb_dcache_datapath(
     output logic [DCACHE_DATA_WIDTH-1:0]   dcache2lsummu_data_o,
   
     // Data cache to data memory interface
-    input  wire  [DCACHE_LINE_WIDTH-1:0]   dmem2dcache_data_i,
-    output logic [DCACHE_LINE_WIDTH-1:0]   dcache2dmem_data_o,
-    output logic [DCACHE_ADDR_WIDTH-1:0]   dcache2dmem_addr_o
+    input  wire  [DCACHE_LINE_WIDTH-1:0]   mem2dcache_data_i,
+    output logic [DCACHE_LINE_WIDTH-1:0]   dcache2mem_data_o,
+    output logic [DCACHE_ADDR_WIDTH-1:0]   dcache2mem_addr_o
   
 );
 
@@ -45,7 +45,7 @@ type_dcache_tag_s                    cache_tag_read, cache_tag_write;
 logic [DCACHE_DATA_WIDTH-1:0]        cache_word_read, cache_word_write;
 logic [DCACHE_DATA_WIDTH-1:0]        lsummu2dcache_wdata;
 logic [3:0]                          sel_byte;
-logic [DCACHE_ADDR_WIDTH-1:0]        dcache2dmem_addr;
+logic [DCACHE_ADDR_WIDTH-1:0]        dcache2mem_addr;
 
 logic [DCACHE_DATA_WIDTH-1:0]        dcache2lsummu_data_ff, dcache2lsummu_data_next;
 logic [DCACHE_TAG_BITS-1:0]          addr_tag;
@@ -63,7 +63,6 @@ assign addr_offset          = lsummu2dcache_addr_i[DCACHE_OFFSET_BITS-1:2];
 assign cache_tag_read.tag   = cache_tag_ram[addr_index].tag;
 assign cache_tag_read.valid = cache_tag_ram[addr_index].valid;
 assign cache_tag_read.dirty = cache_tag_ram[addr_index].dirty;
-// assign dcache_rd_buf.data_line = dcache[addr_index].data_line ;
 
 assign cache_tag_write.tag  = addr_tag;
 assign cache_tag_write.valid = 1'b1;
@@ -117,16 +116,16 @@ always_ff @(posedge clk_i) begin
         cache_tag_ram[addr_index].tag    <= cache_tag_write.tag;
         cache_tag_ram[addr_index].valid  <= cache_tag_write.valid;
         cache_tag_ram[addr_index].dirty  <= cache_tag_write.dirty;
-        cache_data_ram[addr_index]       <= dmem2dcache_data_i;
+        cache_data_ram[addr_index]       <= mem2dcache_data_i;
     end
 end
 
 // Prepare address and data signals for cache-line writeback or allocate on cache miss 
 always_comb begin
     if (cache_writeback_req_i) begin
-        dcache2dmem_addr = {cache_tag_read.tag, lsummu2dcache_addr_i[DCACHE_TAG_LSB-1:0]};
+        dcache2mem_addr = {cache_tag_read.tag, lsummu2dcache_addr_i[DCACHE_TAG_LSB-1:0]};
     end else begin
-        dcache2dmem_addr = lsummu2dcache_addr_i;
+        dcache2mem_addr = lsummu2dcache_addr_i;
     end
 end
 
@@ -145,8 +144,8 @@ end
 // Output signals update
 assign cache_hit_o          = (addr_tag == cache_tag_read.tag) && cache_tag_read.valid;
 assign cache_dirty_bit_o    = cache_tag_read.dirty;
-assign dcache2dmem_addr_o   = dcache2dmem_addr;
-assign dcache2dmem_data_o   = cache_line_read;
+assign dcache2mem_addr_o   = dcache2mem_addr;
+assign dcache2mem_data_o   = cache_line_read;
 assign dcache2lsummu_data_o = dcache2lsummu_data_ff;
 
 endmodule

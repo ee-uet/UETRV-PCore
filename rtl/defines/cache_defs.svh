@@ -39,12 +39,12 @@ typedef struct packed {
 typedef struct packed {
     logic [ICACHE_ADDR_WIDTH-1:0]    addr;
     logic                            req;
-} type_icache2imem_s;
+} type_icache2mem_s;
 
 typedef struct packed {
     logic [ICACHE_LINE_WIDTH-1:0]    r_data;
     logic                            ack;
-} type_imem2icache_s;
+} type_mem2icache_s;
 
   
 typedef struct packed {
@@ -80,8 +80,6 @@ typedef struct packed {
     logic [3:0]                      sel_byte;  
     logic                            w_en;  
     logic                            req; 
-  //  logic                            cyc; 
- //   logic                            dcache_flush; 
 } type_lsummu2dcache_s;
 
 // Bus interface from Icache to IF
@@ -96,12 +94,12 @@ typedef struct packed {
     logic [DCACHE_LINE_WIDTH-1:0]    w_data;
     logic                            req;
     logic                            w_en;  
-} type_dcache2dmem_s;
+} type_dcache2mem_s;
 
 typedef struct packed {
     logic [DCACHE_LINE_WIDTH-1:0]    r_data;
     logic                            ack;
-} type_dmem2dcache_s;
+} type_mem2dcache_s;
 
   
 typedef struct packed {
@@ -112,6 +110,21 @@ typedef struct packed {
 } type_dcache_tag_s;
 
 typedef bit [DCACHE_LINE_WIDTH-1:0] type_dcache_data_s;
-// typedef type_dbus2peri_s type_lsu2dcache_s;
+
+typedef enum logic [1:0] {
+    DCACHE_ARBITER_IDLE = 2'h0,
+    DCACHE_ARBITER_LSU  = 2'h1,
+    DCACHE_ARBITER_MMU  = 2'h2
+} type_cache_arbiter_states_e;
+
+typedef enum logic [1:0] {
+    MEM_ARBITER_IDLE    = 2'h0,
+    MEM_ARBITER_DCACHE  = 2'h1,
+    MEM_ARBITER_ICACHE  = 2'h2
+} type_mem_arbiter_states_e;
+
+// Interface signals for cache memory arbiter and main memory
+typedef type_dcache2mem_s type_cache2mem_s;
+typedef type_mem2dcache_s type_mem2cache_s;
 
 `endif

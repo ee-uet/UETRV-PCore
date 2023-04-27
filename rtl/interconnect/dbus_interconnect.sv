@@ -16,7 +16,7 @@ module dbus_interconnect (
     output type_dbus2lsu_s                         dbus2lsu_o,               // Signals to core
 
     // dbus <----> Peripheral module interface
-    input wire type_peri2dbus_s                    dmem2dbus_i,              // Signals from DATA memory 
+    input wire type_peri2dbus_s                    dcache2dbus_i,              // Signals from DATA memory 
     input wire type_peri2dbus_s                    uart2dbus_i,              // Signals from UART module
     input wire type_peri2dbus_s                    clint2dbus_i,             // Signals from CLINT module
     input wire type_peri2dbus_s                    plic2dbus_i,              // Signals from PLIC module
@@ -160,8 +160,8 @@ end
 
 // Output signal assignemnets
 assign dbus2peri.addr = dbus_addr;
-assign dbus2peri.cyc  = dbus_req;
-assign dbus2peri.stb  = dmem_sel | uart_sel | clint_sel | plic_sel | bmem_sel | uart_ns_sel;
+assign dbus2peri.req  = dbus_req;
+//assign dbus2peri.stb  = dmem_sel | uart_sel | clint_sel | plic_sel | bmem_sel | uart_ns_sel;
 assign dbus2peri.w_en = st_req;
 
 // Assign the output signals
@@ -176,7 +176,7 @@ assign bmem_sel_o  = bmem_sel;
 assign uart_ns_sel_o  = uart_ns_sel;
 
 // Mux for the peripheral module read data
-assign dbus2lsu_o = dmem_sel  ? type_dbus2lsu_s'(dmem2dbus_i) 
+assign dbus2lsu_o = dmem_sel  ? type_dbus2lsu_s'(dcache2dbus_i) 
                   : clint_sel ? type_dbus2lsu_s'(clint2dbus_i)
                   : plic_sel  ? type_dbus2lsu_s'(plic2dbus_i)
                   : uart_sel  ? type_dbus2lsu_s'(uart2dbus_i)  

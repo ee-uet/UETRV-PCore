@@ -20,8 +20,8 @@ module mmu (
     output type_mmu2if_s                           mmu2if_o,
 
    // MMU <---> Data cache interface
-    input wire type_dmem2mmu_s                     dmem2mmu_i,   
-    output type_mmu2dmem_s                         mmu2dmem_o       
+    input wire type_dcache2mmu_s                     dcache2mmu_i,   
+    output type_mmu2dcache_s                         mmu2dcache_o       
 
 );
 
@@ -32,8 +32,8 @@ type_mmu2lsu_s                       mmu2lsu;
 type_if2mmu_s                        if2mmu;
 type_mmu2if_s                        mmu2if;
 
-type_dmem2mmu_s                      dmem2mmu;
-type_mmu2dmem_s                      mmu2dmem;
+type_dcache2mmu_s                    dcache2mmu;
+type_mmu2dcache_s                      mmu2dcache;
 
 // Local signals
 type_mmu2ptw_s                       mmu2ptw;
@@ -48,7 +48,7 @@ logic                                itlb_update;
 // Get the input signals
 assign if2mmu   = if2mmu_i;
 assign lsu2mmu  = lsu2mmu_i;
-assign dmem2mmu = dmem2mmu_i;
+assign dcache2mmu = dcache2mmu_i;
 
 //============================= ITLB instantiation and connectivity =============================//
 // Signals from MMU to TLB
@@ -180,14 +180,14 @@ ptw ptw_module (
     .itlb_update_o              (itlb_update),
     .dtlb_update_o              (dtlb_update),
 
-    .dmem2ptw_i                 (dmem2mmu),
-    .ptw2dmem_o                 (mmu2dmem)            
+    .dcache2ptw_i                 (dcache2mmu),
+    .ptw2dcache_o                 (mmu2dcache)            
 );
 
 
 assign mmu2lsu_o  = mmu2lsu;
 assign mmu2if_o   = mmu2if;
-assign mmu2dmem_o = mmu2dmem;
+assign mmu2dcache_o = mmu2dcache;
 
 endmodule // mmu
 

@@ -22,8 +22,8 @@ module wb_dcache_top (
     output type_dcache2lsummu_s        dcache2lsummu_o,
   
     // Data cache to data memory interface  
-    input wire type_dmem2dcache_s      dmem2dcache_i,
-    output type_dcache2dmem_s          dcache2dmem_o
+    input wire type_mem2dcache_s       mem2dcache_i,
+    output type_dcache2mem_s           dcache2mem_o
 );
 
 logic                              cache_hit;
@@ -35,12 +35,12 @@ logic                              cache_writeback_req;
 type_lsummu2dcache_s               lsummu2dcache;
 type_dcache2lsummu_s               dcache2lsummu;
 
-type_dmem2dcache_s                 dmem2dcache;
-type_dcache2dmem_s                 dcache2dmem;
+type_mem2dcache_s                  mem2dcache;
+type_dcache2mem_s                  dcache2mem;
 
 assign lsummu2dcache      = lsummu2dcache_i;
-assign dmem2dcache.r_data = dmem2dcache_i.r_data;
-assign dmem2dcache.ack    = dmem2dcache_i.ack;
+assign mem2dcache.r_data  = mem2dcache_i.r_data;
+assign mem2dcache.ack     = mem2dcache_i.ack;
 
 
 wb_dcache_controller wb_dcache_controller_module(
@@ -60,9 +60,9 @@ wb_dcache_controller wb_dcache_controller_module(
   .dcache2lsummu_ack_o     (dcache2lsummu.ack),
 
   // Data memory <---> data cache signals
-  .dmem2dcache_ack_i       (dmem2dcache.ack),
-  .dcache2dmem_req_o       (dcache2dmem.req),
-  .dcache2dmem_wr_o        (dcache2dmem.w_en),
+  .mem2dcache_ack_i        (mem2dcache.ack),
+  .dcache2mem_req_o        (dcache2mem.req),
+  .dcache2mem_wr_o         (dcache2mem.w_en),
   .dmem_sel_i              (dmem_sel_i)
 );  
 
@@ -85,14 +85,14 @@ wb_dcache_datapath wb_dcache_datapath_module(
   .dcache2lsummu_data_o    (dcache2lsummu.r_data),
   
   // Data memory <---> data cache signals
-  .dmem2dcache_data_i      (dmem2dcache.r_data),
-  .dcache2dmem_data_o      (dcache2dmem.w_data),
-  .dcache2dmem_addr_o      (dcache2dmem.addr)
+  .mem2dcache_data_i      (mem2dcache.r_data),
+  .dcache2mem_data_o      (dcache2mem.w_data),
+  .dcache2mem_addr_o      (dcache2mem.addr)
 );
 
 
 assign dcache2lsummu_o = dcache2lsummu;
-assign dcache2dmem_o   = dcache2dmem;
+assign dcache2mem_o    = dcache2mem;
 
 
 endmodule

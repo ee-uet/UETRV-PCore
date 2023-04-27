@@ -198,8 +198,8 @@ type_peri2dbus_s                      plic2dbus_ff;
 // Signal interface to data bus
 assign reg_addr   = type_plic_regs_e'(dbus2plic_i.addr[`PLIC_REG_OFFSET_WIDTH-1:0]);
 assign reg_w_data = dbus2plic_i.w_data;
-assign reg_rd_req = !dbus2plic_i.w_en && dbus2plic_i.cyc && plic_sel_i;
-assign reg_wr_req = dbus2plic_i.w_en  && dbus2plic_i.cyc && plic_sel_i;
+assign reg_rd_req = !dbus2plic_i.w_en && dbus2plic_i.req && plic_sel_i;
+assign reg_wr_req = dbus2plic_i.w_en  && dbus2plic_i.req && plic_sel_i;
 
 // PLIC synchronous read operation 
 always_ff @(posedge clk) begin  

@@ -20,21 +20,21 @@ module icache_top (
   output type_icache2if_s       icache2if_o,
   
   // Instruction Cache to Instruction memory Interface  
-  input wire type_imem2icache_s imem2icache_i,
-  output type_icache2imem_s     icache2imem_o
+  input wire type_mem2icache_s  mem2icache_i,
+  output type_icache2mem_s      icache2mem_o
 );
 
 logic cache_hit;
 logic cache_rw;
 
-type_if2icache_s   if2icache;
-type_imem2icache_s imem2icache;
-type_icache2if_s   icache2if;
-type_icache2imem_s icache2imem;
+type_if2icache_s               if2icache;
+type_mem2icache_s              mem2icache;
+type_icache2if_s               icache2if;
+type_icache2mem_s              icache2mem;
 
-assign if2icache        = if2icache_i;
-assign imem2icache.r_data = imem2icache_i.r_data;
-assign imem2icache.ack  = imem2icache_i.ack;
+assign if2icache         = if2icache_i;
+assign mem2icache.r_data = mem2icache_i.r_data;
+assign mem2icache.ack    = mem2icache_i.ack;
 
 
 icache_controller icache_controller_module(
@@ -47,8 +47,8 @@ icache_controller icache_controller_module(
   .if2icache_req_kill_i (if2icache.req_kill),
   .icache2if_ack_o      (icache2if.ack),
 
-  .imem2icache_ack_i    (imem2icache.ack),
-  .icache2imem_req_o    (icache2imem.req),
+  .mem2icache_ack_i    (mem2icache.ack),
+  .icache2mem_req_o    (icache2mem.req),
   .imem_sel_i           (imem_sel_i)
 );  
 
@@ -64,14 +64,14 @@ icache_datapath icache_datapath_module(
   .icache2if_data_o     (icache2if.r_data),
   
   // Intruction Cache to Instruction Memory Interface
-  .imem2icache_data_i   (imem2icache.r_data),
-  .icache2imem_addr_o   (icache2imem.addr)
+  .mem2icache_data_i   (mem2icache.r_data),
+  .icache2mem_addr_o   (icache2mem.addr)
   
 );
 
 
 assign icache2if_o = icache2if;
-assign icache2imem_o = icache2imem;
+assign icache2mem_o = icache2mem;
 
 
 endmodule

@@ -23,8 +23,8 @@ module pipeline_top (
     input wire type_icache2if_s         icache2if_i,              // Instruction memory response
 
    // MMU <---> Data cache interface
-    input wire type_dmem2mmu_s          dmem2mmu_i,   
-    output type_mmu2dmem_s              mmu2dmem_o,  
+    input wire type_dcache2mmu_s        dcache2mmu_i,   
+    output type_mmu2dcache_s            mmu2dcache_o,  
 
    // Data bus interface
     output type_lsu2dbus_s              lsu2dbus_o,                // Signal to data bus 
@@ -94,8 +94,8 @@ type_if2mmu_s                           if2mmu;
 type_mmu2if_s                           mmu2if;
 type_lsu2mmu_s                          lsu2mmu;
 type_mmu2lsu_s                          mmu2lsu;
-type_mmu2dmem_s                         mmu2dmem;
-type_dmem2mmu_s                         dmem2mmu;
+type_mmu2dcache_s                       mmu2dcache;
+type_dcache2mmu_s                       dcache2mmu;
 
 logic [`XLEN-1:0]                       lsu2exe_fb_alu_result;
 logic [`XLEN-1:0]                       wrb2exe_fb_rd_data;
@@ -116,9 +116,9 @@ type_fwd2lsu_s                          fwd2lsu;
 type_fwd2ptop_s                         fwd2ptop;
 
 // Inputs assignment to local signals
-assign dbus2lsu = dbus2lsu_i; 
-assign dmem2mmu = dmem2mmu_i;
-assign icache2if = icache2if_i;
+assign dbus2lsu   = dbus2lsu_i; 
+assign dcache2mmu = dcache2mmu_i;
+assign icache2if  = icache2if_i;
 
 
 //================================= Fetch to decode interface ==================================//
@@ -506,15 +506,15 @@ mmu mmu_module (
     // Forward_stall module interface signals 
     .lsu2mmu_i                  (lsu2mmu),
     .if2mmu_i                   (if2mmu),
-    .dmem2mmu_i                 (dmem2mmu),
+    .dcache2mmu_i               (dcache2mmu),
     .mmu2lsu_o                  (mmu2lsu),
     .mmu2if_o                   (mmu2if),
-    .mmu2dmem_o                 (mmu2dmem)
+    .mmu2dcache_o               (mmu2dcache)
 );
 
-assign lsu2dbus_o = lsu2dbus;
-assign mmu2dmem_o = mmu2dmem;
-assign if2icache_o = if2icache;
+assign lsu2dbus_o   = lsu2dbus;
+assign mmu2dcache_o = mmu2dcache;
+assign if2icache_o  = if2icache;
 
 endmodule : pipeline_top
 
