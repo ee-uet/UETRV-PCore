@@ -82,11 +82,7 @@ assign if_stall = fwd2if.if_stall | (~icache2if.ack);
 // PC update state machine
 always_ff @(posedge clk) begin
     if (~rst_n) begin
-        `ifndef COMPLIANCE
         pc_ff <= `PC_RESET;
-        `else
-        pc_ff <= 32'h80000000;
-        `endif
     end else begin
         pc_ff <= pc_next;
     end

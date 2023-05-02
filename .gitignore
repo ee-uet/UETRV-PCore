@@ -12,10 +12,10 @@ transcript
 *.mti
 *.mpf
 *.mpf_new
-work/
+*.log
 sim/
 build/
 transcript
-riscof_work/
+*_work/
 sim_build/
 __pycache__/

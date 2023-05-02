@@ -61,12 +61,15 @@
 // Boot mode selection
 `define LINUX_BOOT                   1
 
+`ifndef COMPLIANCE
 `ifdef LINUX_BOOT
 `define PC_RESET                     32'h00001000  // Booting from boot memory to pass the device tree pointer                    
 `else
 `define PC_RESET                     32'h80000000  // Booting from data memory
 `endif
-
+`else 
+`define PC_RESET                     32'h80000000
+`endif
 // Address ranges for different peripheral modules
 `define DBUS_ADDR_WIDTH              32
 //`define IMEM_ADDR_MASK               `DBUS_ADDR_WIDTH'h0FFFF
