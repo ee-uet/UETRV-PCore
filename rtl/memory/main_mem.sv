@@ -25,11 +25,13 @@ module main_mem (
 // Dual port memory instantiation and initialization
 logic [`XLEN-1:0]          dualport_memory[`IDMEM_SIZE];
 
-initial
-begin
-     // Reading the contents of imem.txt file to memory variable
-     $readmemh("imem.txt", dualport_memory); 
-end
+// `ifndef COMPLIANCE
+// initial
+// begin
+//      // Reading the contents of imem.txt file to memory variable
+//      $readmemh("imem.txt", dualport_memory); 
+// end
+// `endif
 
 // Local signals
 type_mem2cache_s                      mem2cache;

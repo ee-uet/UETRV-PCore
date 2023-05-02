@@ -27,11 +27,13 @@ module bmem_interface (
 // Boot memory instantiation and initialization
 logic [`XLEN-1:0]          bmem[`BMEM_SIZE/4];
 
+`ifndef COMPLIANCE
 initial
 begin
      // Reading the contents of bmem.txt file to memory variable
      $readmemh("bmem.txt", bmem); 
 end
+`endif
 
 //================================= Ibus interface ==================================//
 // Local signals
