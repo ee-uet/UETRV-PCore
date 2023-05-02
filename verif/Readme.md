@@ -16,6 +16,8 @@ After completing the steps in [Getting Started](/README.md) guide, follow the fo
 
 - Install [SAIL-RISCV](https://github.com/riscv/sail-riscv). The sail model can be built from source by following [these](https://riscof.readthedocs.io/en/stable/installation.html#install-plugin-models) instructions. However, pre-built model can be used directly which is available along the instructions in [bin](/verif/bin/) directory.
 
+:warning: Pre-build SAIL model might get outdated. So, it recommended to [build](https://riscof.readthedocs.io/en/stable/installation.html#install-plugin-models) it from source..
+
 - [riscv-arch-test](https://github.com/riscv-non-isa/riscv-arch-test) are added as submodule  in this repository. Run the following command to clone the arch-tests as submodule
 
         git submodule update --init
