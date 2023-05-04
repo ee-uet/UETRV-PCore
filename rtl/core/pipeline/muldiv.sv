@@ -45,6 +45,7 @@ logic  [`XLEN-1:0]                   alu_m_result_ff;
 logic  [2*`XLEN-1:0]                 mult;
 logic  [2*`XLEN-1:0]                 mult_ss;
 logic  [2*`XLEN-1:0]                 mult_su;
+logic  [2*`XLEN-1:0]                 mult_su_int;
 logic  [`XLEN-1:0]                   div;
 logic  [`XLEN-1:0]                   div_u;
 logic  [`XLEN-1:0]                   rem;
@@ -62,7 +63,8 @@ assign alu_m_req_next            = |alu_m_ops;
 always_comb begin
     mult    = alu_m_operand_1          * alu_m_operand_2;
     mult_ss = $signed(alu_m_operand_1) * $signed(alu_m_operand_2);
-    mult_su = $signed(alu_m_operand_1) * alu_m_operand_2;
+    // mult_su = $signed(alu_m_operand_1) * (alu_m_operand_2);
+    mult_su = $signed(alu_m_operand_1[31] ? (~alu_m_operand_1 + 1) : alu_m_operand_1) * (alu_m_operand_2);
     if(alu_m_operand_2_is_zero) begin
         div_u = {32{1'b1}};
         div   = {32{1'b1}};
@@ -96,7 +98,8 @@ always_comb begin
         end
         ALU_M_OPS_MULHSU : begin
             alu_m_ack_next    = 1'b1;
-            alu_m_result_next = mult_su[63:32];
+            mult_su_int       = alu_m_operand_1[31] ? (~mult_su + 1) : mult_su;
+            alu_m_result_next = mult_su_int[63:32];
         end
         ALU_M_OPS_MULHU  : begin
             alu_m_ack_next    = 1'b1;
