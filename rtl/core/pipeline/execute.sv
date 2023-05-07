@@ -339,9 +339,7 @@ assign exe2fwd_o       = exe2fwd;
 assign exe2mul_o       = exe2mul;
 
 // Update the feedback signals from EXE to IF stage                         
-// Fixed the JALR related issue by forcing the two LSB of the new PC to 0. This is ok when 'C' 
-// extension is not supported. In the presence of 'C' extension, one LSB should be forced to 0.
-assign exe2if_fb.pc_new       = fence_i_req ? id2exe_data.pc_next : {alu_result[31:2], 2'b0};  
+assign exe2if_fb.pc_new       = fence_i_req ? id2exe_data.pc_next : {alu_result[31:2], 2'b0} ;  
 assign exe2if_fb.icache_flush = fence_i_req;                         
 assign exe2if_fb_o            = exe2if_fb;                  
 

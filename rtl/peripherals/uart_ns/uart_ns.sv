@@ -61,7 +61,7 @@ logic [UART_DATA_SIZE-1:0]              uart_reg_baud_ff, uart_reg_baud_next;
 logic [UART_DATA_SIZE-1:0]              uart_reg_lctrl_ff, uart_reg_lctrl_next;
 logic [UART_DATA_SIZE-1:0]              uart_reg_ie_ff, uart_reg_ie_next;
 logic [UART_DATA_SIZE-1:0]              uart_reg_lstatus_ff, uart_reg_lstatus_next;
-logic [UART_DATA_SIZE-1:0]              uart_reg_is_ff, uart_reg_is_next;
+// logic [UART_DATA_SIZE-1:0]              uart_reg_is_ff, uart_reg_is_next;
 logic [UART_DATA_SIZE-1:0]              uart_reg_scratch_ff, uart_reg_scratch_next;
    
 // Register address decoding signals
@@ -70,7 +70,7 @@ logic                                   tx_reg_wr_flag;
 logic                                   baud_reg_wr_flag;
 logic                                   ie_reg_wr_flag;
 logic                                   lctrl_reg_wr_flag;
-logic                                   is_reg_wr_flag; 
+// logic                                   is_reg_wr_flag; 
 logic                                   scratch_reg_wr_flag; 
 	
 // Read and write signals for UART registers

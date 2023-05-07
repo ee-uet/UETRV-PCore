@@ -3,11 +3,13 @@
 `include "../../defines/UETRV_PCore_ISA.svh"
 `include "../../defines/MMU_defs.svh"
 `include "../../defines/M_EXT_defs.svh"
+`include "../../defines/A_EXT_defs.svh"
 `include "../../defines/cache_defs.svh"
 `else
 `include "UETRV_PCore_ISA.svh"
 `include "MMU_defs.svh"
 `include "M_EXT_defs.svh"
+`include "A_EXT_defs.svh"
 `include "cache_defs.svh"
 `endif
 
@@ -31,7 +33,7 @@ module pipeline_top (
     input  wire type_dbus2lsu_s         dbus2lsu_i,
     output logic                        dcache_flush_o,
 
-   //
+   // Memory mapped timer interface
    input wire type_clint2csr_s          clint2csr_i,
    output type_csr2clint_s              csr2clint_o,
 
@@ -53,10 +55,8 @@ type_id2exe_data_s                      id2exe_data, id2exe_data_next;
 type_exe2lsu_ctrl_s                     exe2lsu_ctrl, exe2lsu_ctrl_next;
 type_exe2lsu_data_s                     exe2lsu_data, exe2lsu_data_next;
 
-// M-Extension related signals
+// M-extension related signals
 type_exe2mul_s                          exe2mul;
-type_mul2lsu_s                          mul2lsu;
-
 
 // Interfaces for CSR module
 type_exe2csr_data_s                     exe2csr_data, exe2csr_data_next;
@@ -65,6 +65,11 @@ type_lsu2csr_data_s                     lsu2csr_data;
 type_lsu2csr_ctrl_s                     lsu2csr_ctrl;
 type_csr2lsu_data_s                     csr2lsu_data;
 
+// Interfaces for AMO module
+type_amo2lsu_data_s                     amo2lsu_data; 
+type_amo2lsu_ctrl_s                     amo2lsu_ctrl;             
+type_lsu2amo_data_s                     lsu2amo_data;
+type_lsu2amo_ctrl_s                     lsu2amo_ctrl;
 
 // Interfaces for data bus 
 type_lsu2dbus_s                         lsu2dbus;               // Signal to data memory 
@@ -78,10 +83,12 @@ type_icache2if_s                        icache2if;
 type_lsu2wrb_ctrl_s                     lsu2wrb_ctrl;
 type_lsu2wrb_data_s                     lsu2wrb_data;
 type_csr2wrb_data_s                     csr2wrb_data;
+type_mul2wrb_s                          mul2wrb;
 
 type_lsu2wrb_data_s                     lsu2wrb_data_next;
 type_lsu2wrb_ctrl_s                     lsu2wrb_ctrl_next;
 type_csr2wrb_data_s                     csr2wrb_data_next;
+type_mul2wrb_s                          mul2wrb_next;
 
 // Interfaces for feedback signals
 type_csr2if_fb_s                        csr2if_fb;
@@ -107,6 +114,7 @@ type_exe2fwd_s                          exe2fwd;
 type_wrb2fwd_s                          wrb2fwd;
 type_lsu2fwd_s                          lsu2fwd;
 type_csr2fwd_s                          csr2fwd;
+type_mul2fwd_s                          mul2fwd;
 
 // From forwarding module
 type_fwd2exe_s                          fwd2exe;
@@ -229,7 +237,7 @@ always_comb begin
         // When pipeline decode and execute stages are flushed in case of jump/branch
         // instructions or incase of interrupt/return-from-interrupt, the PC in those 
         // flushed states should have a valid value to ensure that proper value of PC  
-        // is saved in case of an (high-priority) interrupt occurence. This is achieved 
+        // is saved in case of an interrupt (high-priority) occurence. This is achieved 
         // using instruction flushed flag signal.
     
         id2exe_data_next.instr_flushed = 1'b1;
@@ -239,7 +247,7 @@ always_comb begin
         id2exe_data_next = id2exe_data_pipe_ff;
         id2exe_ctrl_next = id2exe_ctrl_pipe_ff;
 
-        // Due to pieline stall the updated register values are not available
+        // Due to pipeline stall the updated register values are not available
         // in the following cycle and are rather forwarded from writeback
         // stage here.
         if (fwd2ptop.pipe_fwd_wrb_rs1) begin
@@ -290,20 +298,6 @@ execute execute_module (
  
 );
 
-muldiv muldiv_module(
-    .rst_n                      (rst_n        ),            // reset
-    .clk                        (clk          ),            // clock
-
-    // EXE <---> MUL interface
-    .exe2mul_i                  (exe2mul), 
-
-    // Stall and Flush signals
-    .fwd2mul_stall_i            (fwd2ptop.exe2lsu_pipe_stall),
-    .fwd2mul_flush_i            (fwd2ptop.exe2lsu_pipe_flush | fwd2ptop.lsu2wrb_pipe_flush),
-
-    // MUL <---> LSU interface
-    .mul2lsu_o                  (mul2lsu)
-);
 
 //================================= Execute to LSU interface ==================================//
 // Execute <-----> LSU pipeline/nopipeline  
@@ -366,9 +360,6 @@ lsu lsu_module (
     .lsu2csr_ctrl_o             (lsu2csr_ctrl),
     .lsu2csr_data_o             (lsu2csr_data),
 
-    // M-extension interface 
-    .mul2lsu_i                  (mul2lsu),
-
     // Writeback module interface signals 
     .lsu2wrb_ctrl_o             (lsu2wrb_ctrl),
     .lsu2wrb_data_o             (lsu2wrb_data),
@@ -386,10 +377,17 @@ lsu lsu_module (
     // LSU to data bus interface
     .lsu2dbus_o                 (lsu2dbus),      
     .dbus2lsu_i                 (dbus2lsu),
-    .dcache_flush_o             (dcache_flush_o)
+    .dcache_flush_o             (dcache_flush_o),
+
+    // LSU to AMO interface
+    .lsu2amo_data_o             (lsu2amo_data),      
+    .lsu2amo_ctrl_o             (lsu2amo_ctrl),
+
+    // AMO to LSU interface
+    .amo2lsu_data_i             (amo2lsu_data),
+    .amo2lsu_ctrl_i             (amo2lsu_ctrl)
 );
   
-
 // CSR module instantiation
 csr csr_module (
     .rst_n                      (rst_n),
@@ -423,22 +421,25 @@ csr csr_module (
     .csr2if_fb_o                (csr2if_fb)
 );
 
-//================================= LSU to writeback interface ==================================//
+//============================ LSU/M-extension to writeback interface =============================//
 // LSU <-----> Writeback pipeline/nopipeline  
 `ifdef LSU2WRB_PIPELINE_STAGE
 type_lsu2wrb_data_s                     lsu2wrb_data_pipe_ff;
 type_lsu2wrb_ctrl_s                     lsu2wrb_ctrl_pipe_ff;
 type_csr2wrb_data_s                     csr2wrb_data_pipe_ff;
+type_mul2wrb_s                          mul2wrb_pipe_ff;
 
  always_ff @(posedge clk) begin
     if (~rst_n) begin
         lsu2wrb_data_pipe_ff <= '0;
         lsu2wrb_ctrl_pipe_ff <= '0;
         csr2wrb_data_pipe_ff <= '0;
+        mul2wrb_pipe_ff      <= '0; 
     end else begin
         lsu2wrb_data_pipe_ff <= lsu2wrb_data_next;
         lsu2wrb_ctrl_pipe_ff <= lsu2wrb_ctrl_next;
         csr2wrb_data_pipe_ff <= csr2wrb_data_next;
+        mul2wrb_pipe_ff      <= mul2wrb_next;
     end
 end
 
@@ -446,10 +447,12 @@ always_comb begin
     lsu2wrb_data_next = lsu2wrb_data;
     lsu2wrb_ctrl_next = lsu2wrb_ctrl;
     csr2wrb_data_next = csr2wrb_data; 
+    mul2wrb_next      = mul2wrb;
      
     if (fwd2ptop.exe2lsu_pipe_stall | fwd2ptop.lsu2wrb_pipe_flush) begin // On LSU stall, we flush WRB stage
         lsu2wrb_ctrl_next = '0;
         lsu2wrb_data_next = '0;
+        mul2wrb_next      = '0;
     end 
 end 
 
@@ -466,17 +469,18 @@ writeback writeback_module (
     .lsu2wrb_ctrl_i             (lsu2wrb_ctrl_pipe_ff),
     .lsu2wrb_data_i             (lsu2wrb_data_pipe_ff),
     .csr2wrb_data_i             (csr2wrb_data_pipe_ff),
+    .mul2wrb_i                  (mul2wrb_pipe_ff),
 `else
     .lsu2wrb_ctrl_i             (lsu2wrb_ctrl),
     .lsu2wrb_data_i             (lsu2wrb_data),
     .csr2wrb_data_i             (csr2wrb_data),
+    .mul2wrb_i                  (mul2wrb),
 `endif
 
     .wrb2id_fb_o                (wrb2id_fb),
     .wrb2exe_fb_rd_data_o       (wrb2exe_fb_rd_data),
     .wrb2fwd_o                  (wrb2fwd)
 );
-
 
 // Forward_stall module instantiation
 forward_stall forward_stall_module (
@@ -486,8 +490,9 @@ forward_stall forward_stall_module (
     // Forward_stall module interface signals 
     .wrb2fwd_i                  (wrb2fwd),
     .lsu2fwd_i                  (lsu2fwd),
-    .exe2fwd_i                  (exe2fwd),
     .csr2fwd_i                  (csr2fwd),
+    .mul2fwd_i                  (mul2fwd),
+    .exe2fwd_i                  (exe2fwd),
     .if2fwd_stall_i             (if2fwd_stall),
 
     .fwd2if_o                   (fwd2if),
@@ -497,7 +502,7 @@ forward_stall forward_stall_module (
     .fwd2ptop_o                 (fwd2ptop)
 );
 
-
+//==================================  MMU for virtual memory ==================================//
 // MMU module instantiation
 mmu mmu_module (
     .rst_n                      (rst_n),
@@ -510,6 +515,42 @@ mmu mmu_module (
     .mmu2lsu_o                  (mmu2lsu),
     .mmu2if_o                   (mmu2if),
     .mmu2dcache_o               (mmu2dcache)
+);
+
+
+//============================ Multiply/divide moulde for M-extension ============================//
+muldiv muldiv_module(
+    .rst_n                      (rst_n        ),            // reset
+    .clk                        (clk          ),            // clock
+
+    // EXE <---> M-extension interface
+    .exe2mul_i                  (exe2mul), 
+
+    // Stall and Flush signals
+    .fwd2mul_stall_i            (fwd2ptop.exe2lsu_pipe_stall),
+    .fwd2mul_flush_i            (fwd2ptop.exe2lsu_pipe_flush | fwd2ptop.lsu2wrb_pipe_flush),
+
+    // M-extension <---> Forward-stall interface
+    .mul2fwd_o                  (mul2fwd),
+
+    // M-extension <---> Writeback interface
+    .mul2wrb_o                  (mul2wrb)
+);
+
+
+//============================ AMO moulde for A-extension ============================//
+amo amo_module (
+    .rst_n                      (rst_n),
+    .clk                        (clk),
+
+    // LSU to AMO interface
+    .lsu2amo_data_i             (lsu2amo_data),      
+    .lsu2amo_ctrl_i             (lsu2amo_ctrl),
+
+    // AMO to LSU interface
+    .amo2lsu_data_o             (amo2lsu_data),
+    .amo2lsu_ctrl_o             (amo2lsu_ctrl)
+
 );
 
 assign lsu2dbus_o   = lsu2dbus;

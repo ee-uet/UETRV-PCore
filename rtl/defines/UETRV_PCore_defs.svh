@@ -70,6 +70,7 @@
 `else 
 `define PC_RESET                     32'h80000000
 `endif
+
 // Address ranges for different peripheral modules
 `define DBUS_ADDR_WIDTH              32
 //`define IMEM_ADDR_MASK               `DBUS_ADDR_WIDTH'h0FFFF

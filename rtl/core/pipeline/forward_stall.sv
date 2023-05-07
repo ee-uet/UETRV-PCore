@@ -3,9 +3,11 @@
 `ifndef VERILATOR
 `include "../../defines/UETRV_PCore_defs.svh"
 `include "../../defines/UETRV_PCore_ISA.svh"
+`include "../../defines/M_EXT_defs.svh"
 `else
 `include "UETRV_PCore_defs.svh"
 `include "UETRV_PCore_ISA.svh"
+`include "M_EXT_defs.svh"
 `endif
 
 
@@ -17,8 +19,11 @@ module forward_stall (
     // Writeback <---> Forward_stall interface signals
     input wire type_wrb2fwd_s             wrb2fwd_i,
 
-    // Memory <---> Forward_stall interface for forwarding
+    // Memory <---> Forward_stall interface signals
     input wire type_lsu2fwd_s             lsu2fwd_i,
+
+    // M-extension <---> Forward_stall interface signals
+    input wire type_mul2fwd_s             mul2fwd_i,
     
     // EXE/CSR <---> Forward_stall interface signals
     input wire type_exe2fwd_s             exe2fwd_i,  
@@ -41,6 +46,7 @@ type_lsu2fwd_s                       lsu2fwd;
 type_wrb2fwd_s                       wrb2fwd;
 type_exe2fwd_s                       exe2fwd;
 type_csr2fwd_s                       csr2fwd;
+type_mul2fwd_s                       mul2fwd;
 
 logic                                rs1_valid;
 logic                                rs2_valid;
@@ -78,6 +84,7 @@ assign lsu2fwd = lsu2fwd_i;
 assign wrb2fwd = wrb2fwd_i;                          
 assign exe2fwd = exe2fwd_i; 
 assign csr2fwd = csr2fwd_i;
+assign mul2fwd = mul2fwd_i;
 
 assign if2fwd_stall = if2fwd_stall_i;  
 
@@ -90,7 +97,7 @@ assign lsu2rs1_hazard = ((exe2fwd.rs1_addr == lsu2fwd.rd_addr) & lsu2fwd.rd_wr_r
 assign lsu2rs2_hazard = ((exe2fwd.rs2_addr == lsu2fwd.rd_addr) & lsu2fwd.rd_wr_req) & rs2_valid;
 
 // Is it load, CSR or M-Extension operation
-assign lsu_mul_csr_req = lsu2fwd.lsu_req | lsu2fwd.mul_req | csr2fwd.csr_read_req;
+assign lsu_mul_csr_req = lsu2fwd.lsu_req | mul2fwd.mul_req | csr2fwd.csr_read_req;
 
 // Generate the forwarding signals from LSU and writeback stages. The load-use RAW hazard
 // can not be resolved by forwarding from LSU-2-execute stage. Rather one cycle stall is
@@ -173,9 +180,9 @@ end
 always_comb begin
     mul_stall_next = mul_stall_ff; 
 
-    if (lsu2fwd.mul_ack) begin
+    if (mul2fwd.mul_ack) begin
         mul_stall_next = 0;
-    end else if (lsu2fwd.mul_req) begin                         
+    end else if (mul2fwd.mul_req) begin                         
         mul_stall_next = 1'b1; 
     end   
 end

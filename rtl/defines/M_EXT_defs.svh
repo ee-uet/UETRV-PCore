@@ -19,11 +19,14 @@ typedef struct packed {
 } type_exe2mul_s;
 
 typedef struct packed {                            
-    logic [`XLEN-1:0]                alu_m_result; 
-    logic                            alu_m_req;
-    logic                            alu_m_ack;
-} type_mul2lsu_s;
+    logic                            mul_req;
+    logic                            mul_ack;
+} type_mul2fwd_s;
 
+// M-extension-2-writeback signals
+typedef struct packed {                            
+    logic  [`XLEN-1:0]                alu_m_result;   
+} type_mul2wrb_s;
 
 `endif // M_EXT_DEFS
 

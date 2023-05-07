@@ -4,6 +4,7 @@
 
 `include "UETRV_PCore_defs.svh"
 `include "UETRV_PCore_CSR.svh"
+`include "A_EXT_defs.svh"
 
 //============================== ISA related definitions ================================//
 
@@ -132,22 +133,6 @@ typedef enum logic {
     CSR_OPR_REG = '0,       // opr = rs1 (register)
     CSR_OPR_IMM             // opr = Immediate value 
 } type_csr_opr_sel_e;
-
-// Atomic memory opertions
- typedef enum logic [3:0] {
-    AMO_OPS_NONE = '0,
-    AMO_OPS_LR,
-    AMO_OPS_SC,
-    AMO_OPS_SWAP,
-    AMO_OPS_ADD,
-    AMO_OPS_XOR,
-    AMO_OPS_AND,
-    AMO_OPS_OR,
-    AMO_OPS_MIN,
-    AMO_OPS_MAX,
-    AMO_OPS_MINU,
-    AMO_OPS_MAXU
-} type_amo_ops_e;
 
 
 //======== Data and control signals among different pairs of communicating modules/stages =========//
@@ -288,7 +273,6 @@ typedef struct packed {
     logic [`XLEN-1:0]                pc_next;
     logic [`XLEN-1:0]                r_data;  
     logic [`RF_AWIDTH-1:0]           rd_addr; 
-   logic  [`XLEN-1:0]                alu_m_result;   
 } type_lsu2wrb_data_s;
 
 typedef struct packed {                           
@@ -330,15 +314,12 @@ typedef struct packed {
 // Execute-2-Fetch interface feedback signals
 typedef struct packed {                            
     logic [`XLEN-1:0]                pc_new;
-    logic                            icache_flush;
- //   logic                            jump_br_taken;  
+    logic                            icache_flush;  
 } type_exe2if_fb_s;
 
 // CSR-2-Fetch interface feedback signals
 typedef struct packed {                            
     logic [`XLEN-1:0]                pc_new;
- //   logic                            new_pc_req; 
- //   logic                            wfi_req; 
 } type_csr2if_fb_s;
 
 // CSR-2-Decode interface feedback signals
@@ -358,9 +339,7 @@ typedef struct packed {
     logic [`RF_AWIDTH-1:0]           rd_addr;
     logic                            rd_wr_req;  
     logic                            lsu_req;
-    logic                            lsu_ack;  
-    logic                            mul_req;  
-    logic                            mul_ack;   
+    logic                            lsu_ack;   
 } type_lsu2fwd_s;
 
 // Writeback-2-Forward_stall interface signals
@@ -450,15 +429,6 @@ typedef struct packed {
 typedef struct packed {  
     logic                            pipe_stall_flush;                           
 } type_csr2clint_s;
-
-typedef enum logic [2:0] {
-    AMO_IDLE  = 3'h0,
-    AMO_LOAD  = 3'h1,
-    AMO_OP    = 3'h2,
-    AMO_ST    = 3'h3,
-    AMO_DONE  = 3'h4
-} type_amo_states_e;
-
 
 typedef struct packed {                            
     logic [`XLEN-1:0]                reg_data;
