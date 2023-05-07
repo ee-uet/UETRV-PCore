@@ -56,8 +56,6 @@ type_fwd2if_s                        fwd2if;
 // Exception related signals
 type_exc_code_e                      exc_code_next, exc_code_ff;
 logic                                exc_req_next, exc_req_ff;
-logic [`XLEN-1:0]                    exc_vaddr_next, exc_vaddr_ff;
-
 
 // Imem address generation
 logic [`XLEN-1:0]                    pc_ff;              // Current value of program counter (PC)
@@ -143,9 +141,7 @@ end
 
 // Update the outputs to MMU and Imem modules
 assign if2mmu.i_vaddr = pc_next;
-assign if2mmu.i_req   = `IMEM_INST_REQ;
-//assign if2imem_o.addr = mmu2if.i_paddr[`XLEN-1:0]; // pc_next; 
-//assign if2imem_o.req  = mmu2if.i_hit;              // `IMEM_INST_REQ; 
+assign if2mmu.i_req   = `IMEM_INST_REQ; 
 
 assign if2icache_o.addr = mmu2if.i_paddr[`XLEN-1:0]; // pc_next; 
 assign if2icache_o.req  = mmu2if.i_hit;              // `IMEM_INST_REQ;

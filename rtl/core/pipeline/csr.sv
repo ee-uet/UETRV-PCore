@@ -166,7 +166,11 @@ logic                            m_mode_global_ie;
 logic                            m_mode_exc_req;
 logic                            m_mode_irq_req;
 logic                            m_mode_pc_req;
-logic                            m_mode_pf_exc_req;
+logic                            m_mode_misalign_exc_req;
+logic                            m_mode_lsu_pf_exc_req;
+logic                            m_mode_ileg_inst_exc_req;
+logic                            m_mode_i_pf_exc_req;
+logic                            m_mode_break_exc_req;
 logic                            ms_mode_ecall_req;
 logic                            mret_pc_req;
 
@@ -176,8 +180,7 @@ logic                            s_mode_exc_req;
 logic                            s_mode_irq_req;
 logic                            s_mode_pc_req;
 logic                            s_mode_enabled;
-logic                            s_mode_pf_exc_req;
-logic                            s_mode_inst_pf_req;
+logic                            s_mode_misalign_exc_req;
 logic                            u_mode_ecall_req;
 logic                            sret_pc_req;
 
@@ -203,8 +206,6 @@ logic                            st_ops;
 logic                            is_ld_st_ops;
 logic                            ld_misalign_exc_req;
 logic                            st_misalign_exc_req;
-logic                            m_mode_misalign_exc_req;
-logic                            s_mode_misalign_exc_req;
 
 // Performance counter related signals
 logic                            csr_mcycle_inc;
@@ -898,9 +899,10 @@ end
 
 // Make sure the misalign request is in machine mode
 assign m_mode_misalign_exc_req  = (m_mode_exc_req) & (ld_misalign_exc_req | st_misalign_exc_req);
-assign m_mode_lsu_pf_exc_req    = (m_mode_exc_req) & lsu_pf_exc_req;
-assign m_mode_ileg_inst_exc_req = (m_mode_exc_req) & csr_exc_req;
-assign m_mode_i_pf_exc_req      = (m_mode_exc_req) & i_pf_exc_req;
+assign m_mode_lsu_pf_exc_req    = m_mode_exc_req & lsu_pf_exc_req;
+assign m_mode_ileg_inst_exc_req = m_mode_exc_req & csr_exc_req;
+assign m_mode_i_pf_exc_req      = m_mode_exc_req & i_pf_exc_req;
+assign m_mode_break_exc_req     = m_mode_exc_req & break_exc_req;
 
 always_comb begin
     case (1'b1)
@@ -919,8 +921,7 @@ always_comb begin
         m_mode_i_pf_exc_req : begin
             csr_mtval_next = csr_pc_next;
         end
-        (ms_mode_ecall_req 
-         | m_mode_irq_req) : begin
+        (ms_mode_ecall_req | m_mode_break_exc_req | m_mode_irq_req) : begin
             csr_mtval_next = '0;
         end
         csr_mtval_wr_flag      : begin  
@@ -1146,8 +1147,7 @@ end
 // Exception requests from any source including CSR and earlier stages
 assign csr_exc_req     = csr_rd_exc_req | csr_wr_exc_req | csr_satp_exc_req;  
 assign ld_pf_exc_req   = lsu2csr_ctrl.ld_page_fault;
-assign st_pf_exc_req   = lsu2csr_ctrl.st_page_fault; 
-//assign inst_pf_exc_req = lsu2csr_ctrl.inst_page_fault; 
+assign st_pf_exc_req   = lsu2csr_ctrl.st_page_fault;  
 assign lsu_pf_exc_req  = ld_pf_exc_req | st_pf_exc_req;
 assign i_pf_exc_req    = exe2csr_ctrl.exc_req & (exe2csr_data.exc_code == EXC_CODE_INST_PAGE_FAULT);
 
@@ -1162,7 +1162,6 @@ always_comb begin
         csr_exc_req          : exc_code = EXC_CODE_ILLEGAL_INSTR;
         ld_pf_exc_req        : exc_code = EXC_CODE_LD_PAGE_FAULT;
         st_pf_exc_req        : exc_code = EXC_CODE_ST_PAGE_FAULT;
-//        inst_pf_exc_req      : exc_code = EXC_CODE_INST_PAGE_FAULT;
         ld_misalign_exc_req  : exc_code = EXC_CODE_LD_ADDR_MISALIGN;
         st_misalign_exc_req  : exc_code = EXC_CODE_ST_ADDR_MISALIGN;
     endcase

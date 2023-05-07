@@ -28,10 +28,6 @@ module icache_datapath(
   
 );
 
-
-type_if2icache_s                     if2icache;
-type_icache2mem_s                    icache2mem;
-
 type_icache_line_s                   icache[0:ICACHE_NO_OF_SETS-1];
 type_icache_line_s                   icache_rd_buf, icache_wr_buff;
 

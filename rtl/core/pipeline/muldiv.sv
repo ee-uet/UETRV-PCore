@@ -14,21 +14,24 @@ module muldiv (
     input   logic                        rst_n,                    // reset
     input   logic                        clk,                      // clock
 
-    // EXE <---> MUL interface
+    // EXE <---> M-extension interface
     input  wire type_exe2mul_s           exe2mul_i,
 
     input wire                           fwd2mul_stall_i,
     input wire                           fwd2mul_flush_i,
 
-    // MUL <---> LSU interface
-    output type_mul2lsu_s                mul2lsu_o
+    // M-extension <---> Forward-stall interface
+    output type_mul2fwd_s                mul2fwd_o,
+
+    output type_mul2wrb_s                mul2wrb_o
 );
 
 
 //============================= Local signals and their assignments =============================//
 // Local control and data signal structures 
 type_exe2mul_s                       exe2mul;
-type_mul2lsu_s                       mul2lsu;
+type_mul2fwd_s                       mul2fwd;
+type_mul2wrb_s                       mul2wrb;
 
 type_alu_m_ops_e                     alu_m_ops;
 
@@ -63,8 +66,9 @@ assign alu_m_req_next            = |alu_m_ops;
 always_comb begin
     mult    = alu_m_operand_1          * alu_m_operand_2;
     mult_ss = $signed(alu_m_operand_1) * $signed(alu_m_operand_2);
-    // mult_su = $signed(alu_m_operand_1) * (alu_m_operand_2);
+   // mult_su = $signed(alu_m_operand_1) * alu_m_operand_2;
     mult_su = $signed(alu_m_operand_1[31] ? (~alu_m_operand_1 + 1) : alu_m_operand_1) * (alu_m_operand_2);
+
     if(alu_m_operand_2_is_zero) begin
         div_u = {32{1'b1}};
         div   = {32{1'b1}};
@@ -162,13 +166,14 @@ always_ff @(negedge rst_n, posedge clk ) begin
     end
 end
 
-// Request from M-Extension
-assign mul2lsu.alu_m_req    = alu_m_req_ff;
-assign mul2lsu.alu_m_result = alu_m_result_ff;
+// Request from M-extension
+assign mul2fwd.mul_req    = alu_m_req_ff;
 
-// Response from M-Extension
-assign mul2lsu.alu_m_ack    = alu_m_ack_ff_ff;
+// Response from M-extension
+assign mul2wrb.alu_m_result = alu_m_result_ff;
+assign mul2fwd.mul_ack    = alu_m_ack_ff_ff;
 
-assign mul2lsu_o = mul2lsu;
+assign mul2fwd_o = mul2fwd;
+assign mul2wrb_o = mul2wrb;
 
 endmodule
