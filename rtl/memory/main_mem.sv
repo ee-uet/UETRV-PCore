@@ -31,6 +31,13 @@ begin
      // Reading the contents of example imem.txt file to memory variable
      $readmemh("software/example-uart/build/imem.txt", dualport_memory); 
 end
+
+`else
+initial
+begin
+     // Reading the contents of imem.txt file to memory variable
+     $readmemh("imem.txt", dualport_memory); 
+end
 `endif
 
 // Local signals
