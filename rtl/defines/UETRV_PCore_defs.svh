@@ -45,9 +45,13 @@
 
 `define UART_ADDR_MATCH              8'h90
 `define UART_NS_ADDR_MATCH           8'h98
+`define SPI_ADDR_MATCH               8'h9C
 `define PLIC_ADDR_MATCH              8'h94
 `define CLINT_ADDR_MATCH             8'h02
 `define BMEM_ADDR_MATCH              20'h00001
+
+//`define DRAM                         1
+`define RTL_SIMULATION               1 
 
 
 // Pipeline stage definitions

@@ -2,10 +2,12 @@
 `include "../defines/UETRV_PCore_ISA.svh"
 `include "../defines/MMU_defs.svh"
 `include "../defines/cache_defs.svh"
+`include "../defines/DDR_defs.svh"
 `else
 `include "UETRV_PCore_ISA.svh"
 `include "MMU_defs.svh"
 `include "cache_defs.svh"
+`include "DDR_defs.svh"
 `endif
 
 module mem_top (
@@ -26,6 +28,12 @@ module mem_top (
     output  type_peri2dbus_s                        dcache2dbus_o,             // Data memory output signals
     output  type_peri2dbus_s                        bmem2dbus_o,             // Boot memory output signals
     input wire                                      dcache_flush_i,
+
+`ifdef DRAM
+    // DDR memory interface
+    inout wire type_mem2ddr_data_s                  mem2ddr_data_io,
+    output type_mem2ddr_ctrl_s                      mem2ddr_ctrl_o,
+`endif
 
  // Selection signal from address decoder of dbus interconnect 
     input   logic                                   dmem_sel_i,
@@ -73,7 +81,7 @@ assign dbus2peri = dbus2peri_i;
 assign bmem_iaddr_match = (if2icache.addr[`BMEM_SEL_ADDR_HIGH:`BMEM_SEL_ADDR_LOW] == `BMEM_ADDR_MATCH);
 
 
-//================= Instruction cache, boot memory and associated interfaces ==================//
+//========= Instruction cache, boot memory and associated interfaces =========//
 
 bmem_interface bmem_interface_module (
     .rst_n                (rst_n    ),
@@ -105,7 +113,7 @@ icache_top icache_top_module(
     .imem_sel_i             (~bmem_iaddr_match)
 );
 
-//======================= Data cache, bus arbiter and associated interfaces =======================//
+//============ Data cache, bus arbiter and associated interfaces =============//
 // Arbitration between LSU and MMU interfaces for data cache access
 
 always_ff @(negedge rst_n, posedge clk) begin
@@ -180,7 +188,7 @@ cache_arbiter_state_next  = cache_arbiter_state_ff;
  
 end
 
-//=========================== Data cache top module =============================//
+//========================== Data cache top module ===========================//
 wb_dcache_top wb_dcache_top_module(
     .clk_i                  (clk),
     .rst_ni                 (rst_n),
@@ -274,6 +282,12 @@ end
 main_mem main_mem_module (
     .rst_n                  (rst_n),
     .clk                    (clk),
+
+`ifdef DRAM
+    // DDR memory interface
+    .mem2ddr_data_io        (mem2ddr_data_io),
+    .mem2ddr_ctrl_o         (mem2ddr_ctrl_o),
+`endif
 
     // Main memory interface signals 
     .cache2mem_i            (cache2mem),

@@ -5,12 +5,14 @@
 `include "../defines/MMU_defs.svh"
 `include "../defines/PLIC_defs.svh"
 `include "../defines/cache_defs.svh"
+`include "../defines/DDR_defs.svh"
 `else
 `include "UETRV_PCore_defs.svh"
 `include "UETRV_PCore_ISA.svh"
 `include "MMU_defs.svh"
 `include "PLIC_defs.svh"
 `include "cache_defs.svh"
+`include "DDR_defs.svh"
 `endif
 
 module core_top (
@@ -21,8 +23,22 @@ module core_top (
     input   logic                        irq_ext_i,
     input   logic                        irq_soft_i,
     
+    // Uart interface IO signals
     input   logic                        uart_rxd_i,
     output                               uart_txd_o,
+
+    // SPI interface signals
+    // SPI bus interface signals including clock, chip_select, MOSI and MISO  
+    output logic                         spi_clk_o,
+    output logic                         spi_cs_o,
+    input logic                          spi_miso_i,
+    output logic                         spi_mosi_o,
+
+`ifdef DRAM
+    // DDR memory interface
+    inout wire type_mem2ddr_data_s       mem2ddr_data_io,
+    output type_mem2ddr_ctrl_s           mem2ddr_ctrl_o,
+`endif
 
     input wire type_debug_port_s         debug_port_i
 );
@@ -51,6 +67,7 @@ logic                                   clint_sel;
 logic                                   plic_sel;
 logic                                   bmem_sel;
 logic                                   uart_ns_sel;
+logic                                   spi_sel;
 
 logic                                   dcache_flush;
 
@@ -60,6 +77,8 @@ logic                                   uart_ns_txd_o;
 // IRQ ignals
 logic                                   irq_uart;
 logic                                   irq_ns_uart;
+logic                                   irq_spi;
+
 logic                                   irq_clint_timer;
 logic                                   irq_plic_target_0, irq_plic_target_1;
 
@@ -70,6 +89,8 @@ type_peri2dbus_s                        clint2dbus;
 type_peri2dbus_s                        plic2dbus; 
 type_peri2dbus_s                        bmem2dbus;              // Signals from boot memory 
 type_peri2dbus_s                        uartns2dbus;
+type_peri2dbus_s                        spi2dbus;
+
 
 // Input assignment to local signals
 assign core2pipe.csr_mhartid = `CSR_MHARTID;
@@ -120,6 +141,7 @@ dbus_interconnect dbus_interconnect_module (
     .plic_sel_o            (plic_sel),
     .bmem_sel_o            (bmem_sel), 
     .uart_ns_sel_o         (uart_ns_sel),
+    .spi_sel_o             (spi_sel),
 
     // Signals from dbus to peripherals
     .dbus2peri_o           (dbus2peri),
@@ -130,7 +152,8 @@ dbus_interconnect dbus_interconnect_module (
     .clint2dbus_i          (clint2dbus),
     .plic2dbus_i           (plic2dbus),
     .bmem2dbus_i           (bmem2dbus),
-    .uartns2dbus_i         (uartns2dbus)
+    .uartns2dbus_i         (uartns2dbus),
+    .spi2dbus_i            (spi2dbus)
 );
 
 
@@ -200,8 +223,14 @@ mem_top mem_top_module (
     .dcache_flush_i       (dcache_flush),
 
    // MMU <---> data cache interface signals 
-    .mmu2dcache_i           (mmu2dcache),
-    .dcache2mmu_o           (dcache2mmu),
+    .mmu2dcache_i         (mmu2dcache),
+    .dcache2mmu_o         (dcache2mmu),
+
+`ifdef DRAM
+    // DDR memory interface
+    .mem2ddr_data_io      (mem2ddr_data_io),
+    .mem2ddr_ctrl_o       (mem2ddr_ctrl_o),
+`endif
 
    // Instruction memory interface signals 
     .if2icache_i          (if2icache),
@@ -209,6 +238,21 @@ mem_top mem_top_module (
     .icache2if_o          (icache2if)
 );
 
+spi_top spi_top_module (
+    .rst_n                 (rst_n    ),
+    .clk                   (clk      ),
+
+    // Data bus and IO interface signals 
+    .dbus2spi_i            (dbus2peri),  // This should be updated after the WB/AHBL bus interface is used
+    .spi2dbus_o            (spi2dbus),
+    .spi_sel_i             (spi_sel),
+    .spi_irq_o             (irq_spi),
+
+    .spi_clk_o             (spi_clk_o),
+    .spi_cs_o              (spi_cs_o),
+    .spi_miso_i            (spi_miso_i),
+    .spi_mosi_o            (spi_mosi_o)
+);
 
 endmodule : core_top
 

@@ -65,7 +65,7 @@ parameter DCACHE_IDX_BITS    = $clog2(DCACHE_NO_OF_SETS);
 parameter DCACHE_TAG_BITS    = DCACHE_ADDR_WIDTH - DCACHE_IDX_BITS - DCACHE_OFFSET_BITS; 
 parameter DCACHE_TAG_LSB     = DCACHE_ADDR_WIDTH - DCACHE_TAG_BITS; 
 
-typedef enum {
+typedef enum logic [2:0] {
     DCACHE_IDLE, 
     DCACHE_READ,
     DCACHE_WRITE,  
