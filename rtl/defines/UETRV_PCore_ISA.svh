@@ -61,14 +61,14 @@ typedef enum logic [3:0] {
 
 typedef enum logic [3:0] {
     ALU_M_OPS_NONE = '0,   // ALU is idle 
-    ALU_M_OPS_MUL,          // low((oprnd1) * (oprnd2))
-    ALU_M_OPS_MULH,         // high(oprnd1 * oprnd2)
-    ALU_M_OPS_MULHSU,       // high(oprnd1 * (oprnd2))
-    ALU_M_OPS_MULHU,        // high((oprnd1) * (oprnd2))
-    ALU_M_OPS_DIV,          // oprnd1 s/ oprnd2
-    ALU_M_OPS_DIVU,         // oprnd1 u/ oprnd2
-    ALU_M_OPS_REM,          // oprnd1 s% oprnd2
-    ALU_M_OPS_REMU          // oprnd1 u% oprnd2
+    ALU_M_OPS_MUL    =  4'b0100,        // low((oprnd1) * (oprnd2))
+    ALU_M_OPS_MULH   =  4'b0101,        // high(oprnd1 * oprnd2)
+    ALU_M_OPS_MULHSU =  4'b0110,        // high(oprnd1 * (oprnd2))
+    ALU_M_OPS_MULHU  =  4'b0111,        // high((oprnd1) * (oprnd2))
+    ALU_M_OPS_DIV    =  4'b1000,          // oprnd1 s/ oprnd2
+    ALU_M_OPS_DIVU   =  4'b1001,         // oprnd1 u/ oprnd2
+    ALU_M_OPS_REM    =  4'b1010,          // oprnd1 s% oprnd2
+    ALU_M_OPS_REMU   =  4'b1011          // oprnd1 u% oprnd2
 } type_alu_m_ops_e;
 
 

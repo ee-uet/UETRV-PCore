@@ -40,6 +40,7 @@ verilate_command := $(verilator) +define+$(defines) 				\
 					-Wno-LATCH				\
 					-Wno-IMPLICIT				\
 					-Wno-fatal                       	\
+					-Wno-PINMISSING                     \
                     			-Wno-PINCONNECTEMPTY  		        \
                     			-Wno-ASSIGNDLY                      	\
                     			-Wno-DECLFILENAME                	\

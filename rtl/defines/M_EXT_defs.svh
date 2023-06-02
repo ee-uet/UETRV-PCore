@@ -28,5 +28,10 @@ typedef struct packed {
     logic  [`XLEN-1:0]                alu_m_result;   
 } type_mul2wrb_s;
 
+typedef enum logic  {
+    MULDIV_IDLE  = 1'h0,
+    MULDIV_START = 1'h1
+} type_muldiv_states_e;
+
 `endif // M_EXT_DEFS
 
