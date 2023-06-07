@@ -43,6 +43,8 @@ module uart (
 logic [5:0]                             reg_addr;
 logic                                   reg_rd_req;
 logic                                   reg_wr_req;
+logic [`XLEN-1:0]                       reg_r_data; 
+logic [`XLEN-1:0]                       reg_w_data;
 	
 // Local sinals for IO and internal use
 logic                                   tx_valid_next, tx_valid_ff;
@@ -72,9 +74,6 @@ logic                                   txctrl_reg_wr_flag;
 logic                                   rxctrl_reg_wr_flag;
 logic                                   int_mask_reg_wr_flag; 
 	
-// Read and write signals for UART registers
-logic [`XLEN-1:0]                       reg_r_data; 
-logic [`XLEN-1:0]                       reg_w_data;
 	
 //================================= UART register read operations ==================================//
 always_comb begin
@@ -90,7 +89,7 @@ always_comb begin
                                   rx_empty   = 1'b1;
                               end
             // UART baud rate configuration register
-            UART_BAUD_R     : reg_r_data = {28'b0, uart_reg_baud_ff};
+            UART_BAUD_R     : reg_r_data = {24'b0, uart_reg_baud_ff};
 
             // UART control and status registers
             UART_STATUS_R   : reg_r_data = {12'b0, uart_reg_status_ff};
@@ -181,7 +180,7 @@ end
 // ------------------------------
 always_ff @(negedge rst_n, posedge clk) begin
     if (~rst_n) begin
-        uart_reg_baud_ff <= 'h8;        
+        uart_reg_baud_ff <= 'h10;        
     end else begin
         uart_reg_baud_ff <= uart_reg_baud_next;
     end
@@ -189,7 +188,7 @@ end
 
 always_comb begin 
     if (baud_reg_wr_flag) begin
-        uart_reg_baud_next = reg_w_data[3:0];         
+        uart_reg_baud_next = reg_w_data[7:0];         
     end else begin                         
         uart_reg_baud_next = uart_reg_baud_ff;         
     end       
@@ -294,7 +293,7 @@ assign reg_wr_req = dbus2uart_i.w_en  && dbus2uart_i.req && uart_sel_i;
 always_ff @(posedge clk) begin  
     uart2dbus_ff <= '0;
     if ((reg_wr_req | reg_rd_req) &  ~uart2dbus_ff.ack) begin
-            uart2dbus_ff.ack <= 1'b1;
+        uart2dbus_ff.ack <= 1'b1;
         if (reg_rd_req)
             uart2dbus_ff.r_data <= reg_r_data;         
     end  

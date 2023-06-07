@@ -11,7 +11,7 @@
 
 localparam int unsigned UART_DATA_SIZE      = 8;
 localparam int unsigned UART_DATA_BIT_COUNT = $clog2(UART_DATA_SIZE);
-localparam int unsigned UART_BAUD_DIV_SIZE  = 4;
+localparam int unsigned UART_BAUD_DIV_SIZE  = 8;
 localparam int unsigned UART_1STOP_BIT      = 1;
 localparam int unsigned UART_2STOP_BITS     = 2;
 localparam int unsigned UART_OVERSAMPLE     = 2;

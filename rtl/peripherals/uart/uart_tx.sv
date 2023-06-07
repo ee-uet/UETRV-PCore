@@ -45,7 +45,7 @@ logic                                       tx_pin;
 type_uart_tx_states_e state, state_next;
 
 // Generate local signals for processing
-assign sample_pulse = (sample_count_ff == 0);
+assign sample_pulse = (sample_count_ff == 1);
 assign tx_busy      = (bit_count_ff != 0);
 
 always_comb begin
@@ -76,8 +76,8 @@ always_comb begin
     case (state)
         UART_TX_IDLE : begin
             tx_pin         = 1;
-            sample_count_next = 0;
-            bit_count_next   = 0;
+            sample_count_next = baud_div_i;
+            bit_count_next   = '0;
             shifter_next   = '0;
 
             if (valid_i && !tx_busy) begin 
@@ -99,7 +99,7 @@ always_comb begin
                 tx_pin         = shifter_ff[0];
                 bit_count_next   = bit_count_ff - 1;
                 shifter_next   = {1'b1, shifter_ff[UART_SBIT_DATA_SIZE-1:1]};
-                sample_count_next = (baud_div_i - 1);
+                sample_count_next = baud_div_i;
             end else begin
                 sample_count_next = (sample_count_ff - 1);
             end
@@ -111,7 +111,7 @@ always_comb begin
       
         default : begin
                 tx_pin         = 1'b1;
-                sample_count_next = '0;
+                sample_count_next = baud_div_i;
                 bit_count_next   = '0;
                 shifter_next   = '0; 
                 state_next     = UART_TX_IDLE;
