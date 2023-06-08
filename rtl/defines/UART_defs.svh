@@ -60,6 +60,3 @@ typedef enum logic [1:0] {
 
 
 `endif // UART_DEFS 
-
-   
-

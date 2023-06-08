@@ -14,13 +14,13 @@ module wb_dcache_datapath(
     input  wire                            clk_i,
     input  wire                            rst_ni,
 
-
     // Interface signals to/from cache controller
     input  wire                            cache_wr_i,
     input  wire                            cache_line_wr_i,
     input  wire                            cache_writeback_req_i,
     output logic                           cache_hit_o,
     output logic                           cache_dirty_bit_o,
+    output logic                           dcache_flush_done_o,
 
     // LSU/MMU to data cache interface
     input  wire                            dcache_flush_i,
@@ -123,7 +123,7 @@ end
 // Prepare address and data signals for cache-line writeback or allocate on cache miss 
 always_comb begin
     if (cache_writeback_req_i) begin
-        dcache2mem_addr = {cache_tag_read.tag, lsummu2dcache_addr_i[DCACHE_TAG_LSB-1:0]};
+        dcache2mem_addr = {cache_tag_read.tag, addr_index, {{DCACHE_OFFSET_BITS}{1'b0}}};
     end else begin
         dcache2mem_addr = lsummu2dcache_addr_i;
     end

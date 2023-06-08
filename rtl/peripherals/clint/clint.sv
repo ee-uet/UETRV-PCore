@@ -114,6 +114,8 @@ end
 // ----------------------------
 always_comb begin
 
+    mtime_next = mtime_ff;
+
     if (mtime_lo_wr_flag) begin
         mtime_next[31:0] = w_data;
     end else if (mtime_hi_wr_flag) begin

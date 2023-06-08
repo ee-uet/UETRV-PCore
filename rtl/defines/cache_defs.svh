@@ -70,7 +70,8 @@ typedef enum logic [2:0] {
     DCACHE_READ,
     DCACHE_WRITE,  
     DCACHE_ALLOCATE, 
-    DCACHE_WRITE_BACK 
+    DCACHE_WRITE_BACK,
+    DCACHE_FLUSH  
 } type_dcache_states_e; 
 
 // Bus interface from IF to icache  

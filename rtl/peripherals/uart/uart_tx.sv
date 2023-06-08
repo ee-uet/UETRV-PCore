@@ -109,6 +109,9 @@ always_comb begin
                 state_next = UART_TX_IDLE;
             end
         end
+        default: begin
+            state_next = UART_TX_IDLE; 
+        end
     endcase
 end
 

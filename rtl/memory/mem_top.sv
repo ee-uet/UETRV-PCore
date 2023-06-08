@@ -25,7 +25,7 @@ module mem_top (
 
   // DBus <---> Data cache interface
     input   wire type_dbus2peri_s                   dbus2peri_i,             // Data memory input signals
-    output  type_peri2dbus_s                        dcache2dbus_o,             // Data memory output signals
+    output  type_peri2dbus_s                        dcache2dbus_o,           // Data memory output signals
     output  type_peri2dbus_s                        bmem2dbus_o,             // Boot memory output signals
     input wire                                      dcache_flush_i,
 

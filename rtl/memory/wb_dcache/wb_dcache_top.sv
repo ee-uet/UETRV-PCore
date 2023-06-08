@@ -11,11 +11,10 @@
 `endif
 
 module wb_dcache_top (
-    input  wire                        clk_i,
-    input  wire                        rst_ni,
-    input  wire                        dmem_sel_i,
-    input  wire                        dcache_flush_i,
-
+    input wire                         clk_i,
+    input wire                         rst_ni,
+    input wire                         dmem_sel_i,
+    input wire                         dcache_flush_i,
 
     // LSU/MMU to data cache interface
     input wire type_lsummu2dcache_s    lsummu2dcache_i,
@@ -31,6 +30,7 @@ logic                              cache_dirty_bit;
 logic                              cache_wr;
 logic                              cache_line_wr;
 logic                              cache_writeback_req;
+logic                              cache_flush_done;
 
 type_lsummu2dcache_s               lsummu2dcache;
 type_dcache2lsummu_s               dcache2lsummu;
@@ -39,8 +39,7 @@ type_mem2dcache_s                  mem2dcache;
 type_dcache2mem_s                  dcache2mem;
 
 assign lsummu2dcache      = lsummu2dcache_i;
-assign mem2dcache.r_data  = mem2dcache_i.r_data;
-assign mem2dcache.ack     = mem2dcache_i.ack;
+assign mem2dcache         = mem2dcache_i;
 
 
 wb_dcache_controller wb_dcache_controller_module(
@@ -52,12 +51,15 @@ wb_dcache_controller wb_dcache_controller_module(
   .cache_dirty_bit_i       (cache_dirty_bit),
   .cache_wr_o              (cache_wr),
   .cache_line_wr_o         (cache_line_wr),
-  .cache_writeback_req_o   (cache_writeback_req),    
+  .cache_writeback_req_o   (cache_writeback_req),
+  .dcache_flush_done_i     (dcache_flush_done),
 
   // LSU/MMU <---> data cache signals
   .lsummu2dcache_req_i     (lsummu2dcache.req),
   .lsummu2dcache_wr_i      (lsummu2dcache.w_en),
   .dcache2lsummu_ack_o     (dcache2lsummu.ack),
+  .dcache_flush_i          (dcache_flush_i),
+//  .dcache_flush_ack_o      (dcache2lsummu.flush_ack),    
 
   // Data memory <---> data cache signals
   .mem2dcache_ack_i        (mem2dcache.ack),
@@ -76,6 +78,7 @@ wb_dcache_datapath wb_dcache_datapath_module(
   .cache_writeback_req_i   (cache_writeback_req),    
   .cache_hit_o             (cache_hit),
   .cache_dirty_bit_o       (cache_dirty_bit),
+  .dcache_flush_done_o     (cache_flush_done),
 
   // LSU/MMU <---> data cache signals
   .dcache_flush_i          (dcache_flush_i),

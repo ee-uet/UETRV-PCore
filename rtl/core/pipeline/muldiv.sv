@@ -90,6 +90,7 @@ end
 always_comb begin
     alu_m_result_next = '0;
     alu_m_ack_next    = '0;
+    mult_su_int       = alu_m_operand_1[31] ? (~mult_su + 1) : mult_su;
 
     case (alu_m_ops)
         ALU_M_OPS_MUL    : begin
@@ -102,7 +103,6 @@ always_comb begin
         end
         ALU_M_OPS_MULHSU : begin
             alu_m_ack_next    = 1'b1;
-            mult_su_int       = alu_m_operand_1[31] ? (~mult_su + 1) : mult_su;
             alu_m_result_next = mult_su_int[63:32];
         end
         ALU_M_OPS_MULHU  : begin
