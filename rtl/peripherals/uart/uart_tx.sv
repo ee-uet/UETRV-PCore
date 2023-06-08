@@ -42,7 +42,7 @@ logic                                       tx_busy;
 logic                                       tx_pin;
 
 // Signals for UART state machine
-type_uart_tx_states_e state, state_next;
+type_uart_tx_states_e state_ff, state_next;
 
 // Generate local signals for processing
 assign sample_pulse = (sample_count_ff == 1);
@@ -59,44 +59,45 @@ end
 // State register synchronous update
 always_ff @ (posedge clk or negedge rst_n) begin
     if (!rst_n) begin
-	state        <= UART_TX_IDLE;
+	state_ff        <= UART_TX_IDLE;
         sample_count_ff <= '0;
-        bit_count_ff   <= '0;
-        shifter_ff   <= '0;
+        bit_count_ff    <= '0;
+        shifter_ff      <= '0;
     end else begin
-	state        <= state_next;
+	state_ff        <= state_next;
         sample_count_ff <= sample_count_next;
-        bit_count_ff   <= bit_count_next;
-        shifter_ff   <= shifter_next;
+        bit_count_ff    <= bit_count_next;
+        shifter_ff      <= shifter_next;
     end
 end
 
 // Next_state and output always block
 always_comb begin
-    case (state)
-        UART_TX_IDLE : begin
-            tx_pin         = 1;
-            sample_count_next = baud_div_i;
-            bit_count_next   = '0;
-            shifter_next   = '0;
+    tx_pin            = 1'b1;
+    sample_count_next = baud_div_i;
+    bit_count_next    = bit_count_ff;
+    shifter_next      = shifter_ff; 
+    state_next        = state_ff;
 
+    case (state_ff)
+        UART_TX_IDLE : begin
             if (valid_i && !tx_busy) begin 
                 state_next = UART_TX_START; 
+            end else begin
+                state_next = UART_TX_IDLE; 
             end
         end
 		
         UART_TX_START : begin
             shifter_next = {tx_data_i, 1'b0};
             bit_count_next = uart_frame_size;
-
-            if (tx_busy) begin
-                state_next = UART_TX_DATA;
-            end
+            state_next = UART_TX_DATA;
         end
 		
-        UART_TX_DATA : begin			
-            if (sample_pulse) begin
-                tx_pin         = shifter_ff[0];
+        UART_TX_DATA : begin	
+            tx_pin = shifter_ff[0];
+		
+            if (sample_pulse) begin                
                 bit_count_next   = bit_count_ff - 1;
                 shifter_next   = {1'b1, shifter_ff[UART_SBIT_DATA_SIZE-1:1]};
                 sample_count_next = baud_div_i;
@@ -107,14 +108,6 @@ always_comb begin
             if (!tx_busy) begin
                 state_next = UART_TX_IDLE;
             end
-        end
-      
-        default : begin
-                tx_pin         = 1'b1;
-                sample_count_next = baud_div_i;
-                bit_count_next   = '0;
-                shifter_next   = '0; 
-                state_next     = UART_TX_IDLE;
         end
     endcase
 end
