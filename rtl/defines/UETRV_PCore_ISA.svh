@@ -216,7 +216,7 @@ typedef struct packed {
     logic                            rd_wr_req;
     logic                            jump_req;
     logic                            branch_req;
-    logic                            dcache_flush_req;
+    logic                            fence_req;
 } type_exe2lsu_ctrl_s;
 
 
@@ -236,6 +236,7 @@ typedef struct packed {
     logic                            exc_req;
     logic                            csr_rd_req;
     logic                            csr_wr_req;
+    logic                            fence_i_req;
 } type_exe2csr_ctrl_s;
 
 // LSU-2-CSR data and control signals
@@ -243,7 +244,8 @@ typedef struct packed {
     type_ld_ops_e                    ld_ops;
     type_st_ops_e                    st_ops;
     logic                            ld_page_fault;
-    logic                            st_page_fault;  
+    logic                            st_page_fault;
+    logic                            dcache_flush_ack;  
 } type_lsu2csr_ctrl_s;
 
 typedef struct packed {                            
@@ -314,12 +316,12 @@ typedef struct packed {
 // Execute-2-Fetch interface feedback signals
 typedef struct packed {                            
     logic [`XLEN-1:0]                pc_new;
-    logic                            icache_flush;  
 } type_exe2if_fb_s;
 
 // CSR-2-Fetch interface feedback signals
 typedef struct packed {                            
     logic [`XLEN-1:0]                pc_new;
+    logic                            icache_flush;  
 } type_csr2if_fb_s;
 
 // CSR-2-Decode interface feedback signals
@@ -417,6 +419,7 @@ typedef struct packed {
     logic                            mxr; 
     logic                            lsu_flush;  
     logic                            tlb_flush;
+    logic                            dcache_flush;
 } type_csr2lsu_data_s;
 
 // Clint-2-CSR machine timer signals

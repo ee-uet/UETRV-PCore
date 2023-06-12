@@ -72,7 +72,7 @@ always_ff @(posedge clk_i) begin
     if (!rst_ni || icache_flush) begin
         for (integer i = 0; i < (ICACHE_NO_OF_SETS); i = i + 1) begin
             icache[i].tag       = {ICACHE_TAG_BITS{1'b0}};
-            icache[i].data_line = {ICACHE_LINE_WIDTH{1'b0}};
+         //   icache[i].data_line = {ICACHE_LINE_WIDTH{1'b0}};
             icache[i].valid     = 1'b0;
         end
     end else if (cache_rw_i) begin

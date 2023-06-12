@@ -147,7 +147,7 @@ assign if2icache_o.addr = mmu2if.i_paddr[`XLEN-1:0]; // pc_next;
 assign if2icache_o.req  = mmu2if.i_hit;              // `IMEM_INST_REQ;
 
 assign if2icache_o.req_kill     = fwd2if.csr_new_pc_req | fwd2if.exe_new_pc_req;
-assign if2icache_o.icache_flush = exe2if_fb.icache_flush;   
+assign if2icache_o.icache_flush = csr2if_fb.icache_flush;   
 
 // Update the outputs to ID stage
 assign if2id_data.instr         = icache2if.ack ? icache2if.r_data : `INSTR_NOP;

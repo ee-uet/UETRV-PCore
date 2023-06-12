@@ -290,7 +290,7 @@ assign exe2lsu_ctrl.st_ops     = id2exe_ctrl.st_ops;
 assign exe2lsu_ctrl.jump_req   = id2exe_ctrl.jump_req;                          
 assign exe2lsu_ctrl.branch_req = id2exe_ctrl.branch_req; 
 assign exe2lsu_ctrl.amo_ops    = id2exe_ctrl.amo_ops;
-assign exe2lsu_ctrl.dcache_flush_req = id2exe_ctrl.fence_req;
+assign exe2lsu_ctrl.fence_req = id2exe_ctrl.fence_req;
 
 // If this is CSR operation then destination register write selection is managed 
 // by CSR read control signal
@@ -301,7 +301,8 @@ assign exe2lsu_ctrl.rd_wr_req  = (|id2exe_ctrl.csr_ops)
 // Assign the output control signals for CSR   
 assign exe2csr_ctrl.csr_ops    = id2exe_ctrl.csr_ops;
 assign exe2csr_ctrl.exc_req    = id2exe_ctrl.exc_req;                      
-assign exe2csr_ctrl.sys_ops    = id2exe_ctrl.sys_ops;                       
+assign exe2csr_ctrl.sys_ops    = id2exe_ctrl.sys_ops;  
+assign exe2csr_ctrl.fence_i_req = fence_i_req;                     
 
 // Update the output data signals for CSR
 assign exe2csr_data.csr_addr   = id2exe_data.instr[31:20];
@@ -319,7 +320,7 @@ assign exe2csr_data.csr_wdata = (id2exe_ctrl.csr_opr_sel == CSR_OPR_REG)
 // Signals from EXE module for forwarding evaluation
 assign exe2fwd.rs1_addr   = rs1_addr;
 assign exe2fwd.rs2_addr   = rs2_addr;
-assign exe2fwd.new_pc_req = fence_i_req || id2exe_ctrl.jump_req || (id2exe_ctrl.branch_req & branch_res); 
+assign exe2fwd.new_pc_req = id2exe_ctrl.jump_req || (id2exe_ctrl.branch_req & branch_res); // fence_i_req ||
 
 // The following signals determine whether the two operands are general-purpose registers
 // or not. These are used to minimize the number of stalls in case of load-use RAW hazards
@@ -339,8 +340,8 @@ assign exe2fwd_o       = exe2fwd;
 assign exe2mul_o       = exe2mul;
 
 // Update the feedback signals from EXE to IF stage                         
-assign exe2if_fb.pc_new       = fence_i_req ? id2exe_data.pc_next : {alu_result[31:2], 2'b0} ;  
-assign exe2if_fb.icache_flush = fence_i_req;                         
+assign exe2if_fb.pc_new       = {alu_result[31:2], 2'b0};  // fence_i_req ? id2exe_data.pc_next :  
+// assign exe2if_fb.icache_flush = fence_i_req;                         
 assign exe2if_fb_o            = exe2if_fb;                  
 
 endmodule : execute

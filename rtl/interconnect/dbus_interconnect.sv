@@ -14,6 +14,7 @@ module dbus_interconnect (
     // Core <----> dbus interface
     input wire type_lsu2dbus_s                     lsu2dbus_i,
     output type_dbus2lsu_s                         dbus2lsu_o,               // Signals to core
+    input wire                                     dcache_flush_i,
 
     // dbus <----> Peripheral module interface
     input wire type_peri2dbus_s                    dcache2dbus_i,            // Signals from DATA memory 
@@ -149,7 +150,7 @@ always_comb begin
     uart_ns_sel = 1'b0;
     spi_sel   = 1'b0;
     
-    if (dmem_addr_match & dbus_req) begin
+    if ((dmem_addr_match & dbus_req) | dcache_flush_i) begin
         dmem_sel  = 1'b1;
     end else if (clint_addr_match & dbus_req) begin
         clint_sel = 1'b1;

@@ -215,9 +215,10 @@ logic                            csr_minstreth_inc;
 logic                            is_not_ebreak;
 logic                            is_not_ecall;
 
-// Virtual address generation related signals
+// Virtual address generation and icache flush related signals
 logic                            satp_mode;
-logic                            csr_virtual_addr_req;
+logic                            csr_vaddr_iflush_req;
+logic                            icache_flush_req;
 
 
 // Input signal assignmnets
@@ -1251,19 +1252,25 @@ always_comb begin
 end
 
 // Prepare the new PC for either calling or returning from an interrupt/exception service routine 
+// or due to instruction memory fence
 assign s_mode_pc_req = sret_pc_req || s_mode_exc_req || s_mode_irq_req;
 assign m_mode_pc_req = mret_pc_req || m_mode_exc_req || m_mode_irq_req;
 
+// Instruction cache flush signal 
+assign fence_i_req   = exe2csr_ctrl.fence_i_req;
+assign icache_flush_req = fence_i_req & lsu2csr_ctrl.dcache_flush_ack;
+
 // New PC value is fed-back to IF module 
-assign csr_virtual_addr_req = csr_satp_wr_flag; // Pipeline flush in case page table base address is updated
+assign csr_vaddr_iflush_req = csr_satp_wr_flag | icache_flush_req; // Pipeline flush in case page table base address is updated
 // assign csr_virtual_addr_req = csr_satp_next[31] & ~csr_satp_ff[31];
-assign csr2if_fb.pc_new   = s_mode_pc_req ? s_mode_new_pc : m_mode_pc_req 
-                                          ? m_mode_new_pc : csr_virtual_addr_req
-                                          ? lsu2csr_data.pc_next : csr_pc_next;
+assign csr2if_fb.pc_new    = s_mode_pc_req ? s_mode_new_pc        : m_mode_pc_req 
+                                           ? m_mode_new_pc        : csr_vaddr_iflush_req
+                                           ? lsu2csr_data.pc_next : csr_pc_next;
+assign csr2if_fb.icache_flush = icache_flush_req;
 
 // New PC request signal is sent to forwarding module and is processed along with
 // Other PC update requests from other modules (e.g. new PC request from EXE module) 
-assign csr2fwd.new_pc_req    = s_mode_pc_req || m_mode_pc_req || csr_virtual_addr_req;
+assign csr2fwd.new_pc_req    = s_mode_pc_req || m_mode_pc_req || csr_vaddr_iflush_req;
 assign csr2fwd.irq_flush_lsu = s_mode_irq_req || m_mode_irq_req;
 // MT: send the wfi_req, to fetch stage, to stall the pipeline. When an interrupt occurs, the wfi_req
 // is cleared and the corresponding ISR is called. Incase global interrupt is not enabled, but the  
@@ -1285,6 +1292,8 @@ assign csr2lsu_data.mxr       = csr_mstatus_ff.mxr;
 assign csr2lsu_data.tlb_flush = sfence_vma_req;
 assign csr2lsu_data.lsu_flush = csr2fwd.new_pc_req | csr2fwd.wfi_req; 
 assign csr2lsu_data.en_ld_st_vaddr = en_ld_st_vaddr_next;
+assign csr2lsu_data.dcache_flush   = fence_i_req;
+
 
 // CSR to ID feedback signal
 assign csr2id_fb.priv_mode = priv_mode_ff;

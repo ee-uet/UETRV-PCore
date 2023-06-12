@@ -26,11 +26,12 @@ module wb_dcache_top (
 );
 
 logic                              cache_hit;
-logic                              cache_dirty_bit;
+logic                              cache_evict_req;
 logic                              cache_wr;
 logic                              cache_line_wr;
-logic                              cache_writeback_req;
-logic                              cache_flush_done;
+logic                              cache_line_clean;
+logic                              cache_wrb_req;
+logic [DCACHE_IDX_BITS-1:0]        evict_index;
 
 type_lsummu2dcache_s               lsummu2dcache;
 type_dcache2lsummu_s               dcache2lsummu;
@@ -38,8 +39,8 @@ type_dcache2lsummu_s               dcache2lsummu;
 type_mem2dcache_s                  mem2dcache;
 type_dcache2mem_s                  dcache2mem;
 
-assign lsummu2dcache      = lsummu2dcache_i;
-assign mem2dcache         = mem2dcache_i;
+assign lsummu2dcache = lsummu2dcache_i;
+assign mem2dcache    = mem2dcache_i;
 
 
 wb_dcache_controller wb_dcache_controller_module(
@@ -48,11 +49,12 @@ wb_dcache_controller wb_dcache_controller_module(
 
    // Interface signals for cache datapath
   .cache_hit_i             (cache_hit),
-  .cache_dirty_bit_i       (cache_dirty_bit),
+  .cache_evict_req_i       (cache_evict_req),
+  .evict_index_o           (evict_index), 
   .cache_wr_o              (cache_wr),
   .cache_line_wr_o         (cache_line_wr),
-  .cache_writeback_req_o   (cache_writeback_req),
-  .dcache_flush_done_i     (dcache_flush_done),
+  .cache_line_clean_o      (cache_line_clean),
+  .cache_wrb_req_o         (cache_wrb_req),
 
   // LSU/MMU <---> data cache signals
   .lsummu2dcache_req_i     (lsummu2dcache.req),
@@ -75,10 +77,11 @@ wb_dcache_datapath wb_dcache_datapath_module(
   // Interface signals for cache datapath
   .cache_wr_i              (cache_wr),
   .cache_line_wr_i         (cache_line_wr),
-  .cache_writeback_req_i   (cache_writeback_req),    
+  .cache_line_clean_i      (cache_line_clean),
+  .cache_wrb_req_i         (cache_wrb_req), 
+  .evict_index_i           (evict_index),   
   .cache_hit_o             (cache_hit),
-  .cache_dirty_bit_o       (cache_dirty_bit),
-  .dcache_flush_done_o     (cache_flush_done),
+  .cache_evict_req_o       (cache_evict_req),
 
   // LSU/MMU <---> data cache signals
   .dcache_flush_i          (dcache_flush_i),
@@ -88,9 +91,9 @@ wb_dcache_datapath wb_dcache_datapath_module(
   .dcache2lsummu_data_o    (dcache2lsummu.r_data),
   
   // Data memory <---> data cache signals
-  .mem2dcache_data_i      (mem2dcache.r_data),
-  .dcache2mem_data_o      (dcache2mem.w_data),
-  .dcache2mem_addr_o      (dcache2mem.addr)
+  .mem2dcache_data_i       (mem2dcache.r_data),
+  .dcache2mem_data_o       (dcache2mem.w_data),
+  .dcache2mem_addr_o       (dcache2mem.addr)
 );
 
 

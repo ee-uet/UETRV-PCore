@@ -133,6 +133,7 @@ dbus_interconnect dbus_interconnect_module (
     // Data memory interface signals 
     .lsu2dbus_i            (lsu2dbus),
     .dbus2lsu_o            (dbus2lsu),
+    .dcache_flush_i        (dcache_flush),
 
     // Peripheral (data memory and GPIO) selection signals
     .dmem_sel_o            (dmem_sel),
