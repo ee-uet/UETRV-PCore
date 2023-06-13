@@ -83,7 +83,7 @@ always_ff @(posedge clk_i) begin
 end
 
 // Output signals update
-assign cache_hit_o        = (addr_tag == icache_rd_buf.tag) && icache_rd_buf.valid;
+assign cache_hit_o        = (addr_tag == icache_rd_buf.tag) && icache_rd_buf.valid && ~icache_flush;
 assign icache2mem_addr_o = if2icache_addr_i;
 assign icache2if_data_o   = icache2if_data_ff;
 
