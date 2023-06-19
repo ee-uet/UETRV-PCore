@@ -7,14 +7,9 @@
  * Description:  Core level interruptor (CLINT) module with memory mapped timer.
  *********************************************************************/
 `ifndef VERILATOR
-
-`include "../../defines/UETRV_PCore_defs.svh"
-`include "../../defines/UETRV_PCore_ISA.svh"
-
+`include "../../defines/pcore_interface_defs.svh"
 `else
-
-`include "UETRV_PCore_defs.svh"
-`include "UETRV_PCore_ISA.svh"
+`include "pcore_interface_defs.svh"
 
 `endif
 
@@ -22,7 +17,6 @@
  module clint ( 
      input logic                                    rst_n,                    // reset
      input logic                                    clk,                      // clock
- //    input logic                                    clk_rtc,                  // RTC clock if avialable
 
      // Dbus to CLINT module interface
      input wire type_dbus2peri_s                    dbus2clint_i,             // GPIO dbus input signals
@@ -31,7 +25,6 @@
      // Selection signal from address decoder of dbus interconnect 
      input logic                                    clint_sel_i,
 
-     input wire type_csr2clint_s                    csr2clint_i,
      output type_clint2csr_s                        clint2csr_o,
 	
      // Interrupt signal from memory mapped timer that will be wired MTIP bit of MIP
@@ -58,11 +51,12 @@ logic                                   mtimecmp_hi_wr_flag;
 	
 // Local sinals for internal use
 logic                                   timer_overflow_ff, timer_overflow_next;
+logic                                   mtime_select_ff;
+type_clint2csr_s                        clint2csr;
 
 // Timer prescaler
-logic                                timer_clk_ff, timer_clk_next;
-logic [6:0]                          timer_prescaler_ff, timer_prescaler_next;
-
+logic                                   timer_clk_ff, timer_clk_next;
+logic [6:0]                             timer_prescaler_ff, timer_prescaler_next;
 
 	
 //============================ Memory mapped timer register read operations =============================//
@@ -82,6 +76,18 @@ always_comb begin
         endcase // reg_addr
     end
 end
+
+always_comb begin
+
+    if(mtime_select_ff == 1'b1) begin
+        clint2csr.timer_val = mtime_ff[31:0];
+        clint2csr.flag      = 1'b1;
+    end else begin
+        clint2csr.timer_val = mtime_ff[63:32];
+        clint2csr.flag      = 1'b0;
+    end
+end
+
 
 //================================= Memory mapped timer register write operations ==================================//
 always_comb begin
@@ -128,8 +134,10 @@ end
 always_ff @(posedge timer_clk_ff, negedge rst_n) begin
     if (~rst_n) begin
         mtime_ff <= '0;
+        mtime_select_ff <= 1'b0;
     end else begin       
         mtime_ff <= mtime_next;
+        mtime_select_ff <= ~mtime_select_ff;
     end
 end
 
@@ -186,7 +194,6 @@ always_ff @(posedge clk, negedge rst_n) begin
         timer_prescaler_ff <= timer_prescaler_next;
     end
 end
-
 	
 //================================= Dbus interface ==================================//
 type_peri2dbus_s                      clint2dbus_ff;
@@ -211,9 +218,7 @@ end
 
 // Update output signals 
 assign clint_timer_irq_o = timer_overflow_ff;
-
-assign clint2csr_o.time_lo = mtime_ff[31:0];
-assign clint2csr_o.time_hi = mtime_ff[63:32];
+assign clint2csr_o       = clint2csr;
 
 // Response signals to dbus 
 assign clint2dbus_o.r_data = clint2dbus_ff.r_data;

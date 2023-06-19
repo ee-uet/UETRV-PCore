@@ -9,8 +9,7 @@
 `ifndef M_EXT_DEFS
 `define M_EXT_DEFS
 
-`include "UETRV_PCore_defs.svh"
-`include "UETRV_PCore_ISA.svh"
+`include "pcore_interface_defs.svh"
 
 typedef struct packed {                            
     logic [`XLEN-1:0]                alu_operand_1;     

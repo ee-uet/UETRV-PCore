@@ -9,7 +9,7 @@
 `ifndef MMU_DEFS
 `define MMU_DEFS
 
-`include "UETRV_PCore_defs.svh"
+`include "pcore_interface_defs.svh"
 
 parameter int unsigned TLB_ENTRIES = 4;
 parameter int unsigned DTLB_ENTRIES = 16;

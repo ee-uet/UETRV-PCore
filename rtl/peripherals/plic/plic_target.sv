@@ -1,9 +1,8 @@
+
 `ifndef VERILATOR
-`include "../../defines/UETRV_PCore_ISA.svh"
-`include "../../defines/PLIC_defs.svh"
+`include "../../defines/plic_defs.svh"
 `else
-`include "UETRV_PCore_ISA.svh"
-`include "PLIC_defs.svh"
+`include "plic_defs.svh"
 `endif
 
 module plic_target (

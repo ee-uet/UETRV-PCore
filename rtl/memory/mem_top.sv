@@ -1,13 +1,11 @@
 `ifndef VERILATOR
-`include "../defines/UETRV_PCore_ISA.svh"
-`include "../defines/MMU_defs.svh"
+`include "../defines/mmu_defs.svh"
 `include "../defines/cache_defs.svh"
-`include "../defines/DDR_defs.svh"
+`include "../defines/ddr_defs.svh"
 `else
-`include "UETRV_PCore_ISA.svh"
-`include "MMU_defs.svh"
+`include "mmu_defs.svh"
 `include "cache_defs.svh"
-`include "DDR_defs.svh"
+`include "ddr_defs.svh"
 `endif
 
 module mem_top (

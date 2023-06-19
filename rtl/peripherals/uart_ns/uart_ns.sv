@@ -9,13 +9,9 @@
  *********************************************************************/
 
 `ifndef VERILATOR
-`include "../../defines/UETRV_PCore_defs.svh"
-`include "../../defines/UETRV_PCore_ISA.svh"
-`include "../../defines/UART_defs.svh"
+`include "../../defines/uart_defs.svh"
 `else
-`include "UETRV_PCore_defs.svh"
-`include "UETRV_PCore_ISA.svh"
-`include "UART_defs.svh"
+`include "uart_defs.svh"
 `endif
 
 

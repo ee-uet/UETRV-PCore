@@ -8,11 +8,9 @@
  *********************************************************************/
  
 `ifndef VERILATOR
-`include "../../defines/UETRV_PCore_ISA.svh"
-`include "../../defines/SPI_defs.svh"
+`include "../../defines/spi_defs.svh"
 `else
-`include "UETRV_PCore_ISA.svh"
-`include "SPI_defs.svh"
+`include "spi_defs.svh"
 `endif
 
 module spi_controller (

@@ -1,15 +1,13 @@
 
 `ifndef VERILATOR
-`include "../../defines/UETRV_PCore_ISA.svh"
-`include "../../defines/MMU_defs.svh"
-`include "../../defines/M_EXT_defs.svh"
-`include "../../defines/A_EXT_defs.svh"
+`include "../../defines/mmu_defs.svh"
+`include "../../defines/m_ext_defs.svh"
+`include "../../defines/a_ext_defs.svh"
 `include "../../defines/cache_defs.svh"
 `else
-`include "UETRV_PCore_ISA.svh"
-`include "MMU_defs.svh"
-`include "M_EXT_defs.svh"
-`include "A_EXT_defs.svh"
+`include "mmu_defs.svh"
+`include "m_ext_defs.svh"
+`include "a_ext_defs.svh"
 `include "cache_defs.svh"
 `endif
 
@@ -25,8 +23,16 @@ module pipeline_top (
     input wire type_icache2if_s         icache2if_i,              // Instruction memory response
 
    // MMU <---> Data cache interface
-    input wire type_dcache2mmu_s        dcache2mmu_i,   
-    output type_mmu2dcache_s            mmu2dcache_o,  
+//    input wire type_dcache2mmu_s        dcache2mmu_i,   
+//    output type_mmu2dcache_s            mmu2dcache_o,  
+
+    // LSU <---> MMU interface 
+    input wire type_mmu2lsu_s           mmu2lsu_i, 
+    output type_lsu2mmu_s               lsu2mmu_o, 
+
+  // IF <---> MMU interface
+    output type_if2mmu_s                if2mmu_o,        // Instruction memory request
+    input wire type_mmu2if_s            mmu2if_i,        // Instruction memory response
 
    // Data bus interface
     output type_lsu2dbus_s              lsu2dbus_o,                // Signal to data bus 
@@ -35,7 +41,6 @@ module pipeline_top (
 
    // Memory mapped timer interface
    input wire type_clint2csr_s          clint2csr_i,
-   output type_csr2clint_s              csr2clint_o,
 
    // IRQ interface
    input wire type_pipe2csr_s           core2pipe_i,
@@ -96,14 +101,6 @@ type_csr2id_fb_s                        csr2id_fb;
 type_exe2if_fb_s                        exe2if_fb;
 type_wrb2id_fb_s                        wrb2id_fb;
 
-// Interfaces for MMU
-type_if2mmu_s                           if2mmu;
-type_mmu2if_s                           mmu2if;
-type_lsu2mmu_s                          lsu2mmu;
-type_mmu2lsu_s                          mmu2lsu;
-type_mmu2dcache_s                       mmu2dcache;
-type_dcache2mmu_s                       dcache2mmu;
-
 logic [`XLEN-1:0]                       lsu2exe_fb_alu_result;
 logic [`XLEN-1:0]                       wrb2exe_fb_rd_data;
 logic                                   if2fwd_stall;
@@ -123,10 +120,18 @@ type_fwd2csr_s                          fwd2csr;
 type_fwd2lsu_s                          fwd2lsu;
 type_fwd2ptop_s                         fwd2ptop;
 
+// Interfaces for MMU
+type_if2mmu_s                           if2mmu;
+type_mmu2if_s                           mmu2if;
+type_lsu2mmu_s                          lsu2mmu;
+type_mmu2lsu_s                          mmu2lsu;
+
 // Inputs assignment to local signals
-assign dbus2lsu   = dbus2lsu_i; 
-assign dcache2mmu = dcache2mmu_i;
-assign icache2if  = icache2if_i;
+assign dbus2lsu  = dbus2lsu_i; 
+//assign dcache2mmu = dcache2mmu_i;
+assign mmu2if    = mmu2if_i;
+assign mmu2lsu   = mmu2lsu_i;
+assign icache2if = icache2if_i;
 
 
 //================================= Fetch to decode interface ==================================//
@@ -408,11 +413,9 @@ csr csr_module (
     .csr2lsu_data_o             (csr2lsu_data),
 
     // Writeback module interface signals 
- //    .csr2wrb_ctrl_o            (csr2wrb_ctrl),
     .csr2wrb_data_o             (csr2wrb_data),
 
     .clint2csr_i                (clint2csr_i),
-    .csr2clint_o                (csr2clint_o),
 
     .pipe2csr_i                 (core2pipe_i),
     .fwd2csr_i                  (fwd2csr),
@@ -502,21 +505,6 @@ forward_stall forward_stall_module (
     .fwd2ptop_o                 (fwd2ptop)
 );
 
-//==================================  MMU for virtual memory ==================================//
-// MMU module instantiation
-mmu mmu_module (
-    .rst_n                      (rst_n),
-    .clk                        (clk),
-
-    // Forward_stall module interface signals 
-    .lsu2mmu_i                  (lsu2mmu),
-    .if2mmu_i                   (if2mmu),
-    .dcache2mmu_i               (dcache2mmu),
-    .mmu2lsu_o                  (mmu2lsu),
-    .mmu2if_o                   (mmu2if),
-    .mmu2dcache_o               (mmu2dcache)
-);
-
 
 //============================ Multiply/divide moulde for M-extension ============================//
 muldiv muldiv_module(
@@ -554,7 +542,9 @@ amo amo_module (
 );
 
 assign lsu2dbus_o   = lsu2dbus;
-assign mmu2dcache_o = mmu2dcache;
+assign if2mmu_o     = if2mmu;
+assign lsu2mmu_o    = lsu2mmu;
+//assign mmu2dcache_o = mmu2dcache;
 assign if2icache_o  = if2icache;
 
 endmodule : pipeline_top

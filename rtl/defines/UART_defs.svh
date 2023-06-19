@@ -9,6 +9,8 @@
 `ifndef UART_DEFS
 `define UART_DEFS
 
+`include "pcore_interface_defs.svh"
+
 localparam int unsigned UART_DATA_SIZE      = 8;
 localparam int unsigned UART_DATA_BIT_COUNT = $clog2(UART_DATA_SIZE);
 localparam int unsigned UART_BAUD_DIV_SIZE  = 8;

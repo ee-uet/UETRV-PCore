@@ -1,13 +1,9 @@
 `ifndef VERILATOR
-`include "../../defines/UETRV_PCore_defs.svh"
-`include "../../defines/UETRV_PCore_ISA.svh"
-`include "../../defines/MMU_defs.svh"
-`include "../../defines/A_EXT_defs.svh"
+`include "../../defines/mmu_defs.svh"
+`include "../../defines/a_ext_defs.svh"
 `else
-`include "UETRV_PCore_defs.svh"
-`include "UETRV_PCore_ISA.svh"
-`include "MMU_defs.svh"
-`include "A_EXT_defs.svh"
+`include "mmu_defs.svh"
+`include "a_ext_defs.svh"
 `endif
 
 module lsu (

@@ -1,7 +1,7 @@
 `ifndef DDR_DEFS
 `define DDR_DEFS
 
-`include "UETRV_PCore_ISA.svh"
+`include "pcore_interface_defs.svh"
 
 // DDR memory related parametes 
 parameter DDR2_DQ_WIDTH   =  16;

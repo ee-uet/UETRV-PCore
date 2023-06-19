@@ -1,13 +1,8 @@
 `ifndef VERILATOR
-`include "../../defines/UETRV_PCore_defs.svh"
-`include "../../defines/UETRV_PCore_ISA.svh"
-`include "../../defines/MMU_defs.svh"
+`include "../../defines/mmu_defs.svh"
 `include "../../defines/cache_defs.svh"
-
 `else
-`include "UETRV_PCore_defs.svh"
-`include "UETRV_PCore_ISA.svh"
-`include "MMU_defs.svh"
+`include "mmu_defs.svh"
 `include "cache_defs.svh"
 `endif
 

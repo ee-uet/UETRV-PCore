@@ -1,11 +1,9 @@
 `timescale 1 ns / 100 ps
 
 `ifndef VERILATOR
-`include "../../defines/UETRV_PCore_defs.svh"
-`include "../../defines/UETRV_PCore_ISA.svh"
+`include "../../defines/pcore_interface_defs.svh"
 `else
-`include "UETRV_PCore_defs.svh"
-`include "UETRV_PCore_ISA.svh"
+`include "pcore_interface_defs.svh"
 `endif
 
 
@@ -23,8 +21,8 @@ module csr (
     input  wire type_lsu2csr_ctrl_s         lsu2csr_ctrl_i,
     output type_csr2lsu_data_s              csr2lsu_data_o,
 
+    // CLINT to CSR interface  
     input wire type_clint2csr_s             clint2csr_i,
-    output type_csr2clint_s                 csr2clint_o,
 
     // Pipeline <---> CSR interface
     input wire type_pipe2csr_s              pipe2csr_i,
@@ -58,7 +56,7 @@ type_csr2if_fb_s                 csr2if_fb;
 type_csr2id_fb_s                 csr2id_fb;
 type_csr2fwd_s                   csr2fwd;
 type_fwd2csr_s                   fwd2csr;
-type_csr2clint_s                 csr2clint;
+type_clint2csr_s                 clint2csr;
 
 logic [`XLEN-1:0]                csr_rdata; 
 logic [`XLEN-1:0]                csr_wdata;
@@ -220,6 +218,10 @@ logic                            satp_mode;
 logic                            csr_vaddr_iflush_req;
 logic                            icache_flush_req;
 
+// User mode time 
+logic [`XLEN-1:0]                time_low_ff, time_low_next;
+logic [`XLEN-1:0]                time_high_ff, time_high_next; 
+
 
 // Input signal assignmnets
 assign exe2csr_data = exe2csr_data_i;
@@ -228,6 +230,7 @@ assign lsu2csr_data = lsu2csr_data_i;
 assign lsu2csr_ctrl = lsu2csr_ctrl_i; 
 assign pipe2csr     = pipe2csr_i;
 assign fwd2csr      = fwd2csr_i;
+assign clint2csr    = clint2csr_i;
 
 // Load store related signals and faults
 assign ld_st_addr = lsu2csr_data.dbus_addr;
@@ -240,8 +243,33 @@ assign ld_misalign_exc_req = ((ld_ops == LD_OPS_LW)  && (|ld_st_addr[1:0]))
                            | ((ld_ops == LD_OPS_LHU) && (ld_st_addr[0]));
 
 assign st_misalign_exc_req = ((st_ops == ST_OPS_SW)  && (|ld_st_addr[1:0])) 
-                           | ((st_ops == ST_OPS_SH)  && (ld_st_addr[0]));                     
+                           | ((st_ops == ST_OPS_SH)  && (ld_st_addr[0]));
 
+
+
+
+// User mode time (from memory mapped timer implemented as part of CLINT module)
+always_comb begin
+    time_low_next = time_low_ff;
+    time_high_next = time_high_ff;
+
+    if (clint2csr.flag == 1'b1) begin   // flag =  1 indicates low 32-bits of timer
+        time_low_next = clint2csr.timer_val;
+    end else begin
+        time_high_next = clint2csr.timer_val;
+    end
+end
+
+always_ff @(negedge rst_n, posedge clk) begin
+    if (~rst_n) begin
+        time_low_ff  <= '0;
+        time_high_ff <= '0; 
+    end else begin
+        time_low_ff  <= time_low_next;
+        time_high_ff <= time_high_next;
+    end
+end
+                    
 //================================== CSR read operations ==================================//
 
 // CSR read operation
@@ -262,8 +290,8 @@ always_comb begin
             CSR_ADDR_CYCLE          : csr_rdata    = csr_mcycle_ff;
             CSR_ADDR_MCYCLEH,
             CSR_ADDR_CYCLEH         : csr_rdata    = csr_mcycleh_ff;
-            CSR_ADDR_TIME           : csr_rdata    = clint2csr_i.time_lo;
-            CSR_ADDR_TIMEH          : csr_rdata    = clint2csr_i.time_hi;
+            CSR_ADDR_TIME           : csr_rdata    = time_low_ff;
+            CSR_ADDR_TIMEH          : csr_rdata    = time_high_ff;
             CSR_ADDR_MINSTRET,
             CSR_ADDR_INSTRET        : csr_rdata    = csr_minstret_ff;
             CSR_ADDR_MINSTRETH,
@@ -1297,12 +1325,8 @@ assign csr2lsu_data.dcache_flush   = fence_i_req;
 
 // CSR to ID feedback signal
 assign csr2id_fb.priv_mode = priv_mode_ff;
-
-// CSR to CLINT 
-assign csr2clint.pipe_stall_flush = '0;
   
 // Update the module output signals
-assign csr2clint_o    = csr2clint;
 assign csr2wrb_data_o = csr2wrb_data;
 assign csr2fwd_o      = csr2fwd;
 assign csr2if_fb_o    = csr2if_fb;

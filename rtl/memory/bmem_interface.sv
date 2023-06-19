@@ -1,8 +1,6 @@
 `ifndef VERILATOR
-`include "../defines/UETRV_PCore_ISA.svh"
 `include "../defines/cache_defs.svh"
 `else
-`include "UETRV_PCore_ISA.svh"
 `include "cache_defs.svh"
 `endif
 

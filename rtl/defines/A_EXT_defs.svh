@@ -9,8 +9,8 @@
 `ifndef A_EXT_DEFS
 `define A_EXT_DEFS
 
-`include "UETRV_PCore_defs.svh"
-`include "UETRV_PCore_ISA.svh"
+`include "pcore_config_defs.svh"
+//`include "mmu_defs.svh"
 
 // Atomic memory opertions
  typedef enum logic [3:0] {
@@ -38,24 +38,20 @@ typedef enum logic [2:0] {
 } type_amo_states_e;
 
 typedef struct packed {                            
-
     type_amo_ops_e                   amo_ops;              
     logic                            is_amo; 
     logic                            amo_flush; 
 
     // Response from memory load operation
     logic                            ack;  
- 
 } type_lsu2amo_ctrl_s;
 
 typedef struct packed {                            
-
     logic [`XLEN-1:0]                lsu_addr;
     logic [`XLEN-1:0]                rs2_operand;
 
    // Response from memory load operation
     logic [`XLEN-1:0]                r_data; 
-  
 } type_lsu2amo_data_s;
 
 typedef struct packed {                      
@@ -63,15 +59,11 @@ typedef struct packed {
     logic                            ld_req;     
     logic                            st_req; 
     logic                            rd_wr_req;
-   
 } type_amo2lsu_ctrl_s;
 
 typedef struct packed {                            
-
     logic [`XLEN-1:0]                w_data; 
     logic [`XLEN-1:0]                amo_wrb_data; 
-    
 } type_amo2lsu_data_s;
 
 `endif // A_EXT_DEFS
-

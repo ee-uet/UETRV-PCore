@@ -9,6 +9,8 @@
 `ifndef PLIC_DEFS
 `define PLIC_DEFS
 
+`include "pcore_interface_defs.svh"
+
 parameter int PLIC_SOURCE_COUNT = 2;
 parameter int PLIC_TARGET_COUNT = 2;
 

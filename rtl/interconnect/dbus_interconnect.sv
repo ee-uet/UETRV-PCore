@@ -1,9 +1,7 @@
 `ifndef VERILATOR
-`include "../defines/UETRV_PCore_defs.svh"
-`include "../defines/UETRV_PCore_ISA.svh"
+`include "../defines/pcore_interface_defs.svh"
 `else
-`include "UETRV_PCore_defs.svh"
-`include "UETRV_PCore_ISA.svh"
+`include "pcore_interface_defs.svh"
 `endif
 
 module dbus_interconnect (
@@ -71,10 +69,8 @@ assign st_req   = lsu2dbus.st_req;
 assign dbus_addr = lsu2dbus.addr[`DBUS_ADDR_WIDTH-1:0]; 
 assign dbus_req  = st_req | ld_req; 
 
-// Does the address fall in instruction memory address space
-//assign addr_instr_space = (ld_req) & (|(dbus_addr & `IMEM_ADDR_MASK));
-
-assign dmem_addr_match  = (dbus_addr[`DEV_SEL_ADDR_HIGH:`DEV_SEL_ADDR_LOW]   == `DMEM_ADDR_MATCH);
+// Decode the device address
+assign dmem_addr_match  = (dbus_addr[`DMEM_SEL_ADDR_HIGH:`DMEM_SEL_ADDR_LOW] == `DMEM_ADDR_MATCH);
 assign bmem_addr_match  = (dbus_addr[`BMEM_SEL_ADDR_HIGH:`BMEM_SEL_ADDR_LOW] == `BMEM_ADDR_MATCH);
 
 assign uart_addr_match  = (dbus_addr[`PERI_SEL_ADDR_HIGH:`PERI_SEL_ADDR_LOW] == `UART_ADDR_MATCH);
@@ -82,9 +78,6 @@ assign plic_addr_match  = (dbus_addr[`PERI_SEL_ADDR_HIGH:`PERI_SEL_ADDR_LOW] == 
 assign clint_addr_match = (dbus_addr[`PERI_SEL_ADDR_HIGH:`PERI_SEL_ADDR_LOW] == `CLINT_ADDR_MATCH);
 assign uart_ns_addr_match = (dbus_addr[`PERI_SEL_ADDR_HIGH:`PERI_SEL_ADDR_LOW] == `UART_NS_ADDR_MATCH);
 assign spi_addr_match   = (dbus_addr[`PERI_SEL_ADDR_HIGH:`PERI_SEL_ADDR_LOW] == `SPI_ADDR_MATCH);
-
-//assign imem_read_req   = (dbus_addr[`DEV_SEL_ADDR_HIGH:`DEV_SEL_ADDR_LOW] == `IMEM_ADDR_MATCH) 
-//                       & ld_req;
 
 //=================================== Store operation =====================================//
 // Prepare the write data and mask for store  

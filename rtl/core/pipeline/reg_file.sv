@@ -1,8 +1,8 @@
 // reg_file.sv
 `ifndef VERILATOR
-`include "../../defines/UETRV_PCore_ISA.svh"
+`include "../../defines/pcore_interface_defs.svh"
 `else
-`include "UETRV_PCore_ISA.svh"
+`include "pcore_interface_defs.svh"
 `endif
 
 module reg_file (

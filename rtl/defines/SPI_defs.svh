@@ -1,5 +1,8 @@
+
 `ifndef SPI_DEFS
 `define SPI_DEFS
+
+`include "pcore_interface_defs.svh"
 
 localparam int unsigned DEPTH_FIFO = 8;
 localparam int unsigned ADDR_FIFO  = $clog2 (DEPTH_FIFO);

@@ -1,7 +1,8 @@
 `ifndef CACHE_DEFS
 `define CACHE_DEFS
 
-`include "UETRV_PCore_ISA.svh"
+`include "pcore_interface_defs.svh"
+`include "mmu_defs.svh"
 
 //=========================== Instruction Cache related definitions ===========================//
 parameter ICACHE_ADDR_WIDTH  = `XLEN;
