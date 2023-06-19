@@ -20,11 +20,12 @@ jobs:
         curl -fsSL https://download.opensuse.org/repositories/home:phiwag:edatools/xUbuntu_20.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_phiwag_edatools.gpg > /dev/null
         sudo apt update
         sudo apt install device-tree-compiler
-        git clone https://github.com/grg/verilator.git
-        cd verilator 
+        sudo apt install -y --no-install-recommends help2man make g++ perl python3 autoconf flex bison libfl2 libfl-dev zlibc zlib1g zlib1g-dev
+        git clone https://github.com/verilator/verilator.git
+        cd verilator
         autoconf
         ./configure
-        make 
+        make -j $(nproc)
         sudo make install
         pip3 install git+https://github.com/riscv/riscof.git
 
