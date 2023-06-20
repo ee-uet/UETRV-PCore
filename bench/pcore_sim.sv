@@ -10,20 +10,27 @@ wire                      uart_tx;
 type_debug_port_s         debug_port;
 reg [1023:0]              firmware;
 
-core_top dut (
-  .clk                     (clk),
-  .rst_n                   (reset),
-  .irq_ext_i               (irq_ext),
-  .irq_soft_i              (irq_soft),
-  .uart_rxd_i              (uart_rx),
-  .uart_txd_o              (uart_tx),
-  .debug_port_i            (debug_port)
+soc_top dut (
+.clk                     (clk),
+.rst_n                   (reset),
+.irq_ext_i               (irq_ext),
+.irq_soft_i              (irq_soft),
+.uart_rxd_i              (uart_rx),
+.uart_txd_o              (uart_tx),
+.spi_clk_o               (spi_clk),
+.spi_cs_o                (spi_cs),
+.spi_miso_i              (spi_miso),
+.spi_mosi_o              (spi_mosi),
+.debug_port_i            (debug_port)
 ); 
 
 initial begin
-  irq_ext  = 0;
-  irq_soft = 0;
-  uart_rx  = 1;
+  irq_ext   = 0;
+  irq_soft  = 0;
+  uart_rx   = 1;
+  spi_miso  = 1;
+  irq_flag  = 0;
+
   debug_port.reg_data   = '0;
   debug_port.reg_addr   = '0;
   debug_port.reg_wr_req = '0;
