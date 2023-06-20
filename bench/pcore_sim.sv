@@ -1,5 +1,5 @@
 `timescale 1 ns / 100 ps
-`include "UETRV_PCore_ISA.svh"
+`include "pcore_interface_defs.svh"
 
 module pcore_sim(input bit clk, input bit reset);
 
