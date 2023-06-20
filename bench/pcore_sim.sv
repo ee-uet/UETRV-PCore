@@ -29,7 +29,6 @@ initial begin
   irq_soft  = 0;
   uart_rx   = 1;
   spi_miso  = 1;
-  irq_flag  = 0;
 
   debug_port.reg_data   = '0;
   debug_port.reg_addr   = '0;
