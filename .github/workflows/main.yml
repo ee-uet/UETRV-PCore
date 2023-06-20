@@ -51,7 +51,7 @@ jobs:
         chmod +x run-tests.sh
         ./run-tests.sh
 
-pcore-verification-verilator:
+  pcore-verification-verilator:
     runs-on: ubuntu-latest
 
     steps:
