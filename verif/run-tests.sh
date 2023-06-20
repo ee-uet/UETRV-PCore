@@ -26,9 +26,9 @@ if grep -rniq riscof_work/report.html -e '>0failed<'
 then
     echo "Test successful!"
     error=$((error+0))
+    return $error
 else
     echo "Test FAILED!"
     error=$((error+1))
+    return $error
 fi
-
-return $error

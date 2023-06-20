@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
 
-  pcore-verification:
+  pcore-verification-verilator-v5:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,6 +27,46 @@ jobs:
         ./configure
         make -j $(nproc)
         sudo make install
+        pip3 install git+https://github.com/riscv/riscof.git
+
+    - name: Setup toolchain
+      run: |
+        wget -c https://github.com/riscv-collab/riscv-gnu-toolchain/releases/download/2023.04.29/riscv64-elf-ubuntu-20.04-nightly-2023.04.29-nightly.tar.gz
+        tar -xzf riscv64-elf-ubuntu-20.04-nightly-2023.04.29-nightly.tar.gz
+        echo $GITHUB_WORKSPACE/riscv/bin >> $GITHUB_PATH
+
+    - name: Update Submodule to clone arch-tests
+      run: |
+        cd pcore/verif
+        git submodule update --init
+
+    - name: Setup SAIL-RISCV Model
+      run: |
+        tar -xzf pcore/verif/bin/sail-riscv.tar.gz
+        echo $GITHUB_WORKSPACE/sail-riscv >> $GITHUB_PATH
+
+    - name: Run Verification Framework
+      run: |
+        cd pcore/verif
+        chmod +x run-tests.sh
+        ./run-tests.sh
+
+pcore-verification-verilator:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Repository Checkout
+      uses: actions/checkout@v2
+      with:
+        path: pcore
+
+    - name: Install verilator and riscof
+      run: |
+        sudo apt-get install -y python3-setuptools
+        echo 'deb http://download.opensuse.org/repositories/home:/phiwag:/edatools/xUbuntu_20.04/ /' | sudo tee /etc/apt/sources.list.d/home:phiwag:edatools.list
+        curl -fsSL https://download.opensuse.org/repositories/home:phiwag:edatools/xUbuntu_20.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_phiwag_edatools.gpg > /dev/null
+        sudo apt update
+        sudo apt install device-tree-compiler verilator-4.110
         pip3 install git+https://github.com/riscv/riscof.git
 
     - name: Setup toolchain
