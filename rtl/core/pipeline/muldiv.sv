@@ -34,8 +34,8 @@ type_alu_m_ops_e                     alu_m_ops, alu_m_ops_next, alu_m_ops_ff;
 // ALU_M signals
 logic  [`XLEN-1:0]                   alu_opr_1, alu_m_opr_1, alu_m_opr1_next, alu_m_opr1_ff;
 logic  [`XLEN-1:0]                   alu_opr_2, alu_m_opr_2, alu_m_opr2_next, alu_m_opr2_ff;
-logic                                alu_m_opr1_sign_ff;
-logic                                alu_m_opr2_sign_ff;
+logic                                alu_m_opr1_sign_next, alu_m_opr1_sign_ff;
+logic                                alu_m_opr2_sign_next, alu_m_opr2_sign_ff;
 
 
 logic                                alu_m_req;
@@ -93,21 +93,25 @@ always_ff @(negedge rst_n, posedge clk ) begin
         alu_m_ops_ff       <= alu_m_ops_next; 
         alu_m_opr1_ff      <= alu_m_opr1_next;
         alu_m_opr2_ff      <= alu_m_opr2_next;
-        alu_m_opr1_sign_ff <= alu_m_opr1_next[`XLEN-1];
-        alu_m_opr2_sign_ff <= alu_m_opr2_next[`XLEN-1];
+        alu_m_opr1_sign_ff <= alu_m_opr1_sign_next;
+        alu_m_opr2_sign_ff <= alu_m_opr2_sign_next;
     end 
 end
 
 always_comb begin
 
     if (fwd2mul_stall_i) begin
-        alu_m_ops_next  = alu_m_ops_ff; 
-        alu_m_opr1_next = alu_m_opr1_ff;
-        alu_m_opr2_next = alu_m_opr2_ff;
+        alu_m_ops_next       = alu_m_ops_ff; 
+        alu_m_opr1_next      = alu_m_opr1_ff;
+        alu_m_opr2_next      = alu_m_opr2_ff;
+        alu_m_opr1_sign_next = alu_m_opr1_sign_ff;
+        alu_m_opr2_sign_next = alu_m_opr2_sign_ff;
     end else begin
-        alu_m_ops_next  = alu_m_ops;
-        alu_m_opr1_next = alu_m_opr_1;
-        alu_m_opr2_next = alu_m_opr_2;
+        alu_m_ops_next       = alu_m_ops;
+        alu_m_opr1_next      = alu_m_opr_1;
+        alu_m_opr2_next      = alu_m_opr_2;
+        alu_m_opr1_sign_next = alu_opr_1[`XLEN-1];
+        alu_m_opr2_sign_next = alu_opr_2[`XLEN-1];
     end
 end
 
