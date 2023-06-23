@@ -1,6 +1,7 @@
 # !bin/bash
 
 set -e
+error=0
 
 riscof -v debug run --config=config.ini \
            --suite=riscv-arch-test/riscv-test-suite/rv32i_m/I \
@@ -10,10 +11,10 @@ riscof -v debug run --config=config.ini \
 if grep -rniq riscof_work/report.html -e '>0failed<'
 then
     echo "Test successful!"
-    exit 0
+    error=$((error+0))
 else
     echo "Test FAILED!"
-    exit 1
+    error=$((error+1))
 fi
 
 riscof -v debug run --config=config.ini \
@@ -24,8 +25,10 @@ riscof -v debug run --config=config.ini \
 if grep -rniq riscof_work/report.html -e '>0failed<'
 then
     echo "Test successful!"
-    exit 0
+    error=$((error+0))
+    return $error
 else
     echo "Test FAILED!"
-    exit 1
+    error=$((error+1))
+    return $error
 fi
