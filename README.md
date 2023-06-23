@@ -88,7 +88,7 @@ Now run the following command to simulate the Linux booting process using the pr
 
     make sim-verilate
 
-The output is logged to the `linux_bootlog.txt` file, with selected logs listed below. 
+The output is logged to the `uart_logdata.txt` file (available at ./sdk/), with selected logs listed below. 
 
 ```
 OpenSBI v0.9
