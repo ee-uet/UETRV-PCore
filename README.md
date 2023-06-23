@@ -13,11 +13,11 @@ UETRV_Pcore is a RISC-V based application class SoC integrating a 5-stage pipeli
 ### System Design Overview
 The UETRV_Pcore is an applicaion class processor capable of running Linux. A simplified 5-stage pipelined block diagram is shown below. The M-extension is implemented as a coprocessor while memory-management-unit (MMU) module is shared by instruction and data memory (alternatively called load-store-unit (LSU)) interfaces of the pipeline. Specifically, the page-table-walker (PTW) of the MMU is shared and there are separate TLBs (translation look aside buffers) for instruction and data memory interfaces. The A-extension is implemented as part of the LSU module.
 
-![pipeline](../docs/images/pipeline.png)
+![pipeline](./docs/images/pipeline.png)
 
-The SoC block diagram shows the connectivity of the core with memory sub-system as well as different peripherals using data bus. The boot memory is connected to both instruction and data buses of the core using a bus multiplexer. The instruction and data caches share the main memory using a bus arbiter. Different necessary peripherals are connected using the data bus. Further details related to the SoC design are available **[here](uetrv-pcore-doc.readthedocs.io/en/main/)**.
+The SoC block diagram shows the connectivity of the core with memory sub-system as well as different peripherals using data bus. The boot memory is connected to both instruction and data buses of the core using a bus multiplexer. The instruction and data caches share the main memory using a bus arbiter. Different necessary peripherals are connected using the data bus. Further details related to the SoC design are available at <https://uetrv-pcore-doc.readthedocs.io/en/main/>.
 
-![soc](../docs/images/soc.png)
+![soc](./docs/images/soc.png)
 
 ### SoC Memory Map
 The memory map for the SOC is provided in the following table.
@@ -55,7 +55,7 @@ The verilator model is build under `ver_work/Vpcore_sim`. The executeable can ac
 - `max_cycles`: This parameter cotrols the maxiumum number of cycles for simulation. Simulation terminates after executing these many cycles.
 - `vcd`: This parameters accepts a boolean value. If it is 0, the waveform file `trace.vcd` will not be dumped and vice versa.
 
-An example program to print `HELLO` on UART is compiled and its hex instructions are availabe in [here](/software/example-uart/build/imem.txt). Run the folllowing command to simulate the example program
+An example program to print `HELLO` on UART is compiled and its hex instructions are availabe in [here](/software/example-uart/build/imem.txt). Run the following command to simulate the example program
 
     make sim-verilate 
 
