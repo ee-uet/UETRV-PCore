@@ -13,11 +13,11 @@ UETRV_Pcore is a RISC-V based application class SoC integrating a 5-stage pipeli
 ### System Design Overview
 The UETRV_Pcore is an applicaion class processor capable of running Linux. A simplified 5-stage pipelined block diagram is shown below. The M-extension is implemented as a coprocessor while memory-management-unit (MMU) module is shared by instruction and data memory (alternatively called load-store-unit (LSU)) interfaces of the pipeline. Specifically, the page-table-walker (PTW) of the MMU is shared and there are separate TLBs (translation look aside buffers) for instruction and data memory interfaces. The A-extension is implemented as part of the LSU module.
 
-![pipeline](../docs/pipeline.png)
+![pipeline](../docs/images/pipeline.png)
 
-The SoC block diagram shows the connectivity of the core with memory sub-system as well as different peripherals using data bus. The boot memory is connected to both instruction and data buses of the core using a bus multiplexer. The instruction and data caches share the main memory using a bus arbiter. Different necessary peripherals are connected using the data bus. 
+The SoC block diagram shows the connectivity of the core with memory sub-system as well as different peripherals using data bus. The boot memory is connected to both instruction and data buses of the core using a bus multiplexer. The instruction and data caches share the main memory using a bus arbiter. Different necessary peripherals are connected using the data bus. Further details related to the SoC design are available **[here](uetrv-pcore-doc.readthedocs.io/en/main/)**.
 
-![soc](../docs/soc.png)
+![soc](../docs/images/soc.png)
 
 ### SoC Memory Map
 The memory map for the SOC is provided in the following table.
@@ -70,3 +70,80 @@ The `imem` and `max_cycles` may be overwritten in Makefile using.
 ### Verification
 
 UETRV_Pcore uses RISOF framework to run Architecture Compatibility Tests (ACTs). Instructions to run these tests can be followed in [verif](/verif/) directory.
+
+## Booting Linux
+
+Using the same procedure as outlined above, we can simulate the Linux bootup using a prebuilt image (`imem.zip`) available in ./sdk folder. The pre-built Linux image is prepared using `initramfs` based root file system (rootfs) and is directly linked into the kernel. Furthermore, the Linux/kernel image is linked as a `payload` to the `OpenSBI` that acts as a first-level bootloader. The `imem.zip` image contains:
+	- Root file system (rootfs.cpio) based on `initramfs` using Busybox 1.33
+	- The Linux (version 6.10) with rootfs.cpio linked into the kernel
+	- OpenSBI (ver. 0.9) based first order bootloader with Linux kernel as payload
+
+During booting process, the processor starts executing zero-level bootloader from `bmem` and then jumps to first-level bootloader (OpenSBI), which after necessary initializations, hands the control over to the kernel.   
+
+Download and unzip this image and copy it to the following folder.
+
+	./software/example-linux 
+
+Now run the following command to simulate the Linux booting process using the pre-built image. 
+
+    make sim-verilate
+
+The output is logged to the `linux_bootlog.txt` file, with selected logs listed below. 
+
+```
+OpenSBI v0.9
+   ____                    _____ ____ _____
+  / __ \                  / ____|  _ \_   _|
+ | |  | |_ __   ___ _ __ | (___ | |_) || |
+ | |  | | '_ \ / _ \ '_ \ \___ \|  _ < | |
+ | |__| | |_) |  __/ | | |____) | |_) || |_
+  \____/| .__/ \___|_| |_|_____/|____/_____|
+        | |
+        |_|
+
+Platform Name             : uet_pcore,v0
+Platform Features         : medeleg
+Platform HART Count       : 1
+Platform IPI Device       : aclint-mswi
+Platform Timer Device     : aclint-mtimer @ 10000000Hz
+Platform Console Device   : sifive_uart
+Platform HSM Device       : ---
+
+...
+
+Boot HART ISA             : rv32imasu
+Boot HART Features        : scounteren,mcounteren,mcountinhibit,time
+Boot HART PMP Count       : 0
+Boot HART PMP Granularity : 0
+Boot HART PMP Address Bits: 0
+Boot HART MHPM Count      : 0
+Boot HART MIDELEG         : 0x00000222
+Boot HART MEDELEG         : 0x0000b109
+[    0.000000] Linux version 6.1.0 (mtahir@mtahir-Inspiron-7520) (riscv32-unknown-linux-gnu-gcc (GCC) 8.1.0, GNU ld (GNU Binutils) 2.30) #8 Fri Jun 23 15:26:45 PKT 2023
+
+[    0.000000] OF: fdt: Ignoring memory range 0x80000000 - 0x80400000
+
+[    0.000000] Machine model: uet_pcore,v0
+
+[    0.000000] earlycon: sbi0 at I/O port 0x0 (options '')
+
+[    0.000000] printk: bootconsole [sbi0] enabled
+
+...
+
+[    0.004219] clocksource: Switched to clocksource riscv_clocksource
+
+[    0.010208] workingset: timestamp_bits=30 max_order=15 bucket_order=0
+
+[    0.079288] 90000000.serial: ttySIF0 at MMIO 0x90000000 (irq = 1, base_baud = 619200) is a SiFive UART v0
+
+[    0.089824] debug_vm_pgtable: [debug_vm_pgtable         ]: Validating architecture page table helpers
+
+[    0.096405] Freeing unused kernel image (initmem) memory: 8176K
+
+[    0.096473] Run /init as init process
+
+init started: BusyBox v1.33.0 (2023-06-23 15:18:29 PKT)
+
+#
+``` 
