@@ -1,0 +1,103 @@
+
+OpenSBI v0.9
+   ____                    _____ ____ _____
+  / __ \                  / ____|  _ \_   _|
+ | |  | |_ __   ___ _ __ | (___ | |_) || |
+ | |  | | '_ \ / _ \ '_ \ \___ \|  _ < | |
+ | |__| | |_) |  __/ | | |____) | |_) || |_
+  \____/| .__/ \___|_| |_|_____/|____/_____|
+        | |
+        |_|
+
+Platform Name             : uet_pcore,v0
+Platform Features         : medeleg
+Platform HART Count       : 1
+Platform IPI Device       : aclint-mswi
+Platform Timer Device     : aclint-mtimer @ 10000000Hz
+Platform Console Device   : sifive_uart
+Platform HSM Device       : ---
+Platform Reboot Device    : ---
+Platform Shutdown Device  : ---
+Firmware Base             : 0x80000000
+Firmware Size             : 220 KB
+Runtime SBI Version       : 0.3
+
+Domain0 Name              : root
+Domain0 Boot HART         : 0
+Domain0 HARTs             : 0*
+Domain0 Region00          : 0x02080000-0x020bffff (I)
+Domain0 Region01          : 0x80000000-0x8003ffff ()
+Domain0 Region02          : 0x02000000-0x0207ffff (I)
+Domain0 Region03          : 0x00000000-0xffffffff (R,W,X)
+Domain0 Next Address      : 0x80400000
+Domain0 Next Arg1         : 0x82200000
+Domain0 Next Mode         : S-mode
+Domain0 SysReset          : yes
+
+Boot HART ID              : 0
+Boot HART Domain          : root
+Boot HART ISA             : rv32imasu
+Boot HART Features        : scounteren,mcounteren,mcountinhibit,time
+Boot HART PMP Count       : 0
+Boot HART PMP Granularity : 0
+Boot HART PMP Address Bits: 0
+Boot HART MHPM Count      : 0
+Boot HART MIDELEG         : 0x00000222
+Boot HART MEDELEG         : 0x0000b109
+[    0.000000] Linux version 6.1.0 (mtahir@mtahir-Inspiron-7520) (riscv32-unknown-linux-gnu-gcc (GCC) 8.1.0, GNU ld (GNU Binutils) 2.30) #67 Wed Apr  5 05:27:52 PKT 2023
+[    0.000000] OF: fdt: Ignoring memory range 0x80000000 - 0x80400000
+[    0.000000] Machine model: uet_pcore,v0
+[    0.000000] earlycon: sbi0 at I/O port 0x0 (options '')
+[    0.000000] printk: bootconsole [sbi0] enabled
+[    0.000000] Zone ranges:
+[    0.000000]   Normal   [mem 0x0000000080400000-0x0000000087ffffff]
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000080400000-0x0000000087ffffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000080400000-0x0000000087ffffff]
+[    0.000000] SBI specification v0.3 detected
+[    0.000000] SBI implementation ID=0x1 Version=0x9
+[    0.000000] SBI TIME extension detected
+[    0.000000] SBI IPI extension detected
+[    0.000000] SBI RFENCE extension detected
+[    0.000000] riscv: base ISA extensions aim
+[    0.000000] riscv: ELF capabilities aim
+[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 31496
+[    0.000000] Kernel command line: console=hvc0 earlycon=sbi
+[    0.000000] Dentry cache hash table entries: 16384 (order: 4, 65536 bytes, linear)
+[    0.000000] Inode-cache hash table entries: 8192 (order: 3, 32768 bytes, linear)
+[    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
+[    0.000000] Virtual kernel memory layout:
+[    0.000000]       fixmap : 0x9dc00000 - 0x9e000000   (4096 kB)
+[    0.000000]       pci io : 0x9e000000 - 0x9f000000   (  16 MB)
+[    0.000000]      vmemmap : 0x9f000000 - 0xa0000000   (  16 MB)
+[    0.000000]      vmalloc : 0xa0000000 - 0xc0000000   ( 512 MB)
+[    0.000000]       lowmem : 0xc0000000 - 0xc7c00000   ( 124 MB)
+[    0.000000] Memory: 104872K/126976K available (2460K kernel code, 4535K rwdata, 4096K rodata, 8076K init, 166K bss, 22104K reserved, 0K cma-reserved)
+[    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=1, Nodes=1
+[    0.000000] NR_IRQS: 64, nr_irqs: 64, preallocated irqs: 0
+[    0.000000] riscv-intc: 32 local interrupts mapped
+[    0.000000] plic: plic@94000000: mapped 2 interrupts with 1 handlers for 2 contexts.
+[    0.000000] riscv-timer: riscv_timer_init_dt: Registering clocksource cpuid [0] hartid [0]
+[    0.000000] clocksource: riscv_clocksource: mask: 0xffffffffffffffff max_cycles: 0x24e6a1710, max_idle_ns: 440795202120 ns
+[    0.000000] sched_clock: 64 bits at 10MHz, resolution 100ns, wraps every 4398046511100ns
+[    0.000105] printk: console [hvc0] enabled
+[    0.000105] printk: console [hvc0] enabled
+[    0.000179] printk: bootconsole [sbi0] disabled
+[    0.000179] printk: bootconsole [sbi0] disabled
+[    0.000268] Calibrating delay loop (skipped), value calculated using timer frequency.. 20.00 BogoMIPS (lpj=100000)
+[    0.000360] pid_max: default: 32768 minimum: 301
+[    0.000490] Mount-cache hash table entries: 1024 (order: 0, 4096 bytes, linear)
+[    0.000560] Mountpoint-cache hash table entries: 1024 (order: 0, 4096 bytes, linear)
+[    0.001328] ASID allocator disabled (0 bits)
+[    0.001594] devtmpfs: initialized
+[    0.002199] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604462750000 ns
+[    0.002288] futex hash table entries: 256 (order: 0, 7168 bytes, linear)
+[    0.004218] clocksource: Switched to clocksource riscv_clocksource
+[    0.010203] workingset: timestamp_bits=30 max_order=15 bucket_order=0
+[    0.077012] 90000000.serial: ttySIF0 at MMIO 0x90000000 (irq = 1, base_baud = 619200) is a SiFive UART v0
+[    0.083485] debug_vm_pgtable: [debug_vm_pgtable         ]: Validating architecture page table helpers
+[    0.089992] Freeing unused kernel image (initmem) memory: 8076K
+[    0.090060] Run /init as init process
+init started: BusyBox v1.33.0 (2023-04-02 17:26:58 PKT)
+# 
