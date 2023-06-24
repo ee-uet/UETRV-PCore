@@ -1,11 +1,13 @@
-/*********************************************************************
- * Filename :    clint.sv
- * Date     :    04-09-2022
- * Author   :    Muhammad Tahir
- * 
- *
- * Description:  Core level interruptor (CLINT) module with memory mapped timer.
- *********************************************************************/
+// Copyright 2023 University of Engineering and Technology Lahore.
+// Licensed under the Apache License, Version 2.0, see LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+//
+// Description: Core level interruptor (CLINT) module with memory mapped timer. 
+//
+// Author: Muhammad Tahir, UET Lahore
+// Date: 04-09-2022
+
+
 `ifndef VERILATOR
 `include "../../defines/pcore_interface_defs.svh"
 `else

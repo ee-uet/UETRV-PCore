@@ -1,12 +1,13 @@
-/*********************************************************************
- * Filename :    uart.sv
- * Date     :    13-07-2022
- * Author   :    
- * Adopted from uart.scala by Dr. Muhammad Tahir
- 
- * Description:  Uart top module with configurable baud rate using
- *               buad register.
- *********************************************************************/
+// Copyright 2023 University of Engineering and Technology Lahore.
+// Licensed under the Apache License, Version 2.0, see LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+//
+// Description: Uart top module with configurable baud rate using
+//              buad register. 
+//
+// Author: Shehzeen Malik, UET Lahore
+// Date: 13.7.2022
+
 
 `ifndef VERILATOR
 `include "../../defines/uart_defs.svh"

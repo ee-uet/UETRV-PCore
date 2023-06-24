@@ -1,3 +1,12 @@
+// Copyright 2023 University of Engineering and Technology Lahore.
+// Licensed under the Apache License, Version 2.0, see LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+//
+// Description: The platform level interrupt controller (PLIC) target module. 
+//
+// Author: Muhammad Tahir, UET Lahore
+// Date: 11.12.2022
+
 
 `ifndef VERILATOR
 `include "../../defines/plic_defs.svh"

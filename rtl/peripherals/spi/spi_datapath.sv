@@ -1,11 +1,14 @@
+// Copyright 2023 University of Engineering and Technology Lahore.
+// Licensed under the Apache License, Version 2.0, see LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+//
+// Description: SPI datapath with configurable clock rate. 
+//
+// Author: Shehzeen Malik, UET Lahore
+// Date: 11.4.2023
+
+
 `timescale 1ns / 1ps
-/*********************************************************************
- * Filename :    spi_datapath.sv
- * Date     :    07-12-2022
- * Author   :    Shehzeen Malik
- *
- * Description:  Spi datapath module with configurable clock rate.
- *********************************************************************/
  
 `ifndef VERILATOR
 `include "../../defines/spi_defs.svh"

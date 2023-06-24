@@ -1,7 +1,16 @@
-// Include some licensing info and file header 
+// Copyright 2023 University of Engineering and Technology Lahore.
+// Licensed under the Apache License, Version 2.0, see LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+//
+// Description: The divide operation implementation. The base implementation 
+//              for divider used here is borrowed from: 
+//              https://projectf.io/posts/division-in-verilog/
+//
+// Author: Ali Imran, UET Lahore
+// Date: 20.5.2023
 
-// The base implementation for divider used here is borrowed 
-// from https://projectf.io/posts/division-in-verilog/
+
+// 
 
 `ifndef VERILATOR
 `include "../../defines/m_ext_defs.svh"

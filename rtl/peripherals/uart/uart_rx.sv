@@ -1,16 +1,18 @@
-/*********************************************************************
- * Filename :    uart_rx.scala
- * Date     :    20-03-2021
- * Author   :    Muhammad Tahir
- *
- * Description:  Uart receiver module.
- *********************************************************************/
+// Copyright 2023 University of Engineering and Technology Lahore.
+// Licensed under the Apache License, Version 2.0, see LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+//
+// Description: UART receiver module. 
+//
+// Author: Shehzeen Malik, UET Lahore
+// Date: 13.7.2022
+
+
 `ifndef VERILATOR
 `include "../../defines/uart_defs.svh"
 `else
 `include "uart_defs.svh"
 `endif
-
 
 module uart_rx (
 

@@ -1,4 +1,13 @@
-// Include some licensing info and file header 
+// Copyright 2023 University of Engineering and Technology Lahore.
+// Licensed under the Apache License, Version 2.0, see LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+//
+// Description: The multiply/divide module for M-extension.
+//
+// Author: Ali Imran, UET Lahore
+// Date: 20.5.2023
+
+ 
 `ifndef VERILATOR
 `include "../../defines/m_ext_defs.svh"
 `else

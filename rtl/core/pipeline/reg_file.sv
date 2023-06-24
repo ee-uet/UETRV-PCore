@@ -1,4 +1,13 @@
-// reg_file.sv
+// Copyright 2023 University of Engineering and Technology Lahore.
+// Licensed under the Apache License, Version 2.0, see LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+//
+// Description: The register file with write operation on -ve clock edge.
+//
+// Author: Muhammad Tahir, UET Lahore
+// Date: 11.8.2022
+
+
 `ifndef VERILATOR
 `include "../../defines/pcore_interface_defs.svh"
 `else

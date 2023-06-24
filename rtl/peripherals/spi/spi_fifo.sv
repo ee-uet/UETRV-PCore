@@ -1,11 +1,14 @@
+// Copyright 2023 University of Engineering and Technology Lahore.
+// Licensed under the Apache License, Version 2.0, see LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+//
+// Description: FIFOs for SPI module 
+//
+// Author: Shehzeen Malik, UET Lahore
+// Date: 11.4.2023
+
+
 `timescale 1ns / 1ps
-/*********************************************************************
- * Filename :    spi_fifo.sv
- * Date     :    02-05-2023
- * Author   :    Shehzeen Malik
- *
- * Description:  FIFO for SPI Circuit
- *********************************************************************/
 
 `ifndef VERILATOR
 `include "../../defines/spi_defs.svh"

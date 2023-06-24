@@ -1,10 +1,12 @@
-//////////////////////////////////////////////////////////////////////////////////
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
+// Copyright 2023 University of Engineering and Technology Lahore.
+// Licensed under the Apache License, Version 2.0, see LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+//
+// Description:  
+//
+// Author: Ali Imran, UET Lahore
+// Date: 13.4.2023
+
 
 `ifndef M_EXT_DEFS
 `define M_EXT_DEFS

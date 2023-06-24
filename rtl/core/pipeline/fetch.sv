@@ -1,3 +1,13 @@
+// Copyright 2023 University of Engineering and Technology Lahore.
+// Licensed under the Apache License, Version 2.0, see LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+//
+// Description: The fetch unit responsible for PC generation.
+//
+// Author: Muhammad Tahir, UET Lahore
+// Date: 11.8.2022
+
+
 `ifndef VERILATOR
 `include "../../defines/mmu_defs.svh"
 `include "../../defines/cache_defs.svh"
