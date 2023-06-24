@@ -57,7 +57,7 @@ The verilator model is build under `ver_work/Vpcore_sim`. The executeable can ac
 
 An example program to print `HELLO` on UART is compiled and its hex instructions are availabe in [here](/software/example-uart/build/imem.txt). Run the following command to simulate the example program
 
-    make sim-verilate 
+    make sim-verilate-uart 
 
 This will simulate `imem.txt` and dump UART logs in `uart_logdata.log`. If `vcd=1` is added to the above command, `trace.vcd` will created that can be viewed by running
 
@@ -73,9 +73,9 @@ UETRV_Pcore uses RISOF framework to run Architecture Compatibility Tests (ACTs).
 
 ## Booting Linux
 
-Using the same procedure as outlined above, we can simulate the Linux bootup using a prebuilt image (`imem.zip`) available in ./sdk folder. The pre-built Linux image is prepared using `initramfs` based root file system (rootfs) and is directly linked into the kernel. Furthermore, the Linux/kernel image is linked as a `payload` to the `OpenSBI` that acts as a first-level bootloader. The `imem.zip` image contains:
-	- Root file system (rootfs.cpio) based on `initramfs` using Busybox 1.33
-	- The Linux (version 6.10) with rootfs.cpio linked into the kernel
+Using the same procedure as outlined above, we can simulate the Linux bootup using a prebuilt image (`imem.zip`) available in ./sdk folder. The pre-built Linux image is prepared using `initramfs` based root file system (`rootfs`) and is directly linked into the kernel. Furthermore, the Linux/kernel image is linked as a `payload` to the `OpenSBI` that acts as a first-level bootloader. The `imem.zip` image contains:
+	- Root file system (`rootfs.cpio`) based on `initramfs` using Busybox 1.33
+	- The Linux (version 6.1.0) with rootfs.cpio linked into the kernel
 	- OpenSBI (ver. 0.9) based first order bootloader with Linux kernel as payload
 
 During booting process, the processor starts executing zero-level bootloader from `bmem` and then jumps to first-level bootloader (OpenSBI), which after necessary initializations, hands the control over to the kernel.   
@@ -86,7 +86,7 @@ Download and unzip this image and copy it to the following folder.
 
 Now run the following command to simulate the Linux booting process using the pre-built image. 
 
-    make sim-verilate
+    make sim-verilate-linux
 
 The output is logged to the `uart_logdata.txt` file (available at ./sdk/), with selected logs listed below. 
 
