@@ -1,3 +1,13 @@
+// Copyright 2023 University of Engineering and Technology Lahore.
+// Licensed under the Apache License, Version 2.0, see LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+//
+// Description:  
+//
+// Author: Muhammad Tahir, UET Lahore
+// Date: 13.4.2023
+
+
 `ifndef CACHE_DEFS
 `define CACHE_DEFS
 

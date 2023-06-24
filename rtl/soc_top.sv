@@ -1,3 +1,12 @@
+// Copyright 2023 University of Engineering and Technology Lahore.
+// Licensed under the Apache License, Version 2.0, see LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+//
+// Description: The SoC top module integrating the processor core and peripherals
+//              including the memory subsystem.
+//
+// Author: Muhammad Tahir, UET Lahore
+// Date: 12.06.2023
 
 `ifndef VERILATOR
 `include "./defines/mmu_defs.svh"

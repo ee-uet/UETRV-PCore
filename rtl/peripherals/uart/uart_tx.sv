@@ -1,17 +1,18 @@
-/*********************************************************************
- * Filename :    uart_tx.scala
- * Date     :    21-01-2022
- * Author   :    
- * Adopted from uart.scala by Dr. Muhammad Tahir
- *
- * Description:  Uart transmit module.
- *********************************************************************/
+// Copyright 2023 University of Engineering and Technology Lahore.
+// Licensed under the Apache License, Version 2.0, see LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+//
+// Description: UART transmit module. 
+//
+// Author: Shehzeen Malik, UET Lahore
+// Date: 21.01.2022
+
+
 `ifndef VERILATOR
 `include "../../defines/uart_defs.svh"
 `else
 `include "uart_defs.svh"
 `endif
-
  
 module uart_tx (
 
