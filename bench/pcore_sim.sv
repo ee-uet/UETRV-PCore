@@ -70,10 +70,10 @@ reg [1023:0] signature_file;
 integer write_sig=0;
   
 initial begin
-
-  if($value$plusargs("signature=%s",signature_file)) begin
-    $display("Writing signature to %0s", signature_file);
-    write_sig=$fopen(signature_file,"w");
+  write_sig = $fopen("DUT-pcore.signature", "w"); // Open file for writing
+  if (write_sig == 0) begin
+    $display("Error opening file for writing");
+    $finish;
   end
 end
   
