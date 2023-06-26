@@ -31,4 +31,6 @@ Run the following command from this ([verif](/verif/)) directory.
                --suite=riscv-arch-test/riscv-test-suite/ \
                --env=riscv-arch-test/riscv-test-suite/env 
 
-It will run the tests defined by ISA string `RV32IMZicsr_Zifencei` in pcore_isa.yaml. At the end, RISCOF will generate a report describing the pass/fail status of the tests. `riscof_work` directory will be created containg the report and the artifacts of DUT and Reference model.
+It will run the tests defined by ISA string `RV32IM` in pcore_isa.yaml. At the end, RISCOF will generate a report describing the pass/fail status of the tests. `riscof_work` directory will be created containg the report and the artifacts of DUT and Reference model.
+
+:bulb: GitHub actions runs the ACTs and generate [test report](https://github.com/ee-uet/UETRV-PCore/actions/runs/5382274503)
