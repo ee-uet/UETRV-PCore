@@ -65,7 +65,7 @@ This will simulate `imem.txt` and dump UART logs in `uart_logdata.log`. If `vcd=
 
 The `imem` and `max_cycles` may be overwritten in Makefile using.
 
-    make sim-verilate imem=</path/to/hex/file> max_cycles=<No. of cycles> 
+    make sim-verilate-uart imem=</path/to/hex/file> max_cycles=<No. of cycles> 
 
 ### Verification
 
