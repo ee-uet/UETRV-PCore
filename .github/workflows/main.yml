@@ -1,15 +1,15 @@
-name: Pcore RISCOF Verification
+name: Pcore-riscof
 
 on: [push, pull_request]
 
 jobs:
 
-  pcore-verification-verilator-v5:
+  pcore-verification:
     runs-on: ubuntu-latest
 
     steps:
     - name: Repository Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         path: pcore
 
@@ -43,3 +43,11 @@ jobs:
         cd pcore/verif
         chmod +x run-tests.sh
         ./run-tests.sh
+    
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: Test_report
+        path: |
+          pcore/verif/riscof_work/report.html
+          pcore/verif/riscof_work/style.css
