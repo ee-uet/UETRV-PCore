@@ -39,7 +39,7 @@ logic [`XLEN-1:0]          bmem[`BMEM_SIZE/4];
 initial
 begin
      // Reading the contents of bmem.txt file to memory variable
-     $readmemh("bmem.txt", bmem); 
+     $readmemh("boot_mem/bmem.txt", bmem); 
 end
 `endif
 
