@@ -70,8 +70,7 @@ class pcore(pluginTemplate):
        # Simulate
        self.sim_pcore = './{0}/V{1} \
         +max_cycles=100000000 \
-        +imem={2}/{3}.hex \
-        +signature={2}/DUT-pcore.signature'
+        +imem={2}/{3}.hex'
 
     def build(self, isa_yaml, platform_yaml):
 
@@ -92,7 +91,7 @@ class pcore(pluginTemplate):
           testentry  = testList[testname]
           test       = testentry['test_path']
           test_dir   = testentry['work_dir']
-          file_name  = 'pcore-{0}'.format(test.rsplit('/',1)[1][:-2])
+          file_name  = 'pcore'
 
           elf            = '{0}.elf'.format(file_name)
           compile_macros = ' -D' + " -D".join(testentry['macros'])
@@ -111,6 +110,11 @@ class pcore(pluginTemplate):
 
           run_sim        = self.sim_pcore.format(self.buidldir,self.toplevel,test_dir,file_name)
           utils.shellCommand(run_sim).run()
+          
+          cp_sig = 'cp -f *.signature {0}/.'.format(test_dir)
+          utils.shellCommand(cp_sig).run()
+
+      utils.shellCommand('rm *.signature').run()
 
       if not self.target_run:
           raise SystemExit
