@@ -50,6 +50,7 @@ logic                                 mem_req;
 // Dual port memory instantiation and initialization
 logic [`XLEN-1:0]          dualport_memory[`IDMEM_SIZE];
 
+`ifndef VERILATOR
 `ifdef RTL_SIMULATION
 initial
 begin
@@ -63,6 +64,7 @@ begin
      // Reading the contents of imem.txt file to memory variable
      $readmemh("software/example-uart/build/imem.txt", dualport_memory); 
 end
+`endif
 `endif
 
 //============================ Main memory module ============================//

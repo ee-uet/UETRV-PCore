@@ -1,15 +1,16 @@
-name: Pcore RISCOF Verification
+name: Pcore-riscof
 
 on: [push, pull_request]
 
 jobs:
 
   pcore-verification-verilator-v5:
+  pcore-verification:
     runs-on: ubuntu-latest
 
     steps:
     - name: Repository Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         path: pcore
 
@@ -19,14 +20,7 @@ jobs:
         echo 'deb http://download.opensuse.org/repositories/home:/phiwag:/edatools/xUbuntu_20.04/ /' | sudo tee /etc/apt/sources.list.d/home:phiwag:edatools.list
         curl -fsSL https://download.opensuse.org/repositories/home:phiwag:edatools/xUbuntu_20.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_phiwag_edatools.gpg > /dev/null
         sudo apt update
-        sudo apt install device-tree-compiler
-        sudo apt install -y --no-install-recommends help2man make g++ perl python3 autoconf flex bison libfl2 libfl-dev zlib1g zlib1g-dev
-        git clone https://github.com/verilator/verilator.git
-        cd verilator
-        autoconf
-        ./configure
-        make -j $(nproc)
-        sudo make install
+        sudo apt install verilator-4.110 device-tree-compiler
         pip3 install git+https://github.com/riscv/riscof.git
 
     - name: Setup toolchain

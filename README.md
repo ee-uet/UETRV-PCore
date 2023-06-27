@@ -59,7 +59,7 @@ An example program to print `HELLO` on UART is compiled and its hex instructions
 
     make sim-verilate-uart 
 
-This will simulate `imem.txt` and dump UART logs in `uart_logdata.log`. If `vcd=1` is added to the above command, `trace.vcd` will created that can be viewed by running
+This will simulate `hello.txt` and dump UART logs in `uart_logdata.log` file. If `vcd=1` is added to the above command, `trace.vcd` will be created that can be viewed by running
 
     gtkwave trace.vcd
 
