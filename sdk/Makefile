@@ -8,7 +8,7 @@
 
 march   ?= rv32ima_zicsr
 build   ?= build
-SRCS    ?= $(build)/isr.o $(build)/startup.o $(build)/uart.o $(build)/plic.o $(build)/main.o
+SRCS    ?= $(build)/startup.o $(build)/isr.o $(build)/uart.o $(build)/plic.o $(build)/main.o
 OUTPUTS ?= $(build)/main.elf $(build)/main.bin $(build)/main.txt $(build)/main.dump
 
 $(build)/%.o : src/%.s
