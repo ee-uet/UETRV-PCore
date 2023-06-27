@@ -1,5 +1,5 @@
 # !bin/bash
-
+mkdir -p build
 riscv64-unknown-elf-as -c -o build/isr.o src/isr.s -march=rv32im_zicsr -mabi=ilp32
 riscv64-unknown-elf-as -c -o build/startup.o src/startup.s -march=rv32ima_zicsr -mabi=ilp32
 

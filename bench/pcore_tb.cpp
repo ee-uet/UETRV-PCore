@@ -38,11 +38,6 @@ int main(int argc, char** argv) {
 
   signal(SIGINT, INThandler);
 
-  vluint64_t timeout = 0;
-  const char *arg_timeout = Verilated::commandArgsPlusMatch("max_cycles=");
-  if (arg_timeout[0])
-    timeout = atoi(arg_timeout+12);
-
   vluint64_t vcd_start = 0;
   const char *arg_vcd_start = Verilated::commandArgsPlusMatch("vcd_start=");
   if (arg_vcd_start[0])
@@ -60,10 +55,6 @@ int main(int argc, char** argv) {
     tb->eval();
     if (dump)
       tfp->dump(main_time);
-    if (timeout && (main_time >= timeout)) {
-      printf("Timeout: Exiting after %lu cycles\n", main_time/10);
-      done = true;
-    }
     tb->clk = !tb->clk;
     main_time+=5;
   }

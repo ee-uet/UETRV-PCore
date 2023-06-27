@@ -9,6 +9,8 @@ reg                       uart_rx;
 wire                      uart_tx;
 type_debug_port_s         debug_port;
 reg [1023:0]              firmware;
+reg [1023:0]              max_cycles;
+reg [1023:0]              main_time = '0;
 
 soc_top dut (
 .clk                     (clk),
@@ -36,6 +38,19 @@ initial begin
   if($value$plusargs("imem=%s",firmware)) begin
     $display("Loading Instruction Memory from %0s", firmware);
     $readmemh(firmware, dut.mem_top_module.main_mem_module.dualport_memory);
+  end
+
+  if($value$plusargs("max_cycles=%d",max_cycles)) begin
+    $display("Timeout set as %0d cycles\n", max_cycles);
+  end
+end
+
+always_ff@(posedge clk ) begin
+  if(main_time < max_cycles) begin
+    main_time <= main_time + 1;
+  end else begin
+    $display("Timeout: Exiting after %0d cycles\n", main_time);
+    $finish;
   end
 end
 

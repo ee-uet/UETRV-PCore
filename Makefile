@@ -11,10 +11,10 @@ ver-library 	?= ver_work
 defines 	?= 
 
 # default command line arguments
-imem_uart 	?= software/example-uart/build/hello.txt
+imem         	?= sdk/build/main.txt
 imem_linux      ?= software/example-linux/imem.txt
 max_cycles  	?= 100000
-vcd 		?= 0
+vcd 		    ?= 0
 
 uartbuild_root := software/example-uart/build/
 
@@ -50,13 +50,13 @@ verilate:
 	$(verilate_command)
 	cd $(ver-library) && $(MAKE) -f Vpcore_sim.mk
 
-sim-verilate-uart: verilate
+sim-verilate: verilate
 	@echo
 	@echo
-	@echo "Running UART example program"
+	@echo "Running User Program available at $(imem)"
 	@echo "Output is captured in uart_logdata.log"
 	@echo
-	$(ver-library)/Vpcore_sim +imem=$(imem_uart) +max_cycles=$(max_cycles) +vcd=$(vcd)
+	$(ver-library)/Vpcore_sim +imem=$(imem) +max_cycles=$(max_cycles) +vcd=$(vcd)
 	
 sim-verilate-linux: verilate
 	@echo

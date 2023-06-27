@@ -1,0 +1,92 @@
+[*]
+[*] GTKWave Analyzer v3.3.103 (w)1999-2019 BSI
+[*] Thu Jun 15 12:53:09 2023
+[*]
+[dumpfile] "/home/ali11-2000/UET_test/trace.vcd"
+[dumpfile_mtime] "Thu Jun 15 12:33:04 2023"
+[dumpfile_size] 360649
+[savefile] "/home/ali11-2000/UET_test/mul.gtkw"
+[timestart] 500
+[size] 1908 1047
+[pos] -1 -1
+*-15.675348 24000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] pcore_sim.
+[treeopen] pcore_sim.dut.
+[treeopen] pcore_sim.dut.pipeline_top_module.
+[treeopen] pcore_sim.dut.pipeline_top_module.decode_module.
+[treeopen] pcore_sim.dut.pipeline_top_module.muldiv_module.
+[sst_width] 514
+[signals_width] 387
+[sst_expanded] 1
+[sst_vpaned_height] 652
+@22
+pcore_sim.dut.pipeline_top_module.muldiv_module.alu_m_operand_1[31:0]
+pcore_sim.dut.pipeline_top_module.muldiv_module.alu_m_operand_2[31:0]
+pcore_sim.dut.pipeline_top_module.muldiv_module.alu_m_ops[3:0]
+@28
+pcore_sim.dut.pipeline_top_module.muldiv_module.alu_m_req_next
+pcore_sim.dut.pipeline_top_module.muldiv_module.alu_m_ack_next
+pcore_sim.dut.pipeline_top_module.muldiv_module.alu_m_ack_ff
+@22
+pcore_sim.dut.pipeline_top_module.muldiv_module.alu_m_result_ff[31:0]
+pcore_sim.dut.pipeline_top_module.muldiv_module.alu_m_result_ff[31:0]
+pcore_sim.dut.pipeline_top_module.muldiv_module.alu_m_result_next[31:0]
+@28
+pcore_sim.dut.pipeline_top_module.muldiv_module.mul2fwd.mul_ack
+pcore_sim.dut.pipeline_top_module.muldiv_module.mul2fwd.mul_req
+pcore_sim.dut.pipeline_top_module.muldiv_module.alu_m_ack_ff
+pcore_sim.dut.pipeline_top_module.muldiv_module.alu_m_req_ff
+pcore_sim.dut.pipeline_top_module.muldiv_module.fwd2mul_flush_i
+pcore_sim.dut.pipeline_top_module.muldiv_module.fwd2mul_stall_i
+pcore_sim.dut.pipeline_top_module.lsu2fwd.lsu_ack
+pcore_sim.dut.pipeline_top_module.lsu2fwd.lsu_req
+@22
+pcore_sim.dut.pipeline_top_module.lsu2fwd.rd_addr[4:0]
+@28
+pcore_sim.dut.pipeline_top_module.lsu2fwd.rd_wr_req
+pcore_sim.dut.pipeline_top_module.lsu_module.ld_req
+pcore_sim.dut.pipeline_top_module.lsu_module.is_amo
+pcore_sim.dut.pipeline_top_module.lsu_module.ld_ops[2:0]
+@22
+pcore_sim.dut.pipeline_top_module.lsu_module.ld_st_addr[31:0]
+@28
+pcore_sim.dut.pipeline_top_module.exe2lsu_ctrl.ld_ops[2:0]
+pcore_sim.dut.pipeline_top_module.decode_module.id2exe_ctrl.ld_ops[2:0]
+@22
+pcore_sim.dut.pipeline_top_module.decode_module.id2exe_ctrl.alu_i_ops[3:0]
+pcore_sim.dut.pipeline_top_module.decode_module.id2exe_ctrl.alu_m_ops[3:0]
+@28
+pcore_sim.dut.pipeline_top_module.decode_module.id2exe_ctrl.ld_ops[2:0]
+pcore_sim.dut.pipeline_top_module.decode_module.id2exe_ctrl.rd_wr_req
+@29
+pcore_sim.dut.pipeline_top_module.decode_module.id2exe_ctrl.rd_wrb_sel[2:0]
+@22
+pcore_sim.dut.pipeline_top_module.decode_module.if2id_data.instr[31:0]
+pcore_sim.dut.pipeline_top_module.decode_module.if2id_data.pc[31:0]
+pcore_sim.dut.pipeline_top_module.decode_module.rf_module.register_file[10][31:0]
+pcore_sim.dut.pipeline_top_module.decode_module.rf_module.register_file[11][31:0]
+pcore_sim.dut.pipeline_top_module.decode_module.rf_module.register_file[12][31:0]
+pcore_sim.dut.pipeline_top_module.decode_module.rf_module.register_file[13][31:0]
+pcore_sim.dut.pipeline_top_module.decode_module.rf_module.register_file[14][31:0]
+pcore_sim.dut.pipeline_top_module.decode_module.rf_module.register_file[15][31:0]
+pcore_sim.dut.pipeline_top_module.decode_module.rf_module.register_file[16][31:0]
+pcore_sim.dut.pipeline_top_module.exe2lsu_data.alu_result[31:0]
+pcore_sim.dut.pipeline_top_module.exe2lsu_data.pc_next[31:0]
+pcore_sim.dut.pipeline_top_module.exe2lsu_data.rs2_data[31:0]
+pcore_sim.dut.pipeline_top_module.writeback_module.wrb2exe_fb_rd_data_o[31:0]
+pcore_sim.dut.pipeline_top_module.execute_module.operand_rs2_data[31:0]
+@28
+pcore_sim.dut.pipeline_top_module.exe2lsu_ctrl_next.st_ops[1:0]
+@22
+pcore_sim.dut.pipeline_top_module.muldiv_module.alu_m_operand_1_ff[31:0]
+pcore_sim.dut.pipeline_top_module.muldiv_module.alu_m_operand_2_ff[31:0]
+@28
+pcore_sim.dut.pipeline_top_module.muldiv_module.alu_m_operand_2_en
+pcore_sim.dut.pipeline_top_module.muldiv_module.alu_m_operand_1_en
+@22
+pcore_sim.dut.pipeline_top_module.muldiv_module.alu_m_operand_2[31:0]
+pcore_sim.dut.pipeline_top_module.muldiv_module.alu_m_ops_ff[3:0]
+@28
+pcore_sim.dut.pipeline_top_module.muldiv_module.divider_module.start
+[pattern_trace] 1
+[pattern_trace] 0

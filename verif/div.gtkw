@@ -1,0 +1,46 @@
+[*]
+[*] GTKWave Analyzer v3.3.103 (w)1999-2019 BSI
+[*] Thu Jun 15 12:08:42 2023
+[*]
+[dumpfile] "/home/ali11-2000/UET_test/verif/trace.vcd"
+[dumpfile_mtime] "Thu Jun 15 11:53:12 2023"
+[dumpfile_size] 1568392755
+[savefile] "/home/ali11-2000/UET_test/verif/div.gtkw"
+[timestart] 228100
+[size] 1908 1047
+[pos] -298 -311
+*-14.565075 295000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] pcore_sim.
+[treeopen] pcore_sim.dut.
+[treeopen] pcore_sim.dut.pipeline_top_module.
+[treeopen] pcore_sim.dut.pipeline_top_module.muldiv_module.
+[sst_width] 431
+[signals_width] 326
+[sst_expanded] 1
+[sst_vpaned_height] 309
+@22
+pcore_sim.dut.pipeline_top_module.if2icache.addr[31:0]
+pcore_sim.dut.pipeline_top_module.muldiv_module.alu_m_ops_ff[3:0]
+@28
+pcore_sim.dut.pipeline_top_module.muldiv_module.div_start_ff
+@22
++{pcore_sim.dut.pipeline_top_module.muldiv_module.alu_m_operand_1_ff[31:0]} pcore_sim.dut.pipeline_top_module.muldiv_module.alu_m_operand_1_ff[31:0]
+@28
+pcore_sim.dut.pipeline_top_module.muldiv_module.state[1:0]
+pcore_sim.dut.pipeline_top_module.muldiv_module.state[1:0]
+pcore_sim.dut.pipeline_top_module.muldiv_module.state_next[1:0]
+@22
+pcore_sim.dut.pipeline_top_module.muldiv_module.alu_m_operand_2_ff[31:0]
+pcore_sim.dut.pipeline_top_module.muldiv_module.alu_m_operand_1_ff[31:0]
+@28
+pcore_sim.dut.pipeline_top_module.muldiv_module.div_done
+@22
+pcore_sim.dut.pipeline_top_module.muldiv_module.alu_m_result_ff[31:0]
+pcore_sim.dut.pipeline_top_module.muldiv_module.alu_m_result_next[31:0]
+@28
+pcore_sim.dut.pipeline_top_module.forward_stall_module.if2fwd_stall
+pcore_sim.dut.pipeline_top_module.forward_stall_module.if2fwd_stall_i
+pcore_sim.dut.pipeline_top_module.forward_stall_module.ld_use_hazard
+pcore_sim.dut.pipeline_top_module.forward_stall_module.lsu_flush
+[pattern_trace] 1
+[pattern_trace] 0
