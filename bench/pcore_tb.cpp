@@ -2,7 +2,7 @@
 #include <iostream>
 #include <signal.h>
 
-#include "Vpcore_sim.h"
+#include "Vpcore_tb.h"
 #include "verilated_vcd_c.h"
 
 
@@ -24,7 +24,7 @@ int main(int argc, char** argv) {
 
   Verilated::commandArgs(argc, argv);
 
-  Vpcore_sim* tb = new Vpcore_sim;
+  Vpcore_tb* tb = new Vpcore_tb;
 
   // init trace dump
   VerilatedVcdC* tfp = NULL;
