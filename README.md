@@ -73,22 +73,18 @@ UETRV_Pcore uses RISOF framework to run Architecture Compatibility Tests (ACTs).
 
 ## Booting Linux
 
-Using the same procedure as outlined above, we can simulate the Linux bootup using a prebuilt image (`imem.zip`) available in ./sdk folder. The pre-built Linux image is prepared using `initramfs` based root file system (`rootfs`) and is directly linked into the kernel. Furthermore, the Linux/kernel image is linked as a `payload` to the `OpenSBI` that acts as a first-level bootloader. The `imem.zip` image contains:
+Using the same procedure as outlined above, we can simulate the Linux bootup using a prebuilt image (`imem.zip`) available in `./sdk/example-linux/` folder. The pre-built Linux image is prepared using `initramfs` based root file system (`rootfs`) and is directly linked into the kernel. Furthermore, the Linux/kernel image is linked as a `payload` to the `OpenSBI` that acts as a first-level bootloader. The `imem.zip` image contains:
 	- Root file system (`rootfs.cpio`) based on `initramfs` using Busybox 1.33
 	- The Linux (version 6.1.0) with rootfs.cpio linked into the kernel
 	- OpenSBI (ver. 0.9) based first order bootloader with Linux kernel as payload
 
-During booting process, the processor starts executing zero-level bootloader from `bmem` and then jumps to first-level bootloader (OpenSBI), which after necessary initializations, hands the control over to the kernel.   
+During booting process, the processor starts executing zero-level bootloader from `bmem` and then jumps to first-level bootloader (OpenSBI), which after necessary initializations, hands the control over to the kernel.    
 
-Download and unzip this image and copy it to the following folder.
-
-	./software/example-linux 
-
-Now run the following command to simulate the Linux booting process using the pre-built image. 
+Now run the following command to extract the `imem.txt` to `./sdk/example-linux/` and simulate the Linux booting process using this pre-built image. 
 
     make sim-verilate-linux
 
-The output is logged to the `uart_logdata.txt` file (available at ./sdk/), with selected logs listed below. 
+The output is logged to the `uart_logdata.txt` file (a copy of this log is available in `./sdk/`), with selected logs listed below. 
 
 ```
 OpenSBI v0.9
