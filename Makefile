@@ -48,7 +48,7 @@ verilate_command := $(verilator) +define+$(defines) 				\
 verilate:
 	@echo "Building verilator model"
 	$(verilate_command)
-	cd $(ver-library) && $(MAKE) -f Vpcore_sim.mk
+	cd $(ver-library) && $(MAKE) -f Vpcore_tb.mk
 
 sim-verilate-uart: verilate
 	@echo
@@ -56,7 +56,7 @@ sim-verilate-uart: verilate
 	@echo "Running User Program available at $(imem)"
 	@echo "Output is captured in uart_logdata.log"
 	@echo
-	$(ver-library)/Vpcore_sim +imem=$(imem_uart) +max_cycles=$(max_cycles) +vcd=$(vcd)
+	$(ver-library)/Vpcore_tb +imem=$(imem_uart) +max_cycles=$(max_cycles) +vcd=$(vcd)
 	
 sim-verilate-linux: verilate
 	@echo
@@ -68,7 +68,7 @@ sim-verilate-linux: verilate
 	@echo
 	rm  -f  ./sdk/example-linux/imem.txt
 	unzip ./sdk/example-linux/imem.zip -d ./sdk/example-linux/
-	$(ver-library)/Vpcore_sim +imem=$(imem_linux) +max_cycles=300000000 +vcd=$(vcd)
+	$(ver-library)/Vpcore_tb +imem=$(imem_linux) +max_cycles=300000000 +vcd=$(vcd)
 
 clean-all:
 	rm -rf ver_work/ *.log *.vcd 					\
@@ -76,5 +76,4 @@ clean-all:
 	$(uartbuild_root)*.hex $(uartbuild_root)*.elf 			\
 	$(uartbuild_root)*.dump						\
 	verif/*work/
-
 
