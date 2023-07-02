@@ -6,15 +6,15 @@
 #  * Description:  Makefile for simulating and testing UETRV_PCORE
 #  *********************************************************************
 
-verilator 	?= verilator
+verilator   ?= verilator
 ver-library ?= ver_work
-defines 	?= 
+defines     ?= 
 
 # default command line arguments
-imem_uart    	?= sdk/example-uart/build/main.txt
-imem_linux      ?= sdk/example-linux/imem.txt
-max_cycles  	?= 100000
-vcd 			?= 0
+imem_uart  ?= sdk/example-uart/build/main.txt
+imem_linux ?= sdk/example-linux/imem.txt
+max_cycles ?= 100000
+vcd        ?= 0
 
 uartbuild_root := sdk/example-uart/build/
 
