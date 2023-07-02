@@ -7,20 +7,20 @@
 #  *********************************************************************
 
 verilator 	?= verilator
-ver-library 	?= ver_work
+ver-library ?= ver_work
 defines 	?= 
 
 # default command line arguments
-imem         	?= sdk/build/main.txt
-imem_linux      ?= software/example-linux/imem.txt
+imem_uart    	?= sdk/example-uart/build/main.txt
+imem_linux      ?= sdk/example-linux/imem.txt
 max_cycles  	?= 100000
-vcd 		    ?= 0
+vcd 			?= 0
 
-uartbuild_root := software/example-uart/build/
+uartbuild_root := sdk/example-uart/build/
 
-src := bench/pcore_sim.sv							\
-	   rtl/core/core_top.sv							\
+src := bench/pcore_tb.sv							\
 	   $(wildcard rtl/*.sv)							\
+	   $(wildcard rtl/core/*.sv)						\
 	   $(wildcard rtl/core/*/*.sv)						\
 	   $(wildcard rtl/interconnect/*.sv)					\
 	   $(wildcard rtl/memory/*.sv)						\
@@ -32,7 +32,7 @@ list_incdir := $(foreach dir, ${incdir}, +incdir+$(dir))
 
 verilate_command := $(verilator) +define+$(defines) 				\
 					--cc $(src) $(list_incdir)		\
-					--top-module pcore_sim			\
+					--top-module pcore_tb			\
 					-Wno-TIMESCALEMOD 			\
 					-Wno-MULTIDRIVEN 			\
 					-Wno-CASEOVERLAP 			\
@@ -50,13 +50,13 @@ verilate:
 	$(verilate_command)
 	cd $(ver-library) && $(MAKE) -f Vpcore_sim.mk
 
-sim-verilate: verilate
+sim-verilate-uart: verilate
 	@echo
 	@echo
 	@echo "Running User Program available at $(imem)"
 	@echo "Output is captured in uart_logdata.log"
 	@echo
-	$(ver-library)/Vpcore_sim +imem=$(imem) +max_cycles=$(max_cycles) +vcd=$(vcd)
+	$(ver-library)/Vpcore_sim +imem=$(imem_uart) +max_cycles=$(max_cycles) +vcd=$(vcd)
 	
 sim-verilate-linux: verilate
 	@echo
@@ -66,7 +66,9 @@ sim-verilate-linux: verilate
 	@echo
 	@echo "Initiating Linux Bootup in Verilator Simulation..."
 	@echo
-	$(ver-library)/Vpcore_sim +imem=$(imem_linux) +max_cycles=10000000000 +vcd=$(vcd)
+	rm  -f  ./sdk/example-linux/imem.txt
+	unzip ./sdk/example-linux/imem.zip -d ./sdk/example-linux/
+	$(ver-library)/Vpcore_sim +imem=$(imem_linux) +max_cycles=300000000 +vcd=$(vcd)
 
 clean-all:
 	rm -rf ver_work/ *.log *.vcd 					\
