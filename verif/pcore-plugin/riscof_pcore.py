@@ -54,7 +54,7 @@ class pcore(pluginTemplate):
        self.hexgen_cmd  = 'python3 makehex.py {0}/{1}.bin > {0}/{1}.hex'
 
        # build simulation model
-       self.toplevel = 'pcore_sim'
+       self.toplevel = 'pcore_tb'
        self.buidldir = 'sim_work'
        comp_pcore = 'verilator --Mdir {0} +define+COMPLIANCE=1 -cc \
         $(find ../rtl/ -type f -name "*.sv")\
