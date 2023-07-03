@@ -1,4 +1,7 @@
 # UETRV_Pcore
+[![pcore-riscof](https://github.com/ee-uet/UETRV-PCore/actions/workflows/main.yml/badge.svg)](https://github.com/ee-uet/UETRV-PCore/actions/workflows/main.yml)
+[![Documentation status](https://img.shields.io/badge/Docs-Passing-brightgreen)](https://uetrv-pcore-doc.readthedocs.io/en/main/index.html)
+
 UETRV_Pcore is a RISC-V based application class SoC integrating a 5-stage pipelined processor with memory and peripherals. Currently, the core implements RV32IMAZicsr ISA based on User-level ISA Version 2.0 and Privileged Architecture Version 1.11 supporting M/S/U modes. Following are the key features of the SoC:
 
 ## Key Features
@@ -55,7 +58,7 @@ The verilator model is build under `ver_work/Vpcore_sim`. The executeable can ac
 - `max_cycles`: This parameter cotrols the maxiumum number of cycles for simulation. Simulation terminates after executing these many cycles.
 - `vcd`: This parameters accepts a boolean value. If it is 0, the waveform file `trace.vcd` will not be dumped and vice versa.
 
-An example program to print `HELLO` on UART is compiled and its hex instructions are availabe in [here](/software/example-uart/build/imem.txt). Run the following command to simulate the example program
+An example program to print `HELLO` on UART is compiled and its hex instructions are availabe in [here](/software/example-uart/build/hello.txt). Run the following command to simulate the example program
 
     make sim-verilate-uart 
 
@@ -84,7 +87,7 @@ Now run the following command to extract the `imem.txt` to `./sdk/example-linux/
 
     make sim-verilate-linux
 
-The output is logged to the `uart_logdata.txt` file (a copy of this log is available in `./sdk/`), with selected logs listed below. 
+The output is logged to the `uart_logdata.log` file (a copy of this log is available in `./sdk/`), with selected logs listed below. 
 
 ```
 OpenSBI v0.9
