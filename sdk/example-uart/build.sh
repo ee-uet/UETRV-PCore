@@ -11,6 +11,6 @@ riscv64-unknown-elf-gcc -O -o build/main.elf build/startup.o build/isr.o build/u
 
 riscv64-unknown-elf-objcopy -O binary --only-section=.data* --only-section=.text* build/main.elf build/main.bin
 
-python3 maketxt.py build/main.bin > build/hello.txt
+python3 maketxt.py build/main.bin > build/hello.hex
 
 riscv64-unknown-elf-objdump -S -s build/main.elf > build/main.dump
