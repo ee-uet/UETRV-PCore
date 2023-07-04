@@ -54,7 +54,7 @@ Verilator model of Pcore can be built using Makefile:
 
 The verilator model is build under `ver_work/Vpcore_sim`. The executeable can accept the following three parameters:
 
-- `imem` : This paramerter accepts the file that contain the hexadecimal instructions of compiled program.
+- `imem`: This paramerter accepts the file that contain the hexadecimal instructions of compiled program.
 - `max_cycles`: This parameter cotrols the maxiumum number of cycles for simulation. Simulation terminates after executing these many cycles.
 - `vcd`: This parameters accepts a boolean value. If it is 0, the waveform file `trace.vcd` will not be dumped and vice versa.
 
@@ -77,9 +77,10 @@ UETRV_Pcore uses RISOF framework to run Architecture Compatibility Tests (ACTs).
 ## Booting Linux
 
 Using the same procedure as outlined above, we can simulate the Linux bootup using a prebuilt image (`imem.zip`) available in `./sdk/example-linux/` folder. The pre-built Linux image is prepared using `initramfs` based root file system (`rootfs`) and is directly linked into the kernel. Furthermore, the Linux/kernel image is linked as a `payload` to the `OpenSBI` that acts as a first-level bootloader. The `imem.zip` image contains:
-	- Root file system (`rootfs.cpio`) based on `initramfs` using Busybox 1.33
-	- The Linux (version 6.1.0) with rootfs.cpio linked into the kernel
-	- OpenSBI (ver. 0.9) based first order bootloader with Linux kernel as payload
+
+- Root file system (`rootfs.cpio`) based on `initramfs` using Busybox 1.33
+- The Linux (version 6.1.0) with rootfs.cpio linked into the kernel
+- OpenSBI (ver. 0.9) based first order bootloader with Linux kernel as payload
 
 During booting process, the processor starts executing zero-level bootloader from `bmem` and then jumps to first-level bootloader (OpenSBI), which after necessary initializations, hands the control over to the kernel.    
 
