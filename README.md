@@ -58,11 +58,11 @@ The verilator model is build under `ver_work/Vpcore_sim`. The executeable can ac
 - `max_cycles`: This parameter cotrols the maxiumum number of cycles for simulation. Simulation terminates after executing these many cycles.
 - `vcd`: This parameters accepts a boolean value. If it is 0, the waveform file `trace.vcd` will not be dumped and vice versa.
 
-An example program to print `HELLO` on UART is compiled and its hex instructions are availabe in [here](/software/example-uart/build/hello.hex). Run the following command to simulate the example program
+An example program to print `HELLO` on terminal via UART is compiled and its hex instructions are availabe in [here](/sdk/example-uart/hello.hex). Run the following command to simulate the example program
 
     make sim-verilate-uart 
 
-This will simulate `hello.txt` and dump UART logs in `uart_logdata.log` file. If `vcd=1` is added to the above command, `trace.vcd` will be created that can be viewed by running
+This will simulate `hello.hex` and dump UART logs in `uart_logdata.log` file. If `vcd=1` is added to the above command, `trace.vcd` will be created that can be viewed by running
 
     gtkwave trace.vcd
 
