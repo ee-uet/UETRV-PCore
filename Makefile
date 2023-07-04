@@ -36,9 +36,8 @@ verilate_command := $(verilator) +define+$(defines) 				\
 					-Wno-TIMESCALEMOD 			\
 					-Wno-MULTIDRIVEN 			\
 					-Wno-CASEOVERLAP 			\
-        				-Wno-WIDTH -Wno-LATCH 			\
+        				-Wno-WIDTH  			\
 					-Wno-UNOPTFLAT 				\
-					-Wno-LATCH 				\
 					-Wno-IMPLICIT 				\
 					-Wno-PINMISSING 			\
 					--Mdir $(ver-library)			\
