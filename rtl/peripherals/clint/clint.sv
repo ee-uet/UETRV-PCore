@@ -178,7 +178,7 @@ end
 //================================= Timer Prescaler ==================================//
 always_comb begin
 
-    if (timer_prescaler_ff == 7'd80) begin
+    if (timer_prescaler_ff == 7'd19) begin
         timer_clk_next = ~timer_clk_ff;
         timer_prescaler_next = '0;
     end else begin
