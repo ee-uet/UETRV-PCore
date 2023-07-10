@@ -57,7 +57,7 @@ sim-verilate-uart: verilate
 	@echo
 	$(ver-library)/Vpcore_tb +imem=$(imem_uart) +max_cycles=$(max_cycles) +vcd=$(vcd)
 
-sim-verilate-linux: verilate $(imem_linux)
+sim-verilate-linux: verilate
 	@echo
 	@echo
 	@echo "Output is captured in uart_logdata.log"
