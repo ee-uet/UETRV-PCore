@@ -230,7 +230,7 @@ always_comb begin
       ALU_I_OPS_SRA : begin
          alu_result = $signed(alu_operand_1) >>> shift_amt;
       end
-      // Branch related operations
+      // Branch related operations and LR instruction require this operation
       ALU_I_OPS_COPY_OPR1 : begin
          alu_result = alu_operand_1;
       end

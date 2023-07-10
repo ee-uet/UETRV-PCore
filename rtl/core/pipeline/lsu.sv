@@ -256,7 +256,8 @@ assign lsu2mmu.en_vaddr       = csr2lsu_data.en_vaddr;
 assign lsu2mmu.en_ld_st_vaddr = csr2lsu_data.en_ld_st_vaddr;
 assign lsu2mmu.mxr            = csr2lsu_data.mxr;
 assign lsu2mmu.tlb_flush      = csr2lsu_data.tlb_flush;
-assign lsu2mmu.lsu_flush      = csr2lsu_data.lsu_flush;
+
+assign lsu2mmu.lsu_flush      = fwd2lsu_i.lsu_flush;
 assign lsu2mmu.d_req          = ld_req | st_req;
 assign lsu2mmu.st_req         = st_req;
 assign lsu2mmu.is_amo         = is_amo;

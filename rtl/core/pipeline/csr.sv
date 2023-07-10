@@ -206,7 +206,7 @@ logic                            mret_req;
 logic                            sfence_vma_req;
 logic                            wfi_req;
 logic                            wfi_ff, wfi_next;
-logic                            en_ld_st_vaddr_ff, en_ld_st_vaddr_next;
+logic                            en_vaddr;
 
 // Load-store related signals
 logic [`XLEN-1:0]                ld_st_addr;
@@ -1132,24 +1132,6 @@ always_comb begin
     end 
 end
 
-
-//=============================== Virtual address translation ===============================//
-always_ff @(negedge rst_n, posedge clk) begin
-    if (~rst_n) begin
-        en_ld_st_vaddr_ff <= {1'b0}; 
-    end else begin
-        en_ld_st_vaddr_ff <= en_ld_st_vaddr_next;
-    end
-end
-
-always_comb begin 
-    en_ld_st_vaddr_next = csr2lsu_data.en_vaddr;
-
-    if (csr_mstatus_ff.mprv && (csr_satp_ff.mode == MODE_SV32) && (csr_mstatus_ff.mpp != PRIV_MODE_M)) begin
-        en_ld_st_vaddr_next = 1'b1;
-    end 
-end 
-
 //=============================== System instructions ===============================//
 
 // Wait for interrupt (wfi) instruction 
@@ -1323,14 +1305,16 @@ assign csr2fwd.csr_read_req = exe2csr_ctrl.csr_rd_req;
 // Prepare the output signal for writeback stage
 assign csr2wrb_data.csr_rdata = csr_rdata;
 
+// Enable virtual address
+assign en_vaddr  = (csr_satp_ff.mode == MODE_SV32) && (priv_mode_ff != PRIV_MODE_M)
+                 ? 1'b1 : 1'b0;
+
 // CSR to LSU signals
-assign csr2lsu_data.satp_ppn  = csr_satp_next.ppn;
-assign csr2lsu_data.en_vaddr  = (csr_satp_next.mode == MODE_SV32) && (priv_mode_next != PRIV_MODE_M)
-                              ? 1'b1 : 1'b0;
+assign csr2lsu_data.satp_ppn  = csr_satp_ff.ppn;
+assign csr2lsu_data.en_vaddr  = en_vaddr;
 assign csr2lsu_data.mxr       = csr_mstatus_ff.mxr; 
 assign csr2lsu_data.tlb_flush = sfence_vma_req;
-assign csr2lsu_data.lsu_flush = csr2fwd.new_pc_req | csr2fwd.wfi_req; 
-assign csr2lsu_data.en_ld_st_vaddr = en_ld_st_vaddr_next;
+assign csr2lsu_data.en_ld_st_vaddr = en_vaddr; 
 assign csr2lsu_data.dcache_flush   = fence_i_req;
 
 

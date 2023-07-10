@@ -55,6 +55,10 @@ type_tlb2mmu_s                       itlb2mmu, dtlb2mmu;
 type_ptw2tlb_s                       ptw2tlb;
 logic                                itlb_update;
 
+logic                                ld_page_fault;
+logic                                st_page_fault; 
+logic                                i_page_fault;
+
 // Get the input signals
 assign if2mmu   = if2mmu_i;
 assign lsu2mmu  = lsu2mmu_i;
@@ -141,20 +145,24 @@ end
 
 // Handling page faults
 always_comb begin
-mmu2lsu.ld_page_fault   = '0;
-mmu2lsu.st_page_fault   = '0;
-mmu2if.i_page_fault     = '0;
+ld_page_fault = '0;
+st_page_fault = '0;
+i_page_fault  = '0;
     
     if (ptw2mmu.pte_error) begin
         if (ptw2mmu.iwalk_active) begin
-            mmu2if.i_page_fault = 1'b1;
+            i_page_fault = 1'b1;
         end else if (lsu2mmu.st_req | lsu2mmu.is_amo) begin
-            mmu2lsu.st_page_fault = 1'b1;
+            st_page_fault = 1'b1;
         end else if (~lsu2mmu.st_req & ~lsu2mmu.is_amo & lsu2mmu.d_req) begin
-            mmu2lsu.ld_page_fault = 1'b1;
+            ld_page_fault = 1'b1; 
         end 
     end
 end
+
+assign mmu2lsu.ld_page_fault = ld_page_fault;
+assign mmu2lsu.st_page_fault = st_page_fault;
+assign mmu2if.i_page_fault   = i_page_fault;
 
 
 //============================= PTW instantiation and connectivity =============================//

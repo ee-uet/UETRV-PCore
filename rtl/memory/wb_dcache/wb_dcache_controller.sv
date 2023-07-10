@@ -102,6 +102,9 @@ always_comb begin
             end else if (dcache_miss) begin           
                if (dcache_evict) begin
                     dcache_state_next = DCACHE_WRITE_BACK;
+                    dcache2mem_req    = 1'b1;
+                    dcache2mem_wr     = 1'b1;
+                    cache_wrb_req     = 1'b1;
                 end else begin 
                     dcache_state_next = DCACHE_ALLOCATE;
                 end
@@ -150,14 +153,22 @@ always_comb begin
 
             if (dcache_evict) begin
                 dcache_state_next = DCACHE_WRITE_BACK;
+                dcache2mem_req    = 1'b1;
+                dcache2mem_wr     = 1'b1;
+                cache_wrb_req     = 1'b1;
             end else begin 
                 evict_index_next = evict_index_ff + 1;
                 if (evict_index_ff == (DCACHE_NO_OF_SETS - 1)) begin
-                    dcache_state_next = DCACHE_IDLE;
-                    dcache2lsummu_ack = 1'b1;
+                    dcache_state_next = DCACHE_FLUSH_DONE;
+                //    dcache2lsummu_ack = 1'b1;
                     evict_index_next  = '0;
                 end
             end
+
+        end
+        DCACHE_FLUSH_DONE: begin
+            dcache2lsummu_ack = 1'b1;
+            dcache_state_next = DCACHE_IDLE;
         end
         default: begin
             dcache_state_next = DCACHE_IDLE;
