@@ -41,12 +41,29 @@ module soc_top (
 
 `ifdef DRAM
     // DDR memory interface
-    inout wire type_mem2ddr_data_s       mem2ddr_data_io,
-    output type_mem2ddr_ctrl_s           mem2ddr_ctrl_o,
+    output wire                          valid_o,
+    output wire                          we_o,
+    output wire [31:0]                   addr_o,
+    output wire [127:0]                  data_o,
+    input  wire                          ready_i,
+    input  wire  [127:0]                 data_i,
 `endif
 
     input wire type_debug_port_s         debug_port_i
 );
+
+`ifdef DRAM
+
+// DDR memory interface
+wire type_cache2mem_s               cache2dram;
+wire type_mem2cache_s               dram2cache;
+assign addr_o = cache2dram.addr & ~32'h0F;
+assign data_o = cache2dram.w_data;
+assign valid_o = cache2dram.req;
+assign we_o = cache2dram.w_en; 
+assign dram2cache.r_data = data_i;
+assign dram2cache.ack = ready_i;
+`endif
 
 // Local signals
 type_if2icache_s                        if2icache;            // Instruction memory address
@@ -231,8 +248,8 @@ mem_top mem_top_module (
 
 `ifdef DRAM
     // DDR memory interface
-    .mem2ddr_data_io      (mem2ddr_data_io),
-    .mem2ddr_ctrl_o       (mem2ddr_ctrl_o),
+    .dram2cache_i(dram2cache),
+    .cache2dram_o(cache2dram),
 `endif
 
    // Instruction memory interface signals 

@@ -55,6 +55,7 @@ logic [11:0]                              clock_cnt;
 logic [1:0]                               count_up;
 logic [4:0]                               max_data_count;
 logic                                     spi_clk;
+logic                                     spi_clk_edge;
 logic [1:0]                               spi_slave_sel;
 
 // Signals for SPI state machine
@@ -133,7 +134,7 @@ always_comb begin
 end
     
 // Clock count
-always_ff @ (posedge clk or posedge rst_n) begin
+always_ff @ (posedge clk or negedge rst_n) begin
     if (!rst_n)
        clock_cnt <= 8'h00;
     else begin
@@ -202,22 +203,24 @@ always_ff @ (negedge rst_n or posedge clk) begin
     end
 end    
 
+
+assign spi_clk_edge = (state_ff == SPI_ST_TRANS) && (clock_cnt == spi_clk_period);
 // Generate SCLK
 always_ff @ (posedge clk or negedge rst_n) begin
     if (!rst_n || (state_ff != SPI_ST_TRANS))
        spi_clk <= spi_clk_polarity;
     else begin
-       if ((state_ff == SPI_ST_TRANS) && (clock_cnt == spi_clk_period))
+       if (spi_clk_edge)
            spi_clk <= ~spi_clk;
     end
 end
 
 // Counter for number of bits transmitted
-always_ff @ (negedge rst_n, posedge spi_clk or negedge spi_clk) begin
+always_ff @ (negedge rst_n, posedge clk) begin
     if(~rst_n) begin
         data_cnt <= '0;
     end else begin
-        if (state_ff == SPI_ST_TRANS) begin
+        if (spi_clk_edge) begin
             if (spi_clk_phase == 0) begin
                 if (spi_clk == spi_clk_polarity && data_cnt <= spi_data_size)
                     data_cnt <= data_cnt + 1; 

@@ -57,9 +57,8 @@ logic                                   mtime_select_ff;
 type_clint2csr_s                        clint2csr;
 
 // Timer prescaler
-logic                                   timer_clk_ff, timer_clk_next;
 logic [6:0]                             timer_prescaler_ff, timer_prescaler_next;
-
+logic                                   timer_prescaler_ov;
 	
 //============================ Memory mapped timer register read operations =============================//
 always_comb begin
@@ -133,11 +132,13 @@ always_comb begin
     end
 end
 
-always_ff @(posedge timer_clk_ff, negedge rst_n) begin
+assign timer_prescaler_ov = timer_prescaler_ff == (`CLINT_ADDR_WIDTH - 1);
+
+always_ff @(posedge clk, negedge rst_n) begin
     if (~rst_n) begin
         mtime_ff <= '0;
         mtime_select_ff <= 1'b0;
-    end else begin       
+    end else if(timer_prescaler_ov) begin       
         mtime_ff <= mtime_next;
         mtime_select_ff <= ~mtime_select_ff;
     end
@@ -177,22 +178,17 @@ end
 
 //================================= Timer Prescaler ==================================//
 always_comb begin
-
-    if (timer_prescaler_ff == 7'd80) begin
-        timer_clk_next = ~timer_clk_ff;
+    if (timer_prescaler_ov) begin
         timer_prescaler_next = '0;
     end else begin
-        timer_clk_next = timer_clk_ff;
         timer_prescaler_next = timer_prescaler_ff + 7'd1;
     end
 end
 
 always_ff @(posedge clk, negedge rst_n) begin
     if (~rst_n) begin
-        timer_clk_ff <= '0;
         timer_prescaler_ff <= '0;
     end else begin       
-        timer_clk_ff <= timer_clk_next;
         timer_prescaler_ff <= timer_prescaler_next;
     end
 end
