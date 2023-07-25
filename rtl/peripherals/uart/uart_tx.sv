@@ -7,6 +7,7 @@
 // Author: Shehzeen Malik, UET Lahore
 // Date: 21.01.2022
 
+`timescale 1 ns / 100 ps
 
 `ifndef VERILATOR
 `include "../../defines/uart_defs.svh"
@@ -19,7 +20,7 @@ module uart_tx (
     input logic                             rst_n,                    // reset
     input logic                             clk,                      // clock
 
-    input logic [UART_DATA_SIZE-1:0]        tx_data_i,
+    input logic [`UART_DATA_SIZE-1:0]        tx_data_i,
     input logic [UART_BAUD_DIV_SIZE-1:0]    baud_div_i,
     input logic                             two_stop_bits,
     input logic                             valid_i,
@@ -29,8 +30,8 @@ module uart_tx (
 );
 
 
-logic [UART_BAUD_DIV_SIZE-1:0]              sample_count_ff, sample_count_next = 'b0;
-logic [UART_FRAME_BIT_COUNT-1:0]            bit_count_ff, bit_count_next = 0;
+logic [UART_BAUD_DIV_SIZE-1:0]              sample_count_ff, sample_count_next;
+logic [UART_FRAME_BIT_COUNT-1:0]            bit_count_ff, bit_count_next;
 
 logic [UART_FRAME_BIT_COUNT-1:0]            uart_frame_size;
 logic [UART_SBIT_DATA_SIZE-1:0]             shifter_ff, shifter_next;
@@ -55,7 +56,7 @@ always_comb begin
 end	
 
 // State register synchronous update
-always_ff @ (posedge clk or negedge rst_n) begin
+always_ff @(posedge clk) begin
     if (!rst_n) begin
 	state_ff        <= UART_TX_IDLE;
         sample_count_ff <= '0;

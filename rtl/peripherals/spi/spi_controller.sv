@@ -8,7 +8,7 @@
 // Date: 11.4.2023
 
 
-`timescale 1ns / 1ps
+`timescale 1 ns / 100 ps
  
 `ifndef VERILATOR
 `include "../../defines/spi_defs.svh"
@@ -38,23 +38,24 @@ module spi_controller (
      output logic                              spi_busy,
      
      //signals to datapath
-     input logic                                tx_fifo_empty,
-     output logic                               tx_fifo_read,
-     output logic                               rx_fifo_write,
-     output logic                               spi_clk_o,
-     output logic [11:0]                        clock_cnt_o,
-     output logic [2:0]                         state_ff_o, 
-     output logic [2:0]                         state_next_o
+     input logic                               tx_fifo_empty,
+     output logic                              tx_fifo_read,
+     output logic                              rx_fifo_write,
+     output logic                              spi_clk_o,
+     output logic [11:0]                       clock_cnt_o,
+     output logic [2:0]                        state_ff_o, 
+     output logic [2:0]                        state_next_o
 
 );
     
-logic [8:0]                               c2t_delay,t2c_delay;
+logic [7:0]                               c2t_delay,t2c_delay;
 logic [7:0]                               count_intercs, count_interfr;
-logic [4:0]                               data_cnt;
+logic [3:0]                               data_cnt;
 logic [11:0]                              clock_cnt;
 logic [1:0]                               count_up;
-logic [4:0]                               max_data_count;
+logic [3:0]                               max_data_count;
 logic                                     spi_clk;
+logic                                     spi_clk_edge;
 logic [1:0]                               spi_slave_sel;
 
 // Signals for SPI state machine
@@ -65,8 +66,8 @@ assign max_data_count = spi_clk_phase ? (spi_data_size - 1) : (spi_data_size);
 /*================================= State Machine ========================== */
 
 // Current State register synchronous update
-always_ff @ (posedge clk or negedge rst_n) begin
-    if (!rst_n)
+always_ff @(posedge clk) begin
+    if (~rst_n)
         state_ff <= SPI_ST_IDLE;
     else
         state_ff <= state_next;
@@ -133,20 +134,20 @@ always_comb begin
 end
     
 // Clock count
-always_ff @ (posedge clk or posedge rst_n) begin
-    if (!rst_n)
-       clock_cnt <= 8'h00;
+always_ff @(posedge clk) begin
+    if (~rst_n)
+       clock_cnt <= '0;
     else begin
        if (clock_cnt < spi_clk_period)
-           clock_cnt <= clock_cnt + 8'h01;
+           clock_cnt <= clock_cnt + 'b01;
        else if ((state_ff != state_next) || (clock_cnt == spi_clk_period))
-           clock_cnt <= 8'h00;
+           clock_cnt <= '0;
     end
 end
 
 // Count for one period of clock cycle for delay0,1 regs times
-always_ff @ (posedge clk or negedge rst_n) begin
-    if (!rst_n ) 
+always_ff @(posedge clk) begin
+    if (~rst_n ) 
        count_up  <= 2'b00;
     else begin
        if (clock_cnt == spi_clk_period)
@@ -157,67 +158,70 @@ always_ff @ (posedge clk or negedge rst_n) begin
 end
 
 // Counter for minimum time between deassertion and assertion
-always_ff @(posedge clk or negedge rst_n) begin
-    if(!rst_n)
-        count_intercs <= 8'h00;
+always_ff @(posedge clk) begin
+    if(~rst_n)
+        count_intercs <= '0;
     else begin
         if ((state_ff == SPI_ST_IDLE) && (count_intercs < inter_cs_time)) begin
             if (count_up == 2'b10)
                 count_intercs <= count_intercs + 8'h01;
         end else
-            count_intercs <= 8'h00;
+            count_intercs <= '0;
     end    
 end
 
 // Counter for delay between two frames without deassertion
-always_ff @(posedge clk or negedge rst_n) begin
-    if(!rst_n)
-        count_interfr <= 8'h00;
+always_ff @(posedge clk) begin
+    if(~rst_n)
+        count_interfr <= '0;
     else begin
         if ((state_ff == SPI_ST_TURNAROUND) && (count_interfr < inter_frame_time)) begin
             if (count_up == 2'b10)  
                 count_interfr <= count_interfr + 8'h01;
         end else
-            count_interfr <= 8'h00;
+            count_interfr <= '0;
     end    
 end
 
 // Counter for ss=0 to transmission and transmission to ss=1
-always_ff @ (negedge rst_n or posedge clk) begin
+always_ff @(posedge clk) begin
     if(~rst_n) begin
-        c2t_delay <= 9'h000;
-        t2c_delay <= 9'h000;
+        c2t_delay <= '0;
+        t2c_delay <= '0;
     end else begin
         if ((state_ff == SPI_ST_WAIT) && (c2t_delay < c2t_time)) begin
             if (count_up == 2'b10)
                 c2t_delay <= c2t_delay + 1; 
         end else
-            c2t_delay <= 9'h000;
+            c2t_delay <= '0;
 
         if ((state_ff == SPI_ST_INTERVAL) && (t2c_delay < t2c_time)) begin
             if (count_up == 2'b10)
                 t2c_delay <= t2c_delay + 1;
         end else
-            t2c_delay <= 9'h000;
+            t2c_delay <= '0;
     end
 end    
 
+
+assign spi_clk_edge = ((state_ff == SPI_ST_TRANS) && (clock_cnt == spi_clk_period));
 // Generate SCLK
-always_ff @ (posedge clk or negedge rst_n) begin
-    if (!rst_n || (state_ff != SPI_ST_TRANS))
+always_ff @(posedge clk) begin
+    if (~rst_n || (state_ff != SPI_ST_TRANS))
        spi_clk <= spi_clk_polarity;
     else begin
-       if ((state_ff == SPI_ST_TRANS) && (clock_cnt == spi_clk_period))
+       if (spi_clk_edge)
            spi_clk <= ~spi_clk;
     end
 end
 
+
 // Counter for number of bits transmitted
-always_ff @ (negedge rst_n, posedge spi_clk or negedge spi_clk) begin
+always_ff @(posedge clk) begin
     if(~rst_n) begin
         data_cnt <= '0;
     end else begin
-        if (state_ff == SPI_ST_TRANS) begin
+        if (spi_clk_edge) begin
             if (spi_clk_phase == 0) begin
                 if (spi_clk == spi_clk_polarity && data_cnt <= spi_data_size)
                     data_cnt <= data_cnt + 1; 
@@ -241,8 +245,8 @@ always_comb begin
 end
     
 // Slave select update
-always_ff @ (posedge clk or negedge rst_n) begin
-    if (!rst_n || (state_ff == SPI_ST_IDLE))
+always_ff @(posedge clk) begin
+    if (~rst_n || (state_ff == SPI_ST_IDLE))
         spi_slave_sel <= reg_cs_default_ff;
     else
         spi_slave_sel <= (reg_cs_default_ff ^ reg_cs_id_ff);

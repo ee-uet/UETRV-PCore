@@ -44,7 +44,7 @@ assign icache_miss = if2icache_req_i & imem_sel_i & ~cache_hit_i;
 
 // Cache controller state machine
 always_ff @(posedge clk_i) begin
-  if (!rst_ni) begin
+  if (~rst_ni) begin
       icache_state_ff <= ICACHE_IDLE;
   end else begin
       icache_state_ff <= icache_state_next;
@@ -101,7 +101,7 @@ always_comb begin
 end
 
 always_ff@(posedge clk_i) begin
-  if(!rst_ni) begin
+  if(~rst_ni) begin
       icache2if_ack_o <= '0;
   end else begin
       icache2if_ack_o <= icache2if_ack;

@@ -40,8 +40,8 @@ module mem_top (
 
 `ifdef DRAM
     // DDR memory interface
-    inout wire type_mem2ddr_data_s                  mem2ddr_data_io,
-    output type_mem2ddr_ctrl_s                      mem2ddr_ctrl_o,
+    input wire type_mem2cache_s                     dram2cache_i,
+    output type_cache2mem_s                         cache2dram_o,
 `endif
 
  // Selection signal from address decoder of dbus interconnect 
@@ -267,8 +267,17 @@ mem_arbiter_state_next  = mem_arbiter_state_ff;
        end
 
        MEM_ARBITER_ICACHE: begin
-
-           if (mem2cache.ack) begin
+           
+           if (if2icache.req_kill) begin
+               if (mem2cache.ack) begin
+                      mem2icache.r_data = '0;
+                      mem2icache.ack    = 1'b0;
+                      mem_arbiter_state_next = MEM_ARBITER_IDLE;
+               end else begin
+                   mem_arbiter_state_next = MEM_ARBITER_KILL;
+               end
+               
+           end else if (mem2cache.ack) begin
                mem2icache.r_data = mem2cache.r_data;
                mem2icache.ack    = 1'b1;
                mem_arbiter_state_next = MEM_ARBITER_IDLE;
@@ -282,28 +291,35 @@ mem_arbiter_state_next  = mem_arbiter_state_ff;
            end 
        end
 
+       MEM_ARBITER_KILL: begin
+           if (mem2cache.ack) begin
+               mem2icache.r_data = '0;
+               mem2icache.ack    = 1'b0;
+               mem_arbiter_state_next = MEM_ARBITER_IDLE;
+           end
+       end
+
       default: begin     end
    endcase
  
 end
 
+`ifndef DRAM
 //============================= Main memory interface =============================//
 main_mem main_mem_module (
     .rst_n                  (rst_n),
     .clk                    (clk),
-
-`ifdef DRAM
-    // DDR memory interface
-    .mem2ddr_data_io        (mem2ddr_data_io),
-    .mem2ddr_ctrl_o         (mem2ddr_ctrl_o),
-`endif
-
+    
     // Main memory interface signals 
     .cache2mem_i            (cache2mem),
     .mem2cache_o            (mem2cache)
 
 );
-
+`else
+//============================= DRAM memory interface =============================//
+assign cache2dram_o = cache2mem;
+assign mem2cache = dram2cache_i;
+`endif
 
 // Output signal assignments
 assign icache2if_o  = bmem2if.ack ? bmem2if : icache2if; 

@@ -7,6 +7,7 @@
 // Author: Muhammad Tahir, UET Lahore
 // Date: 11.8.2022
 
+`timescale 1 ns / 100 ps
 
 `ifndef VERILATOR
 `include "../defines/mmu_defs.svh"
@@ -68,7 +69,7 @@ end
 initial
 begin
      // Reading the contents of example imem.txt file to memory variable
-     $readmemh("sdk/example-linux/imem.txt", dualport_memory);  
+    // $readmemh("sdk/example-linux/imem.txt", dualport_memory);  
 end
 `endif
 

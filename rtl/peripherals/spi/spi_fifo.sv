@@ -49,8 +49,8 @@ assign fifo_empty = (data_count == 0);
 assign fifo_full  = (data_count == DEPTH_FIFO[ADDR_FIFO:0]);
 
 // Fifo operation
-always_ff @(posedge clk or negedge rst_n) begin
-    if (!rst_n) begin
+always_ff @(posedge clk) begin
+    if (~rst_n) begin
         read_ptr   <= '0;
         write_ptr  <= '0;
         data_count <= '0;

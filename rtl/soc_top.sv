@@ -8,6 +8,8 @@
 // Author: Muhammad Tahir, UET Lahore
 // Date: 12.06.2023
 
+`timescale 1 ns / 100 ps
+
 `ifndef VERILATOR
 `include "./defines/mmu_defs.svh"
 `include "./defines/plic_defs.svh"

@@ -7,6 +7,7 @@
 // Author: Muhammad Tahir, UET Lahore
 // Date: 11.6.2023
 
+`timescale 1 ns / 100 ps
 
 `ifndef VERILATOR
 `include "../../defines/cache_defs.svh"

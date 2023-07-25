@@ -74,21 +74,21 @@ assign state_next = type_spi_states_e'(state_next_i);
 // ----------------------------
 // Receive data from miso in shift register 
 // ----------------------------
-always @ (negedge rst_n or posedge clk) begin
+always @ (posedge clk) begin
     if(~rst_n)
         rx_shift_data <= 'h0;
     else if ((clock_cnt == spi_clk_period) && (spi_clk_phase == spi_clk) && (state_ff == SPI_ST_TRANS)) begin
         if (spi_shift_direct)
             rx_shift_data <= {miso_r, rx_shift_data[7:1]};
         else
-            rx_shift_data <= {rx_shift_data, miso_r};
+            rx_shift_data <= {rx_shift_data[6:0], miso_r};
     end
 end
 
 // -----------------------
 // Transmit data from mosi 
 // -----------------------
-always @(posedge clk or negedge rst_n) begin
+always @(posedge clk) begin
     if (~rst_n) begin
         mosi_r        <= 1'b0;
         tx_shift_data <= 'b0; 
@@ -98,7 +98,7 @@ always @(posedge clk or negedge rst_n) begin
                 tx_shift_data <= {1'b0, reg_tx_data[7:1]};
             end else begin
                 mosi_r        <= reg_tx_data[7];
-                tx_shift_data <= {reg_tx_data, 1'b0};
+                tx_shift_data <= {reg_tx_data[6:0], 1'b0};
             end
     end else if ((state_ff == SPI_ST_TRANS) && (clock_cnt == spi_clk_period) && (spi_clk_phase ^ spi_clk) ) begin
         if (spi_shift_direct) begin
@@ -106,7 +106,7 @@ always @(posedge clk or negedge rst_n) begin
                 tx_shift_data <= {1'b0, tx_shift_data[7:1]};
         end else begin
                 mosi_r        <= tx_shift_data[7];
-                tx_shift_data <= {tx_shift_data, 1'b0};
+                tx_shift_data <= {tx_shift_data[6:0], 1'b0};
         end
     end
 end

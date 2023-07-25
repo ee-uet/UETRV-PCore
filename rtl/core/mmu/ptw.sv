@@ -31,8 +31,8 @@ module ptw (
     output logic                                   dtlb_update_o,
 
    // MMU <---> Data memory interface
-    input wire type_dcache2mmu_s                     dcache2ptw_i,   
-    output type_mmu2dcache_s                         ptw2dcache_o       
+    input wire type_dcache2mmu_s                   dcache2ptw_i,   
+    output type_mmu2dcache_s                       ptw2dcache_o       
 
 );
 
@@ -77,13 +77,13 @@ assign dcache2ptw = dcache2ptw_i;
 assign pte = type_pte_sv32_s'(r_data_ff);
 
 // Output the physical address directly from PTW 
-assign ptw2dcache.paddr = ptw_paddr_next[`PALEN-1:0];
+assign ptw2dcache.paddr = ptw_paddr_next[`XLEN-1:0];
 assign ptw2dcache.r_req = r_req_next;
     
 // Configure the signals for respective TLB entry update
 assign ptw2tlb.vpn     = vaddr_ff[`VALEN-1:12];
 assign ptw2tlb.page_4M = (ptw_lvl_ff == LEVEL_1);
-assign ptw2tlb.pte     = pte | (gmap_bit_ff << 5);
+assign ptw2tlb.pte     = pte | {26'b0, gmap_bit_ff, 5'b0};
 assign itlb_miss       = mmu2ptw.en_vaddr & mmu2ptw.itlb_req 
                        & ~mmu2ptw.itlb_hit & ~mmu2ptw.dtlb_req;
 
@@ -237,7 +237,7 @@ always_comb begin : ptw_walker
         end
 end : ptw_walker
 
-always_ff @(posedge clk, negedge rst_n) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         ptw_state_ff    <= PTW_IDLE;
         ptw_paddr_ff    <= '0;

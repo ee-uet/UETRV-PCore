@@ -136,7 +136,7 @@ end
 
 // Update PLIC priority registers 
 // ------------------------------
-always_ff @(posedge clk or negedge rst_n) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         plic_reg_prio_ff    <= '0;
     end else begin
@@ -158,7 +158,7 @@ end
 
 // Update PLIC priority threshold registers 
 // ----------------------------------------
-always_ff @(posedge clk or negedge rst_n) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         plic_reg_prio_th_ff    <= '0;
     end else begin
@@ -180,7 +180,7 @@ end
 
 // Update PLIC interrupt enable registers 
 // --------------------------------------
-always_ff @(posedge clk or negedge rst_n) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         plic_reg_ie_ff    <= '0;
     end else begin

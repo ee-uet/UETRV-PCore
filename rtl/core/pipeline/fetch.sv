@@ -113,7 +113,7 @@ end
 
 // Instruction fetch related exceptions including address misaligned, instruction page fault 
 // as well as instruction access fault
-always_ff @(negedge rst_n, posedge clk) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         exc_req_ff  <= '0; 
         exc_code_ff <= EXC_CODE_NO_EXCEPTION;

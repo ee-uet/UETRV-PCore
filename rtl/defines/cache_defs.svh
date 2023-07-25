@@ -76,6 +76,8 @@ parameter DCACHE_IDX_BITS    = $clog2(DCACHE_NO_OF_SETS);
 parameter DCACHE_TAG_BITS    = DCACHE_ADDR_WIDTH - DCACHE_IDX_BITS - DCACHE_OFFSET_BITS; 
 parameter DCACHE_TAG_LSB     = DCACHE_ADDR_WIDTH - DCACHE_TAG_BITS; 
 
+parameter DCACHE_MAX_IDX     = DCACHE_IDX_BITS'(DCACHE_NO_OF_SETS - 1);
+
 typedef enum logic [2:0] {
     DCACHE_IDLE, 
     DCACHE_READ,
@@ -133,7 +135,8 @@ typedef enum logic [1:0] {
 typedef enum logic [1:0] {
     MEM_ARBITER_IDLE    = 2'h0,
     MEM_ARBITER_DCACHE  = 2'h1,
-    MEM_ARBITER_ICACHE  = 2'h2
+    MEM_ARBITER_ICACHE  = 2'h2,
+    MEM_ARBITER_KILL    = 2'h3
 } type_mem_arbiter_states_e;
 
 // Interface signals for cache memory arbiter and main memory

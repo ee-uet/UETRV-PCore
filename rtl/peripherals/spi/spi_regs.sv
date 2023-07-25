@@ -160,7 +160,7 @@ always_comb begin
             SPI_DELAY_0_R  : reg_r_data = {8'b0, reg_delay0_ff[15:8], 8'b0, reg_delay0_ff[7:0]};
             SPI_DELAY_1_R  : reg_r_data = {8'b0, reg_delay1_ff[15:8], 8'b0, reg_delay1_ff[7:0]};
             SPI_FMT_R      : reg_r_data = {12'b0, reg_fmt_ff[7:4], 12'b0, reg_fmt_ff[3:0]};
-            SPI_TXDATA_R   : reg_r_data = {tx_fifo_full, 30'b0};
+            SPI_TXDATA_R   : reg_r_data = {tx_fifo_full, 31'b0};
             SPI_RXDATA_R   : reg_r_data = {rx_fifo_empty, 23'b0, rx_fifo_data};
             SPI_TX_MARK_R  : reg_r_data = {29'b0, reg_tx_mark_ff};
             SPI_RX_MARK_R  : reg_r_data = {29'b0, reg_rx_mark_ff};
@@ -186,8 +186,8 @@ always_comb begin
 end
     
 // Tx fifo write request
-always_ff @(posedge clk or negedge rst_n) begin
-    if (!rst_n)
+always_ff @(posedge clk) begin
+    if (~rst_n)
         tx_fifo_write <= 1'b0;
     else begin
         if (spi_sel_txdata) 
@@ -200,7 +200,7 @@ end
 // ----------------------------
 // Update SPI registers 
 // ----------------------------
-always_ff @ (negedge rst_n , posedge clk) begin
+always_ff @(posedge clk) begin
     if(~rst_n) begin
         reg_sck_div_ff     <= 12'h003; 
         reg_sck_mode_ff    <= 2'b00;

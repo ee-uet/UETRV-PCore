@@ -26,7 +26,7 @@ module bmem (
 localparam BMEM_SIZE          = 406;   // Memory size is in words 
 localparam BMEM_ADDR_BUS_SIZE = $clog2(BMEM_SIZE); 
 
-logic [`XLEN-1:0]                      if2bmem_addr;     
+logic [BMEM_ADDR_BUS_SIZE-1:0]                      if2bmem_addr;     
  
 assign if2bmem_addr = if2bmem_addr_i[BMEM_ADDR_BUS_SIZE+1:2];                                   
  

@@ -240,7 +240,7 @@ always_comb begin
       end
       // Check for rs1 less than rs2 for both signed/unsigned comparisons  
       ALU_I_OPS_SLT : begin
-         alu_result = `XLEN'(cmp_neg ^ cmp_overflow);
+         alu_result = `XLEN'({cmp_neg ^ cmp_overflow});
       end
       ALU_I_OPS_SLTU : begin
          alu_result = `XLEN'(cmp_output[`XLEN]);
@@ -319,8 +319,8 @@ assign exe2csr_data.instr_flushed = id2exe_data.instr_flushed;
 // MT: The register operand below can be routed through ALU for optimization purpose. The 
 // immediate operand can be sent as 5-bit field separately along the data path
 assign exe2csr_data.csr_wdata = (id2exe_ctrl.csr_opr_sel == CSR_OPR_REG)
-                              ? operand_rs1_data            // register operand
-                              : {'0, rs1_addr};             // immediate value
+                              ? operand_rs1_data                                  // register operand
+                              : {{`XLEN-`RF_AWIDTH{1'b0}}, rs1_addr};             // immediate value
 
 // Signals from EXE module for forwarding evaluation
 assign exe2fwd.rs1_addr   = rs1_addr;

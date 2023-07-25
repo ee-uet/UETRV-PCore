@@ -68,8 +68,8 @@ always_comb begin
 end
 
 // Capture the incoming interrupts
-always_ff @(posedge clk, negedge rst_n) begin
-    if (!rst_n) begin 
+always_ff @(posedge clk) begin
+    if (~rst_n) begin 
         irq_src_ff <= '0;
     end else begin
         irq_src_ff <= irq_src_next;
@@ -85,8 +85,8 @@ end
 // IRQ source is responsible to set corresponding interrupt pending bit, which 
 // is cleared by the respective claim request. A second IRQ request from the 
 // same source is ignored till the interrupt has been claimed.
-always_ff @(posedge clk, negedge rst_n) begin
-  if (!rst_n) begin
+always_ff @(posedge clk) begin
+  if (~rst_n) begin
     irq_pending_ff <= '0;
   end else begin
     irq_pending_ff <= irq_pending_next;
@@ -101,8 +101,8 @@ end
 // Interrupt active controls the pending behavior. The pending bit is cleared 
 // by the corresponding claim request, but the setting of pending bit again is
 // postponed till the complete request from the target is received. 
-always_ff @(posedge clk, negedge rst_n) begin
-  if (!rst_n) begin
+always_ff @(posedge clk) begin
+  if (~rst_n) begin
     irq_active_ff <= '0;
   end else begin
     irq_active_ff <= irq_active_next;

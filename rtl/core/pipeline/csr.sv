@@ -165,6 +165,9 @@ logic                            irq_req;
 logic                            meip_irq_req;
 logic                            mtip_irq_req;
 logic                            msip_irq_req;
+logic                            seip_irq_req;
+logic                            stip_irq_req;
+logic                            ssip_irq_req;
 logic                            uart_irq_req;
 logic                            timer_irq_ff;
 logic                            ext_irq0_ff, ext_irq1_ff;
@@ -180,7 +183,6 @@ logic                            m_mode_lsu_pf_exc_req;
 logic                            m_mode_ileg_inst_exc_req;
 logic                            m_mode_i_pf_exc_req;
 logic                            m_mode_break_exc_req;
-logic                            ms_mode_ecall_req;
 logic                            mret_pc_req;
 
 // S-mode interrupt/exception related signals
@@ -210,8 +212,8 @@ logic                            en_vaddr;
 
 // Load-store related signals
 logic [`XLEN-1:0]                ld_st_addr;
-logic                            ld_ops;
-logic                            st_ops;
+type_ld_ops_e                    ld_ops;
+type_st_ops_e                    st_ops;
 logic                            is_ld_st_ops;
 logic                            ld_misalign_exc_req;
 logic                            st_misalign_exc_req;
@@ -228,6 +230,7 @@ logic                            is_not_ecall;
 logic                            satp_mode;
 logic                            csr_vaddr_iflush_req;
 logic                            icache_flush_req;
+logic                            fence_i_req;
 
 // User mode time 
 logic [`XLEN-1:0]                time_low_ff, time_low_next;
@@ -271,7 +274,7 @@ always_comb begin
     end
 end
 
-always_ff @(negedge rst_n, posedge clk) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         time_low_ff  <= '0;
         time_high_ff <= '0; 
@@ -476,7 +479,7 @@ sfence_vma_req = 1'b0;
 end 
 
 // Prepare the PC value for exception handling
-always_ff @(negedge rst_n, posedge clk) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         csr_pc_ff <= '0;
     end else begin
@@ -504,7 +507,7 @@ end
 //=================== Updating cycle and performance counter registers =====================//
 // Update the mcycle (machine cycle counter) CSR 
 // ---------------------------------------------
-always_ff @(negedge rst_n, posedge clk) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         csr_mcycle_ff <= '0;
     end else begin
@@ -528,7 +531,7 @@ end
 
 // Update the mcycleh (machine cycle high counter) CSR 
 // ---------------------------------------------------
-always_ff @(negedge rst_n, posedge clk) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         csr_mcycleh_ff <= '0;
     end else begin
@@ -552,7 +555,7 @@ end
 
 // Update the minstret (machine instruction retire counter) CSR 
 // ------------------------------------------------------------
-always_ff @(negedge rst_n, posedge clk) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         csr_minstret_ff <= '0;
     end else begin
@@ -581,7 +584,7 @@ end
 
 // Update the minstreth (machine instruction retire high counter) CSR 
 // ------------------------------------------------------------------
-always_ff @(negedge rst_n, posedge clk) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         csr_minstreth_ff <= '0;
     end else begin
@@ -606,7 +609,7 @@ end
 
 // Update the mcounteren (machine counter enable) CSR 
 // --------------------------------------------------
-always_ff @(negedge rst_n, posedge clk) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         csr_mcounteren_ff <= '0;
     end else begin
@@ -624,7 +627,7 @@ end
 
 // Update the mcountinhibit (machine counter inhibit) CSR 
 // ------------------------------------------------------
-always_ff @(negedge rst_n, posedge clk) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         csr_mcountinhibit_ff <= '0;
     end else begin
@@ -644,7 +647,7 @@ end
 
 // Update mstatus/sstatus (machine/supervisor status) CSR and privilege mode
 // -------------------------------------------------------------------------
-always_ff @(negedge rst_n, posedge clk) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         csr_mstatus_ff <= {`XLEN{1'b0}}; 
         priv_mode_ff   <= PRIV_MODE_M;
@@ -701,7 +704,7 @@ end
 
 // Update the medeleg (machine exception delegation) CSR 
 // -----------------------------------------------------
-always_ff @(negedge rst_n, posedge clk) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         csr_medeleg_ff <= '0;
     end else begin
@@ -719,7 +722,7 @@ end
 
 // Update the mideleg (machine interrupt delegation) CSR 
 // -----------------------------------------------------
-always_ff @(negedge rst_n, posedge clk) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         csr_mideleg_ff <= '0;
     end else begin
@@ -737,7 +740,7 @@ end
 
 // Update the mie/sie (machine/supervisor interrupt enable) CSR 
 // ------------------------------------------------------------
-always_ff @(negedge rst_n, posedge clk) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         csr_mie_ff <= '0;
     end else begin
@@ -759,7 +762,7 @@ end
 
 // Update the mtvec (machine trap vector) CSR 
 // ------------------------------------------
-always_ff @(negedge rst_n, posedge clk) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         csr_mtvec_ff <= '0;
     end else begin
@@ -787,7 +790,7 @@ end
 
 // Update the stvec (supervisor trap vector) CSR 
 // ---------------------------------------------
-always_ff @(negedge rst_n, posedge clk) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         csr_stvec_ff <= '0;
     end else begin
@@ -815,7 +818,7 @@ end
 
 // Update the mcause (machine (exception/interrupt) cause) CSR 
 // -----------------------------------------------------------
-always_ff @(negedge rst_n, posedge clk) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         csr_mcause_ff <= {`XLEN{1'b0}}; 
     end else begin
@@ -842,7 +845,7 @@ end
 
 // Update the mepc (machine exception pc) CSR 
 // ----------------------------------------------
-always_ff @(negedge rst_n, posedge clk) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         csr_mepc_ff <= {`XLEN{1'b0}}; 
     end else begin
@@ -870,7 +873,7 @@ end
 
 // Update the mip (machine interrupt pending) CSR 
 // ----------------------------------------------
-always_ff @(negedge rst_n, posedge clk) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         csr_mip_ff <= {`XLEN{1'b0}}; 
     end else begin
@@ -896,7 +899,7 @@ end
 
 assign irq_accept_flag = (~fwd2csr.irq_stall) & (~(exe2csr_data.instr_flushed & ~wfi_req));
 
-always_ff @(negedge rst_n, posedge clk) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         ext_irq0_ff  <= 1'b0;
         ext_irq1_ff  <= 1'b0; 
@@ -910,7 +913,7 @@ end
 
 // Update the mscratch (machine scratch) CSR 
 // -----------------------------------------
-always_ff @(negedge rst_n, posedge clk) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         csr_mscratch_ff <= {`XLEN{1'b0}}; 
     end else begin
@@ -929,7 +932,7 @@ end
 
 // Update the mtval (machine trap value) CSR 
 // -----------------------------------------
-always_ff @(negedge rst_n, posedge clk) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         csr_mtval_ff <= {`XLEN{1'b0}}; 
     end else begin
@@ -961,7 +964,7 @@ always_comb begin
         m_mode_i_pf_exc_req : begin
             csr_mtval_next = csr_pc_next;
         end
-        (ms_mode_ecall_req | m_mode_break_exc_req | m_mode_irq_req) : begin
+        (m_mode_break_exc_req | m_mode_irq_req) : begin
             csr_mtval_next = '0;
         end
         csr_mtval_wr_flag      : begin  
@@ -975,7 +978,7 @@ end
 
 // Update the scause (supervisor (exception/interrupt) cause) CSR 
 // -----------------------------------------------------------
-always_ff @(negedge rst_n, posedge clk) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         csr_scause_ff <= {`XLEN{1'b0}}; 
     end else begin
@@ -1002,7 +1005,7 @@ end
 
 // Update the scounteren (supervisor counter enable) CSR 
 // -----------------------------------------------------
-always_ff @(negedge rst_n, posedge clk) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         csr_scounteren_ff <= '0;
     end else begin
@@ -1020,7 +1023,7 @@ end
 
 // Update the sscratch (supervisor scratch) CSR 
 // --------------------------------------------
-always_ff @(negedge rst_n, posedge clk) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         csr_sscratch_ff <= {`XLEN{1'b0}}; 
     end else begin
@@ -1038,7 +1041,7 @@ end
 
 // Update the stval (supervisor trap value) CSR 
 // --------------------------------------------
-always_ff @(negedge rst_n, posedge clk) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         csr_stval_ff <= {`XLEN{1'b0}}; 
     end else begin
@@ -1079,7 +1082,7 @@ end
 
 // Update the sepc (supervisor exception pc) CSR 
 // ----------------------------------------------
-always_ff @(negedge rst_n, posedge clk) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         csr_sepc_ff <= {`XLEN{1'b0}}; 
     end else begin
@@ -1107,7 +1110,7 @@ end
 
 // Update the satp (supervisor address translation and protection) CSR 
 // -------------------------------------------------------------------
-always_ff @(negedge rst_n, posedge clk) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         csr_satp_ff <= {`XLEN{1'b0}}; 
     end else begin
@@ -1136,7 +1139,7 @@ end
 
 // Wait for interrupt (wfi) instruction 
 //-------------------------------------
-always_ff @(negedge rst_n, posedge clk) begin
+always_ff @(posedge clk) begin
     if (~rst_n) begin
         wfi_ff <= 1'b0; 
     end else begin
@@ -1217,10 +1220,9 @@ always_comb begin
 end
 
 // Signals for machine mode exception/interrupt response generation
-assign m_mode_global_ie = ((priv_mode_ff == PRIV_MODE_M) & csr_mstatus_ff.mie) | (priv_mode_ff != PRIV_MODE_M) ; //// to be done
+assign m_mode_global_ie = ((priv_mode_ff == PRIV_MODE_M) & csr_mstatus_ff.mie) | (priv_mode_ff != PRIV_MODE_M) ; 
 assign m_mode_irq_req   = irq_req && ~irq_delegated_req && m_mode_global_ie ;
-// assign ms_mode_ecall_req = ((exc_code == EXC_CODE_ECALL_SMODE) || (exc_code == EXC_CODE_ECALL_MMODE));
-assign m_mode_exc_req   = exc_req && ~exc_delegated_req; // ms_mode_ecall_req;
+assign m_mode_exc_req   = exc_req && ~exc_delegated_req; 
 assign mret_pc_req      = mret_req & ~m_mode_exc_req & ~m_mode_irq_req;
 
 // New pc for machine mode
@@ -1242,8 +1244,8 @@ end
 
 
 // Signals for supervisor mode exception/interrupt response generation
-assign irq_delegated_req = s_irq_req & csr_mideleg_ff[irq_code];
-assign exc_delegated_req = exc_req & csr_medeleg_ff[exc_code];
+assign irq_delegated_req = s_irq_req & csr_mideleg_ff[{1'b0, irq_code}];
+assign exc_delegated_req = exc_req & csr_medeleg_ff[{1'b0, exc_code}];
 
 assign s_mode_enabled   = (priv_mode_ff == PRIV_MODE_S);
 assign u_mode_ecall_req = (exc_code == EXC_CODE_ECALL_UMODE);

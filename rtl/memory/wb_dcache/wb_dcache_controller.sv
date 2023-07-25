@@ -7,6 +7,7 @@
 // Author: Muhammad Tahir, UET Lahore
 // Date: 11.6.2023
 
+`timescale 1 ns / 100 ps
 
 `ifndef VERILATOR
 `include "../../defines/cache_defs.svh"
@@ -65,7 +66,7 @@ assign dcache_evict = cache_evict_req_i;
 
 // Cache controller state machine
 always_ff @(posedge clk_i) begin
-  if (!rst_ni) begin
+  if (~rst_ni) begin
       dcache_state_ff <= DCACHE_IDLE;
       evict_index_ff  <= '0;
   end else begin
@@ -158,7 +159,7 @@ always_comb begin
                 cache_wrb_req     = 1'b1;
             end else begin 
                 evict_index_next = evict_index_ff + 1;
-                if (evict_index_ff == (DCACHE_NO_OF_SETS - 1)) begin
+                if (evict_index_ff == DCACHE_MAX_IDX) begin
                     dcache_state_next = DCACHE_FLUSH_DONE;
                 //    dcache2lsummu_ack = 1'b1;
                     evict_index_next  = '0;
