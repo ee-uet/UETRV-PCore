@@ -65,7 +65,7 @@
 `define BMEM_SEL_ADDR_LOW            12
 
 //`define DRAM                         1
-`define RTL_SIMULATION               1 
+//`define RTL_SIMULATION               1 
 
 // Pipeline stage definitions
 `define IF2ID_PIPELINE_STAGE         1
