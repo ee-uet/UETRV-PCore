@@ -12,14 +12,18 @@
 `define CACHE_DEFS
 
 `include "pcore_interface_defs.svh"
+`include "pcore_config_defs.svh"
 `include "mmu_defs.svh"
 
 //=========================== Instruction Cache related definitions ===========================//
 parameter ICACHE_ADDR_WIDTH  = `XLEN;
 parameter ICACHE_DATA_WIDTH  = `XLEN;
 parameter ICACHE_LINE_WIDTH  = 128;            // Line width is in bits
-//parameter ICACHE_NO_OF_SETS  = 128;
-parameter ICACHE_NO_OF_SETS  = 2;
+`ifndef FPGA
+parameter ICACHE_NO_OF_SETS  = 128;
+`else
+parameter ICACHE_NO_OF_SETS  = 16;
+`endif
 
 parameter ICACHE_OFFSET_BITS = $clog2(ICACHE_LINE_WIDTH/8);
 parameter ICACHE_IDX_BITS    = $clog2(ICACHE_NO_OF_SETS); 

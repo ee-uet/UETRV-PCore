@@ -50,10 +50,19 @@
 `define IMEM_SIZE                    24'hFFFFFF
 `define IMEM_INST_REQ                1
 
-`define BMEM_SIZE                    512
+`define FPGA                         1
+//`define DRAM                         1
+//`define RTL_SIMULATION               1 
 
+`ifndef FPGA
+`define BMEM_SIZE                    4096
+`define IDMEM_SIZE                   'h3FFFFFF
+`define MEM_ADDR_WIDTH               26
+`else
+`define BMEM_SIZE                    512
 `define IDMEM_SIZE                   28'h400
 `define MEM_ADDR_WIDTH               28
+`endif
 
 `define DMEM_SEL_ADDR_HIGH           31
 `define DMEM_SEL_ADDR_LOW            28
@@ -64,8 +73,6 @@
 `define BMEM_SEL_ADDR_HIGH           31
 `define BMEM_SEL_ADDR_LOW            12
 
-`define DRAM                         1
-//`define RTL_SIMULATION               1 
 
 // Pipeline stage definitions
 `define IF2ID_PIPELINE_STAGE         1
