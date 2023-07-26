@@ -231,7 +231,7 @@ decode decode_module (
 type_id2exe_data_s                      id2exe_data_pipe_ff;
 type_id2exe_ctrl_s                      id2exe_ctrl_pipe_ff;
 
-always_ff @(posedge clk) begin
+ always_ff @(posedge clk) begin
     if (~rst_n) begin
         id2exe_data_pipe_ff <= '0;
         id2exe_ctrl_pipe_ff <= '0;
@@ -441,7 +441,7 @@ type_lsu2wrb_ctrl_s                     lsu2wrb_ctrl_pipe_ff;
 type_csr2wrb_data_s                     csr2wrb_data_pipe_ff;
 type_mul2wrb_s                          mul2wrb_pipe_ff;
 
-always_ff @(posedge clk) begin
+ always_ff @(posedge clk) begin
     if (~rst_n) begin
         lsu2wrb_data_pipe_ff <= '0;
         lsu2wrb_ctrl_pipe_ff <= '0;

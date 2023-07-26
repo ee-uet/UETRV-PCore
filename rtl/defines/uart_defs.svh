@@ -13,15 +13,15 @@
 
 `include "pcore_interface_defs.svh"
 
-`define UART_DATA_SIZE                        8
-localparam int unsigned UART_DATA_BIT_COUNT = $clog2(`UART_DATA_SIZE);
+localparam int unsigned UART_DATA_SIZE      = 8;
+localparam int unsigned UART_DATA_BIT_COUNT = $clog2(UART_DATA_SIZE);
 localparam int unsigned UART_BAUD_DIV_SIZE  = 8;
 localparam int unsigned UART_1STOP_BIT      = 1;
 localparam int unsigned UART_2STOP_BITS     = 2;
 localparam int unsigned UART_OVERSAMPLE     = 2;
 
   
-localparam UART_SBIT_DATA_SIZE   = `UART_DATA_SIZE + 1;
+localparam UART_SBIT_DATA_SIZE   = UART_DATA_SIZE + 1;
 localparam UART_8DATA_1STOP_BITS = UART_SBIT_DATA_SIZE + 1;
 localparam UART_8DATA_2STOP_BITS = UART_SBIT_DATA_SIZE + 2;
 localparam UART_FRAME_BIT_COUNT  = $clog2(UART_SBIT_DATA_SIZE + UART_2STOP_BITS);

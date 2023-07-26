@@ -49,7 +49,7 @@ assign icache_wr_buff.valid     = 1'b1;
 assign icache_wr_buff.data_line = mem2icache_data_i;
 
 always_ff@(posedge clk_i) begin
-   if(~rst_ni) begin
+   if(!rst_ni) begin
         icache2if_data_ff <= '0;
     end else begin
         icache2if_data_ff <= icache2if_data_next;
@@ -73,7 +73,7 @@ assign icache_rd_buf.data_line = icache[addr_index].data_line ;
 
 
 always_ff @(posedge clk_i) begin
-    if (~rst_ni || icache_flush) begin
+    if (!rst_ni || icache_flush) begin
         for (integer i = 0; i < (ICACHE_NO_OF_SETS); i = i + 1) begin
             icache[i].tag       = {ICACHE_TAG_BITS{1'b0}};
          //   icache[i].data_line = {ICACHE_LINE_WIDTH{1'b0}};

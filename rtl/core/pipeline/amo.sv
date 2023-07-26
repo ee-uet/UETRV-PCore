@@ -139,8 +139,8 @@ always_comb begin
 end
 
 // State machine for different AMO operations
-always_ff @(posedge clk) begin
-    if (~rst_n | lsu2amo_ctrl.amo_flush) begin
+always_ff @ (posedge clk or negedge rst_n) begin
+    if (!rst_n | lsu2amo_ctrl.amo_flush) begin
         state     <= AMO_IDLE;
         sc_wrb_ff <= '0;
     end else begin
@@ -229,7 +229,7 @@ always_comb begin
 end
 
 // Single AMO buffer for load reserve  
-always_ff @(posedge clk) begin 
+always_ff @( posedge clk or negedge rst_n) begin 
    if (~rst_n | (is_sc & amo_done)) begin
       amo_buffer_addr_ff <= '0;
       amo_reserve_ff     <= '0;
@@ -241,7 +241,7 @@ always_ff @(posedge clk) begin
 end
  
 // Buffering of AMO operand
-always_ff @(posedge clk) begin 
+always_ff @( posedge clk ) begin 
    if (~rst_n)
       amo_operand_a_ff <= '0;
    else if(ld_req & lsu2amo_ctrl.ack)

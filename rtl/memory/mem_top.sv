@@ -270,9 +270,9 @@ mem_arbiter_state_next  = mem_arbiter_state_ff;
            
            if (if2icache.req_kill) begin
                if (mem2cache.ack) begin
-                      mem2icache.r_data = '0;
-                      mem2icache.ack    = 1'b0;
-                      mem_arbiter_state_next = MEM_ARBITER_IDLE;
+                   mem2icache.r_data = '0;
+                   mem2icache.ack    = 1'b0;
+                   mem_arbiter_state_next = MEM_ARBITER_IDLE;
                end else begin
                    mem_arbiter_state_next = MEM_ARBITER_KILL;
                end

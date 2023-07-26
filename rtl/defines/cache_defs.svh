@@ -18,7 +18,8 @@
 parameter ICACHE_ADDR_WIDTH  = `XLEN;
 parameter ICACHE_DATA_WIDTH  = `XLEN;
 parameter ICACHE_LINE_WIDTH  = 128;            // Line width is in bits
-parameter ICACHE_NO_OF_SETS  = 128;
+//parameter ICACHE_NO_OF_SETS  = 128;
+parameter ICACHE_NO_OF_SETS  = 2;
 
 parameter ICACHE_OFFSET_BITS = $clog2(ICACHE_LINE_WIDTH/8);
 parameter ICACHE_IDX_BITS    = $clog2(ICACHE_NO_OF_SETS); 
@@ -75,8 +76,6 @@ parameter DCACHE_OFFSET_BITS = $clog2(DCACHE_LINE_WIDTH/8);
 parameter DCACHE_IDX_BITS    = $clog2(DCACHE_NO_OF_SETS); 
 parameter DCACHE_TAG_BITS    = DCACHE_ADDR_WIDTH - DCACHE_IDX_BITS - DCACHE_OFFSET_BITS; 
 parameter DCACHE_TAG_LSB     = DCACHE_ADDR_WIDTH - DCACHE_TAG_BITS; 
-
-parameter DCACHE_MAX_IDX     = DCACHE_IDX_BITS'(DCACHE_NO_OF_SETS - 1);
 
 typedef enum logic [2:0] {
     DCACHE_IDLE, 

@@ -58,8 +58,7 @@ type_clint2csr_s                        clint2csr;
 
 // Timer prescaler
 logic [6:0]                             timer_prescaler_ff, timer_prescaler_next;
-logic                                   timer_prescaler_overflow;
-
+logic                                   timer_prescaler_ov;
 	
 //============================ Memory mapped timer register read operations =============================//
 always_comb begin
@@ -128,16 +127,18 @@ always_comb begin
         mtime_next[31:0] = w_data;
     end else if (mtime_hi_wr_flag) begin
         mtime_next[63:32] = w_data;
-    end else if (timer_prescaler_overflow) begin
+    end else begin
         mtime_next = mtime_ff + 1'b1;
     end
 end
 
-always_ff @(posedge clk) begin
+assign timer_prescaler_ov = timer_prescaler_ff == (`CLINT_ADDR_WIDTH - 1);
+
+always_ff @(posedge clk, negedge rst_n) begin
     if (~rst_n) begin
         mtime_ff <= '0;
         mtime_select_ff <= 1'b0;
-    end else begin       
+    end else if(timer_prescaler_ov) begin       
         mtime_ff <= mtime_next;
         mtime_select_ff <= ~mtime_select_ff;
     end
@@ -155,7 +156,7 @@ always_comb begin
     end 
 end
 
-always_ff @(posedge clk) begin
+always_ff @(posedge clk, negedge rst_n) begin
     if (~rst_n) begin
         mtimecmp_ff <= '0;
     end else begin       
@@ -167,7 +168,7 @@ end
 // Timer interrupt generation
 assign timer_overflow_next = (mtime_ff >= mtimecmp_ff);
 
-always_ff @(posedge clk) begin
+always_ff @(posedge clk, negedge rst_n) begin
     if (~rst_n) begin
         timer_overflow_ff <= '0;
     end else begin       
@@ -176,18 +177,15 @@ always_ff @(posedge clk) begin
 end
 
 //================================= Timer Prescaler ==================================//
-assign timer_prescaler_overflow = (timer_prescaler_ff == `CLINT_PRESCALER);
-
 always_comb begin
-
-    if (timer_prescaler_overflow) begin
+    if (timer_prescaler_ov) begin
         timer_prescaler_next = '0;
     end else begin
         timer_prescaler_next = timer_prescaler_ff + 7'd1;
     end
 end
 
-always_ff @(posedge clk) begin
+always_ff @(posedge clk, negedge rst_n) begin
     if (~rst_n) begin
         timer_prescaler_ff <= '0;
     end else begin       

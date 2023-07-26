@@ -13,9 +13,6 @@
 
 `include "pcore_interface_defs.svh"
 
-`define WIDTH                        $clog2(`XLEN)
-`define MAX_COUNT                    `WIDTH'(`XLEN-1)
-
 typedef struct packed {                            
     logic [`XLEN-1:0]                alu_operand_1;     
     logic [`XLEN-1:0]                alu_operand_2; 

@@ -36,7 +36,7 @@ module uart_ns (
 
 
 // Signal definitions for Dbus interface
-logic [3:0]                             reg_addr;
+logic [5:0]                             reg_addr;
 logic                                   reg_rd_req;
 logic                                   reg_wr_req;
 	
@@ -47,18 +47,18 @@ logic 					tx_ready;
 logic                                   rx_valid;
 logic                                   frame_err;
 
-logic [`UART_DATA_SIZE-1:0]              uart_rx_byte;
-logic [`UART_DATA_SIZE-1:0] 	        uart_tx_byte;
+logic [UART_DATA_SIZE-1:0]              uart_rx_byte;
+logic [UART_DATA_SIZE-1:0] 	        uart_tx_byte;
 logic                                   two_stop_bits;
 
-logic [`UART_DATA_SIZE-1:0]              uart_reg_rx_ff, uart_reg_rx_next;	
-logic [`UART_DATA_SIZE-1:0]              uart_reg_tx_ff, uart_reg_tx_next;
-logic [`UART_DATA_SIZE-1:0]              uart_reg_baud_ff, uart_reg_baud_next;
-logic [`UART_DATA_SIZE-1:0]              uart_reg_lctrl_ff, uart_reg_lctrl_next;
-logic [`UART_DATA_SIZE-1:0]              uart_reg_ie_ff, uart_reg_ie_next;
-logic [`UART_DATA_SIZE-1:0]              uart_reg_lstatus_ff, uart_reg_lstatus_next;
-// logic [`UART_DATA_SIZE-1:0]              uart_reg_is_ff, uart_reg_is_next;
-logic [`UART_DATA_SIZE-1:0]              uart_reg_scratch_ff, uart_reg_scratch_next;
+logic [UART_DATA_SIZE-1:0]              uart_reg_rx_ff, uart_reg_rx_next;	
+logic [UART_DATA_SIZE-1:0]              uart_reg_tx_ff, uart_reg_tx_next;
+logic [UART_DATA_SIZE-1:0]              uart_reg_baud_ff, uart_reg_baud_next;
+logic [UART_DATA_SIZE-1:0]              uart_reg_lctrl_ff, uart_reg_lctrl_next;
+logic [UART_DATA_SIZE-1:0]              uart_reg_ie_ff, uart_reg_ie_next;
+logic [UART_DATA_SIZE-1:0]              uart_reg_lstatus_ff, uart_reg_lstatus_next;
+// logic [UART_DATA_SIZE-1:0]              uart_reg_is_ff, uart_reg_is_next;
+logic [UART_DATA_SIZE-1:0]              uart_reg_scratch_ff, uart_reg_scratch_next;
    
 // Register address decoding signals
 logic                                   fifoctrl_reg_wr_flag;
@@ -70,7 +70,7 @@ logic                                   lctrl_reg_wr_flag;
 logic                                   scratch_reg_wr_flag; 
 	
 // Read and write signals for UART registers
-logic [`UART_DATA_SIZE-1:0]              reg_r_data; 
+logic [UART_DATA_SIZE-1:0]              reg_r_data; 
 logic [`XLEN-1:0]                       reg_w_data;
 	
 //================================= UART register read operations ==================================//
@@ -182,7 +182,7 @@ end
 
 always_comb begin 
     if (baud_reg_wr_flag) begin
-        uart_reg_baud_next = reg_w_data[7:0];          
+        uart_reg_baud_next = reg_w_data;         
     end else begin                         
         uart_reg_baud_next = uart_reg_baud_ff;         
     end       
@@ -200,7 +200,7 @@ end
 
 always_comb begin 
     if (scratch_reg_wr_flag) begin
-        uart_reg_scratch_next = reg_w_data[7:0];          
+        uart_reg_scratch_next = reg_w_data;         
     end else begin                         
         uart_reg_scratch_next = uart_reg_scratch_ff;         
     end       
@@ -277,8 +277,8 @@ end
 type_peri2dbus_s                      uart2dbus_ff;
 
 // Signal interface to Wishbone bus
-assign reg_addr   = type_uart_ns_regs_e'(dbus2uart_i.addr[5:2]);
-assign reg_w_data = {{`XLEN-`UART_DATA_SIZE{1'b0}}, dbus2uart_i.w_data[7:0]};
+assign reg_addr   = type_uart_ns_regs_e'(dbus2uart_i.addr[4:2]);
+assign reg_w_data = dbus2uart_i.w_data[7:0];
 assign reg_rd_req = !dbus2uart_i.w_en && dbus2uart_i.req && uart_ns_sel_i;
 assign reg_wr_req = dbus2uart_i.w_en  && dbus2uart_i.req && uart_ns_sel_i;
 
@@ -288,7 +288,7 @@ always_ff @(posedge clk) begin
     if ((reg_wr_req | reg_rd_req) &  ~uart2dbus_ff.ack) begin
             uart2dbus_ff.ack <= 1'b1;
         if (reg_rd_req)
-            uart2dbus_ff.r_data <= {{`XLEN-`UART_DATA_SIZE{1'b0}}, reg_r_data};  
+            uart2dbus_ff.r_data <= {24'b0, reg_r_data};  
         
     end  
 end  

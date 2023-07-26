@@ -7,7 +7,6 @@
 // Author: Muhammad Tahir, UET Lahore
 // Date: 11.6.2023
 
-`timescale 1 ns / 100 ps
 
 `ifndef VERILATOR
 `include "../../defines/cache_defs.svh"
@@ -113,7 +112,7 @@ end
 
 
 always_ff @(posedge clk_i) begin
-    if (~rst_ni ) begin // || dcache_flush_i
+    if (!rst_ni ) begin // || dcache_flush_i
         for (integer i = 0; i < (DCACHE_NO_OF_SETS); i = i + 1) begin
          //   cache_tag_ram[i].tag   = {DCACHE_TAG_BITS{1'b0}};
             cache_tag_ram[i].valid = 1'b0;
@@ -147,7 +146,7 @@ end
 assign dcache2lsummu_data_next = cache_word_read;
 
 always_ff@(posedge clk_i) begin
-   if(~rst_ni) begin
+   if(!rst_ni) begin
         dcache2lsummu_data_ff <= '0;
     end else begin
         dcache2lsummu_data_ff <= dcache2lsummu_data_next;

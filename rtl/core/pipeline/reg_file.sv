@@ -54,7 +54,7 @@ assign  rf2id_rs2_data_o = (rs2_addr_valid)
                          : '0;
 
 // Write operation is performed on the negative edge
-always_ff @(negedge clk) begin
+always_ff @( negedge clk) begin
     if (~rst_n) begin
         register_file <= '{default: '0};
     end else if (rf_wr_valid) begin

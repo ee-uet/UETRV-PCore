@@ -19,3 +19,4 @@ transcript
 *_work/
 sim_build/
 __pycache__/
+fpga-nexys-a7/logs

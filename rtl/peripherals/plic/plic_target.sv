@@ -57,7 +57,7 @@ always_comb begin
     end 
 end
 
-always_ff @(posedge clk) begin
+always_ff @(posedge clk, negedge rst_n) begin
     if (!rst_n) begin
         irq_req_ff <= 1'b0;
         irq_idx_ff <= '0;

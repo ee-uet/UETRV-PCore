@@ -59,23 +59,23 @@ module divider (
             quo_ff  <= 0;
             rem_ff  <= 0;
         end else if (busy_ff) begin
-            if (counter == `MAX_COUNT) begin                // Check the counter for completion 
+            if (counter == `XLEN-1) begin        // Check the counter for completion 
                 busy_ff <= 0;
                 done_ff <= 1;
                 quo_ff  <= quo_next;
-                rem_ff  <= {1'b0, acc_next[`XLEN:1]};    // undo final shift
-            end else begin                               // next iteration
+                rem_ff  <= acc_next[`XLEN:1];    // undo final shift
+            end else begin                       // next iteration
                 counter <= counter + 1;
                 acc_ff  <= acc_next;
                 quo_ff  <= quo_next;
             end
         end else if (start_i) begin
             counter <= 0;
-            if (opr2_i == 0) begin                       // handle divide by zero
+            if (opr2_i == 0) begin               // handle divide by zero
                 busy_ff <= 0;
                 done_ff <= 1;
                 quo_ff  <= {32{1'b1}};
-                rem_ff  <= {1'b0, opr1_i};
+                rem_ff  <= opr1_i;
             end else begin
                 busy_ff <= 1;
                 opr2_ff <= opr2_i;
@@ -85,7 +85,7 @@ module divider (
     end
 
 
-assign rem_o  = rem_ff[`XLEN-1:0];
+assign rem_o  = rem_ff;
 assign quo_o  = quo_ff;
 assign done_o = done_ff;
 

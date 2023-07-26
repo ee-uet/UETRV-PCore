@@ -43,7 +43,7 @@ type_if2mmu_s                        if2mmu;
 type_mmu2if_s                        mmu2if;
 
 type_dcache2mmu_s                    dcache2mmu;
-type_mmu2dcache_s                    mmu2dcache;
+type_mmu2dcache_s                      mmu2dcache;
 
 // Local signals
 type_mmu2ptw_s                       mmu2ptw;
@@ -54,7 +54,6 @@ type_tlb2mmu_s                       itlb2mmu, dtlb2mmu;
 
 type_ptw2tlb_s                       ptw2tlb;
 logic                                itlb_update;
-logic                                dtlb_update;
 
 logic                                ld_page_fault;
 logic                                st_page_fault; 
