@@ -9,13 +9,11 @@
 
 
 `ifndef VERILATOR
-`include "../defines/pcore_config_defs.svh"
 `include "../defines/mmu_defs.svh"
 `include "../defines/cache_defs.svh"
 `include "../defines/ddr_defs.svh"
 `else
 `include "mmu_defs.svh"
-`include "pcore_config_defs.svh"
 `include "cache_defs.svh"
 `include "ddr_defs.svh"
 `endif

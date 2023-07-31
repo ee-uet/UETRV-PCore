@@ -296,7 +296,13 @@ mem_arbiter_state_next  = mem_arbiter_state_ff;
                mem2icache.r_data = '0;
                mem2icache.ack    = 1'b0;
                mem_arbiter_state_next = MEM_ARBITER_IDLE;
-           end
+           end else begin
+               mem_arbiter_state_next = MEM_ARBITER_KILL;
+               cache2mem.addr   = icache2mem.addr;
+               cache2mem.w_data = '0;             
+               cache2mem.w_en   = '0;
+               cache2mem.req    = 1'b1;
+           end 
        end
 
       default: begin     end

@@ -20,3 +20,6 @@ transcript
 sim_build/
 __pycache__/
 fpga-nexys-a7/logs
+sdk/boot_mem_uart_fpga/build
+sdk/boot_mem_uart_fpga/debug
+
