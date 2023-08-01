@@ -19,4 +19,4 @@ riscv64-unknown-elf-objdump -S -s build/main.elf > build/main.dump
 
 # python make_bin.py imem1.bin 
 
-cp build/bmem.sv ../../fpga-shells/AXI_new/AXI_new.srcs/sources_1/imports/rtl/memory/bmem.sv
+cp build/bmem.sv ../../rtl/memory
