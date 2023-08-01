@@ -22,4 +22,5 @@ __pycache__/
 fpga-nexys-a7/logs
 sdk/boot_mem_uart_fpga/build
 sdk/boot_mem_uart_fpga/debug
+fpga-nexys-a7/fpga-nexys-a7.runs
 
