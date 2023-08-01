@@ -2,19 +2,22 @@
 # Vivado v2022.1 (64-bit)
 # SW Build 3526262 on Mon Apr 18 15:47:01 MDT 2022
 # IP Build 3524634 on Mon Apr 18 20:55:01 MDT 2022
-# Start of session at: Wed Jul 26 13:45:28 2023
-# Process ID: 218299
+# Start of session at: Tue Aug  1 13:39:55 2023
+# Process ID: 24216
 # Current directory: /home/uetlhr/Documents/UETRV-PCore/fpga-nexys-a7/fpga-nexys-a7.runs/synth_1
 # Command line: vivado -log top.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source top.tcl
 # Log file: /home/uetlhr/Documents/UETRV-PCore/fpga-nexys-a7/fpga-nexys-a7.runs/synth_1/top.vds
 # Journal file: /home/uetlhr/Documents/UETRV-PCore/fpga-nexys-a7/fpga-nexys-a7.runs/synth_1/vivado.jou
-# Running On: UETLHR, OS: Linux, CPU Frequency: 2295.788 MHz, CPU Physical cores: 32, Host memory: 201206 MB
+# Running On: UETLHR, OS: Linux, CPU Frequency: 999.932 MHz, CPU Physical cores: 32, Host memory: 201206 MB
 #-----------------------------------------------------------
 source top.tcl -notrace
-create_project: Time (s): cpu = 00:00:08 ; elapsed = 00:00:06 . Memory (MB): peak = 2725.684 ; gain = 7.957 ; free physical = 140679 ; free virtual = 300249
+create_project: Time (s): cpu = 00:00:08 ; elapsed = 00:00:06 . Memory (MB): peak = 2725.680 ; gain = 7.957 ; free physical = 153253 ; free virtual = 308129
 INFO: [IP_Flow 19-234] Refreshing IP repositories
 INFO: [IP_Flow 19-1704] No user IP repositories specified
 INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/uetlhr/Xilinx/Vivado/2022.1/data/ip'.
+Command: read_checkpoint -auto_incremental -incremental /home/uetlhr/Documents/UETRV-PCore/fpga-nexys-a7/fpga-nexys-a7.srcs/utils_1/imports/synth_1/top.dcp
+INFO: [Vivado 12-5825] Read reference checkpoint from /home/uetlhr/Documents/UETRV-PCore/fpga-nexys-a7/fpga-nexys-a7.srcs/utils_1/imports/synth_1/top.dcp for incremental synthesis
+INFO: [Vivado 12-7989] Please ensure there are no constraint changes
 Command: synth_design -top top -part xc7a100tcsg324-1
 Starting synth_design
 Attempting to get a license for feature 'Synthesis' and/or device 'xc7a100t'
@@ -22,13 +25,13 @@ INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a100
 INFO: [Device 21-403] Loading part xc7a100tcsg324-1
 INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 4 processes.
 INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
-INFO: [Synth 8-7075] Helper process launched with PID 218397
+INFO: [Synth 8-7075] Helper process launched with PID 24401
 WARNING: [Synth 8-9501] generate block is allowed only inside loop and conditional generate in SystemVerilog mode [/home/uetlhr/Xilinx/Vivado/2022.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:4023]
 WARNING: [Synth 8-9501] generate block is allowed only inside loop and conditional generate in SystemVerilog mode [/home/uetlhr/Documents/UETRV-PCore/bd/nexys_shell/ipshared/f0b6/hdl/sc_util_v1_0_vl_rfs.sv:2831]
 WARNING: [Synth 8-9501] generate block is allowed only inside loop and conditional generate in SystemVerilog mode [/home/uetlhr/Documents/UETRV-PCore/bd/nexys_shell/ipshared/f0b6/hdl/sc_util_v1_0_vl_rfs.sv:2899]
 WARNING: [Synth 8-9187] begin/end is required for generate-for in this mode of verilog [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_arb_row_col.v:253]
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:07 ; elapsed = 00:00:08 . Memory (MB): peak = 2725.695 ; gain = 0.000 ; free physical = 139831 ; free virtual = 299401
+Starting RTL Elaboration : Time (s): cpu = 00:00:07 ; elapsed = 00:00:08 . Memory (MB): peak = 2725.691 ; gain = 0.000 ; free physical = 151972 ; free virtual = 307259
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-6157] synthesizing module 'top' [/home/uetlhr/Documents/UETRV-PCore/fpga-nexys-a7/srcs/top.sv:24]
 INFO: [Synth 8-6157] synthesizing module 'PLLE2_BASE' [/home/uetlhr/Xilinx/Vivado/2022.1/scripts/rt/data/unisim_comp.v:89475]
@@ -106,12 +109,12 @@ INFO: [Synth 8-6157] synthesizing module 'dbus_interconnect' [/home/uetlhr/Docum
 INFO: [Synth 8-226] default block is never used [/home/uetlhr/Documents/UETRV-PCore/rtl/interconnect/dbus_interconnect.sv:100]
 INFO: [Synth 8-226] default block is never used [/home/uetlhr/Documents/UETRV-PCore/rtl/interconnect/dbus_interconnect.sv:122]
 INFO: [Synth 8-6155] done synthesizing module 'dbus_interconnect' (0#1) [/home/uetlhr/Documents/UETRV-PCore/rtl/interconnect/dbus_interconnect.sv:17]
-INFO: [Synth 8-6157] synthesizing module 'uart' [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:19]
+INFO: [Synth 8-6157] synthesizing module 'uart' [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:20]
 INFO: [Synth 8-6157] synthesizing module 'uart_tx' [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart_tx.sv:17]
 INFO: [Synth 8-6155] done synthesizing module 'uart_tx' (0#1) [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart_tx.sv:17]
 INFO: [Synth 8-6157] synthesizing module 'uart_rx' [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart_rx.sv:17]
 INFO: [Synth 8-6155] done synthesizing module 'uart_rx' (0#1) [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart_rx.sv:17]
-INFO: [Synth 8-6155] done synthesizing module 'uart' (0#1) [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:19]
+INFO: [Synth 8-6155] done synthesizing module 'uart' (0#1) [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:20]
 INFO: [Synth 8-6157] synthesizing module 'uart_ns' [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart_ns/uart_ns.sv:18]
 INFO: [Synth 8-6157] synthesizing module 'uart_ns_tx' [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart_ns/uart_ns_tx.sv:16]
 INFO: [Synth 8-6155] done synthesizing module 'uart_ns_tx' (0#1) [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart_ns/uart_ns_tx.sv:16]
@@ -154,9 +157,6 @@ INFO: [Synth 8-294] found qualifier unique on case statement: implementing as pa
 INFO: [Synth 8-6155] done synthesizing module 'wb_dcache_datapath' (0#1) [/home/uetlhr/Documents/UETRV-PCore/rtl/memory/wb_dcache/wb_dcache_datapath.sv:17]
 INFO: [Synth 8-6155] done synthesizing module 'wb_dcache_top' (0#1) [/home/uetlhr/Documents/UETRV-PCore/rtl/memory/wb_dcache/wb_dcache_top.sv:17]
 INFO: [Synth 8-226] default block is never used [/home/uetlhr/Documents/UETRV-PCore/rtl/memory/mem_top.sv:233]
-INFO: [Synth 8-6157] synthesizing module 'main_mem' [/home/uetlhr/Documents/UETRV-PCore/rtl/memory/main_mem.sv:23]
-CRITICAL WARNING: [Synth 8-4445] could not open $readmem data file 'sdk/example-linux/imem.txt'; please make sure the file is added to project and has read permission, ignoring [/home/uetlhr/Documents/UETRV-PCore/rtl/memory/main_mem.sv:63]
-INFO: [Synth 8-6155] done synthesizing module 'main_mem' (0#1) [/home/uetlhr/Documents/UETRV-PCore/rtl/memory/main_mem.sv:23]
 INFO: [Synth 8-6155] done synthesizing module 'mem_top' (0#1) [/home/uetlhr/Documents/UETRV-PCore/rtl/memory/mem_top.sv:22]
 INFO: [Synth 8-6157] synthesizing module 'spi_top' [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/spi/spi_top.sv:20]
 INFO: [Synth 8-6157] synthesizing module 'spi_controller' [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/spi/spi_controller.sv:19]
@@ -647,8 +647,9 @@ INFO: [Synth 8-6155] done synthesizing module 'OBUF' (0#1) [/home/uetlhr/Xilinx/
 INFO: [Synth 8-6157] synthesizing module 'OBUFT' [/home/uetlhr/Xilinx/Vivado/2022.1/scripts/rt/data/unisim_comp.v:71571]
 INFO: [Synth 8-6155] done synthesizing module 'OBUFT' (0#1) [/home/uetlhr/Xilinx/Vivado/2022.1/scripts/rt/data/unisim_comp.v:71571]
 INFO: [Synth 8-6157] synthesizing module 'IOBUF_INTERMDISABLE' [/home/uetlhr/Xilinx/Vivado/2022.1/scripts/rt/data/unisim_comp.v:60376]
-INFO: [Common 17-14] Message 'Synth 8-6157' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
 INFO: [Synth 8-6155] done synthesizing module 'IOBUF_INTERMDISABLE' (0#1) [/home/uetlhr/Xilinx/Vivado/2022.1/scripts/rt/data/unisim_comp.v:60376]
+INFO: [Synth 8-6157] synthesizing module 'IOBUFDS_INTERMDISABLE' [/home/uetlhr/Xilinx/Vivado/2022.1/scripts/rt/data/unisim_comp.v:59952]
+INFO: [Common 17-14] Message 'Synth 8-6157' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
 INFO: [Synth 8-6155] done synthesizing module 'IOBUFDS_INTERMDISABLE' (0#1) [/home/uetlhr/Xilinx/Vivado/2022.1/scripts/rt/data/unisim_comp.v:59952]
 INFO: [Synth 8-6155] done synthesizing module 'mig_7series_v4_2_ddr_of_pre_fifo' (0#1) [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_of_pre_fifo.v:76]
 WARNING: [Synth 8-7071] port 'afull' of module 'mig_7series_v4_2_ddr_of_pre_fifo' is unconnected for instance 'phy_ctl_pre_fifo_0' [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_mc_phy_wrapper.v:1428]
@@ -665,6 +666,7 @@ INFO: [Synth 8-6155] done synthesizing module 'mig_7series_v4_2_ddr_of_pre_fifo_
 INFO: [Synth 8-6155] done synthesizing module 'PHASER_IN_PHY' (0#1) [/home/uetlhr/Xilinx/Vivado/2022.1/scripts/rt/data/unisim_comp.v:89082]
 INFO: [Synth 8-6155] done synthesizing module 'IN_FIFO' (0#1) [/home/uetlhr/Xilinx/Vivado/2022.1/scripts/rt/data/unisim_comp.v:59666]
 INFO: [Synth 8-6155] done synthesizing module 'PHASER_OUT_PHY' (0#1) [/home/uetlhr/Xilinx/Vivado/2022.1/scripts/rt/data/unisim_comp.v:89219]
+INFO: [Synth 8-6155] done synthesizing module 'OUT_FIFO' (0#1) [/home/uetlhr/Xilinx/Vivado/2022.1/scripts/rt/data/unisim_comp.v:75470]
 INFO: [Common 17-14] Message 'Synth 8-6155' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
 INFO: [Synth 8-226] default block is never used [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_4lanes.v:1557]
 WARNING: [Synth 8-689] width (12) of port connection 'pi_dqs_found_lanes' does not match port width (4) of module 'mig_7series_v4_2_ddr_mc_phy' [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_mc_phy_wrapper.v:1671]
@@ -828,6 +830,107 @@ WARNING: [Synth 8-5858] RAM tlb_array_next_reg from Abstract Data Type (record/s
 WARNING: [Synth 8-10225] Potential Runtime issue for 3D-RAM or RAM from Record/Structs for RAM  tlb_array_next_reg 
 WARNING: [Synth 8-5858] RAM tlb_array_ff_reg from Abstract Data Type (record/struct) for this pattern/configuration is not supported. This will most likely be implemented in registers
 WARNING: [Synth 8-10225] Potential Runtime issue for 3D-RAM or RAM from Record/Structs for RAM  tlb_array_ff_reg 
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[1024] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[1023] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[1022] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[1021] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[1020] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[1019] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[1018] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[1017] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[1016] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[1015] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[1014] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[1013] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[1012] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[1011] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[1010] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[1009] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[1008] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[1007] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[1006] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[1005] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[1004] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[1003] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[1002] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[1001] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[1000] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[999] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[998] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[997] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[996] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[995] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[994] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[993] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[992] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[991] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[990] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[989] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[988] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[987] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[986] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[985] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[984] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[983] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[982] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[981] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[980] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[979] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[978] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[977] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[976] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[975] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[974] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[973] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[972] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[971] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[970] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[969] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[968] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[967] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[966] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[965] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[964] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[963] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[962] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[961] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[960] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[959] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[958] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[957] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[956] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[955] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[954] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[953] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[952] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[951] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[950] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[949] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[948] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[947] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[946] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[945] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[944] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[943] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[942] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[941] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[940] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[939] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[938] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[937] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[936] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[935] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[934] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[933] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[932] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[931] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[930] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[929] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[928] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[927] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[926] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+WARNING: [Synth 8-6014] Unused sequential element rx_fifo_reg[925] was removed.  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/uart/uart.sv:373]
+INFO: [Common 17-14] Message 'Synth 8-6014' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
 WARNING: [Synth 8-5858] RAM icache_reg from Abstract Data Type (record/struct) for this pattern/configuration is not supported. This will most likely be implemented in registers
 WARNING: [Synth 8-10225] Potential Runtime issue for 3D-RAM or RAM from Record/Structs for RAM  icache_reg 
 WARNING: [Synth 8-5858] RAM cache_tag_ram_reg from Abstract Data Type (record/struct) for this pattern/configuration is not supported. This will most likely be implemented in registers
@@ -836,38 +939,25 @@ WARNING: [Synth 8-3936] Found unconnected internal register 'spi_slave_sel_reg' 
 WARNING: [Synth 8-7137] Register spi_clk_reg in module spi_controller has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/spi/spi_controller.sv:211]
 WARNING: [Synth 8-7137] Register spi_slave_sel_reg in module spi_controller has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [/home/uetlhr/Documents/UETRV-PCore/rtl/peripherals/spi/spi_controller.sv:249]
 WARNING: [Synth 8-3848] Net uart_ns_rxd_i in module/entity soc_top does not have driver. [/home/uetlhr/Documents/UETRV-PCore/rtl/soc_top.sv:95]
-WARNING: [Synth 8-6014] Unused sequential element curr_awsize_reg_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ipshared/3c31/hdl/axi_bram_ctrl_v4_1_rfs.vhd:25318]
-WARNING: [Synth 8-6014] Unused sequential element curr_awlen_reg_1_or_2_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ipshared/3c31/hdl/axi_bram_ctrl_v4_1_rfs.vhd:25596]
-WARNING: [Synth 8-6014] Unused sequential element GEN_NO_RD_CMD_OPT.axi_arsize_pipe_max_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ipshared/3c31/hdl/axi_bram_ctrl_v4_1_rfs.vhd:15506]
-WARNING: [Synth 8-6014] Unused sequential element GEN_NO_RD_CMD_OPT.curr_arsize_reg_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ipshared/3c31/hdl/axi_bram_ctrl_v4_1_rfs.vhd:15998]
-WARNING: [Synth 8-6014] Unused sequential element GEN_NO_RD_CMD_OPT.no_ar_ack_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ipshared/3c31/hdl/axi_bram_ctrl_v4_1_rfs.vhd:19903]
-WARNING: [Synth 8-6014] Unused sequential element GEN_NO_RD_CMD_OPT.do_cmplt_burst_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ipshared/3c31/hdl/axi_bram_ctrl_v4_1_rfs.vhd:21244]
 WARNING: [Synth 8-3848] Net ui_addn_clk_0 in module/entity mig_7series_v4_2_infrastructure does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/clocking/mig_7series_v4_2_infrastructure.v:140]
 WARNING: [Synth 8-3848] Net ui_addn_clk_1 in module/entity mig_7series_v4_2_infrastructure does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/clocking/mig_7series_v4_2_infrastructure.v:141]
 WARNING: [Synth 8-3848] Net ui_addn_clk_2 in module/entity mig_7series_v4_2_infrastructure does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/clocking/mig_7series_v4_2_infrastructure.v:142]
 WARNING: [Synth 8-3848] Net ui_addn_clk_3 in module/entity mig_7series_v4_2_infrastructure does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/clocking/mig_7series_v4_2_infrastructure.v:143]
 WARNING: [Synth 8-3848] Net ui_addn_clk_4 in module/entity mig_7series_v4_2_infrastructure does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/clocking/mig_7series_v4_2_infrastructure.v:144]
-WARNING: [Synth 8-6014] Unused sequential element periodic_rd_generation.read_this_rank_r1_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_rank_cntrl.v:487]
 WARNING: [Synth 8-3936] Found unconnected internal register 'dbl_req_reg' and it is trimmed from '6' to '5' bits. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_round_robin_arb.v:145]
 WARNING: [Synth 8-3936] Found unconnected internal register 'dbl_last_master_ns_reg' and it is trimmed from '6' to '4' bits. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_round_robin_arb.v:143]
-WARNING: [Synth 8-6014] Unused sequential element last_master_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_round_robin_arb.v:181]
 WARNING: [Synth 8-3848] Net channel[0].inh_group in module/entity mig_7series_v4_2_round_robin_arb__parameterized0 does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_round_robin_arb.v:153]
 WARNING: [Synth 8-3936] Found unconnected internal register 'col_addr_template_reg' and it is trimmed from '16' to '13' bits. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_bank_compare.v:251]
 WARNING: [Synth 8-3936] Found unconnected internal register 'dbl_req_reg' and it is trimmed from '8' to '7' bits. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_round_robin_arb.v:145]
 WARNING: [Synth 8-3936] Found unconnected internal register 'dbl_last_master_ns_reg' and it is trimmed from '8' to '6' bits. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_round_robin_arb.v:143]
-WARNING: [Synth 8-6014] Unused sequential element sent_row_or_maint_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_arb_row_col.v:357]
-WARNING: [Synth 8-6014] Unused sequential element mc_aux_out_r_1_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_arb_select.v:680]
-WARNING: [Synth 8-6014] Unused sequential element mc_aux_out_r_2_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_arb_select.v:681]
 WARNING: [Synth 8-3848] Net col_mux.col_row_r in module/entity mig_7series_v4_2_arb_select does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_arb_select.v:390]
 WARNING: [Synth 8-3936] Found unconnected internal register 'read_fifo.fifo_out_data_r_reg' and it is trimmed from '12' to '8' bits. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_col_mach.v:396]
-WARNING: [Synth 8-6014] Unused sequential element fine_delay_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_group_io.v:185]
 WARNING: [Synth 8-3848] Net dummy_i5 in module/entity mig_7series_v4_2_ddr_byte_lane does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_lane.v:269]
 WARNING: [Synth 8-3848] Net dummy_i6 in module/entity mig_7series_v4_2_ddr_byte_lane does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_lane.v:270]
 WARNING: [Synth 8-3848] Net oserdes_dqts_buf in module/entity mig_7series_v4_2_ddr_byte_group_io__parameterized0 does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_group_io.v:143]
 WARNING: [Synth 8-3848] Net oserdes_dqs_buf in module/entity mig_7series_v4_2_ddr_byte_group_io__parameterized0 does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_group_io.v:144]
 WARNING: [Synth 8-3848] Net oserdes_dqsts_buf in module/entity mig_7series_v4_2_ddr_byte_group_io__parameterized0 does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_group_io.v:145]
 WARNING: [Synth 8-3848] Net iserdes_dout in module/entity mig_7series_v4_2_ddr_byte_group_io__parameterized0 does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_group_io.v:92]
-WARNING: [Synth 8-6014] Unused sequential element ififo_rst_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_lane.v:307]
 WARNING: [Synth 8-3848] Net rclk in module/entity mig_7series_v4_2_ddr_byte_lane__parameterized0 does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_lane.v:147]
 WARNING: [Synth 8-3848] Net pi_iserdes_rst in module/entity mig_7series_v4_2_ddr_byte_lane__parameterized0 does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_lane.v:193]
 WARNING: [Synth 8-3848] Net pi_fine_overflow in module/entity mig_7series_v4_2_ddr_byte_lane__parameterized0 does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_lane.v:195]
@@ -875,14 +965,12 @@ WARNING: [Synth 8-3848] Net pi_counter_read_val_w in module/entity mig_7series_v
 WARNING: [Synth 8-3848] Net dqs_out_of_range in module/entity mig_7series_v4_2_ddr_byte_lane__parameterized0 does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_lane.v:198]
 WARNING: [Synth 8-3848] Net iserdes_clk in module/entity mig_7series_v4_2_ddr_byte_lane__parameterized0 does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_lane.v:275]
 WARNING: [Synth 8-3848] Net iserdes_clkdiv in module/entity mig_7series_v4_2_ddr_byte_lane__parameterized0 does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_lane.v:276]
-WARNING: [Synth 8-6014] Unused sequential element fine_delay_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_group_io.v:185]
 WARNING: [Synth 8-3848] Net dummy_i5 in module/entity mig_7series_v4_2_ddr_byte_lane__parameterized1 does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_lane.v:269]
 WARNING: [Synth 8-3848] Net dummy_i6 in module/entity mig_7series_v4_2_ddr_byte_lane__parameterized1 does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_lane.v:270]
 WARNING: [Synth 8-3848] Net oserdes_dqts_buf in module/entity mig_7series_v4_2_ddr_byte_group_io__parameterized2 does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_group_io.v:143]
 WARNING: [Synth 8-3848] Net oserdes_dqs_buf in module/entity mig_7series_v4_2_ddr_byte_group_io__parameterized2 does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_group_io.v:144]
 WARNING: [Synth 8-3848] Net oserdes_dqsts_buf in module/entity mig_7series_v4_2_ddr_byte_group_io__parameterized2 does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_group_io.v:145]
 WARNING: [Synth 8-3848] Net iserdes_dout in module/entity mig_7series_v4_2_ddr_byte_group_io__parameterized2 does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_group_io.v:92]
-WARNING: [Synth 8-6014] Unused sequential element ififo_rst_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_lane.v:307]
 WARNING: [Synth 8-3848] Net rclk in module/entity mig_7series_v4_2_ddr_byte_lane__parameterized2 does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_lane.v:147]
 WARNING: [Synth 8-3848] Net pi_iserdes_rst in module/entity mig_7series_v4_2_ddr_byte_lane__parameterized2 does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_lane.v:193]
 WARNING: [Synth 8-3848] Net pi_fine_overflow in module/entity mig_7series_v4_2_ddr_byte_lane__parameterized2 does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_lane.v:195]
@@ -890,14 +978,8 @@ WARNING: [Synth 8-3848] Net pi_counter_read_val_w in module/entity mig_7series_v
 WARNING: [Synth 8-3848] Net dqs_out_of_range in module/entity mig_7series_v4_2_ddr_byte_lane__parameterized2 does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_lane.v:198]
 WARNING: [Synth 8-3848] Net iserdes_clk in module/entity mig_7series_v4_2_ddr_byte_lane__parameterized2 does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_lane.v:275]
 WARNING: [Synth 8-3848] Net iserdes_clkdiv in module/entity mig_7series_v4_2_ddr_byte_lane__parameterized2 does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_byte_lane.v:276]
-WARNING: [Synth 8-6014] Unused sequential element B_rst_primitives_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_4lanes.v:737]
-WARNING: [Synth 8-6014] Unused sequential element C_rst_primitives_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_4lanes.v:738]
-WARNING: [Synth 8-6014] Unused sequential element D_rst_primitives_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_4lanes.v:739]
 WARNING: [Synth 8-3936] Found unconnected internal register 'byte_sel_data_map_reg' and it is trimmed from '96' to '88' bits. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_mc_phy_wrapper.v:731]
 WARNING: [Synth 8-3848] Net phy_data_full in module/entity mig_7series_v4_2_ddr_mc_phy_wrapper does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_mc_phy_wrapper.v:227]
-WARNING: [Synth 8-6014] Unused sequential element rank_final_loop[0].final_do_max_reg[0] was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_dqs_found_cal_hr.v:1116]
-WARNING: [Synth 8-6014] Unused sequential element rank_final_loop[0].final_do_index_reg[0] was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_dqs_found_cal_hr.v:1146]
-WARNING: [Synth 8-6014] Unused sequential element dqsfound_retry_r1_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_dqs_found_cal_hr.v:690]
 WARNING: [Synth 8-3848] Net dqsfound_retry_done in module/entity mig_7series_v4_2_ddr_phy_dqs_found_cal_hr does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_dqs_found_cal_hr.v:131]
 WARNING: [Synth 8-5856] 3D RAM dlyval_dq_reg_r_reg  for this pattern/configuration is not supported. This will most likely be implemented in registers
 WARNING: [Synth 8-10225] Potential Runtime issue for 3D-RAM or RAM from Record/Structs for RAM  dlyval_dq_reg_r_reg 
@@ -905,79 +987,11 @@ WARNING: [Synth 8-5856] 3D RAM idelay_tap_cnt_r_reg  for this pattern/configurat
 WARNING: [Synth 8-10225] Potential Runtime issue for 3D-RAM or RAM from Record/Structs for RAM  idelay_tap_cnt_r_reg 
 WARNING: [Synth 8-5856] 3D RAM rdlvl_dqs_tap_cnt_r_reg  for this pattern/configuration is not supported. This will most likely be implemented in registers
 WARNING: [Synth 8-10225] Potential Runtime issue for 3D-RAM or RAM from Record/Structs for RAM  rdlvl_dqs_tap_cnt_r_reg 
-WARNING: [Synth 8-6014] Unused sequential element gen_track_left_edge[0].pb_found_first_edge_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_rdlvl.v:2474]
-WARNING: [Synth 8-6014] Unused sequential element gen_track_left_edge[1].pb_found_first_edge_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_rdlvl.v:2474]
-WARNING: [Synth 8-6014] Unused sequential element gen_track_left_edge[2].pb_found_first_edge_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_rdlvl.v:2474]
-WARNING: [Synth 8-6014] Unused sequential element gen_track_left_edge[3].pb_found_first_edge_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_rdlvl.v:2474]
-WARNING: [Synth 8-6014] Unused sequential element gen_track_left_edge[4].pb_found_first_edge_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_rdlvl.v:2474]
-WARNING: [Synth 8-6014] Unused sequential element gen_track_left_edge[5].pb_found_first_edge_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_rdlvl.v:2474]
-WARNING: [Synth 8-6014] Unused sequential element gen_track_left_edge[6].pb_found_first_edge_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_rdlvl.v:2474]
-WARNING: [Synth 8-6014] Unused sequential element gen_track_left_edge[7].pb_found_first_edge_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_rdlvl.v:2474]
-WARNING: [Synth 8-6014] Unused sequential element rdlvl_stg1_done_int_r1_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_rdlvl.v:686]
-WARNING: [Synth 8-6014] Unused sequential element rdlvl_stg1_done_int_r2_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_rdlvl.v:687]
-WARNING: [Synth 8-6014] Unused sequential element rdlvl_stg1_done_int_r3_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_rdlvl.v:688]
-WARNING: [Synth 8-6014] Unused sequential element rdlvl_last_byte_done_int_r1_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_rdlvl.v:689]
-WARNING: [Synth 8-6014] Unused sequential element rdlvl_last_byte_done_int_r2_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_rdlvl.v:690]
-WARNING: [Synth 8-6014] Unused sequential element rdlvl_last_byte_done_int_r3_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_rdlvl.v:691]
-WARNING: [Synth 8-6014] Unused sequential element fine_dly_dec_done_r3_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_rdlvl.v:940]
-WARNING: [Synth 8-6014] Unused sequential element fine_dly_dec_done_r4_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_rdlvl.v:941]
-WARNING: [Synth 8-6014] Unused sequential element regl_rank_done_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_rdlvl.v:1044]
-WARNING: [Synth 8-6014] Unused sequential element cal1_state_r2_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_rdlvl.v:2696]
-WARNING: [Synth 8-6014] Unused sequential element cal1_state_r3_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_rdlvl.v:2697]
-WARNING: [Synth 8-6014] Unused sequential element cal1_cnt_cpt_timing_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_rdlvl.v:610]
-WARNING: [Synth 8-6014] Unused sequential element sample_cnt_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_prbs_gen.v:156]
-WARNING: [Synth 8-6014] Unused sequential element reseed_prbs_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_prbs_gen.v:157]
-WARNING: [Synth 8-6014] Unused sequential element lfsr_q_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_prbs_gen.v:174]
-WARNING: [Synth 8-6014] Unused sequential element gen_single_slot_odt.phy_tmp_cs1_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:4271]
-WARNING: [Synth 8-6014] Unused sequential element gen_single_slot_odt.phy_tmp_odt_r1_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:4273]
-WARNING: [Synth 8-6014] Unused sequential element wrlvl_final_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:1421]
-WARNING: [Synth 8-6014] Unused sequential element wrlvl_rank_cntr_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:1539]
-WARNING: [Synth 8-6014] Unused sequential element cnt_pwron_cke_done_r1_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:1781]
-WARNING: [Synth 8-6014] Unused sequential element cnt_txpr_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:1799]
-WARNING: [Synth 8-6014] Unused sequential element cnt_txpr_done_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:1800]
-WARNING: [Synth 8-6014] Unused sequential element rnk_ref_cnt_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:1941]
-WARNING: [Synth 8-6014] Unused sequential element read_calib_int_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:2720]
-WARNING: [Synth 8-6014] Unused sequential element read_calib_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:2727]
-WARNING: [Synth 8-6014] Unused sequential element ddr3_lm_done_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:2772]
-WARNING: [Synth 8-6014] Unused sequential element pi_dqs_found_rank_done_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:2778]
-WARNING: [Synth 8-6014] Unused sequential element pi_dqs_found_all_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:2783]
-WARNING: [Synth 8-6014] Unused sequential element complex_row0_rd_done_r1_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:3339]
-WARNING: [Synth 8-6014] Unused sequential element rdlvl_wr_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:3632]
-WARNING: [Synth 8-6014] Unused sequential element extend_cal_pat_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:3638]
-WARNING: [Synth 8-6014] Unused sequential element cnt_init_data_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:3714]
-WARNING: [Synth 8-6014] Unused sequential element victim_byte_cnt_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:818]
-WARNING: [Synth 8-6014] Unused sequential element calib_cas_slot_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:4173]
 WARNING: [Synth 8-3936] Found unconnected internal register 'rdlvl_start_dly0_r_reg' and it is trimmed from '16' to '15' bits. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:1228]
 WARNING: [Synth 8-3936] Found unconnected internal register 'wrcal_start_dly_r_reg' and it is trimmed from '16' to '15' bits. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:1230]
 WARNING: [Synth 8-3936] Found unconnected internal register 'oclkdelay_start_dly_r_reg' and it is trimmed from '16' to '15' bits. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:1232]
-WARNING: [Synth 8-6014] Unused sequential element gen_single_slot_odt.tmp_mr2_r_reg[1] was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:4265]
-WARNING: [Synth 8-6014] Unused sequential element gen_single_slot_odt.tmp_mr2_r_reg[2] was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:4265]
-WARNING: [Synth 8-6014] Unused sequential element gen_single_slot_odt.tmp_mr2_r_reg[3] was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:4265]
-WARNING: [Synth 8-6014] Unused sequential element gen_single_slot_odt.tmp_mr1_r_reg[1] was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:4268]
-WARNING: [Synth 8-6014] Unused sequential element gen_single_slot_odt.tmp_mr1_r_reg[2] was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:4268]
-WARNING: [Synth 8-6014] Unused sequential element gen_single_slot_odt.tmp_mr1_r_reg[3] was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:4268]
-WARNING: [Synth 8-6014] Unused sequential element prech_done_r1_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:1303]
-WARNING: [Synth 8-6014] Unused sequential element calib_cmd_wren_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:4229]
 WARNING: [Synth 8-3848] Net calib_aux_out in module/entity mig_7series_v4_2_ddr_phy_init does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:276]
-WARNING: [Synth 8-6014] Unused sequential element rd_active_r4_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_wrcal.v:534]
-WARNING: [Synth 8-6014] Unused sequential element rd_active_r5_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_wrcal.v:535]
-WARNING: [Synth 8-6014] Unused sequential element pat1_detect_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_wrcal.v:1124]
-WARNING: [Synth 8-6014] Unused sequential element early1_detect_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_wrcal.v:1125]
-WARNING: [Synth 8-6014] Unused sequential element rd_mux_sel_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_wrcal.v:438]
 WARNING: [Synth 8-3848] Net i in module/entity mig_7series_v4_2_ddr_phy_wrcal does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_wrcal.v:155]
-WARNING: [Synth 8-6014] Unused sequential element calib_complete_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_tempmon.v:182]
-WARNING: [Synth 8-6014] Unused sequential element sample_en_cnt_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_tempmon.v:188]
-WARNING: [Synth 8-6014] Unused sequential element device_temp_capture_102_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_tempmon.v:290]
-WARNING: [Synth 8-6014] Unused sequential element gen_byte_sel_div2.ctl_lane_sel_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_calib_top.v:963]
-WARNING: [Synth 8-6014] Unused sequential element tempmon_sel_pi_incdec_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_calib_top.v:883]
-WARNING: [Synth 8-6014] Unused sequential element ck_addr_cmd_delay_done_r1_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_calib_top.v:898]
-WARNING: [Synth 8-6014] Unused sequential element ck_addr_cmd_delay_done_r2_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_calib_top.v:899]
-WARNING: [Synth 8-6014] Unused sequential element ck_addr_cmd_delay_done_r3_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_calib_top.v:900]
-WARNING: [Synth 8-6014] Unused sequential element ck_addr_cmd_delay_done_r4_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_calib_top.v:901]
-WARNING: [Synth 8-6014] Unused sequential element ck_addr_cmd_delay_done_r5_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_calib_top.v:902]
-WARNING: [Synth 8-6014] Unused sequential element ck_addr_cmd_delay_done_r6_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_calib_top.v:903]
-WARNING: [Synth 8-6014] Unused sequential element skip_calib_tap_off.skip_cal_tempmon_samp_en_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_calib_top.v:2262]
-WARNING: [Synth 8-6014] Unused sequential element wrlvl_final_mux_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_calib_top.v:834]
 WARNING: [Synth 8-3848] Net dbg_skip_cal in module/entity mig_7series_v4_2_ddr_calib_top does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_calib_top.v:673]
 WARNING: [Synth 8-3848] Net coarse_dec_err in module/entity mig_7series_v4_2_ddr_calib_top does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_calib_top.v:662]
 WARNING: [Synth 8-3848] Net dbg_poc in module/entity mig_7series_v4_2_ddr_calib_top does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_calib_top.v:335]
@@ -993,17 +1007,7 @@ WARNING: [Synth 8-3848] Net rd_victim_sel in module/entity mig_7series_v4_2_ddr_
 WARNING: [Synth 8-3848] Net oclkdelay_center_calib_start in module/entity mig_7series_v4_2_ddr_calib_top does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_calib_top.v:597]
 WARNING: [Synth 8-3848] Net oclk_center_write_resume in module/entity mig_7series_v4_2_ddr_calib_top does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_calib_top.v:615]
 WARNING: [Synth 8-3848] Net oclkdelay_center_calib_done in module/entity mig_7series_v4_2_ddr_calib_top does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_calib_top.v:616]
-WARNING: [Synth 8-6014] Unused sequential element app_wdf_rdy_r_copy4_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/ui/mig_7series_v4_2_ui_wr_data.v:268]
-WARNING: [Synth 8-6014] Unused sequential element int_next_pending_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/axi/mig_7series_v4_2_axi_mc_incr_cmd.v:191]
-WARNING: [Synth 8-6014] Unused sequential element sel_first_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/axi/mig_7series_v4_2_axi_mc_incr_cmd.v:220]
-WARNING: [Synth 8-6014] Unused sequential element int_next_pending_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/axi/mig_7series_v4_2_axi_mc_wrap_cmd.v:221]
-WARNING: [Synth 8-6014] Unused sequential element sel_first_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/axi/mig_7series_v4_2_axi_mc_wrap_cmd.v:239]
 WARNING: [Synth 8-3848] Net cmd_wr_bytes in module/entity mig_7series_v4_2_axi_mc_w_channel does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/axi/mig_7series_v4_2_axi_mc_w_channel.v:96]
-WARNING: [Synth 8-6014] Unused sequential element int_next_pending_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/axi/mig_7series_v4_2_axi_mc_incr_cmd.v:191]
-WARNING: [Synth 8-6014] Unused sequential element sel_first_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/axi/mig_7series_v4_2_axi_mc_incr_cmd.v:220]
-WARNING: [Synth 8-6014] Unused sequential element int_next_pending_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/axi/mig_7series_v4_2_axi_mc_wrap_cmd.v:221]
-WARNING: [Synth 8-6014] Unused sequential element sel_first_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/axi/mig_7series_v4_2_axi_mc_wrap_cmd.v:239]
-WARNING: [Synth 8-6014] Unused sequential element rd_last_r_reg was removed.  [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/axi/mig_7series_v4_2_axi_mc_r_channel.v:216]
 WARNING: [Synth 8-3848] Net error in module/entity mig_7series_v4_2_memc_ui_top_axi does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/ip_top/mig_7series_v4_2_memc_ui_top_axi.v:555]
 WARNING: [Synth 8-3848] Net app_correct_en_i in module/entity mig_7series_v4_2_memc_ui_top_axi does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/ip_top/mig_7series_v4_2_memc_ui_top_axi.v:500]
 WARNING: [Synth 8-3848] Net s_axi_ctrl_awvalid in module/entity nexys_shell_mig_7series_0_0_mig does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/nexys_shell_mig_7series_0_0_mig.v:696]
@@ -1018,15 +1022,9 @@ WARNING: [Synth 8-3848] Net clk_ref_p in module/entity nexys_shell_mig_7series_0
 WARNING: [Synth 8-3848] Net clk_ref_n in module/entity nexys_shell_mig_7series_0_0_mig does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/nexys_shell_mig_7series_0_0_mig.v:724]
 WARNING: [Synth 8-3848] Net device_temp_i in module/entity nexys_shell_mig_7series_0_0_mig does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/nexys_shell_mig_7series_0_0_mig.v:727]
 WARNING: [Synth 8-3848] Net aresetn_out in module/entity clk_map_imp_1HLQXK7 does not have driver. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_smartconnect_0_0/bd_0/synth/bd_4cab.v:1391]
-WARNING: [Synth 8-6014] Unused sequential element dest_out_bin_ff_reg was removed.  [/home/uetlhr/Xilinx/Vivado/2022.1/data/ip/xpm/xpm_cdc/hdl/xpm_cdc.sv:417]
-INFO: [Common 17-14] Message 'Synth 8-6014' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
 WARNING: [Synth 8-3848] Net m_axi_arlock in module/entity top does not have driver. [/home/uetlhr/Documents/UETRV-PCore/fpga-nexys-a7/srcs/top.sv:146]
 WARNING: [Synth 8-3848] Net m_axi_awlock in module/entity top does not have driver. [/home/uetlhr/Documents/UETRV-PCore/fpga-nexys-a7/srcs/top.sv:158]
 WARNING: [Synth 8-3848] Net PWRDWN in module/entity top does not have driver. [/home/uetlhr/Documents/UETRV-PCore/fpga-nexys-a7/srcs/top.sv:94]
-WARNING: [Synth 8-3848] Net wb_stb_i in module/entity top does not have driver. [/home/uetlhr/Documents/UETRV-PCore/fpga-nexys-a7/srcs/top.sv:102]
-WARNING: [Synth 8-3848] Net wb_we_i in module/entity top does not have driver. [/home/uetlhr/Documents/UETRV-PCore/fpga-nexys-a7/srcs/top.sv:103]
-WARNING: [Synth 8-3848] Net wb_adr_i in module/entity top does not have driver. [/home/uetlhr/Documents/UETRV-PCore/fpga-nexys-a7/srcs/top.sv:104]
-WARNING: [Synth 8-3848] Net wb_dat_i in module/entity top does not have driver. [/home/uetlhr/Documents/UETRV-PCore/fpga-nexys-a7/srcs/top.sv:105]
 WARNING: [Synth 8-3848] Net m_axi_bid in module/entity top does not have driver. [/home/uetlhr/Documents/UETRV-PCore/fpga-nexys-a7/srcs/top.sv:165]
 WARNING: [Synth 8-3848] Net m_axi_rid in module/entity top does not have driver. [/home/uetlhr/Documents/UETRV-PCore/fpga-nexys-a7/srcs/top.sv:170]
 WARNING: [Synth 8-7129] Port m_axi_bid[0] in module wb2axi is either unconnected or has no load
@@ -1131,18 +1129,18 @@ WARNING: [Synth 8-7129] Port dinb[102] in module xpm_memory_base__parameterized1
 WARNING: [Synth 8-7129] Port dinb[101] in module xpm_memory_base__parameterized14 is either unconnected or has no load
 INFO: [Common 17-14] Message 'Synth 8-7129' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:00:36 ; elapsed = 00:00:39 . Memory (MB): peak = 3109.211 ; gain = 383.516 ; free physical = 139530 ; free virtual = 299111
+Finished RTL Elaboration : Time (s): cpu = 00:00:38 ; elapsed = 00:00:42 . Memory (MB): peak = 3117.207 ; gain = 391.516 ; free physical = 149758 ; free virtual = 305124
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:37 ; elapsed = 00:00:40 . Memory (MB): peak = 3121.082 ; gain = 395.387 ; free physical = 139530 ; free virtual = 299111
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:40 ; elapsed = 00:00:43 . Memory (MB): peak = 3126.109 ; gain = 400.418 ; free physical = 149334 ; free virtual = 304707
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:37 ; elapsed = 00:00:40 . Memory (MB): peak = 3121.082 ; gain = 395.387 ; free physical = 139530 ; free virtual = 299111
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:40 ; elapsed = 00:00:43 . Memory (MB): peak = 3126.109 ; gain = 400.418 ; free physical = 149334 ; free virtual = 304707
 ---------------------------------------------------------------------------------
-Netlist sorting complete. Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 3127.020 ; gain = 0.000 ; free physical = 139252 ; free virtual = 298833
+Netlist sorting complete. Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 3129.078 ; gain = 0.000 ; free physical = 148675 ; free virtual = 304056
 INFO: [Netlist 29-17] Analyzing 165 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
@@ -1186,7 +1184,7 @@ Finished Parsing XDC File [/home/uetlhr/Documents/UETRV-PCore/fpga-nexys-a7/fpga
 INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [/home/uetlhr/Documents/UETRV-PCore/fpga-nexys-a7/fpga-nexys-a7.runs/synth_1/dont_touch.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/top_propImpl.xdc].
 Resolution: To avoid this warning, move constraints listed in [.Xil/top_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
 INFO: [Timing 38-2] Deriving generated clocks
-write_xdc: Time (s): cpu = 00:00:18 ; elapsed = 00:00:05 . Memory (MB): peak = 3652.559 ; gain = 64.844 ; free physical = 138809 ; free virtual = 298390
+write_xdc: Time (s): cpu = 00:00:17 ; elapsed = 00:00:05 . Memory (MB): peak = 3661.664 ; gain = 64.875 ; free physical = 148300 ; free virtual = 303695
 INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [/home/uetlhr/Xilinx/Vivado/2022.1/data/ip/xpm/xpm_cdc/tcl/xpm_cdc_gray.tcl]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/top_propImpl.xdc].
 Resolution: To avoid this warning, move constraints listed in [.Xil/top_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
 WARNING: [Vivado 12-180] No cells matched 'get_cells -hier -filter {PRIMITIVE_SUBGROUP==LUTRAM || PRIMITIVE_SUBGROUP==dram || PRIMITIVE_SUBGROUP==uram || PRIMITIVE_SUBGROUP==BRAM}'. [/home/uetlhr/Xilinx/Vivado/2022.1/data/ip/xpm/xpm_memory/tcl/xpm_memory_xdc.tcl:3]
@@ -1221,7 +1219,7 @@ Resolution: To avoid this warning, move constraints listed in [.Xil/top_propImpl
 INFO: [Project 1-1714] 76 XPM XDC files have been applied to the design.
 Completed Processing XDC Constraints
 
-Netlist sorting complete. Time (s): cpu = 00:00:00.02 ; elapsed = 00:00:00.02 . Memory (MB): peak = 3652.559 ; gain = 0.000 ; free physical = 138798 ; free virtual = 298379
+Netlist sorting complete. Time (s): cpu = 00:00:00.02 ; elapsed = 00:00:00.03 . Memory (MB): peak = 3661.664 ; gain = 0.000 ; free physical = 148285 ; free virtual = 303680
 INFO: [Project 1-111] Unisim Transformation Summary:
   A total of 104 instances were transformed.
   FDR => FDRE: 49 instances
@@ -1232,16 +1230,16 @@ INFO: [Project 1-111] Unisim Transformation Summary:
   RAM32M => RAM32M (RAMD32(x6), RAMS32(x2)): 28 instances
   SRL16 => SRL16E: 4 instances
 
-Constraint Validation Runtime : Time (s): cpu = 00:00:00.72 ; elapsed = 00:00:00.72 . Memory (MB): peak = 3652.559 ; gain = 0.000 ; free physical = 138798 ; free virtual = 298379
+Constraint Validation Runtime : Time (s): cpu = 00:00:00.75 ; elapsed = 00:00:00.75 . Memory (MB): peak = 3661.664 ; gain = 0.000 ; free physical = 148286 ; free virtual = 303681
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:01:40 ; elapsed = 00:01:24 . Memory (MB): peak = 3652.559 ; gain = 926.863 ; free physical = 139576 ; free virtual = 299157
+Finished Constraint Validation : Time (s): cpu = 00:01:43 ; elapsed = 00:01:27 . Memory (MB): peak = 3661.664 ; gain = 935.973 ; free physical = 149009 ; free virtual = 304405
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7a100tcsg324-1
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:01:40 ; elapsed = 00:01:24 . Memory (MB): peak = 3652.559 ; gain = 926.863 ; free physical = 139574 ; free virtual = 299156
+Finished Loading Part and Timing Information : Time (s): cpu = 00:01:43 ; elapsed = 00:01:27 . Memory (MB): peak = 3661.664 ; gain = 935.973 ; free physical = 149009 ; free virtual = 304405
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
@@ -1332,7 +1330,18 @@ Applied set_property KEEP_HIERARCHY = SOFT for nexys_shell_i/smartconnect_0/inst
 Applied set_property KEEP_HIERARCHY = SOFT for nexys_shell_i/smartconnect_0/inst/s00_nodes/s00_r_node/inst/inst_mi_handler/\gen_normal_area.inst_fifo_node_payld /\gen_xpm_memory_fifo.inst_fifo /\gen_mem_rep[0].inst_xpm_memory . (constraint file  auto generated constraint).
 Applied set_property KEEP_HIERARCHY = SOFT for nexys_shell_i/smartconnect_0/inst/s00_nodes/s00_w_node/inst/inst_mi_handler/\gen_normal_area.inst_fifo_node_payld /\gen_xpm_memory_fifo.inst_fifo /\gen_mem_rep[0].inst_xpm_memory . (constraint file  auto generated constraint).
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:01:40 ; elapsed = 00:01:24 . Memory (MB): peak = 3652.559 ; gain = 926.863 ; free physical = 139568 ; free virtual = 299149
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:01:43 ; elapsed = 00:01:28 . Memory (MB): peak = 3661.664 ; gain = 935.973 ; free physical = 149002 ; free virtual = 304398
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Preparing Guide Design
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Doing Graph Differ : Time (s): cpu = 00:01:50 ; elapsed = 00:01:35 . Memory (MB): peak = 3661.664 ; gain = 935.973 ; free physical = 147394 ; free virtual = 302802
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-6702] IncrSynth : Over 50% of partitions are impacted by design changes. Reverting to default synthesis
+WARNING: [Synth 8-6702] IncrSynth : Reverting to default synthesis
+nexys_shell_mig_7series_0_0_mig__GC0mig_7series_v4_2_ddr_phy_top__GC0mig_7series_v4_2_ddr_mc_phy_wrapper__GC0mig_7series_v4_2_ddr_mc_phy__GC0mig_7series_v4_2_ddr_byte_lane__parameterized2__GC0mig_7series_v4_2_mcsoc_top__GB1soc_top__GB0---------------------------------------------------------------------------------
+Finished Preparing Guide Design : Time (s): cpu = 00:02:05 ; elapsed = 00:01:50 . Memory (MB): peak = 3661.664 ; gain = 935.973 ; free physical = 145306 ; free virtual = 300713
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-802] inferred FSM for state register 'state_reg' in module 'amo'
 INFO: [Synth 8-802] inferred FSM for state register 'ptw_state_ff_reg' in module 'ptw'
@@ -1604,8 +1613,18 @@ INFO: [Synth 8-3354] encoded FSM with state register 'state_reg' using encoding 
 ---------------------------------------------------------------------------------------------------
 INFO: [Synth 8-3354] encoded FSM with state register 'gen_axi.gen_write.write_cs_reg' using encoding 'one-hot' in module 'sc_mmu_v1_0_10_decerr_slave'
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:02:02 ; elapsed = 00:01:49 . Memory (MB): peak = 3652.559 ; gain = 926.863 ; free physical = 135807 ; free virtual = 295400
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:02:24 ; elapsed = 00:02:13 . Memory (MB): peak = 3661.664 ; gain = 935.973 ; free physical = 144664 ; free virtual = 300130
 ---------------------------------------------------------------------------------
+
+
+Incremental Synthesis Report Summary:
+
+1. Incremental synthesis run: no
+
+   Reason for not running incremental synthesis : Change is too high
+
+
+INFO: [Synth 8-7130] Flow is switching to default flow due to incremental criteria not met. If you would like to alter this behaviour and have the flow terminate instead, please set the following parameter config_implementation {autoIncr.Synth.RejectBehavior Terminate}
 ---------------------------------------------------------------------------------
 Start RTL Component Statistics 
 ---------------------------------------------------------------------------------
@@ -1621,7 +1640,7 @@ Detailed RTL Component Info :
 	   2 Input   11 Bit       Adders := 1     
 	   2 Input   10 Bit       Adders := 8     
 	   2 Input    9 Bit       Adders := 4     
-	   2 Input    8 Bit       Adders := 28    
+	   2 Input    8 Bit       Adders := 29    
 	   3 Input    8 Bit       Adders := 2     
 	   4 Input    8 Bit       Adders := 4     
 	   2 Input    7 Bit       Adders := 6     
@@ -1650,7 +1669,7 @@ Detailed RTL Component Info :
 +---XORs : 
 	   2 Input     32 Bit         XORs := 3     
 	   2 Input      6 Bit         XORs := 14    
-	   2 Input      1 Bit         XORs := 315   
+	   2 Input      1 Bit         XORs := 313   
 +---Registers : 
 	             2178 Bit    Registers := 46    
 	              512 Bit    Registers := 2     
@@ -1664,7 +1683,7 @@ Detailed RTL Component Info :
 	              147 Bit    Registers := 4     
 	              144 Bit    Registers := 1     
 	              139 Bit    Registers := 6     
-	              128 Bit    Registers := 23    
+	              128 Bit    Registers := 22    
 	               88 Bit    Registers := 1     
 	               80 Bit    Registers := 3     
 	               64 Bit    Registers := 7     
@@ -1690,16 +1709,15 @@ Detailed RTL Component Info :
 	               11 Bit    Registers := 1     
 	               10 Bit    Registers := 45    
 	                9 Bit    Registers := 16    
-	                8 Bit    Registers := 99    
+	                8 Bit    Registers := 356   
 	                7 Bit    Registers := 12    
 	                6 Bit    Registers := 189   
 	                5 Bit    Registers := 75    
 	                4 Bit    Registers := 137   
 	                3 Bit    Registers := 122   
 	                2 Bit    Registers := 139   
-	                1 Bit    Registers := 2750  
+	                1 Bit    Registers := 2749  
 +---RAMs : 
-	             128K Bit	(1024 X 128 bit)          RAMs := 1     
 	               2K Bit	(16 X 128 bit)          RAMs := 1     
 +---Muxes : 
 	   2 Input 2178 Bit        Muxes := 23    
@@ -1721,15 +1739,15 @@ Detailed RTL Component Info :
 	   4 Input   34 Bit        Muxes := 1     
 	   2 Input   33 Bit        Muxes := 5     
 	   3 Input   33 Bit        Muxes := 2     
-	   2 Input   32 Bit        Muxes := 118   
-	   4 Input   32 Bit        Muxes := 17    
+	   2 Input   32 Bit        Muxes := 117   
 	   3 Input   32 Bit        Muxes := 11    
 	   8 Input   32 Bit        Muxes := 1     
 	   6 Input   32 Bit        Muxes := 1     
+	   4 Input   32 Bit        Muxes := 17    
 	  33 Input   32 Bit        Muxes := 1     
 	   5 Input   32 Bit        Muxes := 2     
-	  11 Input   32 Bit        Muxes := 1     
 	  17 Input   32 Bit        Muxes := 1     
+	  11 Input   32 Bit        Muxes := 1     
 	   2 Input   30 Bit        Muxes := 13    
 	   4 Input   30 Bit        Muxes := 4     
 	   2 Input   27 Bit        Muxes := 11    
@@ -1753,17 +1771,17 @@ Detailed RTL Component Info :
 	   2 Input   11 Bit        Muxes := 1     
 	   4 Input   10 Bit        Muxes := 2     
 	   2 Input   10 Bit        Muxes := 10    
-	   4 Input    9 Bit        Muxes := 8     
 	   2 Input    9 Bit        Muxes := 19    
-	   2 Input    8 Bit        Muxes := 214   
+	   4 Input    9 Bit        Muxes := 8     
 	   4 Input    8 Bit        Muxes := 12    
 	   7 Input    8 Bit        Muxes := 9     
+	   2 Input    8 Bit        Muxes := 214   
 	   5 Input    8 Bit        Muxes := 1     
 	   6 Input    8 Bit        Muxes := 1     
 	  17 Input    8 Bit        Muxes := 1     
 	   8 Input    8 Bit        Muxes := 1     
-	   3 Input    7 Bit        Muxes := 4     
 	   2 Input    7 Bit        Muxes := 30    
+	   3 Input    7 Bit        Muxes := 4     
 	   4 Input    7 Bit        Muxes := 11    
 	   7 Input    7 Bit        Muxes := 1     
 	  36 Input    6 Bit        Muxes := 1     
@@ -1782,18 +1800,17 @@ Detailed RTL Component Info :
 	   6 Input    5 Bit        Muxes := 1     
 	   5 Input    5 Bit        Muxes := 2     
 	   2 Input    4 Bit        Muxes := 133   
-	   7 Input    4 Bit        Muxes := 4     
-	   3 Input    4 Bit        Muxes := 4     
 	   6 Input    4 Bit        Muxes := 2     
 	  13 Input    4 Bit        Muxes := 2     
 	   8 Input    4 Bit        Muxes := 4     
 	   5 Input    4 Bit        Muxes := 2     
+	   3 Input    4 Bit        Muxes := 4     
 	   4 Input    4 Bit        Muxes := 7     
 	  10 Input    4 Bit        Muxes := 2     
 	  27 Input    4 Bit        Muxes := 1     
+	   7 Input    4 Bit        Muxes := 4     
 	  32 Input    4 Bit        Muxes := 1     
 	   9 Input    4 Bit        Muxes := 1     
-	  17 Input    3 Bit        Muxes := 1     
 	  13 Input    3 Bit        Muxes := 4     
 	  20 Input    3 Bit        Muxes := 1     
 	  21 Input    3 Bit        Muxes := 1     
@@ -1804,27 +1821,28 @@ Detailed RTL Component Info :
 	   4 Input    3 Bit        Muxes := 20    
 	  11 Input    3 Bit        Muxes := 15    
 	   6 Input    3 Bit        Muxes := 5     
-	   3 Input    2 Bit        Muxes := 9     
-	   2 Input    2 Bit        Muxes := 247   
-	   4 Input    2 Bit        Muxes := 19    
+	  17 Input    3 Bit        Muxes := 1     
 	   5 Input    2 Bit        Muxes := 1     
+	   2 Input    2 Bit        Muxes := 249   
+	   4 Input    2 Bit        Muxes := 18    
 	  13 Input    2 Bit        Muxes := 2     
 	  22 Input    2 Bit        Muxes := 1     
 	   7 Input    2 Bit        Muxes := 12    
 	  14 Input    2 Bit        Muxes := 1     
+	   3 Input    2 Bit        Muxes := 9     
 	  12 Input    2 Bit        Muxes := 1     
 	  11 Input    2 Bit        Muxes := 1     
 	   8 Input    2 Bit        Muxes := 5     
 	  24 Input    2 Bit        Muxes := 2     
 	   6 Input    2 Bit        Muxes := 1     
 	  10 Input    2 Bit        Muxes := 1     
-	   2 Input    1 Bit        Muxes := 1475  
+	   2 Input    1 Bit        Muxes := 1474  
 	   3 Input    1 Bit        Muxes := 51    
-	   7 Input    1 Bit        Muxes := 81    
 	   4 Input    1 Bit        Muxes := 346   
 	  10 Input    1 Bit        Muxes := 87    
 	   6 Input    1 Bit        Muxes := 168   
-	   8 Input    1 Bit        Muxes := 7     
+	   7 Input    1 Bit        Muxes := 80    
+	   8 Input    1 Bit        Muxes := 6     
 	  12 Input    1 Bit        Muxes := 19    
 	  13 Input    1 Bit        Muxes := 5     
 	  20 Input    1 Bit        Muxes := 2     
@@ -1943,65 +1961,30 @@ DSP Report: operator alu_m_result_next3 is absorbed into DSP alu_m_result_next3.
 DSP Report: Generating DSP alu_m_result_next3, operation Mode is: C+A*B.
 DSP Report: operator alu_m_result_next3 is absorbed into DSP alu_m_result_next3.
 DSP Report: operator alu_m_result_next3 is absorbed into DSP alu_m_result_next3.
-INFO: [Synth 8-5546] ROM "plic_regs_module/prio_reg_wr_flag" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "plic_regs_module/ie_reg_wr_flag" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "plic_regs_module/prio_th_reg_wr_flag" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "plic_regs_module/prio_reg_wr_flag" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "plic_regs_module/ie_reg_wr_flag" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "plic_regs_module/prio_th_reg_wr_flag" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "spi_regs_module/spi_sel_ie" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "spi_regs_module/spi_sel_sdiv" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "spi_regs_module/spi_sel_ckmode" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "spi_regs_module/spi_sel_csmode" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "spi_regs_module/spi_sel_del0" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "spi_regs_module/spi_sel_del1" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "spi_regs_module/spi_sel_fmt" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "spi_regs_module/spi_sel_csdef" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "spi_regs_module/spi_sel_csid" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "spi_regs_module/spi_sel_txdata" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "spi_regs_module/spi_sel_txmark" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "spi_regs_module/spi_sel_rxmark" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "spi_regs_module/spi_sel_ie" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "spi_regs_module/spi_sel_sdiv" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "spi_regs_module/spi_sel_ckmode" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "spi_regs_module/spi_sel_csmode" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "spi_regs_module/spi_sel_del0" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "spi_regs_module/spi_sel_del1" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "spi_regs_module/spi_sel_fmt" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "spi_regs_module/spi_sel_csdef" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "spi_regs_module/spi_sel_csid" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "spi_regs_module/spi_sel_txdata" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "spi_regs_module/spi_sel_txmark" won't be mapped to RAM because it is too sparse
-INFO: [Synth 8-5546] ROM "spi_regs_module/spi_sel_rxmark" won't be mapped to RAM because it is too sparse
-INFO: [Common 17-14] Message 'Synth 8-7129' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
-INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart_reg_baud_ff_reg[0]' (FDCE) to 'uart_ns_module/uart_reg_lstatus_ff_reg[7]'
-INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart_reg_baud_ff_reg[7]' (FDCE) to 'uart_ns_module/uart_reg_lstatus_ff_reg[7]'
-INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart_reg_baud_ff_reg[1]' (FDCE) to 'uart_ns_module/uart_reg_lstatus_ff_reg[7]'
-INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart_reg_baud_ff_reg[2]' (FDCE) to 'uart_ns_module/uart_reg_lstatus_ff_reg[7]'
-INFO: [Synth 8-3333] propagating constant 1 across sequential element (uart_ns_module/\uart_reg_baud_ff_reg[3] )
-INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart_reg_baud_ff_reg[4]' (FDCE) to 'uart_ns_module/uart_reg_lstatus_ff_reg[7]'
-INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart_reg_baud_ff_reg[5]' (FDCE) to 'uart_ns_module/uart_reg_lstatus_ff_reg[7]'
-INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart_reg_baud_ff_reg[6]' (FDCE) to 'uart_ns_module/uart_reg_lstatus_ff_reg[7]'
-INFO: [Synth 8-3886] merging instance 'spi_top_module/spi_regs_module/reg_fmt_ff_reg[0]' (FDCE) to 'spi_top_module/spi_regs_module/reg_fmt_ff_reg[1]'
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (spi_top_module/\spi_regs_module/reg_fmt_ff_reg[1] )
-INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart_reg_lstatus_ff_reg[1]' (FDCE) to 'uart_ns_module/uart_reg_lstatus_ff_reg[7]'
-INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart_reg_lstatus_ff_reg[2]' (FDCE) to 'uart_ns_module/uart_reg_lstatus_ff_reg[7]'
-INFO: [Synth 8-3886] merging instance 'uart_module/uart_reg_status_ff_reg[2]' (FDCE) to 'uart_module/uart_reg_status_ff_reg[7]'
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_ns_module/\uart_reg_lstatus_ff_reg[3] )
-INFO: [Synth 8-3886] merging instance 'uart_module/uart_reg_status_ff_reg[3]' (FDCE) to 'uart_module/uart_reg_status_ff_reg[7]'
-INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart_reg_lstatus_ff_reg[4]' (FDCE) to 'uart_ns_module/uart_reg_lstatus_ff_reg[7]'
-INFO: [Synth 8-3886] merging instance 'uart_module/uart_reg_status_ff_reg[4]' (FDCE) to 'uart_module/uart_reg_status_ff_reg[7]'
-INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart_reg_lstatus_ff_reg[5]' (FDCE) to 'uart_ns_module/uart_reg_lstatus_ff_reg[6]'
-INFO: [Synth 8-3886] merging instance 'uart_module/uart_reg_status_ff_reg[5]' (FDCE) to 'uart_module/uart_reg_status_ff_reg[7]'
-INFO: [Synth 8-3886] merging instance 'uart_module/uart_reg_status_ff_reg[6]' (FDCE) to 'uart_module/uart_reg_status_ff_reg[7]'
-INFO: [Synth 8-3886] merging instance 'uart_module/uart_reg_rxctrl_ff_reg[16]' (FDCE) to 'uart_module/uart_reg_rxctrl_ff_reg[17]'
-INFO: [Synth 8-3886] merging instance 'uart_module/uart_reg_txctrl_ff_reg[16]' (FDCE) to 'uart_module/uart_reg_txctrl_ff_reg[17]'
-INFO: [Synth 8-3886] merging instance 'uart_module/uart_reg_rxctrl_ff_reg[17]' (FDCE) to 'uart_module/uart_reg_rxctrl_ff_reg[18]'
-INFO: [Synth 8-3886] merging instance 'uart_module/uart_reg_txctrl_ff_reg[17]' (FDCE) to 'uart_module/uart_reg_txctrl_ff_reg[18]'
-INFO: [Synth 8-3886] merging instance 'uart_module/uart_reg_rxctrl_ff_reg[18]' (FDCE) to 'uart_module/uart_reg_rxctrl_ff_reg[19]'
-INFO: [Synth 8-3886] merging instance 'uart_module/uart_reg_txctrl_ff_reg[18]' (FDCE) to 'uart_module/uart_reg_txctrl_ff_reg[19]'
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_module/\uart_reg_rxctrl_ff_reg[19] )
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_module/\uart_reg_txctrl_ff_reg[19] )
+INFO: [Synth 8-5546] ROM "spi_top_module/spi_regs_module/spi_sel_ie" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "spi_top_module/spi_regs_module/spi_sel_sdiv" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "spi_top_module/spi_regs_module/spi_sel_ckmode" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "spi_top_module/spi_regs_module/spi_sel_csmode" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "spi_top_module/spi_regs_module/spi_sel_del0" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "spi_top_module/spi_regs_module/spi_sel_del1" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "spi_top_module/spi_regs_module/spi_sel_fmt" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "spi_top_module/spi_regs_module/spi_sel_csdef" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "spi_top_module/spi_regs_module/spi_sel_csid" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "spi_top_module/spi_regs_module/spi_sel_txdata" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "spi_top_module/spi_regs_module/spi_sel_txmark" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "spi_top_module/spi_regs_module/spi_sel_rxmark" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "spi_top_module/spi_regs_module/spi_sel_ie" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "spi_top_module/spi_regs_module/spi_sel_sdiv" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "spi_top_module/spi_regs_module/spi_sel_ckmode" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "spi_top_module/spi_regs_module/spi_sel_csmode" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "spi_top_module/spi_regs_module/spi_sel_del0" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "spi_top_module/spi_regs_module/spi_sel_del1" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "spi_top_module/spi_regs_module/spi_sel_fmt" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "spi_top_module/spi_regs_module/spi_sel_csdef" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "spi_top_module/spi_regs_module/spi_sel_csid" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "spi_top_module/spi_regs_module/spi_sel_txdata" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "spi_top_module/spi_regs_module/spi_sel_txmark" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "spi_top_module/spi_regs_module/spi_sel_rxmark" won't be mapped to RAM because it is too sparse
 INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/exe2csr_data_pipe_ff_reg[instr][21]' (FDR) to 'core_top_module/pipeline_top_module/exe2csr_data_pipe_ff_reg[csr_addr][1]'
 INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/exe2csr_data_pipe_ff_reg[instr][22]' (FDR) to 'core_top_module/pipeline_top_module/exe2csr_data_pipe_ff_reg[csr_addr][2]'
 INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/exe2csr_data_pipe_ff_reg[instr][23]' (FDR) to 'core_top_module/pipeline_top_module/exe2csr_data_pipe_ff_reg[csr_addr][3]'
@@ -2011,111 +1994,165 @@ INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/exe2c
 INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/exe2csr_data_pipe_ff_reg[instr][27]' (FDR) to 'core_top_module/pipeline_top_module/exe2csr_data_pipe_ff_reg[csr_addr][7]'
 INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/exe2csr_data_pipe_ff_reg[instr][28]' (FDR) to 'core_top_module/pipeline_top_module/exe2csr_data_pipe_ff_reg[csr_addr][8]'
 INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/exe2csr_data_pipe_ff_reg[instr][29]' (FDR) to 'core_top_module/pipeline_top_module/exe2csr_data_pipe_ff_reg[csr_addr][9]'
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_ns_module/\uart_reg_lstatus_ff_reg[7] )
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_module/\uart_reg_status_ff_reg[7] )
 INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/exe2csr_data_pipe_ff_reg[instr][30]' (FDR) to 'core_top_module/pipeline_top_module/exe2csr_data_pipe_ff_reg[csr_addr][10]'
 INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/exe2csr_data_pipe_ff_reg[instr][20]' (FDR) to 'core_top_module/pipeline_top_module/exe2csr_data_pipe_ff_reg[csr_addr][0]'
 INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/exe2csr_data_pipe_ff_reg[instr][31]' (FDR) to 'core_top_module/pipeline_top_module/exe2csr_data_pipe_ff_reg[csr_addr][11]'
-INFO: [Synth 8-3333] propagating constant 1 across sequential element (spi_top_module/\spi_regs_module/reg_delay0_ff_reg[0] )
-INFO: [Synth 8-3886] merging instance 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][3]' (FDR) to 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][31]'
-INFO: [Synth 8-3886] merging instance 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][4]' (FDR) to 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][31]'
-INFO: [Synth 8-3886] merging instance 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][5]' (FDR) to 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][31]'
-INFO: [Synth 8-3886] merging instance 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][6]' (FDR) to 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][31]'
-INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart2dbus_ff_reg[r_data][8]' (FDR) to 'uart_ns_module/uart2dbus_ff_reg[r_data][31]'
-INFO: [Synth 8-3886] merging instance 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][8]' (FDR) to 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][31]'
-INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart2dbus_ff_reg[r_data][9]' (FDR) to 'uart_ns_module/uart2dbus_ff_reg[r_data][31]'
-INFO: [Synth 8-3886] merging instance 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][9]' (FDR) to 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][31]'
-INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart2dbus_ff_reg[r_data][10]' (FDR) to 'uart_ns_module/uart2dbus_ff_reg[r_data][31]'
-INFO: [Synth 8-3886] merging instance 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][10]' (FDR) to 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][31]'
-INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart2dbus_ff_reg[r_data][11]' (FDR) to 'uart_ns_module/uart2dbus_ff_reg[r_data][31]'
-INFO: [Synth 8-3886] merging instance 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][11]' (FDR) to 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][31]'
-INFO: [Synth 8-3886] merging instance 'spi_top_module/spi_regs_module/spi2dbus_ff_reg[r_data][12]' (FDR) to 'spi_top_module/spi_regs_module/spi2dbus_ff_reg[r_data][29]'
-INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart2dbus_ff_reg[r_data][12]' (FDR) to 'uart_ns_module/uart2dbus_ff_reg[r_data][31]'
-INFO: [Synth 8-3886] merging instance 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][12]' (FDR) to 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][31]'
-INFO: [Synth 8-3886] merging instance 'spi_top_module/spi_regs_module/spi2dbus_ff_reg[r_data][13]' (FDR) to 'spi_top_module/spi_regs_module/spi2dbus_ff_reg[r_data][29]'
-INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart2dbus_ff_reg[r_data][13]' (FDR) to 'uart_ns_module/uart2dbus_ff_reg[r_data][31]'
-INFO: [Synth 8-3886] merging instance 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][13]' (FDR) to 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][31]'
-INFO: [Synth 8-3886] merging instance 'spi_top_module/spi_regs_module/spi2dbus_ff_reg[r_data][14]' (FDR) to 'spi_top_module/spi_regs_module/spi2dbus_ff_reg[r_data][29]'
-INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart2dbus_ff_reg[r_data][14]' (FDR) to 'uart_ns_module/uart2dbus_ff_reg[r_data][31]'
-INFO: [Synth 8-3886] merging instance 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][14]' (FDR) to 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][31]'
-INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart2dbus_ff_reg[r_data][16]' (FDR) to 'uart_ns_module/uart2dbus_ff_reg[r_data][31]'
-INFO: [Synth 8-3886] merging instance 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][16]' (FDR) to 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][31]'
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (\spi_top_module/spi_regs_module/reg_delay0_ff_reg[0] )
+INFO: [Synth 8-3886] merging instance 'spi_top_module/spi_regs_module/reg_fmt_ff_reg[0]' (FDCE) to 'spi_top_module/spi_regs_module/reg_fmt_ff_reg[1]'
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\spi_top_module/spi_regs_module/reg_fmt_ff_reg[1] )
 INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[16]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[30]'
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (\core_top_module/pipeline_top_module /csr_module/\csr_mip_ff_reg[uart] )
 INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[16]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[30]'
-INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart2dbus_ff_reg[r_data][17]' (FDR) to 'uart_ns_module/uart2dbus_ff_reg[r_data][31]'
-INFO: [Synth 8-3886] merging instance 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][17]' (FDR) to 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][31]'
 INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[17]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[30]'
 INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[17]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[30]'
-INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart2dbus_ff_reg[r_data][18]' (FDR) to 'uart_ns_module/uart2dbus_ff_reg[r_data][31]'
-INFO: [Synth 8-3886] merging instance 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][18]' (FDR) to 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][31]'
 INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[18]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[30]'
 INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[18]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[30]'
-INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart2dbus_ff_reg[r_data][19]' (FDR) to 'uart_ns_module/uart2dbus_ff_reg[r_data][31]'
-INFO: [Synth 8-3886] merging instance 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][19]' (FDR) to 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][31]'
 INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[19]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[30]'
 INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[19]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[30]'
-INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart2dbus_ff_reg[r_data][20]' (FDR) to 'uart_ns_module/uart2dbus_ff_reg[r_data][31]'
-INFO: [Synth 8-3886] merging instance 'uart_module/uart2dbus_ff_reg[r_data][20]' (FDR) to 'uart_module/uart2dbus_ff_reg[r_data][30]'
-INFO: [Synth 8-3886] merging instance 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][20]' (FDR) to 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][31]'
-INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart2dbus_ff_reg[r_data][21]' (FDR) to 'uart_ns_module/uart2dbus_ff_reg[r_data][31]'
-INFO: [Synth 8-3886] merging instance 'uart_module/uart2dbus_ff_reg[r_data][21]' (FDR) to 'uart_module/uart2dbus_ff_reg[r_data][30]'
-INFO: [Synth 8-3886] merging instance 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][21]' (FDR) to 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][31]'
 INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[21]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[30]'
 INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[21]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[30]'
-INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart2dbus_ff_reg[r_data][22]' (FDR) to 'uart_ns_module/uart2dbus_ff_reg[r_data][31]'
-INFO: [Synth 8-3886] merging instance 'uart_module/uart2dbus_ff_reg[r_data][22]' (FDR) to 'uart_module/uart2dbus_ff_reg[r_data][30]'
-INFO: [Synth 8-3886] merging instance 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][22]' (FDR) to 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][31]'
 INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_satp_ff_reg[asid][0]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_satp_ff_reg[asid][8]'
 INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[22]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[30]'
 INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[22]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[30]'
 INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_satp_ff_reg[asid][1]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_satp_ff_reg[asid][8]'
 INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[23]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[30]'
 INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[23]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[30]'
-INFO: [Synth 8-3886] merging instance 'spi_top_module/spi_regs_module/spi2dbus_ff_reg[r_data][24]' (FDR) to 'spi_top_module/spi_regs_module/spi2dbus_ff_reg[r_data][29]'
-INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart2dbus_ff_reg[r_data][24]' (FDR) to 'uart_ns_module/uart2dbus_ff_reg[r_data][31]'
-INFO: [Synth 8-3886] merging instance 'uart_module/uart2dbus_ff_reg[r_data][24]' (FDR) to 'uart_module/uart2dbus_ff_reg[r_data][30]'
-INFO: [Synth 8-3886] merging instance 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][24]' (FDR) to 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][31]'
 INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_satp_ff_reg[asid][2]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_satp_ff_reg[asid][8]'
 INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[24]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[30]'
 INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[24]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[30]'
-INFO: [Synth 8-3886] merging instance 'spi_top_module/spi_regs_module/spi2dbus_ff_reg[r_data][25]' (FDR) to 'spi_top_module/spi_regs_module/spi2dbus_ff_reg[r_data][29]'
-INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart2dbus_ff_reg[r_data][25]' (FDR) to 'uart_ns_module/uart2dbus_ff_reg[r_data][31]'
-INFO: [Synth 8-3886] merging instance 'uart_module/uart2dbus_ff_reg[r_data][25]' (FDR) to 'uart_module/uart2dbus_ff_reg[r_data][30]'
-INFO: [Synth 8-3886] merging instance 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][25]' (FDR) to 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][31]'
-INFO: [Common 17-14] Message 'Synth 8-3886' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
-INFO: [Common 17-14] Message 'Synth 8-3886' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (spi_top_module/\spi_regs_module/spi2dbus_ff_reg[r_data][15] )
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_ns_module/\uart2dbus_ff_reg[r_data][30] )
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_module/\uart2dbus_ff_reg[r_data][30] )
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (plic_top_module/\plic_regs_module/plic2dbus_ff_reg[r_data][30] )
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_satp_ff_reg[asid][3]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_satp_ff_reg[asid][8]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[25]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[30]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[25]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[30]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_satp_ff_reg[asid][4]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_satp_ff_reg[asid][8]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[26]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[30]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[26]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[30]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_satp_ff_reg[asid][5]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_satp_ff_reg[asid][8]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[27]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[30]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[27]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[30]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_satp_ff_reg[asid][6]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_satp_ff_reg[asid][8]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[28]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[30]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[28]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[30]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_satp_ff_reg[asid][7]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_satp_ff_reg[asid][8]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[29]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[30]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[29]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[30]'
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (\core_top_module/pipeline_top_module /csr_module/\csr_satp_ff_reg[asid][8] )
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[30]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[20]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[30]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[20]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[15]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[20]'
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (\core_top_module/pipeline_top_module /csr_module/\csr_mip_ff_reg[warl6][3] )
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[15]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[20]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[14]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[20]'
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (\core_top_module/pipeline_top_module /csr_module/\csr_mip_ff_reg[warl6][2] )
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[14]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[20]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[13]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[20]'
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (\core_top_module/pipeline_top_module /csr_module/\csr_mip_ff_reg[warl6][1] )
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[13]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[20]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[12]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[20]'
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (\core_top_module/pipeline_top_module /csr_module/\csr_mip_ff_reg[warl6][0] )
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[12]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[20]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[11]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[20]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[11]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[20]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[10]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[20]'
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (\core_top_module/pipeline_top_module /csr_module/\csr_mip_ff_reg[warl5] )
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[10]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[20]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[9]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[20]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[9]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[20]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[8]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[20]'
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (\core_top_module/pipeline_top_module /csr_module/\csr_mip_ff_reg[warl4] )
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[8]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[20]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[7]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[20]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[7]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[20]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[6]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[20]'
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (\core_top_module/pipeline_top_module /csr_module/\csr_mip_ff_reg[warl3] )
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[6]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[20]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[5]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[20]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[5]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[20]'
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[4]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_scause_ff_reg[20]'
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (\core_top_module/pipeline_top_module /csr_module/\csr_mip_ff_reg[warl2] )
+INFO: [Synth 8-3886] merging instance 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[4]' (FDCE) to 'core_top_module/pipeline_top_module/csr_module/csr_mcause_ff_reg[20]'
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (\core_top_module/pipeline_top_module /csr_module/\csr_mip_ff_reg[warl1] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (\core_top_module/pipeline_top_module /csr_module/\csr_stvec_ff_reg[mode][1] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (\core_top_module/pipeline_top_module /csr_module/\csr_mtvec_ff_reg[mode][1] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (\core_top_module/pipeline_top_module /csr_module/\csr_mip_ff_reg[warl0] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (\core_top_module/pipeline_top_module /csr_module/\csr_scause_ff_reg[20] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (\core_top_module/pipeline_top_module /csr_module/\csr_mcause_ff_reg[20] )
+INFO: [Synth 8-3886] merging instance 'spi_top_module/spi_regs_module/spi2dbus_ff_reg[r_data][12]' (FDR) to 'spi_top_module/spi_regs_module/spi2dbus_ff_reg[r_data][29]'
+INFO: [Synth 8-3886] merging instance 'spi_top_module/spi_regs_module/spi2dbus_ff_reg[r_data][13]' (FDR) to 'spi_top_module/spi_regs_module/spi2dbus_ff_reg[r_data][29]'
+INFO: [Synth 8-3886] merging instance 'spi_top_module/spi_regs_module/spi2dbus_ff_reg[r_data][14]' (FDR) to 'spi_top_module/spi_regs_module/spi2dbus_ff_reg[r_data][29]'
+INFO: [Synth 8-3886] merging instance 'spi_top_module/spi_regs_module/spi2dbus_ff_reg[r_data][15]' (FDR) to 'spi_top_module/spi_regs_module/spi2dbus_ff_reg[r_data][29]'
+INFO: [Synth 8-3886] merging instance 'spi_top_module/spi_regs_module/spi2dbus_ff_reg[r_data][24]' (FDR) to 'spi_top_module/spi_regs_module/spi2dbus_ff_reg[r_data][29]'
+INFO: [Synth 8-3886] merging instance 'spi_top_module/spi_regs_module/spi2dbus_ff_reg[r_data][25]' (FDR) to 'spi_top_module/spi_regs_module/spi2dbus_ff_reg[r_data][29]'
+INFO: [Synth 8-3886] merging instance 'spi_top_module/spi_regs_module/spi2dbus_ff_reg[r_data][26]' (FDR) to 'spi_top_module/spi_regs_module/spi2dbus_ff_reg[r_data][29]'
+INFO: [Synth 8-3886] merging instance 'spi_top_module/spi_regs_module/spi2dbus_ff_reg[r_data][27]' (FDR) to 'spi_top_module/spi_regs_module/spi2dbus_ff_reg[r_data][29]'
+INFO: [Synth 8-3886] merging instance 'spi_top_module/spi_regs_module/spi2dbus_ff_reg[r_data][28]' (FDR) to 'spi_top_module/spi_regs_module/spi2dbus_ff_reg[r_data][29]'
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (\spi_top_module/spi_regs_module/spi2dbus_ff_reg[r_data][29] )
+INFO: [Synth 8-5546] ROM "plic_regs_module/prio_reg_wr_flag" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "plic_regs_module/ie_reg_wr_flag" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "plic_regs_module/prio_th_reg_wr_flag" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "plic_regs_module/prio_reg_wr_flag" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "plic_regs_module/ie_reg_wr_flag" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5546] ROM "plic_regs_module/prio_th_reg_wr_flag" won't be mapped to RAM because it is too sparse
+INFO: [Synth 8-5544] ROM "cache_word_read" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "cache_word_read" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "cache_word_read" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "cache_word_read" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "cache_word_read" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "cache_word_read" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "cache_word_read" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
+INFO: [Synth 8-5544] ROM "cache_word_read" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
+INFO: [Common 17-14] Message 'Synth 8-7129' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+INFO: [Synth 8-6851] RAM (wb_dcache_datapath_module/cache_data_ram_reg) has partial Byte Wide Write Enable pattern, however no output register found in fanout of RAM. Recommended to use supported Byte Wide Write Enable template. 
+INFO: [Synth 8-6851] RAM (wb_dcache_datapath_module/cache_data_ram_reg) has partial Byte Wide Write Enable pattern, however no output register found in fanout of RAM. Recommended to use supported Byte Wide Write Enable template. 
+INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart_reg_baud_ff_reg[0]' (FDCE) to 'uart_ns_module/uart_reg_lstatus_ff_reg[7]'
+INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart_reg_baud_ff_reg[7]' (FDCE) to 'uart_ns_module/uart_reg_lstatus_ff_reg[7]'
+INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart_reg_baud_ff_reg[1]' (FDCE) to 'uart_ns_module/uart_reg_lstatus_ff_reg[7]'
+INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart_reg_baud_ff_reg[2]' (FDCE) to 'uart_ns_module/uart_reg_lstatus_ff_reg[7]'
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (uart_ns_module/\uart_reg_baud_ff_reg[3] )
+INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart_reg_baud_ff_reg[4]' (FDCE) to 'uart_ns_module/uart_reg_lstatus_ff_reg[7]'
+INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart_reg_baud_ff_reg[5]' (FDCE) to 'uart_ns_module/uart_reg_lstatus_ff_reg[7]'
+INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart_reg_baud_ff_reg[6]' (FDCE) to 'uart_ns_module/uart_reg_lstatus_ff_reg[7]'
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_module/\rx_fifo_reg[0][0] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_module/\rx_fifo_reg[0][1] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_module/\rx_fifo_reg[0][2] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_module/\rx_fifo_reg[0][3] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_module/\rx_fifo_reg[0][4] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_module/\rx_fifo_reg[0][5] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_module/\rx_fifo_reg[0][6] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_module/\rx_fifo_reg[0][7] )
+INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart_reg_lstatus_ff_reg[1]' (FDCE) to 'uart_ns_module/uart_reg_lstatus_ff_reg[7]'
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_module/\uart_reg_baud_ff_reg[1] )
+INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart_reg_lstatus_ff_reg[2]' (FDCE) to 'uart_ns_module/uart_reg_lstatus_ff_reg[7]'
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_module/\uart_reg_baud_ff_reg[2] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_module/\uart_reg_status_ff_reg[2] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_ns_module/\uart_reg_lstatus_ff_reg[3] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_module/\uart_reg_baud_ff_reg[3] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_module/\uart_reg_status_ff_reg[3] )
+INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart_reg_lstatus_ff_reg[4]' (FDCE) to 'uart_ns_module/uart_reg_lstatus_ff_reg[7]'
+INFO: [Synth 8-3333] propagating constant 1 across sequential element (uart_module/\uart_reg_baud_ff_reg[4] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_module/\uart_reg_status_ff_reg[4] )
+INFO: [Synth 8-3886] merging instance 'uart_ns_module/uart_reg_lstatus_ff_reg[5]' (FDCE) to 'uart_ns_module/uart_reg_lstatus_ff_reg[6]'
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_module/\uart_reg_baud_ff_reg[5] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_module/\uart_reg_status_ff_reg[5] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_module/\uart_reg_baud_ff_reg[6] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_module/\uart_reg_status_ff_reg[6] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_ns_module/\uart_reg_lstatus_ff_reg[7] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_module/\uart_reg_baud_ff_reg[7] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_module/\uart_reg_status_ff_reg[7] )
+INFO: [Synth 8-3886] merging instance 'uart_module/uart_reg_rxctrl_ff_reg[16]' (FDCE) to 'uart_module/uart_reg_rxctrl_ff_reg[17]'
+INFO: [Synth 8-3886] merging instance 'uart_module/uart_reg_txctrl_ff_reg[16]' (FDCE) to 'uart_module/uart_reg_txctrl_ff_reg[17]'
+INFO: [Synth 8-3886] merging instance 'uart_module/uart_reg_rxctrl_ff_reg[17]' (FDCE) to 'uart_module/uart_reg_rxctrl_ff_reg[18]'
+INFO: [Synth 8-3886] merging instance 'uart_module/uart_reg_txctrl_ff_reg[17]' (FDCE) to 'uart_module/uart_reg_txctrl_ff_reg[18]'
+INFO: [Synth 8-3886] merging instance 'uart_module/uart_reg_rxctrl_ff_reg[18]' (FDCE) to 'uart_module/uart_reg_rxctrl_ff_reg[19]'
+INFO: [Synth 8-3886] merging instance 'uart_module/uart_reg_txctrl_ff_reg[18]' (FDCE) to 'uart_module/uart_reg_txctrl_ff_reg[19]'
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_module/\uart_reg_rxctrl_ff_reg[19] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_module/\uart_reg_txctrl_ff_reg[19] )
+INFO: [Synth 8-3886] merging instance 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][3]' (FDR) to 'plic_top_module/plic_regs_module/plic2dbus_ff_reg[r_data][31]'
+INFO: [Common 17-14] Message 'Synth 8-3886' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_module/\uart2dbus_ff_reg[r_data][30] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_ns_module/\uart2dbus_ff_reg[r_data][31] )
+INFO: [Synth 8-3333] propagating constant 0 across sequential element (plic_top_module/\plic_regs_module/plic2dbus_ff_reg[r_data][31] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (uart_module/\uart2dbus_ff_reg[r_data][19] )
-INFO: [Synth 8-5544] ROM "cache_word_read" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
-INFO: [Synth 8-5544] ROM "cache_word_read" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
-INFO: [Synth 8-5544] ROM "cache_word_read" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
-INFO: [Synth 8-5544] ROM "cache_word_read" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
-INFO: [Synth 8-5544] ROM "cache_word_read" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
-INFO: [Synth 8-5544] ROM "cache_word_read" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
-INFO: [Synth 8-5544] ROM "cache_word_read" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
-INFO: [Synth 8-5544] ROM "cache_word_read" won't be mapped to Block RAM because address size (2) smaller than threshold (5)
-INFO: [Synth 8-6851] RAM (wb_dcache_datapath_module/cache_data_ram_reg) has partial Byte Wide Write Enable pattern, however no output register found in fanout of RAM. Recommended to use supported Byte Wide Write Enable template. 
-INFO: [Synth 8-6851] RAM (wb_dcache_datapath_module/cache_data_ram_reg) has partial Byte Wide Write Enable pattern, however no output register found in fanout of RAM. Recommended to use supported Byte Wide Write Enable template. 
-WARNING: [Synth 8-3936] Found unconnected internal register 'byte_sel_data_map_reg' and it is trimmed from '88' to '4' bits. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_mc_phy_wrapper.v:731]
+WARNING: [Synth 8-3936] Found unconnected internal register 'byte_sel_data_map_reg' and it is trimmed from '88' to '4' bits. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_mc_phy.v:731]
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (\fine_delay_mod1[-1111111109] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (\fine_delay_mod_reg[0] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (\fine_delay_mod_reg[1] )
@@ -2128,12 +2165,12 @@ INFO: [Synth 8-3333] propagating constant 0 across sequential element (\fine_del
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (\fine_delay_mod_reg[22] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (\fine_delay_mod_reg[25] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (\fine_delay_mod_reg[28] )
-INFO: [Synth 8-4471] merging register 'single_rank.chip_cnt_r_reg[1:0]' into 'single_rank.chip_cnt_r_reg[1:0]' [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:818]
-WARNING: [Synth 8-3936] Found unconnected internal register 'oclkdelay_start_dly_r_reg' and it is trimmed from '15' to '14' bits. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:1232]
-WARNING: [Synth 8-3936] Found unconnected internal register 'wrcal_start_dly_r_reg' and it is trimmed from '15' to '14' bits. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_init.v:1230]
-INFO: [Synth 8-4471] merging register 'rdlvl_stg1_done_r1_reg' into 'prbs_rdlvl_done_r1_reg' [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_calib_top.v:1197]
-INFO: [Synth 8-4471] merging register 'gen_byte_sel_div2.byte_sel_cnt_reg[1:0]' into 'gen_byte_sel_div2.byte_sel_cnt_reg[1:0]' [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_calib_top.v:962]
-INFO: [Synth 8-4471] merging register 'gen_byte_sel_div2.byte_sel_cnt_reg[1:0]' into 'gen_byte_sel_div2.byte_sel_cnt_reg[1:0]' [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_calib_top.v:962]
+INFO: [Synth 8-4471] merging register 'single_rank.chip_cnt_r_reg[1:0]' into 'single_rank.chip_cnt_r_reg[1:0]' [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_4lanes.v:818]
+WARNING: [Synth 8-3936] Found unconnected internal register 'oclkdelay_start_dly_r_reg' and it is trimmed from '15' to '14' bits. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_4lanes.v:1232]
+WARNING: [Synth 8-3936] Found unconnected internal register 'wrcal_start_dly_r_reg' and it is trimmed from '15' to '14' bits. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_4lanes.v:1230]
+INFO: [Synth 8-4471] merging register 'rdlvl_stg1_done_r1_reg' into 'prbs_rdlvl_done_r1_reg' [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_tempmon.v:1197]
+INFO: [Synth 8-4471] merging register 'gen_byte_sel_div2.byte_sel_cnt_reg[1:0]' into 'gen_byte_sel_div2.byte_sel_cnt_reg[1:0]' [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_tempmon.v:962]
+INFO: [Synth 8-4471] merging register 'gen_byte_sel_div2.byte_sel_cnt_reg[1:0]' into 'gen_byte_sel_div2.byte_sel_cnt_reg[1:0]' [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_tempmon.v:962]
 INFO: [Common 17-14] Message 'Synth 8-7129' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (u_ddr_calib_top/u_ddr_phy_init/\gen_single_slot_odt.tmp_mr1_r_reg[0][2] )
 INFO: [Synth 8-3333] propagating constant 1 across sequential element (u_ddr_calib_top/u_ddr_phy_init/\gen_single_slot_odt.tmp_mr2_r_reg[0][1] )
@@ -2154,13 +2191,13 @@ INFO: [Synth 8-3333] propagating constant 0 across sequential element (u_ddr_cal
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (\gen_ddr3_noparity.parity_reg[3] )
 INFO: [Synth 8-3333] propagating constant 1 across sequential element (u_ddr_calib_top/u_ddr_phy_init/\even_cwl.phy_cas_n_reg[1] )
 INFO: [Synth 8-3333] propagating constant 1 across sequential element (u_ddr_calib_top/u_ddr_phy_init/\gen_div4_ca_tieoff.phy_ras_n_reg[3] )
+INFO: [Common 17-14] Message 'Synth 8-3886' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (u_ddr_calib_top/u_ddr_phy_init/\single_rank.chip_cnt_r_reg[1] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (u_ddr_calib_top/u_ddr_phy_init/\complex_address_reg[12] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (u_ddr_calib_top/u_ddr_phy_wrcal/\po_fine_tap_cnt_reg[0][5] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (u_ddr_calib_top/\skip_calib_tap_off.calib_tap_req_reg )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (u_ddr_calib_top/\calib_sel_reg[5] )
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (u_ddr_calib_top/u_ddr_phy_init/ext_int_ref_req_reg)
-INFO: [Common 17-14] Message 'Synth 8-3886' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (u_ddr_calib_top/u_ddr_phy_init/wrlvl_odt_ctl_reg)
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (u_ddr_calib_top/\ddr_phy_rdlvl_gen.u_ddr_phy_rdlvl /mpr_last_byte_done_reg)
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (u_ddr_calib_top/u_ddr_phy_init/wr_level_dqs_asrt_reg)
@@ -2175,32 +2212,12 @@ INFO: [Synth 8-3333] propagating constant 0 across sequential element (u_ddr_cal
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (u_ddr_calib_top/\mb_wrlvl_off.u_phy_wrlvl_off_delay /po_s2_incdec_f_reg)
 INFO: [Synth 8-3333] propagating constant 1 across sequential element (u_ddr_calib_top/\mb_wrlvl_off.u_phy_wrlvl_off_delay /po_s2_incdec_c_reg)
 INFO: [Synth 8-3333] propagating constant 0 across sequential element (u_ddr_calib_top/u_ddr_phy_init/\gen_rnk[1].mr2_r_reg[1][1] )
-INFO: [Synth 8-3333] propagating constant 1 across sequential element (u_ddr_calib_top/u_ddr_phy_init/wrlvl_rank_done_r3_reg)
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (u_ddr_calib_top/\ddr_phy_rdlvl_gen.u_ddr_phy_rdlvl /mpr_valid_r1_reg)
-INFO: [Synth 8-3333] propagating constant 1 across sequential element (u_ddr_calib_top/\ddr_phy_rdlvl_gen.u_ddr_phy_rdlvl /mpr_rdlvl_done_r1_reg)
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (u_ddr_calib_top/u_ddr_phy_init/mpr_end_if_reset_reg)
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (u_ddr_calib_top/u_ddr_phy_wrcal/wrcal_sanity_chk_done_reg)
-INFO: [Synth 8-3333] propagating constant 1 across sequential element (u_ddr_calib_top/u_ddr_phy_init/wrlvl_rank_done_r3_reg)
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (u_ddr_calib_top/\ddr_phy_rdlvl_gen.u_ddr_phy_rdlvl /mpr_valid_r1_reg)
-INFO: [Synth 8-3333] propagating constant 1 across sequential element (u_ddr_calib_top/u_ddr_phy_init/wrlvl_rank_done_r3_reg)
-INFO: [Synth 8-3333] propagating constant 1 across sequential element (u_ddr_calib_top/u_ddr_phy_init/wrlvl_rank_done_r3_reg)
-INFO: [Synth 8-3333] propagating constant 1 across sequential element (u_ddr_calib_top/u_ddr_phy_init/wrlvl_rank_done_r3_reg)
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (u_ddr_calib_top/\ddr_phy_rdlvl_gen.u_ddr_phy_rdlvl /\rd_mux_sel_r_reg[1] )
-WARNING: [Synth 8-3332] Sequential element (FSM_onehot_cal1_state_r_reg[33]) is unused and will be removed from module mig_7series_v4_2_ddr_phy_rdlvl.
-INFO: [Synth 8-3333] propagating constant 1 across sequential element (u_ddr_calib_top/u_ddr_phy_init/\wrdq_div2_4to1_rdlvl_first.phy_wrdata_reg[95] )
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (u_ddr_calib_top/u_ddr_phy_init/\wrdq_div2_4to1_rdlvl_first.phy_wrdata_reg[124] )
-INFO: [Common 17-14] Message 'Synth 8-7129' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (\clk_map/psr0/U0/EXT_LPF/ACTIVE_LOW_EXT.ACT_LO_EXT/GENERATE_LEVEL_P_S_CDC.SINGLE_BIT.CROSS_PLEVEL_IN2SCNDRY_IN_cdc_to )
-INFO: [Synth 8-3333] propagating constant 0 across sequential element (\m00_nodes/m00_r_node/inst /\inst_mi_handler/gen_normal_area.gen_upsizer.inst_upsizer/gen_r_ch.accum_reg[sc_route][0] )
-INFO: [Synth 8-3333] propagating constant 1 across sequential element (\m01_nodes/m01_r_node/inst /\inst_mi_handler/gen_normal_area.inst_fifo_send/gen_AB_reg_slice.payld_b_reg[0] )
-INFO: [Synth 8-3333] propagating constant 1 across sequential element (\m01_nodes/m01_r_node/inst /\inst_mi_handler/gen_normal_area.inst_fifo_send/gen_AB_reg_slice.payld_a_reg[0] )
-INFO: [Synth 8-3333] propagating constant 1 across sequential element (\m01_nodes/m01_b_node/inst /\inst_mi_handler/gen_normal_area.inst_fifo_send/gen_AB_reg_slice.payld_b_reg[0] )
-INFO: [Synth 8-3333] propagating constant 1 across sequential element (\m01_nodes/m01_b_node/inst /\inst_mi_handler/gen_normal_area.inst_fifo_send/gen_AB_reg_slice.payld_a_reg[0] )
-INFO: [Synth 8-3333] propagating constant 1 across sequential element (\m00_nodes/m00_r_node/inst /\inst_mi_handler/gen_normal_area.inst_fifo_send/gen_AB_reg_slice.payld_b_reg[0] )
 INFO: [Common 17-14] Message 'Synth 8-3333' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
+WARNING: [Synth 8-3332] Sequential element (FSM_onehot_cal1_state_r_reg[33]) is unused and will be removed from module mig_7series_v4_2_ddr_phy_rdlvl.
+INFO: [Common 17-14] Message 'Synth 8-7129' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
 INFO: [Common 17-14] Message 'Synth 8-3886' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings.
 ---------------------------------------------------------------------------------
-Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:03:32 ; elapsed = 00:03:23 . Memory (MB): peak = 3652.559 ; gain = 926.863 ; free physical = 135080 ; free virtual = 294825
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:03:16 ; elapsed = 00:03:07 . Memory (MB): peak = 3661.664 ; gain = 935.973 ; free physical = 143885 ; free virtual = 299457
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP, Shift Register and Retiming Reporting
@@ -2215,20 +2232,11 @@ ROM: Preliminary Mapping Report
 +------------------------------+------------+---------------+----------------+
 
 
-Block RAM: Preliminary Mapping Report (see note below)
-+------------+-------------------------------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
-|Module Name | RTL Object                          | PORT A (Depth x Width) | W | R | PORT B (Depth x Width) | W | R | Ports driving FF | RAMB18 | RAMB36 | 
-+------------+-------------------------------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
-|mem_top     | main_mem_module/dualport_memory_reg | 1 K x 128(READ_FIRST)  | W |   | 1 K x 128(WRITE_FIRST) |   | R | Port A and B     | 0      | 4      | 
-+------------+-------------------------------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
-
-Note: The table above is a preliminary report that shows the Block RAMs at the current stage of the synthesis flow. Some Block RAMs may be reimplemented as non Block RAM primitives later in the synthesis flow. Multiple instantiated Block RAMs are reported only once. 
-
 Distributed RAM: Preliminary Mapping Report (see note below)
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------+----------------+----------------------+-----------------+
 |Module Name                                                                                                                                                                 | RTL Object                                                                            | Inference      | Size (Depth x Width) | Primitives      | 
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------+----------------+----------------------+-----------------+
-|wb_dcache_top_module                                                                                                                                                        | wb_dcache_datapath_module/cache_data_ram_reg                                          | Implied        | 16 x 128             | RAM16X1S x 128  | 
+|mem_top_module/wb_dcache_top_module                                                                                                                                         | wb_dcache_datapath_module/cache_data_ram_reg                                          | Implied        | 16 x 128             | RAM16X1S x 128  | 
 |nexys_shell_i/mig_7series_0                                                                                                                                                 | of_pre_fifo_gen.u_ddr_of_pre_fifo/mem_reg                                             | Implied        | 16 x 80              | RAM32M x 14     | 
 |nexys_shell_i/mig_7series_0                                                                                                                                                 | ddr_byte_lane_A.ddr_byte_lane_A/dq_gen_40.if_post_fifo_gen.u_ddr_if_post_fifo/mem_reg | Implied        | 4 x 80               | RAM32M x 14     | 
 |nexys_shell_i/mig_7series_0                                                                                                                                                 | ddr_byte_lane_A.ddr_byte_lane_A/of_pre_fifo_gen.u_ddr_of_pre_fifo/mem_reg             | Implied        | 16 x 80              | RAM32M x 14     | 
@@ -2279,34 +2287,23 @@ Start Applying XDC Timing Constraints
 ---------------------------------------------------------------------------------
 WARNING: [Synth 8-3321] set_false_path : Empty through list for constraint at line 347 of /home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/constraints/nexys_shell_mig_7series_0_0.xdc. [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/constraints/nexys_shell_mig_7series_0_0.xdc:347]
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:03:43 ; elapsed = 00:03:34 . Memory (MB): peak = 3652.559 ; gain = 926.863 ; free physical = 134883 ; free virtual = 294732
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:03:27 ; elapsed = 00:03:18 . Memory (MB): peak = 3661.664 ; gain = 935.973 ; free physical = 143534 ; free virtual = 299286
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Timing Optimization
 ---------------------------------------------------------------------------------
-WARNING: [Synth 8-3332] Sequential element (spi_controller_module/spi_slave_sel_reg[0]_LDC) is unused and will be removed from module spi_top.
-WARNING: [Synth 8-3332] Sequential element (spi_controller_module/spi_slave_sel_reg[0]_C) is unused and will be removed from module spi_top.
-WARNING: [Synth 8-3332] Sequential element (spi_controller_module/spi_slave_sel_reg[0]_P) is unused and will be removed from module spi_top.
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:03:53 ; elapsed = 00:03:44 . Memory (MB): peak = 3652.559 ; gain = 926.863 ; free physical = 134836 ; free virtual = 294686
+Finished Timing Optimization : Time (s): cpu = 00:03:38 ; elapsed = 00:03:29 . Memory (MB): peak = 3661.664 ; gain = 935.973 ; free physical = 143371 ; free virtual = 299131
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP, Shift Register and Retiming Reporting
 ---------------------------------------------------------------------------------
 
-Block RAM: Final Mapping Report
-+------------+-------------------------------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
-|Module Name | RTL Object                          | PORT A (Depth x Width) | W | R | PORT B (Depth x Width) | W | R | Ports driving FF | RAMB18 | RAMB36 | 
-+------------+-------------------------------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
-|mem_top     | main_mem_module/dualport_memory_reg | 1 K x 128(READ_FIRST)  | W |   | 1 K x 128(WRITE_FIRST) |   | R | Port A and B     | 0      | 4      | 
-+------------+-------------------------------------+------------------------+---+---+------------------------+---+---+------------------+--------+--------+
-
-
 Distributed RAM: Final Mapping Report
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------+----------------+----------------------+-----------------+
 |Module Name                                                                                                                                                                 | RTL Object                                                                            | Inference      | Size (Depth x Width) | Primitives      | 
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------+----------------+----------------------+-----------------+
-|wb_dcache_top_module                                                                                                                                                        | wb_dcache_datapath_module/cache_data_ram_reg                                          | Implied        | 16 x 128             | RAM16X1S x 128  | 
+|mem_top_module/wb_dcache_top_module                                                                                                                                         | wb_dcache_datapath_module/cache_data_ram_reg                                          | Implied        | 16 x 128             | RAM16X1S x 128  | 
 |nexys_shell_i/mig_7series_0                                                                                                                                                 | of_pre_fifo_gen.u_ddr_of_pre_fifo/mem_reg                                             | Implied        | 16 x 80              | RAM32M x 14     | 
 |nexys_shell_i/mig_7series_0                                                                                                                                                 | ddr_byte_lane_A.ddr_byte_lane_A/dq_gen_40.if_post_fifo_gen.u_ddr_if_post_fifo/mem_reg | Implied        | 4 x 80               | RAM32M x 14     | 
 |nexys_shell_i/mig_7series_0                                                                                                                                                 | ddr_byte_lane_A.ddr_byte_lane_A/of_pre_fifo_gen.u_ddr_of_pre_fifo/mem_reg             | Implied        | 16 x 80              | RAM32M x 14     | 
@@ -2315,16 +2312,19 @@ Distributed RAM: Final Mapping Report
 |nexys_shell_i/mig_7series_0                                                                                                                                                 | ddr_byte_lane_C.ddr_byte_lane_C/of_pre_fifo_gen.u_ddr_of_pre_fifo/mem_reg             | Implied        | 16 x 80              | RAM32M x 14     | 
 |\m00_nodes/m00_ar_node/inst /\inst_mi_handler/gen_normal_area.inst_fifo_node_payld/gen_xpm_memory_fifo.inst_fifo/gen_mem_rep[0].inst_xpm_memory /xpm_memory_base_inst       | gen_wr_a.gen_word_narrow.mem_reg                                                      | User Attribute | 32 x 157             | RAM32M x 27     | 
 |\m00_nodes/m00_aw_node/inst /\inst_mi_handler/gen_normal_area.inst_fifo_node_payld/gen_xpm_memory_fifo.inst_fifo/gen_mem_rep[0].inst_xpm_memory /xpm_memory_base_inst       | gen_wr_a.gen_word_narrow.mem_reg                                                      | User Attribute | 32 x 157             | RAM32M x 27     | 
+|\m00_nodes/m00_b_node/inst /\inst_mi_handler/gen_normal_area.inst_fifo_node_payld/gen_xpm_memory_fifo.inst_fifo/gen_mem_rep[0].inst_xpm_memory /xpm_memory_base_inst        | gen_wr_a.gen_word_narrow.mem_reg                                                      | User Attribute | 32 x 5               | RAM32M x 1      | 
 |\m00_nodes/m00_r_node/inst /\inst_mi_handler/gen_normal_area.inst_fifo_node_payld/gen_xpm_memory_fifo.inst_fifo/gen_mem_rep[0].inst_xpm_memory /xpm_memory_base_inst        | gen_wr_a.gen_word_narrow.mem_reg                                                      | User Attribute | 32 x 147             | RAM32M x 25     | 
 |\m00_nodes/m00_w_node/inst /\inst_mi_handler/gen_normal_area.inst_fifo_node_payld/gen_xpm_memory_fifo.inst_fifo/gen_mem_rep[0].inst_xpm_memory /xpm_memory_base_inst        | gen_wr_a.gen_word_narrow.mem_reg                                                      | User Attribute | 32 x 180             | RAM32M x 30     | 
 |\m01_nodes/m01_ar_node/inst /\inst_mi_handler/gen_normal_area.inst_fifo_node_payld/gen_xpm_memory_fifo.inst_fifo/gen_mem_rep[0].inst_xpm_memory /xpm_memory_base_inst       | gen_wr_a.gen_word_narrow.mem_reg                                                      | User Attribute | 32 x 157             | RAM32M x 27     | 
 |\m01_nodes/m01_aw_node/inst /\inst_mi_handler/gen_normal_area.inst_fifo_node_payld/gen_xpm_memory_fifo.inst_fifo/gen_mem_rep[0].inst_xpm_memory /xpm_memory_base_inst       | gen_wr_a.gen_word_narrow.mem_reg                                                      | User Attribute | 32 x 157             | RAM32M x 27     | 
+|\m01_nodes/m01_b_node/inst /\inst_mi_handler/gen_normal_area.inst_fifo_node_payld/gen_xpm_memory_fifo.inst_fifo/gen_mem_rep[0].inst_xpm_memory /xpm_memory_base_inst        | gen_wr_a.gen_word_narrow.mem_reg                                                      | User Attribute | 32 x 5               | RAM32M x 1      | 
 |\m01_nodes/m01_r_node/inst /\inst_mi_handler/gen_normal_area.inst_fifo_node_payld/gen_xpm_memory_fifo.inst_fifo/gen_mem_rep[0].inst_xpm_memory /xpm_memory_base_inst        | gen_wr_a.gen_word_narrow.mem_reg                                                      | User Attribute | 32 x 147             | RAM32M x 25     | 
 |\m01_nodes/m01_w_node/inst /\inst_mi_handler/gen_normal_area.inst_fifo_node_payld/gen_xpm_memory_fifo.inst_fifo/gen_mem_rep[0].inst_xpm_memory /xpm_memory_base_inst        | gen_wr_a.gen_word_narrow.mem_reg                                                      | User Attribute | 32 x 179             | RAM32M x 30     | 
 |\s00_nodes/s00_ar_node/inst /\inst_mi_handler/gen_normal_area.gen_fifo_req.inst_fifo_req/gen_xpm_memory_fifo.inst_fifo/gen_mem_rep[0].inst_xpm_memory /xpm_memory_base_inst | gen_wr_a.gen_word_narrow.mem_reg                                                      | User Attribute | 32 x 19              | RAM32M x 4      | 
 |\s00_nodes/s00_ar_node/inst /\inst_mi_handler/gen_normal_area.inst_fifo_node_payld/gen_xpm_memory_fifo.inst_fifo/gen_mem_rep[0].inst_xpm_memory /xpm_memory_base_inst       | gen_wr_a.gen_word_narrow.mem_reg                                                      | User Attribute | 32 x 139             | RAM32M x 24     | 
 |\s00_nodes/s00_aw_node/inst /\inst_mi_handler/gen_normal_area.gen_fifo_req.inst_fifo_req/gen_xpm_memory_fifo.inst_fifo/gen_mem_rep[0].inst_xpm_memory /xpm_memory_base_inst | gen_wr_a.gen_word_narrow.mem_reg                                                      | User Attribute | 32 x 19              | RAM32M x 4      | 
 |\s00_nodes/s00_aw_node/inst /\inst_mi_handler/gen_normal_area.inst_fifo_node_payld/gen_xpm_memory_fifo.inst_fifo/gen_mem_rep[0].inst_xpm_memory /xpm_memory_base_inst       | gen_wr_a.gen_word_narrow.mem_reg                                                      | User Attribute | 32 x 139             | RAM32M x 24     | 
+|\s00_nodes/s00_b_node/inst /\inst_mi_handler/gen_normal_area.inst_fifo_node_payld/gen_xpm_memory_fifo.inst_fifo/gen_mem_rep[0].inst_xpm_memory /xpm_memory_base_inst        | gen_wr_a.gen_word_narrow.mem_reg                                                      | User Attribute | 32 x 23              | RAM32M x 4      | 
 |\s00_nodes/s00_r_node/inst /\inst_mi_handler/gen_normal_area.inst_fifo_node_payld/gen_xpm_memory_fifo.inst_fifo/gen_mem_rep[0].inst_xpm_memory /xpm_memory_base_inst        | gen_wr_a.gen_word_narrow.mem_reg                                                      | User Attribute | 32 x 165             | RAM32M x 28     | 
 |\s00_nodes/s00_w_node/inst /\inst_mi_handler/gen_normal_area.gen_fifo_req.inst_fifo_req/gen_xpm_memory_fifo.inst_fifo/gen_mem_rep[0].inst_xpm_memory /xpm_memory_base_inst  | gen_wr_a.gen_word_narrow.mem_reg                                                      | User Attribute | 32 x 19              | RAM32M x 4      | 
 |\s00_nodes/s00_w_node/inst /\inst_mi_handler/gen_normal_area.inst_fifo_node_payld/gen_xpm_memory_fifo.inst_fifo/gen_mem_rep[0].inst_xpm_memory /xpm_memory_base_inst        | gen_wr_a.gen_word_narrow.mem_reg                                                      | User Attribute | 32 x 161             | RAM32M x 27     | 
@@ -2336,26 +2336,22 @@ Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
 ---------------------------------------------------------------------------------
 Start Technology Mapping
 ---------------------------------------------------------------------------------
-INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [/home/uetlhr/Documents/UETRV-PCore/rtl/core/pipeline/muldiv.sv:98]
-INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [/home/uetlhr/Documents/UETRV-PCore/rtl/core/pipeline/muldiv.sv:97]
-INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [/home/uetlhr/Documents/UETRV-PCore/rtl/core/pipeline/muldiv.sv:97]
-INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [/home/uetlhr/Documents/UETRV-PCore/rtl/core/pipeline/muldiv.sv:98]
-INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [/home/uetlhr/Documents/UETRV-PCore/rtl/core/pipeline/muldiv.sv:97]
-INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [/home/uetlhr/Documents/UETRV-PCore/rtl/core/pipeline/muldiv.sv:98]
-INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [/home/uetlhr/Documents/UETRV-PCore/rtl/core/pipeline/muldiv.sv:97]
-INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [/home/uetlhr/Documents/UETRV-PCore/rtl/core/pipeline/muldiv.sv:98]
-INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [/home/uetlhr/Documents/UETRV-PCore/rtl/core/pipeline/muldiv.sv:98]
-INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [/home/uetlhr/Documents/UETRV-PCore/rtl/core/pipeline/muldiv.sv:97]
-INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [/home/uetlhr/Documents/UETRV-PCore/rtl/core/pipeline/muldiv.sv:97]
-INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [/home/uetlhr/Documents/UETRV-PCore/rtl/core/pipeline/muldiv.sv:98]
-INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [/home/uetlhr/Documents/UETRV-PCore/rtl/core/pipeline/muldiv.sv:97]
-INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [/home/uetlhr/Documents/UETRV-PCore/rtl/core/pipeline/muldiv.sv:98]
-INFO: [Synth 8-7052] The timing for the instance soc/mem_top_module/main_mem_module/dualport_memory_reg_0 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
-INFO: [Synth 8-7052] The timing for the instance soc/mem_top_module/main_mem_module/dualport_memory_reg_1 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
-INFO: [Synth 8-7052] The timing for the instance soc/mem_top_module/main_mem_module/dualport_memory_reg_2 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
-INFO: [Synth 8-7052] The timing for the instance soc/mem_top_module/main_mem_module/dualport_memory_reg_3 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [/home/uetlhr/Documents/UETRV-PCore/rtl/core/mmu/mmu.sv:98]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [/home/uetlhr/Documents/UETRV-PCore/rtl/core/mmu/mmu.sv:97]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [/home/uetlhr/Documents/UETRV-PCore/rtl/core/mmu/mmu.sv:97]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [/home/uetlhr/Documents/UETRV-PCore/rtl/core/mmu/mmu.sv:98]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [/home/uetlhr/Documents/UETRV-PCore/rtl/core/mmu/mmu.sv:97]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [/home/uetlhr/Documents/UETRV-PCore/rtl/core/mmu/mmu.sv:98]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [/home/uetlhr/Documents/UETRV-PCore/rtl/core/mmu/mmu.sv:97]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [/home/uetlhr/Documents/UETRV-PCore/rtl/core/mmu/mmu.sv:98]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [/home/uetlhr/Documents/UETRV-PCore/rtl/core/mmu/mmu.sv:98]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [/home/uetlhr/Documents/UETRV-PCore/rtl/core/mmu/mmu.sv:97]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [/home/uetlhr/Documents/UETRV-PCore/rtl/core/mmu/mmu.sv:97]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [/home/uetlhr/Documents/UETRV-PCore/rtl/core/mmu/mmu.sv:98]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [/home/uetlhr/Documents/UETRV-PCore/rtl/core/mmu/mmu.sv:97]
+INFO: [Synth 8-5844] Detected registers with asynchronous reset at DSP/BRAM block boundary. Consider using synchronous reset for optimal packing [/home/uetlhr/Documents/UETRV-PCore/rtl/core/mmu/mmu.sv:98]
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:04:07 ; elapsed = 00:04:03 . Memory (MB): peak = 3652.559 ; gain = 926.863 ; free physical = 134294 ; free virtual = 294187
+Finished Technology Mapping : Time (s): cpu = 00:03:52 ; elapsed = 00:03:48 . Memory (MB): peak = 3661.664 ; gain = 935.973 ; free physical = 142520 ; free virtual = 298334
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start IO Insertion
@@ -2369,46 +2365,42 @@ Finished Flattening Before IO Insertion
 ---------------------------------------------------------------------------------
 Start Final Netlist Cleanup
 ---------------------------------------------------------------------------------
-INFO: [Synth 8-7052] The timing for the instance soc/mem_top_module/main_mem_module/dualport_memory_reg_0 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
-INFO: [Synth 8-7052] The timing for the instance soc/mem_top_module/main_mem_module/dualport_memory_reg_1 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
-INFO: [Synth 8-7052] The timing for the instance soc/mem_top_module/main_mem_module/dualport_memory_reg_2 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
-INFO: [Synth 8-7052] The timing for the instance soc/mem_top_module/main_mem_module/dualport_memory_reg_3 (implemented as a Block RAM) might be sub-optimal as no optional output register could be merged into the ram block. Providing additional output register may help in improving timing.
 ---------------------------------------------------------------------------------
 Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
-WARNING: [Synth 8-5396] Clock pin C has keep related attribute (keep/mark_debug/dont_touch) which could create extra logic on its net [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/clocking/mig_7series_v4_2_iodelay_ctrl.v:332]
+WARNING: [Synth 8-5396] Clock pin C has keep related attribute (keep/mark_debug/dont_touch) which could create extra logic on its net [/home/uetlhr/AXI_new.gen/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/nexys_shell_mig_7series_0_0/user_design/rtl/clocking/mig_7series_v4_2_infrastructure.v:332]
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:04:17 ; elapsed = 00:04:14 . Memory (MB): peak = 3652.559 ; gain = 926.863 ; free physical = 134286 ; free virtual = 294271
+Finished IO Insertion : Time (s): cpu = 00:04:04 ; elapsed = 00:04:01 . Memory (MB): peak = 3661.664 ; gain = 935.973 ; free physical = 142337 ; free virtual = 298247
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:04:17 ; elapsed = 00:04:14 . Memory (MB): peak = 3652.559 ; gain = 926.863 ; free physical = 134286 ; free virtual = 294270
+Finished Renaming Generated Instances : Time (s): cpu = 00:04:04 ; elapsed = 00:04:01 . Memory (MB): peak = 3661.664 ; gain = 935.973 ; free physical = 142336 ; free virtual = 298246
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:04:22 ; elapsed = 00:04:19 . Memory (MB): peak = 3652.559 ; gain = 926.863 ; free physical = 134283 ; free virtual = 294267
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:04:10 ; elapsed = 00:04:07 . Memory (MB): peak = 3661.664 ; gain = 935.973 ; free physical = 142301 ; free virtual = 298211
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Ports
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:04:22 ; elapsed = 00:04:20 . Memory (MB): peak = 3652.559 ; gain = 926.863 ; free physical = 134282 ; free virtual = 294267
+Finished Renaming Generated Ports : Time (s): cpu = 00:04:10 ; elapsed = 00:04:07 . Memory (MB): peak = 3661.664 ; gain = 935.973 ; free physical = 142289 ; free virtual = 298200
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:04:23 ; elapsed = 00:04:21 . Memory (MB): peak = 3652.559 ; gain = 926.863 ; free physical = 134283 ; free virtual = 294267
+Finished Handling Custom Attributes : Time (s): cpu = 00:04:11 ; elapsed = 00:04:08 . Memory (MB): peak = 3661.664 ; gain = 935.973 ; free physical = 142172 ; free virtual = 298083
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Nets
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Nets : Time (s): cpu = 00:04:23 ; elapsed = 00:04:21 . Memory (MB): peak = 3652.559 ; gain = 926.863 ; free physical = 134282 ; free virtual = 294267
+Finished Renaming Generated Nets : Time (s): cpu = 00:04:12 ; elapsed = 00:04:09 . Memory (MB): peak = 3661.664 ; gain = 935.973 ; free physical = 142161 ; free virtual = 298071
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP, Shift Register and Retiming Reporting
@@ -2480,21 +2472,21 @@ Report Cell Usage:
 |1     |BUFG                  |     5|
 |2     |BUFH                  |     1|
 |3     |BUFIO                 |     1|
-|4     |CARRY4                |   347|
+|4     |CARRY4                |   349|
 |5     |DSP48E1               |     7|
 |7     |IDELAYCTRL            |     1|
 |8     |IDELAYE2              |    16|
 |9     |IN_FIFO               |     2|
 |10    |ISERDESE2             |    16|
-|11    |LUT1                  |   785|
-|12    |LUT2                  |  1353|
-|13    |LUT3                  |  2442|
-|14    |LUT4                  |  2141|
-|15    |LUT5                  |  2576|
-|16    |LUT6                  |  6149|
+|11    |LUT1                  |   796|
+|12    |LUT2                  |  1673|
+|13    |LUT3                  |  2924|
+|14    |LUT4                  |  2165|
+|15    |LUT5                  |  2489|
+|16    |LUT6                  |  6829|
 |17    |MMCME2_ADV            |     1|
-|18    |MUXF7                 |   776|
-|19    |MUXF8                 |   271|
+|18    |MUXF7                 |  1144|
+|19    |MUXF8                 |   439|
 |20    |ODDR                  |     5|
 |21    |OSERDESE2             |    42|
 |24    |OUT_FIFO              |     4|
@@ -2505,41 +2497,41 @@ Report Cell Usage:
 |31    |PLLE2_ADV             |     1|
 |32    |PLLE2_BASE            |     1|
 |33    |RAM16X1S              |   128|
-|34    |RAM32M                |   208|
+|34    |RAM32M                |   296|
 |35    |RAM32X1D              |     6|
-|36    |RAMB36E1              |     7|
-|38    |SRL16                 |     4|
-|39    |SRL16E                |    46|
-|40    |SRLC32E               |    25|
-|41    |XADC                  |     1|
-|42    |FDCE                  |  2404|
-|43    |FDPE                  |    92|
-|44    |FDR                   |    24|
-|45    |FDRE                  | 12059|
-|46    |FDSE                  |   294|
-|47    |LDC                   |     1|
-|48    |IBUF                  |     3|
-|49    |IOBUFDS_INTERMDISABLE |     2|
-|50    |IOBUF_INTERMDISABLE   |    16|
-|51    |OBUF                  |    39|
-|52    |OBUFDS                |     1|
-|53    |OBUFT                 |     2|
+|36    |RAMB36E1              |    16|
+|37    |SRL16                 |     4|
+|38    |SRL16E                |    56|
+|39    |SRLC32E               |   405|
+|40    |XADC                  |     1|
+|41    |FDCE                  |  4461|
+|42    |FDPE                  |    91|
+|43    |FDR                   |    24|
+|44    |FDRE                  | 14151|
+|45    |FDSE                  |   295|
+|46    |LDC                   |     1|
+|47    |IBUF                  |     3|
+|48    |IOBUFDS_INTERMDISABLE |     2|
+|49    |IOBUF_INTERMDISABLE   |    16|
+|50    |OBUF                  |    39|
+|51    |OBUFDS                |     1|
+|52    |OBUFT                 |     2|
 +------+----------------------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:04:23 ; elapsed = 00:04:21 . Memory (MB): peak = 3652.559 ; gain = 926.863 ; free physical = 134282 ; free virtual = 294267
+Finished Writing Synthesis Report : Time (s): cpu = 00:04:12 ; elapsed = 00:04:09 . Memory (MB): peak = 3661.664 ; gain = 935.973 ; free physical = 142154 ; free virtual = 298064
 ---------------------------------------------------------------------------------
-Synthesis finished with 0 errors, 0 critical warnings and 5109 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:03:34 ; elapsed = 00:03:49 . Memory (MB): peak = 3652.559 ; gain = 395.387 ; free physical = 139053 ; free virtual = 299037
-Synthesis Optimization Complete : Time (s): cpu = 00:04:29 ; elapsed = 00:04:24 . Memory (MB): peak = 3652.559 ; gain = 926.863 ; free physical = 139103 ; free virtual = 299038
+Synthesis finished with 0 errors, 0 critical warnings and 5049 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:03:22 ; elapsed = 00:03:37 . Memory (MB): peak = 3661.664 ; gain = 400.418 ; free physical = 146565 ; free virtual = 302493
+Synthesis Optimization Complete : Time (s): cpu = 00:04:18 ; elapsed = 00:04:12 . Memory (MB): peak = 3661.664 ; gain = 935.973 ; free physical = 146619 ; free virtual = 302494
 INFO: [Project 1-571] Translating synthesized netlist
-Netlist sorting complete. Time (s): cpu = 00:00:00.48 ; elapsed = 00:00:00.49 . Memory (MB): peak = 3652.559 ; gain = 0.000 ; free physical = 139085 ; free virtual = 299020
-INFO: [Netlist 29-17] Analyzing 1839 Unisim elements for replacement
+Netlist sorting complete. Time (s): cpu = 00:00:00.59 ; elapsed = 00:00:00.59 . Memory (MB): peak = 3661.664 ; gain = 0.000 ; free physical = 146419 ; free virtual = 302298
+INFO: [Netlist 29-17] Analyzing 2474 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 2 inverter(s) to 16 load pin(s).
-Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00.01 . Memory (MB): peak = 3676.570 ; gain = 0.000 ; free physical = 139021 ; free virtual = 298956
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3685.676 ; gain = 0.000 ; free physical = 146251 ; free virtual = 302131
 INFO: [Project 1-111] Unisim Transformation Summary:
-  A total of 391 instances were transformed.
+  A total of 479 instances were transformed.
   FDR => FDRE: 24 instances
   IOBUFDS_INTERMDISABLE => IOBUFDS_INTERMDISABLE (IBUFDS_INTERMDISABLE_INT(x2), INV, OBUFTDS(x2)): 2 instances
   IOBUF_INTERMDISABLE => IOBUF_INTERMDISABLE (IBUF_INTERMDISABLE, OBUFT): 16 instances
@@ -2547,17 +2539,17 @@ INFO: [Project 1-111] Unisim Transformation Summary:
   OBUFDS => OBUFDS_DUAL_BUF (INV, OBUFDS(x2)): 1 instance 
   PLLE2_BASE => PLLE2_ADV: 1 instance 
   RAM16X1S => RAM32X1S (RAMS32): 128 instances
-  RAM32M => RAM32M (RAMD32(x6), RAMS32(x2)): 208 instances
+  RAM32M => RAM32M (RAMD32(x6), RAMS32(x2)): 296 instances
   RAM32X1D => RAM32X1D (RAMD32(x2)): 6 instances
   SRL16 => SRL16E: 4 instances
 
-Synth Design complete, checksum: f784aec0
+Synth Design complete, checksum: 864c34c3
 INFO: [Common 17-83] Releasing license: Synthesis
-721 Infos, 431 Warnings, 3 Critical Warnings and 0 Errors encountered.
+715 Infos, 426 Warnings, 2 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:04:41 ; elapsed = 00:04:36 . Memory (MB): peak = 3676.570 ; gain = 950.887 ; free physical = 139293 ; free virtual = 299228
+synth_design: Time (s): cpu = 00:04:32 ; elapsed = 00:04:27 . Memory (MB): peak = 3685.676 ; gain = 959.996 ; free physical = 146525 ; free virtual = 302406
 INFO: [runtcl-6] Synthesis results are not added to the cache due to CRITICAL_WARNING
 INFO: [Common 17-1381] The checkpoint '/home/uetlhr/Documents/UETRV-PCore/fpga-nexys-a7/fpga-nexys-a7.runs/synth_1/top.dcp' has been generated.
-write_checkpoint: Time (s): cpu = 00:00:13 ; elapsed = 00:00:11 . Memory (MB): peak = 3748.605 ; gain = 72.035 ; free physical = 139189 ; free virtual = 299176
+write_checkpoint: Time (s): cpu = 00:00:15 ; elapsed = 00:00:13 . Memory (MB): peak = 3757.711 ; gain = 72.035 ; free physical = 145270 ; free virtual = 301523
 INFO: [runtcl-4] Executing : report_utilization -file top_utilization_synth.rpt -pb top_utilization_synth.pb
-INFO: [Common 17-206] Exiting Vivado at Wed Jul 26 13:50:29 2023...
+INFO: [Common 17-206] Exiting Vivado at Tue Aug  1 13:44:50 2023...

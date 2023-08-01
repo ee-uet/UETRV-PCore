@@ -1,7 +1,7 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
 ------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2022.1 (lin64) Build 3526262 Mon Apr 18 15:47:01 MDT 2022
-| Date         : Wed Jul 26 13:51:37 2023
+| Date         : Tue Aug  1 13:46:02 2023
 | Host         : UETLHR running 64-bit CentOS Linux release 7.9.2009 (Core)
 | Command      : report_drc -file top_drc_opted.rpt -pb top_drc_opted.pb -rpx top_drc_opted.rpx
 | Design       : top
@@ -24,26 +24,19 @@ Table of Contents
       Design limits: <entire design considered>
            Ruledeck: default
              Max violations: <unlimited>
-             Violations found: 53
+             Violations found: 32
 +-----------+----------+-----------------------------+------------+
 | Rule      | Severity | Description                 | Violations |
 +-----------+----------+-----------------------------+------------+
-| CHECK-3   | Warning  | Report rule limit reached   | 1          |
 | DPIP-1    | Warning  | Input pipelining            | 16         |
 | DPOP-1    | Warning  | PREG Output pipelining      | 7          |
 | DPOP-2    | Warning  | MREG Output pipelining      | 7          |
 | REQP-1709 | Warning  | Clock output buffering      | 1          |
 | REQP-1715 | Warning  | Input clock phase alignment | 1          |
-| REQP-1839 | Warning  | RAMB36 async control check  | 20         |
 +-----------+----------+-----------------------------+------------+
 
 2. REPORT DETAILS
 -----------------
-CHECK-3#1 Warning
-Report rule limit reached  
-REQP-1839 rule limit reached: 20 violations have been found.
-Related violations: <none>
-
 DPIP-1#1 Warning
 Input pipelining  
 DSP soc/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input soc/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
@@ -202,106 +195,6 @@ Related violations: <none>
 REQP-1715#1 Warning
 Input clock phase alignment  
 The PLLE2_ADV cell input clock signal nexys_shell_i/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_ddr2_infrastructure/lopt on the nexys_shell_i/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_ddr2_infrastructure/plle2_i/CLKIN1 pin of nexys_shell_i/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_ddr2_infrastructure/plle2_i with COMPENSATION mode INTERNAL is driven from the PLLE2_BASE_inst/CLKOUT0 pin of another cell of the same type. The two cells are not phase aligned.
-Related violations: <none>
-
-REQP-1839#1 Warning
-RAMB36 async control check  
-The RAMB36E1 soc/mem_top_module/main_mem_module/dualport_memory_reg_0 has an input control pin soc/mem_top_module/main_mem_module/dualport_memory_reg_0/ADDRARDADDR[14] (net: soc/mem_top_module/main_mem_module/ADDRARDADDR[9]) which is driven by a register (soc/core_top_module/mmu_module/dtlb_module/tlb_array_ff_reg[0][page_4M]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
-Related violations: <none>
-
-REQP-1839#2 Warning
-RAMB36 async control check  
-The RAMB36E1 soc/mem_top_module/main_mem_module/dualport_memory_reg_0 has an input control pin soc/mem_top_module/main_mem_module/dualport_memory_reg_0/ADDRARDADDR[14] (net: soc/mem_top_module/main_mem_module/ADDRARDADDR[9]) which is driven by a register (soc/core_top_module/mmu_module/dtlb_module/tlb_array_ff_reg[0][pte][ppn][0]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
-Related violations: <none>
-
-REQP-1839#3 Warning
-RAMB36 async control check  
-The RAMB36E1 soc/mem_top_module/main_mem_module/dualport_memory_reg_0 has an input control pin soc/mem_top_module/main_mem_module/dualport_memory_reg_0/ADDRARDADDR[14] (net: soc/mem_top_module/main_mem_module/ADDRARDADDR[9]) which is driven by a register (soc/core_top_module/mmu_module/dtlb_module/tlb_array_ff_reg[0][pte][ppn][10]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
-Related violations: <none>
-
-REQP-1839#4 Warning
-RAMB36 async control check  
-The RAMB36E1 soc/mem_top_module/main_mem_module/dualport_memory_reg_0 has an input control pin soc/mem_top_module/main_mem_module/dualport_memory_reg_0/ADDRARDADDR[14] (net: soc/mem_top_module/main_mem_module/ADDRARDADDR[9]) which is driven by a register (soc/core_top_module/mmu_module/dtlb_module/tlb_array_ff_reg[0][pte][ppn][11]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
-Related violations: <none>
-
-REQP-1839#5 Warning
-RAMB36 async control check  
-The RAMB36E1 soc/mem_top_module/main_mem_module/dualport_memory_reg_0 has an input control pin soc/mem_top_module/main_mem_module/dualport_memory_reg_0/ADDRARDADDR[14] (net: soc/mem_top_module/main_mem_module/ADDRARDADDR[9]) which is driven by a register (soc/core_top_module/mmu_module/dtlb_module/tlb_array_ff_reg[0][pte][ppn][12]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
-Related violations: <none>
-
-REQP-1839#6 Warning
-RAMB36 async control check  
-The RAMB36E1 soc/mem_top_module/main_mem_module/dualport_memory_reg_0 has an input control pin soc/mem_top_module/main_mem_module/dualport_memory_reg_0/ADDRARDADDR[14] (net: soc/mem_top_module/main_mem_module/ADDRARDADDR[9]) which is driven by a register (soc/core_top_module/mmu_module/dtlb_module/tlb_array_ff_reg[0][pte][ppn][13]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
-Related violations: <none>
-
-REQP-1839#7 Warning
-RAMB36 async control check  
-The RAMB36E1 soc/mem_top_module/main_mem_module/dualport_memory_reg_0 has an input control pin soc/mem_top_module/main_mem_module/dualport_memory_reg_0/ADDRARDADDR[14] (net: soc/mem_top_module/main_mem_module/ADDRARDADDR[9]) which is driven by a register (soc/core_top_module/mmu_module/dtlb_module/tlb_array_ff_reg[0][pte][ppn][14]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
-Related violations: <none>
-
-REQP-1839#8 Warning
-RAMB36 async control check  
-The RAMB36E1 soc/mem_top_module/main_mem_module/dualport_memory_reg_0 has an input control pin soc/mem_top_module/main_mem_module/dualport_memory_reg_0/ADDRARDADDR[14] (net: soc/mem_top_module/main_mem_module/ADDRARDADDR[9]) which is driven by a register (soc/core_top_module/mmu_module/dtlb_module/tlb_array_ff_reg[0][pte][ppn][15]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
-Related violations: <none>
-
-REQP-1839#9 Warning
-RAMB36 async control check  
-The RAMB36E1 soc/mem_top_module/main_mem_module/dualport_memory_reg_0 has an input control pin soc/mem_top_module/main_mem_module/dualport_memory_reg_0/ADDRARDADDR[14] (net: soc/mem_top_module/main_mem_module/ADDRARDADDR[9]) which is driven by a register (soc/core_top_module/mmu_module/dtlb_module/tlb_array_ff_reg[0][pte][ppn][16]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
-Related violations: <none>
-
-REQP-1839#10 Warning
-RAMB36 async control check  
-The RAMB36E1 soc/mem_top_module/main_mem_module/dualport_memory_reg_0 has an input control pin soc/mem_top_module/main_mem_module/dualport_memory_reg_0/ADDRARDADDR[14] (net: soc/mem_top_module/main_mem_module/ADDRARDADDR[9]) which is driven by a register (soc/core_top_module/mmu_module/dtlb_module/tlb_array_ff_reg[0][pte][ppn][17]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
-Related violations: <none>
-
-REQP-1839#11 Warning
-RAMB36 async control check  
-The RAMB36E1 soc/mem_top_module/main_mem_module/dualport_memory_reg_0 has an input control pin soc/mem_top_module/main_mem_module/dualport_memory_reg_0/ADDRARDADDR[14] (net: soc/mem_top_module/main_mem_module/ADDRARDADDR[9]) which is driven by a register (soc/core_top_module/mmu_module/dtlb_module/tlb_array_ff_reg[0][pte][ppn][18]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
-Related violations: <none>
-
-REQP-1839#12 Warning
-RAMB36 async control check  
-The RAMB36E1 soc/mem_top_module/main_mem_module/dualport_memory_reg_0 has an input control pin soc/mem_top_module/main_mem_module/dualport_memory_reg_0/ADDRARDADDR[14] (net: soc/mem_top_module/main_mem_module/ADDRARDADDR[9]) which is driven by a register (soc/core_top_module/mmu_module/dtlb_module/tlb_array_ff_reg[0][pte][ppn][19]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
-Related violations: <none>
-
-REQP-1839#13 Warning
-RAMB36 async control check  
-The RAMB36E1 soc/mem_top_module/main_mem_module/dualport_memory_reg_0 has an input control pin soc/mem_top_module/main_mem_module/dualport_memory_reg_0/ADDRARDADDR[14] (net: soc/mem_top_module/main_mem_module/ADDRARDADDR[9]) which is driven by a register (soc/core_top_module/mmu_module/dtlb_module/tlb_array_ff_reg[0][pte][ppn][1]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
-Related violations: <none>
-
-REQP-1839#14 Warning
-RAMB36 async control check  
-The RAMB36E1 soc/mem_top_module/main_mem_module/dualport_memory_reg_0 has an input control pin soc/mem_top_module/main_mem_module/dualport_memory_reg_0/ADDRARDADDR[14] (net: soc/mem_top_module/main_mem_module/ADDRARDADDR[9]) which is driven by a register (soc/core_top_module/mmu_module/dtlb_module/tlb_array_ff_reg[0][pte][ppn][2]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
-Related violations: <none>
-
-REQP-1839#15 Warning
-RAMB36 async control check  
-The RAMB36E1 soc/mem_top_module/main_mem_module/dualport_memory_reg_0 has an input control pin soc/mem_top_module/main_mem_module/dualport_memory_reg_0/ADDRARDADDR[14] (net: soc/mem_top_module/main_mem_module/ADDRARDADDR[9]) which is driven by a register (soc/core_top_module/mmu_module/dtlb_module/tlb_array_ff_reg[0][pte][ppn][3]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
-Related violations: <none>
-
-REQP-1839#16 Warning
-RAMB36 async control check  
-The RAMB36E1 soc/mem_top_module/main_mem_module/dualport_memory_reg_0 has an input control pin soc/mem_top_module/main_mem_module/dualport_memory_reg_0/ADDRARDADDR[14] (net: soc/mem_top_module/main_mem_module/ADDRARDADDR[9]) which is driven by a register (soc/core_top_module/mmu_module/dtlb_module/tlb_array_ff_reg[0][pte][ppn][4]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
-Related violations: <none>
-
-REQP-1839#17 Warning
-RAMB36 async control check  
-The RAMB36E1 soc/mem_top_module/main_mem_module/dualport_memory_reg_0 has an input control pin soc/mem_top_module/main_mem_module/dualport_memory_reg_0/ADDRARDADDR[14] (net: soc/mem_top_module/main_mem_module/ADDRARDADDR[9]) which is driven by a register (soc/core_top_module/mmu_module/dtlb_module/tlb_array_ff_reg[0][pte][ppn][5]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
-Related violations: <none>
-
-REQP-1839#18 Warning
-RAMB36 async control check  
-The RAMB36E1 soc/mem_top_module/main_mem_module/dualport_memory_reg_0 has an input control pin soc/mem_top_module/main_mem_module/dualport_memory_reg_0/ADDRARDADDR[14] (net: soc/mem_top_module/main_mem_module/ADDRARDADDR[9]) which is driven by a register (soc/core_top_module/mmu_module/dtlb_module/tlb_array_ff_reg[0][pte][ppn][6]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
-Related violations: <none>
-
-REQP-1839#19 Warning
-RAMB36 async control check  
-The RAMB36E1 soc/mem_top_module/main_mem_module/dualport_memory_reg_0 has an input control pin soc/mem_top_module/main_mem_module/dualport_memory_reg_0/ADDRARDADDR[14] (net: soc/mem_top_module/main_mem_module/ADDRARDADDR[9]) which is driven by a register (soc/core_top_module/mmu_module/dtlb_module/tlb_array_ff_reg[0][pte][ppn][7]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
-Related violations: <none>
-
-REQP-1839#20 Warning
-RAMB36 async control check  
-The RAMB36E1 soc/mem_top_module/main_mem_module/dualport_memory_reg_0 has an input control pin soc/mem_top_module/main_mem_module/dualport_memory_reg_0/ADDRARDADDR[14] (net: soc/mem_top_module/main_mem_module/ADDRARDADDR[9]) which is driven by a register (soc/core_top_module/mmu_module/dtlb_module/tlb_array_ff_reg[0][pte][ppn][8]) that has an active asychronous set or reset. This may cause corruption of the memory contents and/or read values when the set/reset is asserted and is not analyzed by the default static timing analysis. It is suggested to eliminate the use of a set/reset to registers driving this RAMB pin or else use a synchronous reset in which the assertion of the reset is timed by default.
 Related violations: <none>
 
 

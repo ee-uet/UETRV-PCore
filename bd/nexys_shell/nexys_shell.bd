@@ -487,12 +487,12 @@
             "segments": {
               "SEG_axi_bram_ctrl_0_Mem0": {
                 "address_block": "/axi_bram_ctrl_0/S_AXI/Mem0",
-                "offset": "0x80000000",
+                "offset": "0xA0000000",
                 "range": "64K"
               },
               "SEG_mig_7series_0_memaddr": {
                 "address_block": "/mig_7series_0/memmap/memaddr",
-                "offset": "0xC0000000",
+                "offset": "0x80000000",
                 "range": "128M"
               }
             }
