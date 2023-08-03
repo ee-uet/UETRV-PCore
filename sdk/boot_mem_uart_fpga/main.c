@@ -61,7 +61,6 @@ uint32_t instr_code = 0, i = 0;
 //        Uetrv32_Uart_Tx('\n');
 //        Uetrv32_Uart_Tx('\r');
 //        if ((i & 0x3) == 0) {
-//        if ((i & 0xFF) == 0) {
 //            Uetrv32_Uart_Tx('r');
 //        }
     }
