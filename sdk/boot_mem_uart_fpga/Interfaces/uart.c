@@ -52,13 +52,16 @@ void Uetrv32_Uart_Tx(uint32_t tx_data) {
  *
  **************************************************************************/
 uint8_t Uetrv32_Uart_Rx(void) {
-   uint8_t rx_data; 
+  uint8_t rx_data; 
 
-   while ((UART_Module.status & 0x02) == 0);
+  while ((UART_Module.status & 0x02) == 0);
 
-   rx_data = (uint8_t) UART_Module.rx_data;       // read data byte
-   UART_Module.status &= ~(0x02);
+  rx_data = (uint8_t) UART_Module.rx_data;       // read data byte
+  UART_Module.status &= ~(0x02);
 
-   return rx_data;
+  // echo
+  Uetrv32_Uart_Tx(rx_data);
+  
+  return rx_data;
 }
 

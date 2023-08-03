@@ -2,7 +2,7 @@ import sys
 import serial
 import time
 
-port = "/dev/ttyUSB0"
+port = "/dev/ttyUSB1"
 
 num = int(float(sys.argv[1]) * 1000000)
 name = sys.argv[2]
@@ -12,7 +12,13 @@ with serial.Serial(port=port, baudrate=num, bytesize=serial.EIGHTBITS, parity=se
     print("send file : "+name);
     with open(name, mode="rb") as fin:
         content = fin.read()
-        ser.write(content)
+        #ser.write(content)
+        for k in range(len(content)):
+            d = int.to_bytes(content[k], length=1, byteorder='little')
+            print(f"Sending {d}")
+            ser.write(d)
+            s = ser.read(1)
+            print(f"Received {s}")
 #        l = len(content)
 #        count = 0
 #        #ser.write(int.to_bytes(l, length=4, byteorder='little'))
