@@ -506,6 +506,7 @@
       <File Path="$PPRDIR/../bd/nexys_shell/ip/nexys_shell_mig_7series_0_0/mig_a.prj">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="ScopedToCell" Val="nexys_shell_mig_7series_0_0"/>
         </FileInfo>
       </File>
       <Config>
