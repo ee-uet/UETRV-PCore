@@ -191,7 +191,7 @@ always_ff @(negedge rst_n, posedge clk) begin
         uart_reg_baud_ff <= 'h10;        
     end else begin
 //        uart_reg_baud_ff <= uart_reg_baud_next;
-        uart_reg_baud_ff <= 'h11;
+        uart_reg_baud_ff <= 'h10;
     end
 end
 
@@ -371,21 +371,15 @@ always_ff @(negedge rst_n, posedge clk) begin
         r_ptr    <= 0;
         for (k = 0; k <= `FIFOSIZE; k++)
             rx_fifo[k] <= 0;
-    end else begin
-        if ( rx_data_write & ~rx_data_read) begin
-        // if write, r_ptr += 1
-        // if read,  r_ptr -= 1
-        // if both,  no change
-                                                        if  (r_ptr < `FIFOSIZE)             r_ptr       <= r_ptr + 1;
-        end else if (~rx_data_write &  rx_data_read)
-                                                        if  (r_ptr > 0)                     r_ptr       <= r_ptr - 1;
-        
-        if (rx_data_write) begin 
-            for (i = 2; i <= `FIFOSIZE; i++)
-                rx_fifo[i]  <= rx_fifo[i-1];
-            rx_fifo[1]  <= uart_rx_byte;
-        end
-    end
+    end else if ( rx_data_write & ~rx_data_read) begin
+    // if write, r_ptr += 1
+    // if read,  r_ptr -= 1
+    // if both,  no change
+                                                    for (i = 2; i <= `FIFOSIZE; i++)    rx_fifo[i]  <= rx_fifo[i-1];
+                                                                                        rx_fifo[1]  <= uart_rx_byte;
+                                                    if  (r_ptr < `FIFOSIZE)             r_ptr       <= r_ptr + 1;
+    end else if (~rx_data_write &  rx_data_read)
+                                                    if  (r_ptr > 0)                     r_ptr       <= r_ptr - 1;
 end
 
 

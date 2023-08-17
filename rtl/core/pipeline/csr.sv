@@ -894,7 +894,7 @@ always_comb begin
     end
 end
 
-assign irq_accept_flag = (~fwd2csr.irq_stall) & (~(exe2csr_data.instr_flushed & ~wfi_req));
+assign irq_accept_flag = (~fwd2csr.irq_stall) & (~(exe2csr_data.instr_flushed & ~wfi_next));
 
 always_ff @(negedge rst_n, posedge clk) begin
     if (~rst_n) begin
@@ -1306,11 +1306,11 @@ assign csr2fwd.csr_read_req = exe2csr_ctrl.csr_rd_req;
 assign csr2wrb_data.csr_rdata = csr_rdata;
 
 // Enable virtual address
-assign en_vaddr  = (csr_satp_ff.mode == MODE_SV32) && (priv_mode_ff != PRIV_MODE_M)
+assign en_vaddr  = (csr_satp_next.mode == MODE_SV32) && (priv_mode_next != PRIV_MODE_M)
                  ? 1'b1 : 1'b0;
 
 // CSR to LSU signals
-assign csr2lsu_data.satp_ppn  = csr_satp_ff.ppn;
+assign csr2lsu_data.satp_ppn  = csr_satp_next.ppn;
 assign csr2lsu_data.en_vaddr  = en_vaddr;
 assign csr2lsu_data.mxr       = csr_mstatus_ff.mxr; 
 assign csr2lsu_data.tlb_flush = sfence_vma_req;

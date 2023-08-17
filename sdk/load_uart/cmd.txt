@@ -1,0 +1,1 @@
+python3 serial_sendfile_new.py 1.152 imem1.bin

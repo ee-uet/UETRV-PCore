@@ -7,6 +7,7 @@
 // Author: Muhammad Tahir, UET Lahore
 // Date: 11.6.2023
 
+`timescale 1 ns / 100 ps
 
 `ifndef VERILATOR
 `include "../../defines/cache_defs.svh"
@@ -32,11 +33,13 @@ module wb_dcache_controller (
     input wire                            lsummu2dcache_req_i,
     input wire                            lsummu2dcache_wr_i,
     output logic                          dcache2lsummu_ack_o,
+    input wire                            dcache_kill_i,
 
     // Data memory to data cache interface
     input  wire                           mem2dcache_ack_i,
     output logic                          dcache2mem_req_o,
     output logic                          dcache2mem_wr_o,
+    output logic                          dcache2mem_kill_o,
     input wire                            dmem_sel_i
 );
          
@@ -57,6 +60,8 @@ logic                                 cache_wr;
 logic                                 cache_line_wr;
 logic                                 cache_line_clean;
 
+logic                                 dcache2mem_kill;
+
 assign lsummu2dcache_wr = lsummu2dcache_wr_i;
 
 assign dcache_hit   = lsummu2dcache_req_i & dmem_sel_i & cache_hit_i;
@@ -65,7 +70,7 @@ assign dcache_evict = cache_evict_req_i;
 
 // Cache controller state machine
 always_ff @(posedge clk_i) begin
-  if (!rst_ni) begin
+  if (~rst_ni) begin
       dcache_state_ff <= DCACHE_IDLE;
       evict_index_ff  <= '0;
   end else begin
@@ -85,6 +90,7 @@ always_comb begin
     cache_line_wr     = 1'b0;
     cache_line_clean  = 1'b0;
     cache_wr          = 1'b0;
+    dcache2mem_kill   = 1'b0;
     
     unique case (dcache_state_ff)
         DCACHE_IDLE: begin
@@ -158,7 +164,7 @@ always_comb begin
                 cache_wrb_req     = 1'b1;
             end else begin 
                 evict_index_next = evict_index_ff + 1;
-                if (evict_index_ff == (DCACHE_NO_OF_SETS - 1)) begin
+                if (evict_index_ff == DCACHE_MAX_IDX) begin
                     dcache_state_next = DCACHE_FLUSH_DONE;
                 //    dcache2lsummu_ack = 1'b1;
                     evict_index_next  = '0;
@@ -176,11 +182,12 @@ always_comb begin
    endcase
 
     // Kill any ongoing request if the data memory is not addressed 
-    if (~dmem_sel_i) begin   // & ~dcache_flush_i
+    if (~dmem_sel_i | dcache_kill_i) begin   // | dcache_kill_i   ---  & ~dcache_flush_i
         dcache_state_next = DCACHE_IDLE;
         evict_index_next  = '0;
         cache_wr          = 1'b0;
         dcache2mem_req    = 1'b0;
+        dcache2mem_kill   = 1'b1;
     end
 
 end
@@ -194,6 +201,7 @@ assign evict_index_o       = evict_index_ff;
 
 assign dcache2mem_wr_o     = dcache2mem_wr;
 assign dcache2mem_req_o    = dcache2mem_req;
+assign dcache2mem_kill_o   = dcache2mem_kill;
 
 assign dcache2lsummu_ack_o = dcache2lsummu_ack;
   

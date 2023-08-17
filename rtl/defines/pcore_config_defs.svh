@@ -50,10 +50,10 @@
 `define IMEM_SIZE                    24'hFFFFFF
 `define IMEM_INST_REQ                1
 
-`define BMEM_SIZE                    512
+`define BMEM_SIZE                    4096
 
-`define IDMEM_SIZE                   28'h400
-`define MEM_ADDR_WIDTH               28
+`define IDMEM_SIZE                   'h3FFFFFF
+`define MEM_ADDR_WIDTH               26
 
 `define DMEM_SEL_ADDR_HIGH           31
 `define DMEM_SEL_ADDR_LOW            28
@@ -81,7 +81,7 @@
 `define UART_REG_OFFSET_WIDTH        12
 `define PLIC_REG_OFFSET_WIDTH        24
 `define CLINT_ADDR_WIDTH             16
-`define CLINT_PRESCA_DIV             39
+`define CLINT_PRESCALER              7'd39
 
 typedef enum logic [`CLINT_ADDR_WIDTH-1:0] {
     MTIME_LOW_R     = 16'hbff8,
