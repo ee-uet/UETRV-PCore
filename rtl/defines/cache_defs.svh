@@ -24,7 +24,7 @@ parameter ICACHE_NO_OF_WAYS  = 2;
 //test code
 
 //test code
-parameter ICACHE_OFFSET_BITS = ICACHE_NO_OF_WAYS;
+parameter ICACHE_OFFSET_BITS = ICACHE_NO_OF_WAYS - 1;
 //test code
 
 //parameter ICACHE_OFFSET_BITS = $clog2(ICACHE_LINE_WIDTH/8);
