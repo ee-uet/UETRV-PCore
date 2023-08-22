@@ -39,7 +39,7 @@ module icache_controller (
 );
 
 //test code
-  type_icache_line_s                    cache_storage[ICACHE_NUM_OF_SETS][NUM_WAYS];
+  type_icache_line_s                    cache_storage[ICACHE_NO_OF_SETS][NUM_WAYS];
 //test code
   
 type_icache_states_e                  icache_state_ff, icache_state_next;
