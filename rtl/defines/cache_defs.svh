@@ -19,6 +19,9 @@ parameter ICACHE_ADDR_WIDTH  = `XLEN;
 parameter ICACHE_DATA_WIDTH  = `XLEN;
 parameter ICACHE_LINE_WIDTH  = 128;            // Line width is in bits
 parameter ICACHE_NO_OF_SETS  = 128;
+//test code
+parameter ICACHE_NO_OF_WAYS  = 2;
+//test code
 
 parameter ICACHE_OFFSET_BITS = $clog2(ICACHE_LINE_WIDTH/8);
 parameter ICACHE_IDX_BITS    = $clog2(ICACHE_NO_OF_SETS); 
