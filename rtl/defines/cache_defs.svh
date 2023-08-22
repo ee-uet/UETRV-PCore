@@ -23,7 +23,11 @@ parameter ICACHE_NO_OF_SETS  = 128;
 parameter ICACHE_NO_OF_WAYS  = 2;
 //test code
 
-parameter ICACHE_OFFSET_BITS = $clog2(ICACHE_LINE_WIDTH/8);
+//test code
+parameter ICACHE_OFFSET_BITS = ICACHE_NO_OF_WAYS;
+//test code
+
+//parameter ICACHE_OFFSET_BITS = $clog2(ICACHE_LINE_WIDTH/8);
 parameter ICACHE_IDX_BITS    = $clog2(ICACHE_NO_OF_SETS); 
 parameter ICACHE_TAG_BITS    = ICACHE_ADDR_WIDTH - ICACHE_IDX_BITS - ICACHE_OFFSET_BITS; 
 parameter ICACHE_TAG_LSB     = ICACHE_ADDR_WIDTH - ICACHE_TAG_BITS; 
