@@ -24,6 +24,7 @@ parameter ICACHE_NO_OF_WAYS  = 2;
 //test code
 
 //test code
+//in our case no_of_ways = 2 so log2(2) = 1 which means 1 bit is required to select a way .
 parameter ICACHE_OFFSET_BITS = $clog2(ICACHE_NO_OF_WAYS);
 //test code
 
