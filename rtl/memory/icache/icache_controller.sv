@@ -31,6 +31,11 @@ module icache_controller (
   // Instruction Memory to Instruction Cache Interface
   input  wire                           mem2icache_ack_i,
   output logic                          icache2mem_req_o
+
+  //test code
+  input wire                            sets_i;
+  input wire                            ways_i;
+  //test code
 );
 
 type_icache_states_e                  icache_state_ff, icache_state_next;
