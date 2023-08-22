@@ -38,6 +38,10 @@ module icache_controller (
   //test code
 );
 
+//test code
+  type_icache_line_s                    cache_storage[NUM_SETS][NUM_WAYS];
+//test code
+  
 type_icache_states_e                  icache_state_ff, icache_state_next;
 logic                                 icache2if_ack;
 logic                                 icache_hit;
