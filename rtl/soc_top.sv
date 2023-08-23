@@ -34,6 +34,9 @@ module soc_top (
     input   logic                        uart_rxd_i,
     output                               uart_txd_o,
 
+    input   logic                        uart_ns_rxd_i,
+    output                               uart_ns_txd_o,
+
     // SPI interface signals
     // SPI bus interface signals including clock, chip_select, MOSI and MISO  
     output logic                         spi_clk_o,
@@ -43,12 +46,29 @@ module soc_top (
 
 `ifdef DRAM
     // DDR memory interface
-    inout wire type_mem2ddr_data_s       mem2ddr_data_io,
-    output type_mem2ddr_ctrl_s           mem2ddr_ctrl_o,
+    output wire                          valid_o,
+    output wire                          we_o,
+    output wire [31:0]                   addr_o,
+    output wire [127:0]                  data_o,
+    input  wire                          ready_i,
+    input  wire  [127:0]                 data_i,
 `endif
 
     input wire type_debug_port_s         debug_port_i
 );
+
+`ifdef DRAM
+
+// DDR memory interface
+wire type_cache2mem_s               cache2dram;
+wire type_mem2cache_s               dram2cache;
+assign addr_o = cache2dram.addr & ~32'h0F;
+assign data_o = cache2dram.w_data;
+assign valid_o = cache2dram.req;
+assign we_o = cache2dram.w_en; 
+assign dram2cache.r_data = data_i;
+assign dram2cache.ack = ready_i;
+`endif
 
 // Local signals
 type_if2icache_s                        if2icache;            // Instruction memory address
@@ -76,9 +96,10 @@ logic                                   uart_ns_sel;
 logic                                   spi_sel;
 
 logic                                   dcache_flush;
+logic                                   lsu_flush;
 
-logic                                   uart_ns_rxd_i;
-logic                                   uart_ns_txd_o; 
+//logic                                   uart_ns_rxd_i;
+//logic                                   uart_ns_txd_o; 
 
 // IRQ ignals
 logic                                   irq_uart;
@@ -121,6 +142,7 @@ core_top core_top_module (
     .lsu2dbus_o          (lsu2dbus),       // Signal to data bus 
     .dbus2lsu_i          (dbus2lsu),
     .dcache_flush_o      (dcache_flush),
+   // .lsu_flush_o         (lsu_flush),
 
     .clint2csr_i         (clint2csr),
 
@@ -226,6 +248,7 @@ mem_top mem_top_module (
     .dcache2dbus_o        (dcache2dbus),
     .bmem2dbus_o          (bmem2dbus),
     .dcache_flush_i       (dcache_flush),
+    .lsu_flush_i          (lsu_flush),
 
    // MMU <---> data cache interface signals 
     .mmu2dcache_i         (mmu2dcache),
@@ -233,8 +256,8 @@ mem_top mem_top_module (
 
 `ifdef DRAM
     // DDR memory interface
-    .mem2ddr_data_io      (mem2ddr_data_io),
-    .mem2ddr_ctrl_o       (mem2ddr_ctrl_o),
+    .dram2cache_i(dram2cache),
+    .cache2dram_o(cache2dram),
 `endif
 
    // Instruction memory interface signals 

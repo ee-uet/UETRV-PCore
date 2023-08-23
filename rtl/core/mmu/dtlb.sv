@@ -94,7 +94,7 @@ always_comb begin
     end
 end
 
-always_ff @(posedge clk) begin
+always_ff @(posedge clk, negedge rst_n) begin
     if (~rst_n) begin
         tlb_array_ff <= '{default: 0};
     end else begin       

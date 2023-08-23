@@ -20,6 +20,7 @@ module wb_dcache_top (
     input wire                         rst_ni,
     input wire                         dmem_sel_i,
     input wire                         dcache_flush_i,
+    input wire                         dcache_kill_i,
 
     // LSU/MMU to data cache interface
     input wire type_lsummu2dcache_s    lsummu2dcache_i,
@@ -27,7 +28,8 @@ module wb_dcache_top (
   
     // Data cache to data memory interface  
     input wire type_mem2dcache_s       mem2dcache_i,
-    output type_dcache2mem_s           dcache2mem_o
+    output type_dcache2mem_s           dcache2mem_o,
+    output logic                       dcache2mem_kill_o
 );
 
 logic                              cache_hit;
@@ -66,12 +68,14 @@ wb_dcache_controller wb_dcache_controller_module(
   .lsummu2dcache_wr_i      (lsummu2dcache.w_en),
   .dcache2lsummu_ack_o     (dcache2lsummu.ack),
   .dcache_flush_i          (dcache_flush_i),
+  .dcache_kill_i           (dcache_kill_i),
 //  .dcache_flush_ack_o      (dcache2lsummu.flush_ack),    
 
   // Data memory <---> data cache signals
   .mem2dcache_ack_i        (mem2dcache.ack),
   .dcache2mem_req_o        (dcache2mem.req),
   .dcache2mem_wr_o         (dcache2mem.w_en),
+  .dcache2mem_kill_o       (dcache2mem_kill_o),
   .dmem_sel_i              (dmem_sel_i)
 );  
 

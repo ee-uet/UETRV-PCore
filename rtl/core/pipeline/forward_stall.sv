@@ -173,7 +173,7 @@ always_comb begin
 end
 
 // M-extension related stall signal  
-always_ff @(posedge clk) begin
+always_ff @(negedge rst_n, posedge clk) begin
     if (~rst_n | lsu_flush) begin
         mul_stall_ff <= '0;
     end else begin

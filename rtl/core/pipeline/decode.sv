@@ -315,6 +315,7 @@ always_comb begin
                 id2exe_ctrl.alu_i_ops    = ALU_I_OPS_ADD;
                 id2exe_ctrl.rd_wr_req    = 1'b1;
                 id2exe_ctrl.jump_req     = 1'b1;
+           //     id2exe_data.imm           =   {{12{instr_codeword[31]}}, instr_codeword[19:12], instr_codeword[20], instr_codeword[30:21], 1'b0};
                
             end // OPCODE_JALR_INST
              // JAL operation

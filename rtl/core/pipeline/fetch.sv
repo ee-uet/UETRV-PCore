@@ -61,6 +61,7 @@ type_fwd2if_s                        fwd2if;
 // Exception related signals
 type_exc_code_e                      exc_code_next, exc_code_ff;
 logic                                exc_req_next, exc_req_ff;
+logic                                kill_req;
 
 // Imem address generation
 logic [`XLEN-1:0]                    pc_ff;              // Current value of program counter (PC)
@@ -144,14 +145,18 @@ exc_code_next  = exc_code_ff;
 end
 
 
+// Kill request to kill an on going reqyest
+assign kill_req = fwd2if.csr_new_pc_req | fwd2if.exe_new_pc_req;
+
 // Update the outputs to MMU and Imem modules
 assign if2mmu.i_vaddr = pc_next;
 assign if2mmu.i_req   = `IMEM_INST_REQ; 
+assign if2mmu.i_kill  = kill_req;
 
 assign if2icache_o.addr = mmu2if.i_paddr[`XLEN-1:0]; // pc_next; 
 assign if2icache_o.req  = mmu2if.i_hit;              // `IMEM_INST_REQ;
 
-assign if2icache_o.req_kill     = fwd2if.csr_new_pc_req | fwd2if.exe_new_pc_req;
+assign if2icache_o.req_kill     = kill_req;
 assign if2icache_o.icache_flush = csr2if_fb.icache_flush;   
 
 // Update the outputs to ID stage

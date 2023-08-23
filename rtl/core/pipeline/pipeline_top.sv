@@ -47,6 +47,7 @@ module pipeline_top (
     output type_lsu2dbus_s              lsu2dbus_o,                // Signal to data bus 
     input  wire type_dbus2lsu_s         dbus2lsu_i,
     output logic                        dcache_flush_o,
+    output logic                        lsu_flush_o,
 
    // Memory mapped timer interface
    input wire type_clint2csr_s          clint2csr_i,
@@ -392,6 +393,7 @@ lsu lsu_module (
     .lsu2dbus_o                 (lsu2dbus),      
     .dbus2lsu_i                 (dbus2lsu),
     .dcache_flush_o             (dcache_flush_o),
+    .lsu_flush_o                (lsu_flush_o),
 
     // LSU to AMO interface
     .lsu2amo_data_o             (lsu2amo_data),      

@@ -79,6 +79,7 @@ assign pte = type_pte_sv32_s'(r_data_ff);
 // Output the physical address directly from PTW 
 assign ptw2dcache.paddr = ptw_paddr_next[`XLEN-1:0];
 assign ptw2dcache.r_req = r_req_next;
+assign ptw2dcache.flush_req = mmu2ptw.i_kill_req;
     
 // Configure the signals for respective TLB entry update
 assign ptw2tlb.vpn     = vaddr_ff[`VALEN-1:12];
@@ -228,7 +229,7 @@ always_comb begin : ptw_walker
             end
         endcase
         
-        if (mmu2ptw.flush_req) begin
+        if ((mmu2ptw.i_kill_req & iwalk_active_ff)) begin // mmu2ptw.lsu_flush_req ||
             // Before flushing check if PTE is being looked up 
         /*    if ((ptw_state_ff == PTW_PROCESS_PTE) && (!r_data_valid_ff))
                 ptw_state_next = PTW_WAIT_R_VALID;

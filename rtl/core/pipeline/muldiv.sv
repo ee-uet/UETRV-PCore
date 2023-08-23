@@ -90,7 +90,7 @@ always_comb begin
 end
 
 
-always_ff @(posedge clk) begin
+always_ff @(negedge rst_n, posedge clk ) begin
 
     if (~rst_n | fwd2mul_flush_i) begin
         alu_m_ops_ff       <= type_alu_m_ops_e'(0);
@@ -177,7 +177,7 @@ always_comb begin
 end
 
 
-always_ff @(posedge clk) begin
+always_ff @(negedge rst_n, posedge clk ) begin
 
     if (~rst_n) begin
         alu_m_ack_ff <= 1'b0;       

@@ -230,7 +230,7 @@ always_comb begin
       ALU_I_OPS_SRA : begin
          alu_result = $signed(alu_operand_1) >>> shift_amt;
       end
-      // Branch related operations and LR instruction require this operation
+      // Branch related operations
       ALU_I_OPS_COPY_OPR1 : begin
          alu_result = alu_operand_1;
       end
@@ -319,8 +319,8 @@ assign exe2csr_data.instr_flushed = id2exe_data.instr_flushed;
 // MT: The register operand below can be routed through ALU for optimization purpose. The 
 // immediate operand can be sent as 5-bit field separately along the data path
 assign exe2csr_data.csr_wdata = (id2exe_ctrl.csr_opr_sel == CSR_OPR_REG)
-                              ? operand_rs1_data                                  // register operand
-                              : {{`XLEN-`RF_AWIDTH{1'b0}}, rs1_addr};             // immediate value
+                              ? operand_rs1_data                                 // register operand
+                              : {{`XLEN-`RF_AWIDTH{1'b0}}, rs1_addr};            // immediate value
 
 // Signals from EXE module for forwarding evaluation
 assign exe2fwd.rs1_addr   = rs1_addr;

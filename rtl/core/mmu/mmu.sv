@@ -174,7 +174,9 @@ assign mmu2ptw.satp_ppn        = lsu2mmu.satp_ppn;
 assign mmu2ptw.en_vaddr        = lsu2mmu.en_vaddr;
 assign mmu2ptw.en_ld_st_vaddr  = lsu2mmu.en_ld_st_vaddr;
 assign mmu2ptw.mxr             = lsu2mmu.mxr;
-assign mmu2ptw.flush_req       = lsu2mmu.lsu_flush;
+
+assign mmu2ptw.lsu_flush_req   = lsu2mmu.lsu_flush;
+assign mmu2ptw.i_kill_req      = if2mmu.i_kill;
 
 // Signals related to DTLB
 assign mmu2ptw.dtlb_vaddr      = lsu2mmu.d_vaddr;

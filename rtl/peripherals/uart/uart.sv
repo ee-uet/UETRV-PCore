@@ -8,7 +8,6 @@
 // Author: Shehzeen Malik, UET Lahore
 // Date: 13.7.2022
 
-`timescale 1 ns / 100 ps
 
 `ifndef VERILATOR
 `include "../../defines/uart_defs.svh"
@@ -53,7 +52,7 @@ logic                                   frame_err;
 logic                                   rx_empty;
 
 logic [`UART_DATA_SIZE-1:0]              uart_rx_byte;
-logic [`UART_DATA_SIZE-1:0] 	        uart_tx_byte;
+logic [`UART_DATA_SIZE-1:0] 	            uart_tx_byte;
 logic                                   two_stop_bits;
 
 logic [`UART_DATA_SIZE-1:0]              uart_reg_rx_ff, uart_reg_rx_next;	
@@ -81,13 +80,13 @@ always_comb begin
     if(reg_rd_req) begin
         case (reg_addr)
             // UART data receive and trnsmit registers
-            UART_TXDATA_R   : reg_r_data =  {~tx_ready, {`XLEN-1{1'b0}}};
+            UART_TXDATA_R   : reg_r_data =  {~tx_ready, 31'b0};
             UART_RXDATA_R   : begin 
-                                  reg_r_data = {~uart_reg_status_ff[1], {`XLEN-`UART_DATA_SIZE-1{1'b0}}, uart_reg_rx_ff};
+                                  reg_r_data = {~uart_reg_status_ff[1], 23'b0, uart_reg_rx_ff};
                                   rx_empty   = 1'b1;
                               end
             // UART baud rate configuration register
-            UART_BAUD_R     : reg_r_data = {{`XLEN-`UART_DATA_SIZE{1'b0}}, uart_reg_baud_ff};
+            UART_BAUD_R     : reg_r_data = {24'b0, uart_reg_baud_ff};
 
             // UART control and status registers
             UART_STATUS_R   : reg_r_data = {{`XLEN-`UART_DATA_SIZE{1'b0}}, uart_reg_status_ff};
@@ -95,7 +94,7 @@ always_comb begin
             UART_RXCTRL_R   : reg_r_data = {12'b0, uart_reg_rxctrl_ff};
  
             // UART interrupt masking register
-            UART_INT_MASK_R : reg_r_data = {{`XLEN-`UART_DATA_SIZE{1'b0}}, uart_reg_int_mask_ff};
+            UART_INT_MASK_R : reg_r_data = {24'b0, uart_reg_int_mask_ff};
             default         : reg_r_data = '0;
         endcase // reg_addr
     end
@@ -134,7 +133,7 @@ end
 
 // Update UART rx data register 
 // ----------------------------
-always_ff @(posedge clk) begin
+always_ff @(negedge rst_n, posedge clk) begin
     if (~rst_n) begin
         uart_reg_rx_ff <= '0;
     end else begin
@@ -153,7 +152,7 @@ end
 
 // Update UART tx data register 
 // ----------------------------
-always_ff @(posedge clk) begin
+always_ff @(negedge rst_n, posedge clk) begin
     if (~rst_n) begin
         uart_reg_tx_ff <= 'h4A;
         tx_valid_ff    <= 1'b0;
@@ -176,11 +175,11 @@ end
 
 // Update UART baud rate register 
 // ------------------------------
-always_ff @(posedge clk) begin
+always_ff @(negedge rst_n, posedge clk) begin
     if (~rst_n) begin
         uart_reg_baud_ff <= 'h10;        
     end else begin
-        uart_reg_baud_ff <= uart_reg_baud_next;
+        uart_reg_baud_ff <= 'h1a;  //uart_reg_baud_next;
     end
 end
 
@@ -194,7 +193,7 @@ end
 
 // Update UART tx control register 
 // ----------------------------
-always_ff @(posedge clk) begin
+always_ff @(negedge rst_n, posedge clk) begin
     if (~rst_n) begin
         uart_reg_txctrl_ff <= '0;        
     end else begin
@@ -213,7 +212,7 @@ end
 
 // Update UART rx control register 
 // ----------------------------
-always_ff @(posedge clk) begin
+always_ff @(negedge rst_n, posedge clk) begin
     if (~rst_n) begin
         uart_reg_rxctrl_ff <= '0;        
     end else begin
@@ -232,7 +231,7 @@ end
 
 // Update UART status register 
 // ----------------------------
-always_ff @(posedge clk) begin
+always_ff @(negedge rst_n, posedge clk) begin
     if (~rst_n) begin
         uart_reg_status_ff <= '0;        
     end else begin
@@ -261,7 +260,7 @@ end
 
 // Update UART interrupt mask register 
 // -----------------------------------
-always_ff @(posedge clk) begin
+always_ff @(negedge rst_n, posedge clk) begin
     if (~rst_n) begin
         uart_reg_int_mask_ff <= '0;        
     end else begin

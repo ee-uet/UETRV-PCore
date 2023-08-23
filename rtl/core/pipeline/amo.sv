@@ -59,7 +59,6 @@ logic                        is_sc;                // A signal to check if curre
 logic                        sc_pass;              // A flag to verify if SC instruction was successfully completed
 logic                        amo_reserve_ff;       // Signal used for latching the reserve signal.
 logic                        amo_save;
-logic                        sc_wrb_ff, sc_wrb_next;
 
 
 // Signals for AMO State Machine
@@ -108,7 +107,7 @@ assign is_sc  = amo_ops == AMO_OPS_SC;     // Assignment of is_sc
 
 // Prepare the AMO operands                        
 assign amo_operand_b = lsu2amo_data.rs2_operand;
-assign amo_operand_a = amo_operand_a_ff; 
+assign amo_operand_a = (ld_req & lsu2amo_ctrl.ack) ? lsu2amo_data.r_data : amo_operand_a_ff;
 
 // Prepare the signals to perform load/store operations      
 assign a_slt_b  = $signed(amo_operand_a) < $signed(amo_operand_b);      // Comparison between operand_a and operand_b ==> To be used by AMO_ALU
@@ -117,7 +116,8 @@ assign a_uslt_b = $unsigned(amo_operand_a) < $unsigned(amo_operand_b);  // Compa
 // Logic for sc_pass, evaluation if instruction is SC, and amo_reserve was set (by 
 // some LR instruction) and Data/Address of buffer matches with the current data
 assign sc_pass  = is_sc & amo_reserve_ff
-                & (amo_buffer_addr_ff == lsu2amo_data.lsu_addr); 
+                & (amo_buffer_addr_ff == lsu2amo_data.lsu_addr) 
+                & (amo_buffer_data_ff == amo_operand_a);
 
 // AMO ALU implementation 
 always_comb begin
@@ -139,13 +139,11 @@ always_comb begin
 end
 
 // State machine for different AMO operations
-always_ff @(posedge clk) begin
-    if (~rst_n | lsu2amo_ctrl.amo_flush) begin
-        state     <= AMO_IDLE;
-        sc_wrb_ff <= '0;
+always_ff @ (posedge clk or negedge rst_n) begin
+    if (!rst_n | lsu2amo_ctrl.amo_flush) begin
+	     state        <= AMO_IDLE;
     end else begin
-        state     <= state_next;
-        sc_wrb_ff <= sc_wrb_next;           
+	     state        <= state_next;
     end
 end
 
@@ -158,7 +156,6 @@ always_comb begin
    st_req     = 1'b0;
    rd_wr_req  = 1'b0;
    w_data     = '0;
-   sc_wrb_next = sc_wrb_ff;
 
    case (state)
       AMO_IDLE: begin   
@@ -167,7 +164,6 @@ always_comb begin
             ld_req     = 1'b1;
             st_req     = 1'b0;
             rd_wr_req  = 1'b0;
-            sc_wrb_next = '0;
          end 
       end 
       AMO_LOAD: begin
@@ -176,7 +172,7 @@ always_comb begin
             state_next = AMO_OP;
             ld_req     = 1'b1;
             st_req     = 1'b0;
-            amo_save   = is_lr; // & (~amo_reserve_ff);
+            amo_save   = is_lr;
          end else begin
             state_next = AMO_LOAD;
             ld_req     = 1'b1;
@@ -188,8 +184,6 @@ always_comb begin
             rd_wr_req = 1'b0;
             ld_req    = 1'b0;
             st_req    = 1'b0;
-            sc_wrb_next = ~sc_pass;
-
             // Donot Store in case of LR or when SC fails
             if(is_lr | (is_sc && !sc_pass)) begin
                state_next = AMO_DONE;
@@ -229,19 +223,21 @@ always_comb begin
 end
 
 // Single AMO buffer for load reserve  
-always_ff @(posedge clk) begin 
+always_ff @( posedge clk or negedge rst_n) begin 
    if (~rst_n | (is_sc & amo_done)) begin
+      amo_buffer_data_ff <= '0;
       amo_buffer_addr_ff <= '0;
       amo_reserve_ff     <= '0;
    end
    else if(amo_save) begin
+      amo_buffer_data_ff <= lsu2amo_data.r_data; 
       amo_buffer_addr_ff <= lsu2amo_data.lsu_addr;
       amo_reserve_ff     <= 1;
    end   
 end
  
 // Buffering of AMO operand
-always_ff @(posedge clk) begin 
+always_ff @( posedge clk ) begin 
    if (~rst_n)
       amo_operand_a_ff <= '0;
    else if(ld_req & lsu2amo_ctrl.ack)
@@ -256,9 +252,9 @@ always_comb begin
 
     // In case SC passes return 0 else return 1 (non-zero value)
     if (is_sc) begin
-        amo_wrb_data = {31'b0, sc_wrb_ff};
+        amo_wrb_data = {31'b0, ~sc_pass};
     end else begin
-        amo_wrb_data = amo_operand_a_ff; // For other AMO operations send the loaded data
+        amo_wrb_data = amo_operand_a; // For other AMO operations send the loaded data
     end 
 end
 

@@ -18,14 +18,14 @@
 parameter ICACHE_ADDR_WIDTH  = `XLEN;
 parameter ICACHE_DATA_WIDTH  = `XLEN;
 parameter ICACHE_LINE_WIDTH  = 128;            // Line width is in bits
-parameter ICACHE_NO_OF_SETS  = 128;
+parameter ICACHE_NO_OF_SETS  = 16;
 
 parameter ICACHE_OFFSET_BITS = $clog2(ICACHE_LINE_WIDTH/8);
 parameter ICACHE_IDX_BITS    = $clog2(ICACHE_NO_OF_SETS); 
 parameter ICACHE_TAG_BITS    = ICACHE_ADDR_WIDTH - ICACHE_IDX_BITS - ICACHE_OFFSET_BITS; 
 parameter ICACHE_TAG_LSB     = ICACHE_ADDR_WIDTH - ICACHE_TAG_BITS; 
 
-typedef enum {
+typedef enum logic [1:0] {
     ICACHE_IDLE, 
     ICACHE_READ_MISS, 
     ICACHE_READ_MEMORY, 
@@ -50,6 +50,7 @@ typedef struct packed {
 typedef struct packed {
     logic [ICACHE_ADDR_WIDTH-1:0]    addr;
     logic                            req;
+    logic                            kill;
 } type_icache2mem_s;
 
 typedef struct packed {
@@ -69,7 +70,7 @@ typedef struct packed {
 parameter DCACHE_ADDR_WIDTH  = `XLEN;
 parameter DCACHE_DATA_WIDTH  = `XLEN;
 parameter DCACHE_LINE_WIDTH  = 128;            // Line width is in bits
-parameter DCACHE_NO_OF_SETS  = 16;
+parameter DCACHE_NO_OF_SETS  = 8;
 
 parameter DCACHE_OFFSET_BITS = $clog2(DCACHE_LINE_WIDTH/8);
 parameter DCACHE_IDX_BITS    = $clog2(DCACHE_NO_OF_SETS); 
@@ -132,11 +133,12 @@ typedef enum logic [1:0] {
     DCACHE_ARBITER_MMU  = 2'h2
 } type_cache_arbiter_states_e;
 
-typedef enum logic [1:0] {
-    MEM_ARBITER_IDLE    = 2'h0,
-    MEM_ARBITER_DCACHE  = 2'h1,
-    MEM_ARBITER_ICACHE  = 2'h2,
-    MEM_ARBITER_KILL    = 2'h3
+typedef enum logic [2:0] {
+    MEM_ARBITER_IDLE    = 3'h0,
+    MEM_ARBITER_DCACHE  = 3'h1,
+    MEM_ARBITER_ICACHE  = 3'h2,
+    MEM_ARBITER_IKILL   = 3'h3,
+    MEM_ARBITER_DKILL   = 3'h4
 } type_mem_arbiter_states_e;
 
 // Interface signals for cache memory arbiter and main memory

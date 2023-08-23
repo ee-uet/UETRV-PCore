@@ -51,6 +51,7 @@ module lsu (
     input  wire type_dbus2lsu_s             dbus2lsu_i,
     output type_lsu2dbus_s                  lsu2dbus_o,                // Signal to data bus 
     output logic                            dcache_flush_o,
+    output logic                            lsu_flush_o,
 
     // LSU <---> MMU interface 
     input wire type_mmu2lsu_s               mmu2lsu_i, 
@@ -265,6 +266,8 @@ assign lsu2mmu.d_vaddr        = ld_st_addr;
 
 // Update the output signals with proper assignment
 assign dcache_flush_o = dcache_flush_req;
+assign lsu_flush_o    = fwd2lsu_i.lsu_flush;
+
 assign lsu2csr_data_o = lsu2csr_data;
 assign lsu2csr_ctrl_o = lsu2csr_ctrl;
 assign lsu2wrb_data_o = lsu2wrb_data;

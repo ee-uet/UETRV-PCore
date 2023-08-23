@@ -50,9 +50,10 @@ icache_controller icache_controller_module(
   .if2icache_req_i      (if2icache.req),
   .if2icache_req_kill_i (if2icache.req_kill),
   .icache2if_ack_o      (icache2if.ack),
+  .icache2mem_kill_o    (icache2mem.kill),
 
-  .mem2icache_ack_i    (mem2icache.ack),
-  .icache2mem_req_o    (icache2mem.req),
+  .mem2icache_ack_i     (mem2icache.ack),
+  .icache2mem_req_o     (icache2mem.req),
   .imem_sel_i           (imem_sel_i)
 );  
 

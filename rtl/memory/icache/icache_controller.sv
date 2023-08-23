@@ -30,7 +30,8 @@ module icache_controller (
 
   // Instruction Memory to Instruction Cache Interface
   input  wire                           mem2icache_ack_i,
-  output logic                          icache2mem_req_o
+  output logic                          icache2mem_req_o,
+  output logic                          icache2mem_kill_o
 );
 
 type_icache_states_e                  icache_state_ff, icache_state_next;
@@ -44,7 +45,7 @@ assign icache_miss = if2icache_req_i & imem_sel_i & ~cache_hit_i;
 
 // Cache controller state machine
 always_ff @(posedge clk_i) begin
-  if (~rst_ni) begin
+  if (!rst_ni) begin
       icache_state_ff <= ICACHE_IDLE;
   end else begin
       icache_state_ff <= icache_state_next;
@@ -60,7 +61,7 @@ always_comb begin
     unique case (icache_state_ff)
         ICACHE_IDLE: begin
             // In case of miss, initiate main memory read cycle   
-            if (icache_miss) begin           
+            if (icache_miss & ~if2icache_req_kill_i) begin           
                 icache2mem_req_o = 1'b1;
                 icache_state_next = ICACHE_READ_MEMORY;
             end else begin
@@ -69,7 +70,12 @@ always_comb begin
         end
         ICACHE_READ_MEMORY: begin  
             // Response from main memory is received          
-            if (mem2icache_ack_i) begin
+            if (if2icache_req_kill_i) begin 
+                icache_state_next = ICACHE_IDLE;
+                cache_rw_o = 1'b0;
+                icache2mem_req_o = 1'b0;
+                icache2mem_kill_o = 1'b1;
+            end else if (mem2icache_ack_i) begin
                 icache_state_next = ICACHE_IDLE;
                 cache_rw_o = 1'b1;
                 icache2mem_req_o = 1'b0;
@@ -78,12 +84,13 @@ always_comb begin
                  icache2mem_req_o = 1'b1;
             end
         end
+        default: begin      end
     endcase
 
     // Kill any ongoing main memory read request if:
     //     1) There is a jump/branch/exception/interrupt leading to new PC
     //     2) The new PC points to boot memory region (only happens on reset) 
-    if (~imem_sel_i | if2icache_req_kill_i) begin
+    if (~imem_sel_i) begin  // | if2icache_req_kill_i
         icache_state_next = ICACHE_IDLE;
         cache_rw_o = 1'b0;
         icache2mem_req_o = 1'b0;
@@ -101,7 +108,7 @@ always_comb begin
 end
 
 always_ff@(posedge clk_i) begin
-  if(~rst_ni) begin
+  if(!rst_ni) begin
       icache2if_ack_o <= '0;
   end else begin
       icache2if_ack_o <= icache2if_ack;

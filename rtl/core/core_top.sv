@@ -37,6 +37,7 @@ module core_top (
     output type_lsu2dbus_s              lsu2dbus_o,                // Signal to data bus 
     input  wire type_dbus2lsu_s         dbus2lsu_i,
     output logic                        dcache_flush_o,
+ //   output logic                        lsu_flush_o,
 
    // Memory mapped timer interface
    input wire type_clint2csr_s          clint2csr_i,
@@ -75,6 +76,7 @@ pipeline_top pipeline_top_module (
     .lsu2dbus_o          (lsu2dbus_o),       // Signal to data bus 
     .dbus2lsu_i          (dbus2lsu_i),
     .dcache_flush_o      (dcache_flush_o),
+    .lsu_flush_o         (),
 
     .clint2csr_i         (clint2csr_i),
 

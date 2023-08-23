@@ -1,10 +1,14 @@
-/*********************************************************************
- * Filename :    uart_rx.scala
- * Date     :    20-03-2021
- * Author   :    Muhammad Tahir
- *
- * Description:  Uart receiver module.
- *********************************************************************/
+// Copyright 2023 University of Engineering and Technology Lahore.
+// Licensed under the Apache License, Version 2.0, see LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+//
+// Description: UART receiver module. 
+//
+// Author: Shehzeen Malik, UET Lahore
+// Date: 13.7.2022
+
+`timescale 1 ns / 100 ps
+
 `ifndef VERILATOR
 `include "../../defines/uart_defs.svh"
 `else
@@ -51,8 +55,8 @@ assign rx_busy      = (bit_count_ff != 0);
 assign sbit_mid_point = (sbit_sample_count_ff == {1'b0, baud_div_i[UART_BAUD_DIV_SIZE-1:1]});
 
 
-always_ff @ (negedge clk) begin
-    if (!rst_n) begin
+always_ff @(negedge clk) begin
+    if (~rst_n) begin
         rx_pin_ff <= 1'b1;
     end else begin
         rx_pin_ff <= rx_pin_in;
@@ -60,8 +64,8 @@ always_ff @ (negedge clk) begin
 end
 
 // State register update
-always_ff @ (posedge clk or negedge rst_n) begin
-    if (!rst_n) begin
+always_ff @(posedge clk) begin
+    if (~rst_n) begin
         state_ff             <= UART_RX_IDLE;
         sample_count_ff      <= '0;
         sbit_sample_count_ff <= '0;

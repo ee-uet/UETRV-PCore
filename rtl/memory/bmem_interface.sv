@@ -68,7 +68,7 @@ assign bmem_rd_addr = bmem_d_sel ? bmem_d_addr
 // assign bmem_rdata = bmem[bmem_rd_addr];
 
 // Synchronous memory read operation for IF module interface
-always_ff @(posedge clk) begin 
+always_ff @ (negedge rst_n, posedge clk) begin 
     if (~rst_n) begin
         bmem2if_ff.ack    <= 1'b0;
         bmem2if_ff.r_data <= `INSTR_NOP;
@@ -87,7 +87,7 @@ end
 
 
 // Synchronous memory read operation for Dbus module interface
-always_ff @(posedge clk) begin 
+always_ff @ (negedge rst_n, posedge clk) begin 
     if (~rst_n) begin
         bmem2dbus_ff.ack    <= 1'b0;
         bmem2dbus_ff.r_data <= '0;
