@@ -1378,3 +1378,4 @@ selectButton(PAResourceAtoD.CmdMsgDialog_OK, "OK"); // f (n)
 selectButton(PAResourceAtoD.CmdMsgDialog_OK, "OK"); // f (n)
 dismissDialog("Close Hardware Target"); // n (cl)
 // WARNING: HEventQueue.dispatchEvent() is taking  1190 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 3,454 MB. GUI used memory: 70 MB. Current time: 8/23/23, 6:20:10 AM PKT
