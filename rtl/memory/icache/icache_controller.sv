@@ -33,8 +33,6 @@ module icache_controller (
   output logic                          icache2mem_req_o
 
   //test code
-  input wire                            sets_i;
-  input wire                            ways_i;
   input wire                            tag_i;//tag of instruction 
   //test code
 );
@@ -50,8 +48,9 @@ logic                                 icache_miss;
 
 //test code
 logic [ICACHE_NO_OF_WAYS-1:0] icache_way_hit;
-assign icache_way_hit = icache_storage[ICACHE_NO_OF_SETS][ICACHE_NO_OF_WAYS].tag = tag_i;
-assign icache_hit = if2icache_req_i & imem_sel_i & icache_way_hit;
+assign icache_way_hit = icache_storage[ICACHE_NO_OF_SETS][ICACHE_NO_OF_WAYS].tag = tag_i;//checking for required data in a way 
+assign icache_hit = if2icache_req_i & imem_sel_i & icache_way_hit;//indicating cache hit if way_hit signal is HIGH along with other 2 conditions 
+assign icache_miss = if2icache_req_i & imem_sel_i & ~icache_way_hit;
 //testcode
 
 //assign icache_hit = if2icache_req_i & imem_sel_i & cache_hit_i;
