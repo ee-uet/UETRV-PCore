@@ -1,4 +1,6 @@
 #include <stdint.h>
+#include <stdio.h>
+
 #include "../Interfaces/uart.h"
 #include "../Interfaces/plic.h"
 
@@ -24,7 +26,7 @@ int main(void) {
  // for(count = 0; count < 8; count++) {
  //   dst[count] = message[count]; 
  // }
-    
+//    printf("Hello World");
   while(1){
 	for(count = 0; count < 8; count++) {
     	  Uetrv32_Uart_Tx((message[count])); 

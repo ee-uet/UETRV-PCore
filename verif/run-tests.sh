@@ -3,7 +3,7 @@
 set -e
 
 riscof -v debug run --config=config.ini \
-           --suite=riscv-arch-test/riscv-test-suite/rv32i_m \
+           --suite=riscv-arch-test/riscv-test-suite/rv32i \
            --env=riscv-arch-test/riscv-test-suite/env \
            --no-browser
 
