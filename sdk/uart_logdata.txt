@@ -108,18 +108,4 @@ hostname: applet not found
               UETRV_PCore Rootfs
 ********************************************************
 /bin/sh: can't access tty; job control turned off
-/ # ls
-bin      init     linuxrc  opt      run      tetris   var
-dev      lib      media    proc     sbin     tmp
-etc      lib32    mnt      root     sys      usr
-/ # cat proc/cpuinfo
-processor	: 0
-hart		: 0
-isa		: rv32ima
-mmu		: sv32
-mvendorid	: 0x702
-marchid		: 0x3
-mimpid		: 0x0
-
 / # 
-

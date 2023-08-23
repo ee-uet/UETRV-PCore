@@ -84,66 +84,35 @@ Using the same procedure as outlined above, we can simulate the Linux bootup usi
 
 During booting process, the processor starts executing zero-level bootloader from `bmem` and then jumps to first-level bootloader (OpenSBI), which after necessary initializations, hands the control over to the kernel.    
 
+### Booting with Verilator
 Now run the following command to extract the `imem.txt` to `./sdk/example-linux/` and simulate the Linux booting process using this pre-built image. 
 
     make sim-verilate-linux
 
-The output is logged to the `uart_logdata.log` file (a copy of this log is available in `./sdk/`), with selected logs listed below. 
+The output is logged to the `uart_logdata.log` file (a copy of this log is available in `./sdk/`). 
 
+### Booting on FPGA Board 
+The processor is tested using Nexys-A7 (100T) FPGA board and Vivado 2019. Type in the following command to open the project in Vivado 2019
 ```
-OpenSBI v0.9
-   ____                    _____ ____ _____
-  / __ \                  / ____|  _ \_   _|
- | |  | |_ __   ___ _ __ | (___ | |_) || |
- | |  | | '_ \ / _ \ '_ \ \___ \|  _ < | |
- | |__| | |_) |  __/ | | |____) | |_) || |_
-  \____/| .__/ \___|_| |_|_____/|____/_____|
-        | |
-        |_|
+vivado PCore_FPGA/PCore_FPGA.xpr
+```
 
-Platform Name             : uet_pcore,v0
-Platform Features         : medeleg
-Platform HART Count       : 1
-Platform IPI Device       : aclint-mswi
-Platform Timer Device     : aclint-mtimer @ 10000000Hz
-Platform Console Device   : sifive_uart
-Platform HSM Device       : ---
+## Generate bitstream
+New bitstream can be generated with the exisitng project or you may use the prebuilt bitstream in folder ``FPGA_Target/Bit_stream``
 
-...
+## Booting Linux Image
+* Load the bitstream on the FPGA, your serial monitor will show message `Load File`
+* Type in the following commands to load the prebuilt Linux image
+  ```
+  cd sdk/load_image
+  python3 serial_sendfile.py <baud_rate in MHz> <path/to/image/file>
+  ```
+* Baud rate of existing bitstream is ``1250000``. Sample Linux image is saved in ``sdk/load_image`` folder.
+* If using default baud rate and default bitstream, the following command can be run
+  ```
+  python3 serial_sendfile.py 1.25 imem.bin
+  ```
 
-Boot HART ISA             : rv32imasu
-Boot HART Features        : scounteren,mcounteren,mcountinhibit,time
-Boot HART PMP Count       : 0
-Boot HART PMP Granularity : 0
-Boot HART PMP Address Bits: 0
-Boot HART MHPM Count      : 0
-Boot HART MIDELEG         : 0x00000222
-Boot HART MEDELEG         : 0x0000b109
-[    0.000000] Linux version 6.1.0 (mtahir@mtahir-Inspiron-7520) (riscv32-unknown-linux-gnu-gcc (GCC) 8.1.0, GNU ld (GNU Binutils) 2.30) #8 Fri Jun 23 15:26:45 PKT 2023
+![bootlog](./docs/images/linux_boot_log.png)
 
-[    0.000000] OF: fdt: Ignoring memory range 0x80000000 - 0x80400000
 
-[    0.000000] Machine model: uet_pcore,v0
-
-[    0.000000] earlycon: sbi0 at I/O port 0x0 (options '')
-
-[    0.000000] printk: bootconsole [sbi0] enabled
-
-...
-
-[    0.004219] clocksource: Switched to clocksource riscv_clocksource
-
-[    0.010208] workingset: timestamp_bits=30 max_order=15 bucket_order=0
-
-[    0.079288] 90000000.serial: ttySIF0 at MMIO 0x90000000 (irq = 1, base_baud = 619200) is a SiFive UART v0
-
-[    0.089824] debug_vm_pgtable: [debug_vm_pgtable         ]: Validating architecture page table helpers
-
-[    0.096405] Freeing unused kernel image (initmem) memory: 8176K
-
-[    0.096473] Run /init as init process
-
-init started: BusyBox v1.33.0 (2023-06-23 15:18:29 PKT)
-
-#
-``` 
