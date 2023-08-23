@@ -97,10 +97,10 @@ The processor is tested using Nexys-A7 (100T) FPGA board and Vivado 2019. Type i
 vivado PCore_FPGA/PCore_FPGA.xpr
 ```
 
-## Generate bitstream
+### Generate bitstream
 New bitstream can be generated with the exisitng project or you may use the prebuilt bitstream in folder ``FPGA_Target/Bit_stream``
 
-## Booting Linux Image
+### Booting Linux Image
 * Load the bitstream on the FPGA, your serial monitor will show message `Load File`
 * Type in the following commands to load the prebuilt Linux image
   ```
