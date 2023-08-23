@@ -1,0 +1,1380 @@
+/*
+
+Xilinx Vivado v2019.1 (64-bit) [Major: 2019, Minor: 1]
+SW Build: 2552052 on Fri May 24 14:47:09 MDT 2019
+IP Build: 2548770 on Fri May 24 18:01:18 MDT 2019
+
+Process ID (PID): 17857
+License: Customer
+
+Current time: 	Tue Aug 22 13:19:03 PKT 2023
+Time zone: 	Pakistan Standard Time (Asia/Karachi)
+
+OS: Ubuntu
+OS Version: 5.4.0-150-generic
+OS Architecture: amd64
+Available processors (cores): 8
+
+Display: :0
+Screen size: 1366x768
+Screen resolution (DPI): 100
+Available screens: 1
+Available disk space: 182 GB
+Default font: family=Dialog,name=Dialog,style=plain,size=12
+
+Java version: 	9.0.4 64-bit
+Java home: 	/home/mtahir/Xilinx/Vivado/2019.1/tps/lnx64/jre9.0.4
+Java executable location: 	/home/mtahir/Xilinx/Vivado/2019.1/tps/lnx64/jre9.0.4/bin/java
+Java initial memory (-Xms): 	128 MB
+Java maximum memory (-Xmx):	 3 GB
+
+
+User name: 	mtahir
+User home directory: /home/mtahir
+User working directory: /home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-Project/logs
+User country: 	US
+User language: 	en
+User locale: 	en_US
+
+RDI_BASEROOT: /home/mtahir/Xilinx/Vivado
+HDI_APPROOT: /home/mtahir/Xilinx/Vivado/2019.1
+RDI_DATADIR: /home/mtahir/Xilinx/Vivado/2019.1/data
+RDI_BINDIR: /home/mtahir/Xilinx/Vivado/2019.1/bin
+
+Vivado preferences file location: /home/mtahir/.Xilinx/Vivado/2019.1/vivado.xml
+Vivado preferences directory: /home/mtahir/.Xilinx/Vivado/2019.1/
+Vivado layouts directory: /home/mtahir/.Xilinx/Vivado/2019.1/layouts
+PlanAhead jar file location: 	/home/mtahir/Xilinx/Vivado/2019.1/lib/classes/planAhead.jar
+Vivado log file location: 	/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-Project/logs/vivado.log
+Vivado journal file location: 	/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-Project/logs/vivado.jou
+Engine tmp dir: 	./.Xil/Vivado-17857-mtahir-Inspiron-7520
+
+Xilinx Environment Variables
+----------------------------
+XILINX: /home/mtahir/Xilinx/Vivado/2019.1/ids_lite/ISE
+XILINX_DSP: /home/mtahir/Xilinx/Vivado/2019.1/ids_lite/ISE
+XILINX_PLANAHEAD: /home/mtahir/Xilinx/Vivado/2019.1
+XILINX_VIVADO: /home/mtahir/Xilinx/Vivado/2019.1
+XILINX_VIVADO_HLS: /home/mtahir/Xilinx/Vivado/2019.1
+
+
+GUI allocated memory:	185 MB
+GUI max memory:		3,072 MB
+Engine allocated memory: 940 MB
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+
+*/
+
+// TclEventType: START_GUI
+// Tcl Message: start_gui 
+// TclEventType: PROJECT_OPEN_DIALOG
+// by (cl):  Open Project : addNotify
+// Opening Vivado Project: ../Nexys-A7.xpr. Version: Vivado v2019.1 
+// TclEventType: DEBUG_PROBE_SET_CHANGE
+// Tcl Message: open_project ../Nexys-A7.xpr 
+// TclEventType: MSGMGR_MOVEMSG
+// TclEventType: FILE_SET_NEW
+// TclEventType: RUN_CURRENT
+// TclEventType: PROJECT_DASHBOARD_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_NEW
+// Tcl Message: open_project ../Nexys-A7.xpr 
+// Tcl Message: INFO: [Project 1-313] Project file moved from '/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7' since last save. 
+// Tcl Message: Scanning sources... Finished scanning sources 
+// Tcl Message: INFO: [filemgmt 56-1] Board Part Repository Path: Directory not found as '/home/mtahir/SOC/Xilinx/Vivado/2019.1/data/boards/board_files/nexys-a7-100t'; using path '/home/mtahir/Xilinx/Vivado/2019.1/data/boards/board_files/nexys-a7-100t' instead. INFO: [IP_Flow 19-234] Refreshing IP repositories INFO: [IP_Flow 19-1704] No user IP repositories specified 
+// TclEventType: PROJECT_NEW
+// [GUI Memory]: 106 MB (+108186kb) [00:00:11]
+// [Engine Memory]: 924 MB (+817195kb) [00:00:11]
+// WARNING: HEventQueue.dispatchEvent() is taking  2756 ms.
+// Tcl Message: INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/mtahir/Xilinx/Vivado/2019.1/data/ip'. 
+// HMemoryUtils.trashcanNow. Engine heap size: 928 MB. GUI used memory: 48 MB. Current time: 8/22/23, 1:19:04 PM PKT
+// Project name: Nexys-A7; location: /home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-Project; part: xc7a100tcsg324-1
+dismissDialog("Open Project"); // by (cl)
+// a (cl): Critical Messages: addNotify
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// [Engine Memory]: 978 MB (+8478kb) [00:00:16]
+// Tcl Message: update_compile_order -fileset sources_1 
+// Elapsed time: 10 seconds
+selectButton(PAResourceAtoD.CmdMsgDialog_OK, "OK"); // f (a)
+dismissDialog("Critical Messages"); // a (cl)
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, Verilog Header]", 1); // B (F, cl)
+// [Engine Memory]: 1,054 MB (+28450kb) [00:00:33]
+collapseTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, Verilog Header]", 1); // B (F, cl)
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, top (top.v)]", 2); // B (F, cl)
+// HMemoryUtils.trashcanNow. Engine heap size: 1,020 MB. GUI used memory: 48 MB. Current time: 8/22/23, 1:19:28 PM PKT
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources]", 0, true); // B (F, cl) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources]", 0, true, false, false, false, true, false); // B (F, cl) - Popup Trigger - Node
+selectMenu(PAResourceCommand.PACommandNames_AUTO_UPDATE_HIER, "Hierarchy Update"); // ae (an, cl)
+selectMenu(PAResourceQtoS.SrcMenu_IP_HIERARCHY, "IP Hierarchy"); // ae (an, cl)
+selectMenuItem(PAResourceCommand.PACommandNames_ADD_SOURCES, "Add Sources..."); // ah (an, cl)
+// Run Command: PAResourceCommand.PACommandNames_ADD_SOURCES
+// c (cl): Add Sources: addNotify
+selectButton("CANCEL", "Cancel"); // JButton (j, c)
+// 'h' command handler elapsed time: 3 seconds
+dismissDialog("Add Sources"); // c (cl)
+// PAPropertyPanels.initPanels (nexys_shell.bd) elapsed time: 0.2s
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, top (top.v), shell : nexys_shell (nexys_shell.bd)]", 4, false); // B (F, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, top (top.v), shell : nexys_shell (nexys_shell.bd)]", 4, false, false, false, false, true, false); // B (F, cl) - Popup Trigger
+selectMenu(PAResourceCommand.PACommandNames_AUTO_UPDATE_HIER, "Hierarchy Update"); // ae (an, cl)
+selectMenu(PAResourceQtoS.SrcMenu_IP_HIERARCHY, "IP Hierarchy"); // ae (an, cl)
+selectMenu(PAResourceQtoS.SrcMenu_IP_HIERARCHY, "IP Hierarchy"); // ae (an, cl)
+selectMenu(PAResourceCommand.PACommandNames_AUTO_UPDATE_HIER, "Hierarchy Update"); // ae (an, cl)
+selectMenuItem(RDIResourceCommand.RDICommands_DELETE, "Remove File from Project..."); // ah (an, cl)
+// Run Command: RDIResourceCommand.RDICommands_DELETE
+// aE (cl): Remove Sources: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (aE)
+dismissDialog("Remove Sources"); // aE (cl)
+// Tcl Message: export_ip_user_files -of_objects  [get_files /home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/bd/nexys_shell/nexys_shell.bd] -no_script -reset -force -quiet 
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJ_DESIGN_MODE_SET
+// aE (cl): Remove Sources: addNotify
+// by (aE):  Remove Sources : addNotify
+// Tcl Message: remove_files  /home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/bd/nexys_shell/nexys_shell.bd 
+dismissDialog("Remove Sources"); // by (aE)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources]", 0, true, false, false, false, true, false); // B (F, cl) - Popup Trigger - Node
+selectMenu(PAResourceCommand.PACommandNames_AUTO_UPDATE_HIER, "Hierarchy Update"); // ae (an, cl)
+selectMenu(PAResourceQtoS.SrcMenu_IP_HIERARCHY, "IP Hierarchy"); // ae (an, cl)
+selectMenuItem(PAResourceCommand.PACommandNames_ADD_SOURCES, "Add Sources..."); // ah (an, cl)
+// Run Command: PAResourceCommand.PACommandNames_ADD_SOURCES
+// c (cl): Add Sources: addNotify
+selectButton("NEXT", "Next >"); // JButton (j, c)
+selectButton(PAResourceQtoS.SrcChooserPanel_ADD_DIRECTORIES, "Add Directories"); // a (E, c)
+setFolderChooser("/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd");
+selectButton("FINISH", "Finish"); // JButton (j, c)
+// 'h' command handler elapsed time: 12 seconds
+dismissDialog("Add Sources"); // c (cl)
+// TclEventType: FILE_SET_CHANGE
+// by (cl):  Add Sources  : addNotify
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: add_files -scan_for_includes /home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/nexys_shell.bd 
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: add_files: Time (s): cpu = 00:00:10 ; elapsed = 00:00:07 . Memory (MB): peak = 6649.887 ; gain = 89.039 ; free physical = 7797 ; free virtual = 13450 
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: LOAD_FEATURE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// Elapsed time: 30 seconds
+dismissDialog("Add Sources"); // by (cl)
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: update_compile_order -fileset sources_1 
+// HMemoryUtils.trashcanNow. Engine heap size: 1,085 MB. GUI used memory: 53 MB. Current time: 8/22/23, 1:20:43 PM PKT
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Constraints]", 10); // B (F, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Constraints]", 10, true, false, false, false, true, false); // B (F, cl) - Popup Trigger - Node
+selectMenu(PAResourceCommand.PACommandNames_AUTO_UPDATE_HIER, "Hierarchy Update"); // ae (an, cl)
+selectMenu(PAResourceQtoS.SrcMenu_IP_HIERARCHY, "IP Hierarchy"); // ae (an, cl)
+selectMenuItem(PAResourceCommand.PACommandNames_ADD_SOURCES, "Add Sources..."); // ah (an, cl)
+// Run Command: PAResourceCommand.PACommandNames_ADD_SOURCES
+// c (cl): Add Sources: addNotify
+selectRadioButton(PAResourceAtoD.AddSrcWizard_SPECIFY_HDL_NETLIST_BLOCK_DESIGN, "Add or create design sources"); // a (o, c)
+selectRadioButton(PAResourceAtoD.AddSrcWizard_SPECIFY_OR_CREATE_CONSTRAINT_FILES, "Add or create constraints"); // a (o, c)
+selectButton("NEXT", "Next >"); // JButton (j, c)
+selectButton(PAResourceAtoD.ConstraintsChooserPanel_ADD_FILES, "Add Files"); // a (E, c)
+// [GUI Memory]: 112 MB (+1324kb) [00:02:15]
+// Elapsed time: 16 seconds
+String[] filenames31467 = {"/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-Project/PCore_FPGA.srcs/constrs_1/imports/tcl/1-clock.xdc", "/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-Project/PCore_FPGA.srcs/constrs_1/imports/tcl/2-pins.xdc", "/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-Project/PCore_FPGA.srcs/constrs_1/imports/tcl/3-bitstream.xdc"};
+setFileChooser(filenames31467);
+selectButton("FINISH", "Finish"); // JButton (j, c)
+// 'h' command handler elapsed time: 25 seconds
+dismissDialog("Add Sources"); // c (cl)
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: add_files -fileset constrs_1 -norecurse {/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-Project/PCore_FPGA.srcs/constrs_1/imports/tcl/1-clock.xdc /home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-Project/PCore_FPGA.srcs/constrs_1/imports/tcl/2-pins.xdc /home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-Project/PCore_FPGA.srcs/constrs_1/imports/tcl/3-bitstream.xdc} 
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Synthesis, Run Synthesis]", 14, false); // u (O, cl)
+// Run Command: PAResourceCommand.PACommandNames_RUN_SYNTHESIS
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// Tcl Message: launch_runs synth_1 -jobs 4 
+// Tcl Message: [Tue Aug 22 13:21:23 2023] Launched synth_1... Run output will be captured here: /home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-Project/Nexys-A7.runs/synth_1/runme.log 
+dismissDialog("Starting Design Runs"); // by (cl)
+// TclEventType: RUN_STATUS_CHANGE
+// Elapsed time: 10 seconds
+selectButton(PAResourceCommand.PACommandNames_TOGGLE_VIEW_NAV, (String) null); // B (E, cl)
+// Run Command: PAResourceCommand.PACommandNames_TOGGLE_VIEW_NAV
+// Elapsed time: 123 seconds
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, top (top.v), shell : nexys_shell (nexys_shell.bd)]", 4, true); // B (F, cl) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, top (top.v), shell : nexys_shell (nexys_shell.bd)]", 4, true, false, false, false, false, true); // B (F, cl) - Double Click - Node
+// by (cl):  Open Block Design : addNotify
+// TclEventType: LOAD_FEATURE
+// Tcl Message: open_bd_design {/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/nexys_shell.bd} 
+// TclEventType: RSB_CHANGE_CURRENT_DIAGRAM
+// TclEventType: RSB_PROPERTY_CHANGE
+// TclEventType: RSB_OPEN_DIAGRAM
+// Tcl Message: Adding component instance block -- xilinx.com:ip:axi_bram_ctrl:4.1 - axi_bram_ctrl_0 Adding component instance block -- xilinx.com:ip:blk_mem_gen:8.4 - blk_mem_gen_0 Adding component instance block -- xilinx.com:ip:smartconnect:1.0 - smartconnect_0 Adding component instance block -- xilinx.com:ip:proc_sys_reset:5.0 - proc_sys_reset_0 Adding component instance block -- xilinx.com:ip:mig_7series:4.2 - mig_7series_0 Successfully read diagram <nexys_shell> from BD file </home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/nexys_shell.bd> 
+// TclEventType: RSB_OPEN_DIAGRAM
+// [Engine Memory]: 1,109 MB (+1758kb) [00:04:51]
+// PAPropertyPanels.initPanels (nexys_shell.bd) elapsed time: 0.2s
+// WARNING: HEventQueue.dispatchEvent() is taking  1640 ms.
+// TclEventType: RSB_CONNECTION_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 1,164 MB. GUI used memory: 60 MB. Current time: 8/22/23, 1:23:44 PM PKT
+closeView(PAResourceOtoP.PAViews_PROJECT_SUMMARY, "Project Summary"); // v
+// TclEventType: RSB_CONNECTION_CHANGE
+// TclEventType: RSB_LOCK_CHANGE
+// TclEventType: RSB_CHANGE_CURRENT_DIAGRAM
+// TclEventType: RSB_LOCK_CHANGE
+// TclEventType: RSB_CHANGE_CURRENT_DIAGRAM
+// Tcl Message: open_bd_design: Time (s): cpu = 00:00:10 ; elapsed = 00:00:07 . Memory (MB): peak = 6678.445 ; gain = 5.523 ; free physical = 6720 ; free virtual = 12518 
+dismissDialog("Open Block Design"); // by (cl)
+// [Engine Memory]: 1,165 MB (+659kb) [00:04:53]
+// Elapsed time: 30 seconds
+selectMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // Z (q, cl)
+selectMenu(PAResourceItoN.MainMenuMgr_PROJECT, "Project"); // ae (cl)
+selectMenu(PAResourceItoN.MainMenuMgr_OPEN_RECENT_PROJECT, "Open Recent"); // ae (cl)
+// Elapsed time: 22 seconds
+dismissMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // Z (q, cl)
+selectButton(PAResourceQtoS.SyntheticaStateMonitor_CANCEL, "Cancel"); // h (Q, cl)
+// by (cl):  Resetting Runs : addNotify
+selectButton("OptionPane.button", "Cancel Process"); // JButton (A, G)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// Tcl Message: reset_run synth_1 
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+dismissDialog("Resetting Runs"); // by (cl)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 1,219 MB. GUI used memory: 57 MB. Current time: 8/22/23, 1:25:23 PM PKT
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// [Engine Memory]: 1,225 MB (+2572kb) [00:07:01]
+// Elapsed time: 70 seconds
+closeView(PAResourceOtoP.PAViews_SYSTEM, "System"); // gl
+// PAResourceOtoP.PAViews_ADDRESS_EDITOR: Address Editor: close view
+closeView(PAResourceOtoP.PAViews_ADDRESS_EDITOR, "Address Editor"); // c
+selectTab((HResource) null, (HResource) null, "Sources", 0); // aK (aH, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, Verilog Header]", 1, true, false, false, false, true, false); // B (F, cl) - Popup Trigger - Node
+selectMenu(PAResourceCommand.PACommandNames_AUTO_UPDATE_HIER, "Hierarchy Update"); // ae (an, cl)
+selectMenu(PAResourceQtoS.SrcMenu_IP_HIERARCHY, "IP Hierarchy"); // ae (an, cl)
+selectMenuItem(PAResourceQtoS.SrcMenu_REFRESH_HIERARCHY, "Refresh Hierarchy"); // ah (an, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, top (top.v), shell : nexys_shell (nexys_shell.bd)]", 4, true); // B (F, cl) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, top (top.v), shell : nexys_shell (nexys_shell.bd)]", 4, true, false, false, false, false, true); // B (F, cl) - Double Click - Node
+// by (cl):  Open Block Design : addNotify
+// TclEventType: RSB_OPEN_DIAGRAM
+// Tcl Message: open_bd_design {/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/nexys_shell.bd} 
+dismissDialog("Open Block Design"); // by (cl)
+// Elapsed time: 12 seconds
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, top (top.v)]", 2, true); // B (F, cl) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, top (top.v)]", 2, true, false, false, false, false, true); // B (F, cl) - Double Click - Node
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 138 seconds
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, top (top.v)]", 2, true, false, false, false, true, false); // B (F, cl) - Popup Trigger - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, top (top.v)]", 2, true); // B (F, cl) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, top (top.v)]", 2, true); // B (F, cl) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, top (top.v)]", 2, true, false, false, false, false, true); // B (F, cl) - Double Click - Node
+// HMemoryUtils.trashcanNow. Engine heap size: 1,252 MB. GUI used memory: 59 MB. Current time: 8/22/23, 1:28:48 PM PKT
+// Elapsed time: 24 seconds
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, top (top.v), shell : nexys_shell (nexys_shell.bd)]", 4, true); // B (F, cl) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, top (top.v), shell : nexys_shell (nexys_shell.bd)]", 4, true, false, false, false, false, true); // B (F, cl) - Double Click - Node
+// by (cl):  Open Block Design : addNotify
+// TclEventType: RSB_OPEN_DIAGRAM
+// Tcl Message: open_bd_design {/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/nexys_shell.bd} 
+dismissDialog("Open Block Design"); // by (cl)
+selectButton(PAResourceOtoP.PlanAheadTab_SHOW_FLOW_NAVIGATOR, "Flow Navigator"); // z (N, cl)
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Synthesis, Run Synthesis]", 14, false); // u (O, cl)
+// Run Command: PAResourceCommand.PACommandNames_RUN_SYNTHESIS
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// Tcl Message: launch_runs synth_1 -jobs 4 
+// Tcl Message: [Tue Aug 22 13:29:21 2023] Launched synth_1... Run output will be captured here: /home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-Project/Nexys-A7.runs/synth_1/runme.log 
+dismissDialog("Starting Design Runs"); // by (cl)
+// TclEventType: RUN_STATUS_CHANGE
+selectButton(PAResourceCommand.PACommandNames_TOGGLE_VIEW_NAV, (String) null); // B (E, cl)
+// Run Command: PAResourceCommand.PACommandNames_TOGGLE_VIEW_NAV
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "top.v", 1); // k (j, cl)
+// TclEventType: RUN_FAILED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// ah (cl): Synthesis Failed: addNotify
+// Elapsed time: 131 seconds
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (ah)
+// Run Command: PAResourceCommand.PACommandNames_MESSAGE_WINDOW
+dismissDialog("Synthesis Failed"); // ah (cl)
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, [Common 17-55] 'set_property' expects at least one object.. Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.. ]", 4, false); // ah (O, cl)
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, [Common 17-55] 'set_property' expects at least one object.. Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.. ]", 4, false); // ah (O, cl)
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, [Common 17-55] 'set_property' expects at least one object.. Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.. ]", 4, false, false, false, false, false, true); // ah (O, cl) - Double Click
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, [Common 17-55] 'set_property' expects at least one object.. Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.. ]", 4, false); // ah (O, cl)
+messagesViewCrossProbe(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "ID;-;[Common 17-55];-;;-;16;-;Resolution;-;If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.;-;;-;16;-;"); // ah (O, cl)
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, [Common 17-55] 'set_property' expects at least one object.. Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.. ]", 4, false); // ah (O, cl)
+// Elapsed time: 83 seconds
+selectButton(PAResourceOtoP.PlanAheadTab_SHOW_FLOW_NAVIGATOR, "Flow Navigator"); // z (N, cl)
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Synthesis, Run Synthesis]", 14, false); // u (O, cl)
+// Run Command: PAResourceCommand.PACommandNames_RUN_SYNTHESIS
+// by (cl):  Resetting Runs : addNotify
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// Tcl Message: reset_run synth_1 
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// Tcl Message: launch_runs synth_1 -jobs 4 
+// Tcl Message: [Tue Aug 22 13:33:17 2023] Launched synth_1... Run output will be captured here: /home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-Project/Nexys-A7.runs/synth_1/runme.log 
+dismissDialog("Starting Design Runs"); // by (cl)
+// TclEventType: RUN_STATUS_CHANGE
+// Elapsed time: 10 seconds
+selectButton(PAResourceAtoD.AbstractFileView_RELOAD, "Reload"); // h (cS, cl)
+// TclEventType: RUN_FAILED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// ah (cl): Synthesis Failed: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (ah)
+// Run Command: PAResourceCommand.PACommandNames_MESSAGE_WINDOW
+dismissDialog("Synthesis Failed"); // ah (cl)
+selectCheckBox(PAResourceItoN.MsgView_CRITICAL_WARNINGS, (String) null, false); // g (aR, cl): FALSE
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, [Common 17-55] 'set_property' expects at least one object.. Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.. ]", 1, false); // ah (O, cl)
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, [Common 17-55] 'set_property' expects at least one object.. Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.. ]", 1, false); // ah (O, cl)
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, [Common 17-55] 'set_property' expects at least one object.. Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.. ]", 1, false); // ah (O, cl)
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, [Common 17-55] 'set_property' expects at least one object.. Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.. ]", 1, false, false, false, false, false, true); // ah (O, cl) - Double Click
+selectCodeEditor("top.v", 109, 81); // cl (w, cl)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// [Engine Memory]: 1,311 MB (+25837kb) [00:15:02]
+// HMemoryUtils.trashcanNow. Engine heap size: 1,316 MB. GUI used memory: 62 MB. Current time: 8/22/23, 1:33:53 PM PKT
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Synthesis, Run Synthesis]", 14, false); // u (O, cl)
+// [GUI Memory]: 118 MB (+678kb) [00:15:04]
+expandTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, RTL Analysis]", 3); // u (O, cl)
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Synthesis, Run Synthesis]", 14, false); // u (O, cl)
+// Run Command: PAResourceCommand.PACommandNames_RUN_SYNTHESIS
+// by (cl):  Resetting Runs : addNotify
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// Tcl Message: reset_run synth_1 
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// Tcl Message: launch_runs synth_1 -jobs 4 
+// Tcl Message: [Tue Aug 22 13:34:02 2023] Launched synth_1... Run output will be captured here: /home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-Project/Nexys-A7.runs/synth_1/runme.log 
+dismissDialog("Starting Design Runs"); // by (cl)
+// TclEventType: RUN_STATUS_CHANGE
+selectCheckBox(PAResourceItoN.MsgView_CRITICAL_WARNINGS, (String) null, true); // g (aR, cl): TRUE
+selectCheckBox(PAResourceItoN.MsgView_CRITICAL_WARNINGS, (String) null, false); // g (aR, cl): FALSE
+// TclEventType: RUN_FAILED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// HMemoryUtils.trashcanNow. Engine heap size: 1,309 MB. GUI used memory: 60 MB. Current time: 8/22/23, 1:34:18 PM PKT
+// ah (cl): Synthesis Failed: addNotify
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (ah)
+dismissDialog("Synthesis Failed"); // ah (cl)
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, [Common 17-55] 'set_property' expects at least one object.. Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.. ]", 1, false); // ah (O, cl)
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, [Common 17-55] 'set_property' expects at least one object.. Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.. ]", 1, false); // ah (O, cl)
+messagesViewCrossProbe(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "ID;-;[Common 17-55];-;;-;16;-;Resolution;-;If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.;-;;-;16;-;"); // ah (O, cl)
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, [Common 17-55] 'set_property' expects at least one object.. Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.. ]", 1, false, false, false, false, false, true); // ah (O, cl) - Double Click
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Synthesis, [Common 17-55] 'set_property' expects at least one object.. Resolution: If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.. ]", 1, false); // ah (O, cl)
+messagesViewCrossProbe(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "ID;-;[Common 17-55];-;;-;16;-;Resolution;-;If [get_<value>] was used to populate the object, check to make sure this command returns at least one valid object.;-;;-;16;-;"); // ah (O, cl)
+// Elapsed time: 10 seconds
+selectTab((HResource) null, (HResource) null, "Log", 2); // aK (aH, cl)
+// Elapsed time: 26 seconds
+selectCodeEditor(PAResourceItoN.LogMonitor_MONITOR, 520, 82); // n (q, cl)
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 61 seconds
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, Verilog Header]", 1, true, false, false, false, true, false); // B (F, cl) - Popup Trigger - Node
+selectMenu(PAResourceCommand.PACommandNames_AUTO_UPDATE_HIER, "Hierarchy Update"); // ae (an, cl)
+selectMenu(PAResourceQtoS.SrcMenu_IP_HIERARCHY, "IP Hierarchy"); // ae (an, cl)
+selectMenu(PAResourceQtoS.SrcMenu_IP_HIERARCHY, "IP Hierarchy"); // ae (an, cl)
+selectMenuItem(PAResourceQtoS.SrcMenu_REFRESH_HIERARCHY, "Refresh Hierarchy"); // ah (an, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, top (top.v), shell : nexys_shell (nexys_shell.bd)]", 4, true); // B (F, cl) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, top (top.v), shell : nexys_shell (nexys_shell.bd)]", 4, true, false, false, false, false, true); // B (F, cl) - Double Click - Node
+// by (cl):  Open Block Design : addNotify
+// TclEventType: RSB_OPEN_DIAGRAM
+// Tcl Message: open_bd_design {/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/nexys_shell.bd} 
+dismissDialog("Open Block Design"); // by (cl)
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Synthesis, Run Synthesis]", 14, false); // u (O, cl)
+// Run Command: PAResourceCommand.PACommandNames_RUN_SYNTHESIS
+// by (cl):  Resetting Runs : addNotify
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// Tcl Message: reset_run synth_1 
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// Tcl Message: launch_runs synth_1 -jobs 4 
+// Tcl Message: [Tue Aug 22 13:36:13 2023] Launched synth_1... Run output will be captured here: /home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-Project/Nexys-A7.runs/synth_1/runme.log 
+dismissDialog("Starting Design Runs"); // by (cl)
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_FAILED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// ah (cl): Synthesis Failed: addNotify
+// Elapsed time: 17 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (ah)
+dismissDialog("Synthesis Failed"); // ah (cl)
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, IP Integrator, Generate Block Design]", 8, false); // u (O, cl)
+// Run Command: PAResourceCommand.PACommandNames_GENERATE_RSB_DESIGN
+// aI (cl): Generate Output Products: addNotify
+selectButton(PAResourceQtoS.SimpleOutputProductDialog_GENERATE_OUTPUT_PRODUCTS_IMMEDIATELY, "Generate"); // a (aI)
+// 'bo' command handler elapsed time: 5 seconds
+selectButton("OptionPane.button", "OK"); // JButton (A, G)
+// Elapsed time: 145 seconds
+selectCodeEditor(PAResourceItoN.LogMonitor_MONITOR, 305, 96); // n (q, cl)
+// Elapsed time: 10 seconds
+selectCodeEditor(PAResourceItoN.LogMonitor_MONITOR, 155, 99); // n (q, cl)
+selectCodeEditor(PAResourceItoN.LogMonitor_MONITOR, 392, 98, false, false, false, true, false); // n (q, cl) - Popup Trigger
+selectMenuItem(PAResourceItoN.LogMonitor_COPY, "Copy"); // ah (an, cl)
+// Elapsed time: 45 seconds
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Constraints, constrs_1]", 11); // B (F, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Constraints, constrs_1, 2-pins.xdc]", 13, false); // B (F, cl)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Constraints, constrs_1, 2-pins.xdc]", 13, false, false, false, false, false, true); // B (F, cl) - Double Click
+// Elapsed time: 38 seconds
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "top.v", 1); // k (j, cl)
+selectCodeEditor("top.v", 100, 82); // cl (w, cl)
+selectCodeEditor("top.v", 100, 82, false, false, false, false, true); // cl (w, cl) - Double Click
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "2-pins.xdc", 2); // k (j, cl)
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "top.v", 1); // k (j, cl)
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "2-pins.xdc", 2); // k (j, cl)
+selectCodeEditor(PAResourceItoN.LogMonitor_MONITOR, 81, 111); // n (q, cl)
+selectCodeEditor(PAResourceItoN.LogMonitor_MONITOR, 203, 114, false, false, false, true, false); // n (q, cl) - Popup Trigger
+selectMenuItem(PAResourceItoN.LogMonitor_COPY, "Copy"); // ah (an, cl)
+// Elapsed time: 19 seconds
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, RTL Analysis, Open Elaborated Design]", 12, true); // u (O, cl) - Node
+// Run Command: PAResourceCommand.PACommandNames_GOTO_RTL_DESIGN
+// A (cl): Elaborate Design: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (A)
+// by (cl):  Open Elaborated Design : addNotify
+dismissDialog("Elaborate Design"); // A (cl)
+// Tcl Message: synth_design -rtl -name rtl_1 
+// Tcl Message: Command: synth_design -rtl -name rtl_1 Starting synth_design Using part: xc7a100tcsg324-1 Top: top 
+// TclEventType: ELABORATE_START
+// TclEventType: ELABORATE_FAIL
+// TclEventType: DESIGN_NEW_FAILED
+// Tcl Message: INFO: [Device 21-403] Loading part xc7a100tcsg324-1 
+// Tcl Message: Failed to read verilog '/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/c012/hdl/sc_switchboard_v1_0_vl_rfs.sv' 
+// Tcl Message: 1 Infos, 0 Warnings, 0 Critical Warnings and 35 Errors encountered. synth_design failed 
+// Tcl Message: ERROR: [Vivado_Tcl 4-5] Elaboration failed - please see the console for details 
+// CommandFailedException: ERROR: [Common 17-69] Command failed: ERROR: [Vivado_Tcl 4-5] Elaboration failed - please see the console for details  
+// 'dR' command handler elapsed time: 10 seconds
+// [Engine Memory]: 1,658 MB (+294547kb) [00:22:56]
+// S (cl): Critical Messages: addNotify
+dismissDialog("Open Elaborated Design"); // by (cl)
+// HMemoryUtils.trashcanNow. Engine heap size: 1,663 MB. GUI used memory: 62 MB. Current time: 8/22/23, 1:41:48 PM PKT
+selectList(PAResourceAtoD.CmdMsgDialog_MESSAGES, "[Runs 36-287] File does not exist or is not accessible:'/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/70bf/hdl/axi_bram_ctrl_v4_1_rfs.vhd'", 0); // b (F, S)
+selectList(PAResourceAtoD.CmdMsgDialog_MESSAGES, "[Runs 36-287] File does not exist or is not accessible:'/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_axi_bram_ctrl_0_0_1/synth/nexys_shell_axi_bram_ctrl_0_0.vhd'", 1); // b (F, S)
+selectList(PAResourceAtoD.CmdMsgDialog_MESSAGES, "[Runs 36-287] File does not exist or is not accessible:'/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/c001/hdl/blk_mem_gen_v8_4_vhsyn_rfs.vhd'", 2); // b (F, S)
+selectButton(PAResourceAtoD.CmdMsgDialog_OPEN_MESSAGES_VIEW, "Open Messages View"); // a (S)
+// Run Command: PAResourceCommand.PACommandNames_MESSAGE_WINDOW
+dismissDialog("Critical Messages"); // S (cl)
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Vivado Commands, General Messages, [Runs 36-287] File does not exist or is not accessible:'/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/70bf/hdl/axi_bram_ctrl_v4_1_rfs.vhd'. ]", 3, true); // ah (O, cl) - Node
+selectTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Vivado Commands, General Messages, [Runs 36-287] File does not exist or is not accessible:'/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/70bf/hdl/axi_bram_ctrl_v4_1_rfs.vhd'. ]", 3, true); // ah (O, cl) - Node
+// HMemoryUtils.trashcanNow. Engine heap size: 1,666 MB. GUI used memory: 61 MB. Current time: 8/22/23, 1:42:28 PM PKT
+// HMemoryUtils.trashcanNow. Engine heap size: 1,666 MB. GUI used memory: 61 MB. Current time: 8/22/23, 1:43:33 PM PKT
+// Elapsed time: 71 seconds
+expandTree(PAResourceItoN.MsgTreePanel_MESSAGE_VIEW_TREE, "[, Vivado Commands, General Messages, [Runs 36-287] File does not exist or is not accessible:'/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/70bf/hdl/axi_bram_ctrl_v4_1_rfs.vhd'. ]", 3); // ah (O, cl)
+// [Engine Memory]: 1,822 MB (+85761kb) [00:24:52]
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, top (top.v), shell : nexys_shell (nexys_shell.bd)]", 4, true, false, false, false, true, false); // B (F, cl) - Popup Trigger - Node
+selectMenuItem(RDIResourceCommand.RDICommands_DELETE, "Remove File from Project..."); // ah (an, cl)
+// Run Command: RDIResourceCommand.RDICommands_DELETE
+// aE (cl): Remove Sources: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (aE)
+dismissDialog("Remove Sources"); // aE (cl)
+// Tcl Message: export_ip_user_files -of_objects  [get_files /home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/nexys_shell.bd] -no_script -reset -force -quiet 
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: RSB_CHANGE_CURRENT_DIAGRAM
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: RSB_CLOSE_DIAGRAM
+// TclEventType: REPORT_IP_STATUS_STALE
+// Tcl Message: remove_files  /home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/nexys_shell.bd 
+// TclEventType: REPORT_IP_STATUS_STALE
+// aE (cl): Remove Sources: addNotify
+// TclEventType: REPORT_IP_STATUS_STALE
+// by (aE):  Remove Sources : addNotify
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: PROJ_DESIGN_MODE_SET
+dismissDialog("Remove Sources"); // by (aE)
+// HMemoryUtils.trashcanNow. Engine heap size: 1,696 MB. GUI used memory: 63 MB. Current time: 8/22/23, 1:43:53 PM PKT
+// Elapsed time: 73 seconds
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources]", 0, true, false, false, false, true, false); // B (F, cl) - Popup Trigger - Node
+selectMenu(PAResourceCommand.PACommandNames_AUTO_UPDATE_HIER, "Hierarchy Update"); // ae (an, cl)
+selectMenu(PAResourceQtoS.SrcMenu_IP_HIERARCHY, "IP Hierarchy"); // ae (an, cl)
+selectMenuItem(PAResourceCommand.PACommandNames_ADD_SOURCES, "Add Sources..."); // ah (an, cl)
+// Run Command: PAResourceCommand.PACommandNames_ADD_SOURCES
+// c (cl): Add Sources: addNotify
+selectRadioButton(PAResourceAtoD.AddSrcWizard_SPECIFY_HDL_NETLIST_BLOCK_DESIGN, "Add or create design sources"); // a (o, c)
+selectButton("NEXT", "Next >"); // JButton (j, c)
+selectButton(PAResourceQtoS.SrcChooserPanel_ADD_DIRECTORIES, "Add Directories"); // a (E, c)
+setFolderChooser("/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd");
+selectButton("FINISH", "Finish"); // JButton (j, c)
+// 'h' command handler elapsed time: 17 seconds
+// [GUI Memory]: 127 MB (+2352kb) [00:26:30]
+dismissDialog("Add Sources"); // c (cl)
+// TclEventType: FILE_SET_CHANGE
+// by (cl):  Add Sources  : addNotify
+// Tcl Message: add_files -scan_for_includes /home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/nexys_shell.bd 
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: PROJECT_CHANGE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// TclEventType: PACKAGER_MESSAGE_RESET
+// TclEventType: PACKAGER_UNLOAD_CORE
+// Elapsed time: 14 seconds
+dismissDialog("Add Sources"); // by (cl)
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: update_compile_order -fileset sources_1 
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, RTL Analysis, Open Elaborated Design]", 12, true); // u (O, cl) - Node
+// Run Command: PAResourceCommand.PACommandNames_GOTO_RTL_DESIGN
+// A (cl): Elaborate Design: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (A)
+// by (cl):  Open Elaborated Design : addNotify
+dismissDialog("Elaborate Design"); // A (cl)
+// TclEventType: ELABORATE_START
+// Tcl Message: synth_design -rtl -name rtl_1 
+// Tcl Message: Command: synth_design -rtl -name rtl_1 Starting synth_design Using part: xc7a100tcsg324-1 Top: top 
+// HMemoryUtils.trashcanNow. Engine heap size: 1,876 MB. GUI used memory: 64 MB. Current time: 8/22/23, 1:45:53 PM PKT
+// TclEventType: ELABORATE_FAIL
+// TclEventType: DESIGN_NEW_FAILED
+// [Engine Memory]: 1,978 MB (+67283kb) [00:27:07]
+// Tcl Message: --------------------------------------------------------------------------------- 
+// Tcl Message: Starting RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:05 . Memory (MB): peak = 7265.652 ; gain = 0.000 ; free physical = 6632 ; free virtual = 12768 
+// Tcl Message: --------------------------------------------------------------------------------- 
+// Tcl Message: INFO: [Synth 8-6157] synthesizing module 'top' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-Project/PCore_FPGA.srcs/sources_1/imports/UETRV-PCore/top.v:23] INFO: [Synth 8-6157] synthesizing module 'PLLE2_BASE' [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:61278] 
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'PLLE2_BASE' (1#1) [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:61278] 
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'itlb' (14#1) [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/rtl/core/mmu/itlb.sv:18] INFO: [Synth 8-6157] synthesizing module 'dtlb' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/rtl/core/mmu/dtlb.sv:17] 
+// Tcl Message: 	Parameter BMEM_SIZE bound to: 576 - type: integer  	Parameter BMEM_ADDR_BUS_SIZE bound to: 10 - type: integer  
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'icache_controller' (33#1) [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/rtl/memory/icache/icache_controller.sv:18] INFO: [Synth 8-6157] synthesizing module 'icache_datapath' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/rtl/memory/icache/icache_datapath.sv:17] INFO: [Synth 8-294] found qualifier unique on case statement: implementing as parallel_case [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/rtl/memory/icache/icache_datapath.sv:60] INFO: [Synth 8-226] default block is never used [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/rtl/memory/icache/icache_datapath.sv:60] 
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'wb_dcache_datapath' (37#1) [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/rtl/memory/wb_dcache/wb_dcache_datapath.sv:17] INFO: [Synth 8-6155] done synthesizing module 'wb_dcache_top' (38#1) [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/rtl/memory/wb_dcache/wb_dcache_top.sv:18] 
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'mem_top' (39#1) [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/rtl/memory/mem_top.sv:22] INFO: [Synth 8-6157] synthesizing module 'spi_top' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/rtl/peripherals/spi/spi_top.sv:20] INFO: [Synth 8-6157] synthesizing module 'spi_controller' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/rtl/peripherals/spi/spi_controller.sv:19] 
+// Tcl Message: INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_tempmon' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/clocking/mig_7series_v4_2_tempmon.v:69] 
+// Tcl Message: 	Parameter TCQ bound to: 100 - type: integer  	Parameter TEMP_MON_CONTROL bound to: INTERNAL - type: string  	Parameter XADC_CLK_PERIOD bound to: 5000 - type: integer  	Parameter tTEMPSAMPLE bound to: 10000000 - type: integer  
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'XADC' (46#1) [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:81848] INFO: [Synth 8-6155] done synthesizing module 'mig_7series_v4_2_tempmon' (47#1) [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/clocking/mig_7series_v4_2_tempmon.v:69] INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_iodelay_ctrl' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/clocking/mig_7series_v4_2_iodelay_ctrl.v:80] 
+// Tcl Message: 	Parameter TCQ bound to: 100 - type: integer  	Parameter IODELAY_GRP0 bound to: NEXYS_SHELL_MIG_7SERIES_0_0_IODELAY_MIG0 - type: string  	Parameter IODELAY_GRP1 bound to: IODELAY_MIG1 - type: string  	Parameter REFCLK_TYPE bound to: USE_SYSTEM_CLOCK - type: string  	Parameter SYSCLK_TYPE bound to: NO_BUFFER - type: string  	Parameter SYS_RST_PORT bound to: FALSE - type: string  	Parameter RST_ACT_LOW bound to: 1 - type: integer  	Parameter DIFF_TERM_REFCLK bound to: TRUE - type: string  	Parameter FPGA_SPEED_GRADE bound to: 1 - type: integer  	Parameter REF_CLK_MMCM_IODELAY_CTRL bound to: FALSE - type: string  	Parameter RST_SYNC_NUM bound to: 15 - type: integer  
+// Tcl Message: INFO: [Synth 8-5534] Detected attribute (* keep = "TRUE" *) [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/clocking/mig_7series_v4_2_iodelay_ctrl.v:142] INFO: [Synth 8-6157] synthesizing module 'IDELAYCTRL' [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:34933] 
+// Tcl Message: 	Parameter SIM_DEVICE bound to: 7SERIES - type: string  
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'IDELAYCTRL' (48#1) [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:34933] INFO: [Synth 8-6155] done synthesizing module 'mig_7series_v4_2_iodelay_ctrl' (49#1) [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/clocking/mig_7series_v4_2_iodelay_ctrl.v:80] INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_clk_ibuf' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/clocking/mig_7series_v4_2_clk_ibuf.v:68] 
+// Tcl Message: 	Parameter SYSCLK_TYPE bound to: NO_BUFFER - type: string  	Parameter DIFF_TERM_SYSCLK bound to: TRUE - type: string  
+// Tcl Message: INFO: [Synth 8-6157] synthesizing module 'MMCME2_ADV' [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:39813] 
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'MMCME2_ADV' (51#1) [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:39813] INFO: [Synth 8-6157] synthesizing module 'BUFG' [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:1075] INFO: [Synth 8-6155] done synthesizing module 'BUFG' (52#1) [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:1075] INFO: [Synth 8-6157] synthesizing module 'PLLE2_ADV' [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:61199] 
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'PLLE2_ADV' (53#1) [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:61199] INFO: [Synth 8-6157] synthesizing module 'BUFH' [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:1311] INFO: [Synth 8-6155] done synthesizing module 'BUFH' (54#1) [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:1311] 
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'mig_7series_v4_2_infrastructure' (55#1) [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/clocking/mig_7series_v4_2_infrastructure.v:78] INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_memc_ui_top_axi' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/ip_top/mig_7series_v4_2_memc_ui_top_axi.v:72] 
+// Tcl Message: INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_mem_intfc' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/ip_top/mig_7series_v4_2_mem_intfc.v:70] 
+// Tcl Message: INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_mc' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_mc.v:73] 
+// Tcl Message: INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_rank_mach' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_rank_mach.v:71] 
+// Tcl Message: INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_rank_cntrl' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_rank_cntrl.v:79] 
+// Tcl Message: INFO: [Synth 8-6157] synthesizing module 'SRLC32E' [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:77850] 
+// Tcl Message: 	Parameter INIT bound to: 32'b00000000000000000000000000000000  	Parameter IS_CLK_INVERTED bound to: 1'b0  
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'SRLC32E' (56#1) [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:77850] 
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'mig_7series_v4_2_rank_cntrl' (57#1) [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_rank_cntrl.v:79] INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_rank_common' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_rank_common.v:72] 
+// Tcl Message: INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_round_robin_arb' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_round_robin_arb.v:121] 
+// Tcl Message: 	Parameter TCQ bound to: 100 - type: integer  	Parameter WIDTH bound to: 3 - type: integer  	Parameter ONE bound to: 4 - type: integer  
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'mig_7series_v4_2_round_robin_arb' (58#1) [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_round_robin_arb.v:121] INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_round_robin_arb__parameterized0' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_round_robin_arb.v:121] 
+// Tcl Message: 	Parameter TCQ bound to: 100 - type: integer  	Parameter WIDTH bound to: 1 - type: integer  	Parameter ONE bound to: 1 - type: integer  
+// Tcl Message: INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_bank_cntrl' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_bank_cntrl.v:70] 
+// Tcl Message: INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_bank_compare' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_bank_compare.v:74] 
+// Tcl Message: 	Parameter BANK_WIDTH bound to: 3 - type: integer  	Parameter TCQ bound to: 100 - type: integer  	Parameter BURST_MODE bound to: 8 - type: string  	Parameter COL_WIDTH bound to: 10 - type: integer  	Parameter DATA_BUF_ADDR_WIDTH bound to: 5 - type: integer  	Parameter ECC bound to: OFF - type: string  	Parameter RANK_WIDTH bound to: 1 - type: integer  	Parameter RANKS bound to: 1 - type: integer  	Parameter ROW_WIDTH bound to: 13 - type: integer  	Parameter ONE bound to: 1 - type: integer  
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'mig_7series_v4_2_bank_compare' (61#1) [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_bank_compare.v:74] INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_bank_state' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_bank_state.v:141] 
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'mig_7series_v4_2_bank_state' (62#1) [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_bank_state.v:141] INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_bank_queue' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_bank_queue.v:174] 
+// Tcl Message: 	Parameter TCQ bound to: 100 - type: integer  	Parameter BM_CNT_WIDTH bound to: 2 - type: integer  	Parameter nBANK_MACHS bound to: 4 - type: integer  	Parameter ORDERING bound to: STRICT - type: string  	Parameter ID bound to: 0 - type: integer  	Parameter ZERO bound to: 0 - type: integer  	Parameter ONE bound to: 1 - type: integer  	Parameter BM_CNT_ZERO bound to: 2'b00  	Parameter BM_CNT_ONE bound to: 2'b01  
+// Tcl Message: INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_bank_state__parameterized0' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_bank_state.v:141] 
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'mig_7series_v4_2_bank_state__parameterized0' (64#1) [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_bank_state.v:141] INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_bank_queue__parameterized0' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_bank_queue.v:174] 
+// Tcl Message: 	Parameter TCQ bound to: 100 - type: integer  	Parameter BM_CNT_WIDTH bound to: 2 - type: integer  	Parameter nBANK_MACHS bound to: 4 - type: integer  	Parameter ORDERING bound to: STRICT - type: string  	Parameter ID bound to: 1 - type: integer  	Parameter ZERO bound to: 0 - type: integer  	Parameter ONE bound to: 1 - type: integer  	Parameter BM_CNT_ZERO bound to: 2'b00  	Parameter BM_CNT_ONE bound to: 2'b01  
+// Tcl Message: INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_bank_state__parameterized1' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_bank_state.v:141] 
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'mig_7series_v4_2_bank_state__parameterized1' (64#1) [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_bank_state.v:141] INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_bank_queue__parameterized1' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_bank_queue.v:174] 
+// Tcl Message: 	Parameter TCQ bound to: 100 - type: integer  	Parameter BM_CNT_WIDTH bound to: 2 - type: integer  	Parameter nBANK_MACHS bound to: 4 - type: integer  	Parameter ORDERING bound to: STRICT - type: string  	Parameter ID bound to: 2 - type: integer  	Parameter ZERO bound to: 0 - type: integer  	Parameter ONE bound to: 1 - type: integer  	Parameter BM_CNT_ZERO bound to: 2'b00  	Parameter BM_CNT_ONE bound to: 2'b01  
+// Tcl Message: INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_bank_state__parameterized2' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_bank_state.v:141] 
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'mig_7series_v4_2_bank_state__parameterized2' (64#1) [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_bank_state.v:141] INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_bank_queue__parameterized2' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_bank_queue.v:174] 
+// Tcl Message: 	Parameter TCQ bound to: 100 - type: integer  	Parameter BM_CNT_WIDTH bound to: 2 - type: integer  	Parameter nBANK_MACHS bound to: 4 - type: integer  	Parameter ORDERING bound to: STRICT - type: string  	Parameter ID bound to: 3 - type: integer  	Parameter ZERO bound to: 0 - type: integer  	Parameter ONE bound to: 1 - type: integer  	Parameter BM_CNT_ZERO bound to: 2'b00  	Parameter BM_CNT_ONE bound to: 2'b01  
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'mig_7series_v4_2_bank_common' (65#1) [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_bank_common.v:73] INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_arb_mux' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_arb_mux.v:69] 
+// Tcl Message: INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_arb_row_col' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_arb_row_col.v:83] 
+// Tcl Message: 	Parameter TCQ bound to: 100 - type: integer  	Parameter ADDR_CMD_MODE bound to: 1T - type: string  	Parameter CWL bound to: 2 - type: integer  	Parameter EARLY_WR_DATA_ADDR bound to: OFF - type: string  	Parameter nBANK_MACHS bound to: 4 - type: integer  	Parameter nCK_PER_CLK bound to: 4 - type: integer  	Parameter nRAS bound to: 8 - type: integer  	Parameter nRCD bound to: 3 - type: integer  	Parameter nWR bound to: 3 - type: integer  	Parameter RNK2RNK_DLY bound to: 12 - type: integer  	Parameter RNK2RNK_DLY_CLKS bound to: 3 - type: integer  
+// Tcl Message: INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_round_robin_arb__parameterized1' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_round_robin_arb.v:121] 
+// Tcl Message: 	Parameter TCQ bound to: 100 - type: integer  	Parameter WIDTH bound to: 4 - type: integer  	Parameter ONE bound to: 8 - type: integer  
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'mig_7series_v4_2_round_robin_arb__parameterized1' (65#1) [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_round_robin_arb.v:121] 
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'mig_7series_v4_2_arb_row_col' (66#1) [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_arb_row_col.v:83] INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_arb_select' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_arb_select.v:75] 
+// Tcl Message: INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_col_mach' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/controller/mig_7series_v4_2_col_mach.v:88] 
+// Tcl Message: INFO: [Synth 8-6157] synthesizing module 'RAM32M' [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:70040] 
+// Tcl Message: 	Parameter INIT_A bound to: 64'b0000000000000000000000000000000000000000000000000000000000000000  	Parameter INIT_B bound to: 64'b0000000000000000000000000000000000000000000000000000000000000000  	Parameter INIT_C bound to: 64'b0000000000000000000000000000000000000000000000000000000000000000  	Parameter INIT_D bound to: 64'b0000000000000000000000000000000000000000000000000000000000000000  	Parameter IS_WCLK_INVERTED bound to: 1'b0  
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'RAM32M' (70#1) [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:70040] 
+// Tcl Message: INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_ddr_mc_phy_wrapper' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_mc_phy_wrapper.v:71] 
+// Tcl Message: INFO: [Synth 8-5534] Detected attribute (* use_dsp48 = "no" *) [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_mc_phy_wrapper.v:596] INFO: [Synth 8-6157] synthesizing module 'OBUF' [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:45998] 
+// Tcl Message: 	Parameter CAPACITANCE bound to: DONT_CARE - type: string  	Parameter DRIVE bound to: 12 - type: integer  	Parameter IOSTANDARD bound to: DEFAULT - type: string  	Parameter SLEW bound to: SLOW - type: string  
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'OBUF' (73#1) [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:45998] INFO: [Synth 8-6157] synthesizing module 'OBUFT' [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:46291] 
+// Tcl Message: 	Parameter CAPACITANCE bound to: DONT_CARE - type: string  	Parameter DRIVE bound to: 12 - type: integer  	Parameter IOSTANDARD bound to: DEFAULT - type: string  	Parameter SLEW bound to: SLOW - type: string  
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'OBUFT' (74#1) [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:46291] INFO: [Synth 8-6157] synthesizing module 'IOBUF_INTERMDISABLE' [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:36753] 
+// Tcl Message: 	Parameter DRIVE bound to: 12 - type: integer  	Parameter IBUF_LOW_PWR bound to: FALSE - type: string  	Parameter IOSTANDARD bound to: DEFAULT - type: string  	Parameter SIM_DEVICE bound to: 7SERIES - type: string  	Parameter SLEW bound to: SLOW - type: string  	Parameter USE_IBUFDISABLE bound to: TRUE - type: string  
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'IOBUF_INTERMDISABLE' (75#1) [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:36753] INFO: [Synth 8-6157] synthesizing module 'IOBUFDS_INTERMDISABLE' [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:36330] 
+// Tcl Message: 	Parameter DIFF_TERM bound to: FALSE - type: string  	Parameter DQS_BIAS bound to: TRUE - type: string  	Parameter IBUF_LOW_PWR bound to: FALSE - type: string  	Parameter IOSTANDARD bound to: DEFAULT - type: string  	Parameter SIM_DEVICE bound to: 7SERIES - type: string  	Parameter SLEW bound to: SLOW - type: string  	Parameter USE_IBUFDISABLE bound to: TRUE - type: string  
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'IOBUFDS_INTERMDISABLE' (76#1) [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:36330] INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_ddr_of_pre_fifo' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_of_pre_fifo.v:76] 
+// Tcl Message: 	Parameter TCQ bound to: 25 - type: integer  	Parameter DEPTH bound to: 8 - type: integer  	Parameter WIDTH bound to: 32 - type: integer  	Parameter PTR_BITS bound to: 3 - type: integer  	Parameter ALMOST_FULL_VALUE bound to: 3 - type: integer  
+// Tcl Message: INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_ddr_of_pre_fifo__parameterized0' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_of_pre_fifo.v:76] 
+// Tcl Message: 	Parameter TCQ bound to: 25 - type: integer  	Parameter DEPTH bound to: 8 - type: integer  	Parameter WIDTH bound to: 6 - type: integer  	Parameter PTR_BITS bound to: 3 - type: integer  	Parameter ALMOST_FULL_VALUE bound to: 3 - type: integer  
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'mig_7series_v4_2_ddr_of_pre_fifo__parameterized0' (77#1) [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_of_pre_fifo.v:76] 
+// Tcl Message: INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_ddr_mc_phy' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_mc_phy.v:70] 
+// Tcl Message: INFO: [Synth 8-5534] Detected attribute (* IOB = "FORCE" *) [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_mc_phy.v:371] INFO: [Synth 8-6157] synthesizing module 'mig_7series_v4_2_ddr_phy_4lanes' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_4lanes.v:72] 
+// Tcl Message: 	Parameter TCQ bound to: 25 - type: integer  	Parameter DEPTH bound to: 9 - type: integer  	Parameter WIDTH bound to: 80 - type: integer  	Parameter PTR_BITS bound to: 4 - type: integer  	Parameter ALMOST_FULL_VALUE bound to: 4 - type: integer  
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'mig_7series_v4_2_ddr_of_pre_fifo__parameterized1' (78#1) [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_of_pre_fifo.v:76] 
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'PHASER_IN_PHY' (79#1) [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:60885] 
+// Tcl Message: 	Parameter ALMOST_EMPTY_VALUE bound to: 1 - type: integer  	Parameter ALMOST_FULL_VALUE bound to: 1 - type: integer  	Parameter ARRAY_MODE bound to: ARRAY_MODE_4_X_8 - type: string  	Parameter SYNCHRONOUS_MODE bound to: FALSE - type: string  
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'IN_FIFO' (80#1) [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:36047] 
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'PHASER_OUT_PHY' (81#1) [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:61022] 
+// Tcl Message: 	Parameter ALMOST_EMPTY_VALUE bound to: 1 - type: integer  	Parameter ALMOST_FULL_VALUE bound to: 1 - type: integer  	Parameter ARRAY_MODE bound to: ARRAY_MODE_8_X_4 - type: string  	Parameter OUTPUT_DISABLE bound to: FALSE - type: string  	Parameter SYNCHRONOUS_MODE bound to: FALSE - type: string  
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'OUT_FIFO' (82#1) [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:50186] 
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'IDELAYE2' (83#1) [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:34946] 
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'ISERDESE2' (84#1) [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:38491] 
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'OSERDESE2' (85#1) [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:50071] 
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'OSERDESE2__parameterized0' (85#1) [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:50071] 
+// Tcl Message: 	Parameter DDR_CLK_EDGE bound to: SAME_EDGE - type: string  	Parameter INIT bound to: 1'b0  	Parameter IS_C_INVERTED bound to: 1'b0  	Parameter IS_D1_INVERTED bound to: 1'b0  	Parameter IS_D2_INVERTED bound to: 1'b0  	Parameter SRTYPE bound to: SYNC - type: string  
+// Tcl Message: INFO: [Synth 8-6155] done synthesizing module 'ODDR' (86#1) [/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:49468] INFO: [Common 17-14] Message 'Synth 8-6155' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings. 
+// Tcl Message: INFO: [Synth 8-226] default block is never used [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_4lanes.v:1557] 
+// Tcl Message: 	Parameter IS_PWRDWN_INVERTED bound to: 1'b0  	Parameter IS_RST_INVERTED bound to: 1'b0  
+// Tcl Message: INFO: [Synth 8-155] case statement is not full and has no default [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_rdlvl.v:2746] 
+// Tcl Message: INFO: [Synth 8-4471] merging register 'cal1_cnt_cpt_timing_r_reg[1:0]' into 'rd_mux_sel_r_reg[1:0]' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_rdlvl.v:610] 
+// Tcl Message: 	Parameter TCQ bound to: 100 - type: integer  	Parameter PRBS_WIDTH bound to: 64 - type: integer  	Parameter DQS_CNT_WIDTH bound to: 1 - type: integer  	Parameter DQ_WIDTH bound to: 16 - type: integer  	Parameter VCCO_PAT_EN bound to: 1 - type: integer  	Parameter VCCAUX_PAT_EN bound to: 1 - type: integer  	Parameter ISI_PAT_EN bound to: 1 - type: integer  	Parameter FIXED_VICTIM bound to: FALSE - type: string  	Parameter PRBS_SEQ_LEN_CYCLES bound to: 128 - type: integer  	Parameter PRBS_SEQ_LEN_CYCLES_BITS bound to: 7 - type: integer  	Parameter BRAM_ADDR_WIDTH bound to: 8 - type: integer  	Parameter BRAM_DATA_WIDTH bound to: 18 - type: integer  	Parameter BRAM_DEPTH bound to: 256 - type: integer  
+// Tcl Message: INFO: [Synth 8-5534] Detected attribute (* RAM_STYLE = "distributed" *) [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_prbs_gen.v:203] INFO: [Synth 8-5534] Detected attribute (* RAM_STYLE = "distributed" *) [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_prbs_gen.v:205] 
+// Tcl Message: INFO: [Common 17-14] Message 'Synth 8-6014' appears 100 times and further instances of the messages will be disabled. Use the Tcl command set_msg_config to change the current settings. 
+// Tcl Message: INFO: [Synth 8-155] case statement is not full and has no default [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_wrcal.v:1130] INFO: [Synth 8-4471] merging register 'rd_mux_sel_r_reg[1:0]' into 'po_stg2_wrcal_cnt_reg[1:0]' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_phy_wrcal.v:438] 
+// Tcl Message: INFO: [Synth 8-4471] merging register 'skip_calib_tap_off.skip_cal_tempmon_samp_en_reg' into 'skip_calib_tap_off.calib_tap_req_reg' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_calib_top.v:2262] INFO: [Synth 8-4471] merging register 'wrlvl_final_mux_reg' into 'skip_calib_tap_off.calib_tap_req_reg' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/phy/mig_7series_v4_2_ddr_calib_top.v:834] 
+// Tcl Message: INFO: [Synth 8-155] case statement is not full and has no default [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/ui/mig_7series_v4_2_ui_wr_data.v:342] INFO: [Synth 8-155] case statement is not full and has no default [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/ui/mig_7series_v4_2_ui_wr_data.v:380] 
+// Tcl Message: INFO: [Synth 8-5534] Detected attribute (* iob = "false" *) [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/axi/mig_7series_v4_2_ddr_axi_register_slice.v:206] 
+// Tcl Message: INFO: [Synth 8-5534] Detected attribute (* keep = "true" *) [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/axi/mig_7series_v4_2_axi_mc_incr_cmd.v:126] 
+// Tcl Message: 	Parameter C_WIDTH bound to: 129 - type: integer  	Parameter C_AWIDTH bound to: 5 - type: integer  	Parameter C_DEPTH bound to: 32 - type: integer  	Parameter C_EMPTY bound to: 6'b111111  	Parameter C_EMPTY_PRE bound to: 5'b00000  	Parameter C_FULL bound to: 5'b11111  	Parameter C_FULL_PRE bound to: 5'b11110  	Parameter C_WIDTH bound to: 7 - type: integer  	Parameter C_AWIDTH bound to: 5 - type: integer  	Parameter C_DEPTH bound to: 30 - type: integer  	Parameter C_EMPTY bound to: 6'b111111  	Parameter C_EMPTY_PRE bound to: 5'b00000  	Parameter C_FULL bound to: 5'b11101  	Parameter C_FULL_PRE bound to: 5'b11100  
+// Tcl Message: INFO: [Synth 8-155] case statement is not full and has no default [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/rtl/axi/mig_7series_v4_2_axi_mc_r_channel.v:315] 
+// Tcl Message: 	Parameter C_MC_ADDR_WIDTH bound to: 27 - type: integer  	Parameter C_MC_BURST_LEN bound to: 1 - type: integer  	Parameter C_AXI_WR_STARVE_LIMIT bound to: 256 - type: integer  	Parameter C_AXI_STARVE_CNT_WIDTH bound to: 8 - type: integer  	Parameter C_RD_WR_ARB_ALGORITHM bound to: RD_PRI_REG - type: string  
+// Tcl Message: INFO: [Synth 8-638] synthesizing module 'nexys_shell_proc_sys_reset_0_0' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_proc_sys_reset_0_0_1/synth/nexys_shell_proc_sys_reset_0_0.vhd:74] 
+// Tcl Message: 	Parameter C_FAMILY bound to: artix7 - type: string  	Parameter C_EXT_RST_WIDTH bound to: 4 - type: integer  	Parameter C_AUX_RST_WIDTH bound to: 4 - type: integer  	Parameter C_EXT_RESET_HIGH bound to: 1'b0  	Parameter C_AUX_RESET_HIGH bound to: 1'b0  	Parameter C_NUM_BUS_RST bound to: 1 - type: integer  	Parameter C_NUM_PERP_RST bound to: 1 - type: integer  	Parameter C_NUM_INTERCONNECT_ARESETN bound to: 1 - type: integer  	Parameter C_NUM_PERP_ARESETN bound to: 1 - type: integer  
+// Tcl Message: INFO: [Synth 8-3491] module 'proc_sys_reset' declared at '/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/8842/hdl/proc_sys_reset_v5_0_vh_rfs.vhd:1264' bound to instance 'U0' of component 'proc_sys_reset' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_proc_sys_reset_0_0_1/synth/nexys_shell_proc_sys_reset_0_0.vhd:129] INFO: [Synth 8-638] synthesizing module 'proc_sys_reset' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/8842/hdl/proc_sys_reset_v5_0_vh_rfs.vhd:1323] 
+// Tcl Message: 	Parameter C_FAMILY bound to: artix7 - type: string  	Parameter C_EXT_RST_WIDTH bound to: 4 - type: integer  	Parameter C_AUX_RST_WIDTH bound to: 4 - type: integer  	Parameter C_EXT_RESET_HIGH bound to: 1'b0  	Parameter C_AUX_RESET_HIGH bound to: 1'b0  	Parameter C_NUM_BUS_RST bound to: 1 - type: integer  	Parameter C_NUM_PERP_RST bound to: 1 - type: integer  	Parameter C_NUM_INTERCONNECT_ARESETN bound to: 1 - type: integer  	Parameter C_NUM_PERP_ARESETN bound to: 1 - type: integer  	Parameter INIT bound to: 1'b1  	Parameter IS_C_INVERTED bound to: 1'b0  	Parameter IS_D_INVERTED bound to: 1'b0  	Parameter IS_R_INVERTED bound to: 1'b0  
+// Tcl Message: INFO: [Synth 8-113] binding component instance 'FDRE_inst' to cell 'FDRE' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/8842/hdl/proc_sys_reset_v5_0_vh_rfs.vhd:1392] 
+// Tcl Message: 	Parameter INIT bound to: 1'b1  	Parameter IS_C_INVERTED bound to: 1'b0  	Parameter IS_D_INVERTED bound to: 1'b0  	Parameter IS_R_INVERTED bound to: 1'b0  
+// Tcl Message: INFO: [Synth 8-113] binding component instance 'FDRE_BSR' to cell 'FDRE' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/8842/hdl/proc_sys_reset_v5_0_vh_rfs.vhd:1408] 
+// Tcl Message: 	Parameter INIT bound to: 1'b0  	Parameter IS_C_INVERTED bound to: 1'b0  	Parameter IS_D_INVERTED bound to: 1'b0  	Parameter IS_R_INVERTED bound to: 1'b0  
+// Tcl Message: INFO: [Synth 8-113] binding component instance 'FDRE_BSR_N' to cell 'FDRE' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/8842/hdl/proc_sys_reset_v5_0_vh_rfs.vhd:1434] 
+// Tcl Message: 	Parameter INIT bound to: 1'b1  	Parameter IS_C_INVERTED bound to: 1'b0  	Parameter IS_D_INVERTED bound to: 1'b0  	Parameter IS_R_INVERTED bound to: 1'b0  
+// Tcl Message: INFO: [Synth 8-113] binding component instance 'FDRE_PER' to cell 'FDRE' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/8842/hdl/proc_sys_reset_v5_0_vh_rfs.vhd:1457] 
+// Tcl Message: 	Parameter INIT bound to: 1'b0  	Parameter IS_C_INVERTED bound to: 1'b0  	Parameter IS_D_INVERTED bound to: 1'b0  	Parameter IS_R_INVERTED bound to: 1'b0  
+// Tcl Message: INFO: [Synth 8-113] binding component instance 'FDRE_PER_N' to cell 'FDRE' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/8842/hdl/proc_sys_reset_v5_0_vh_rfs.vhd:1481] INFO: [Synth 8-638] synthesizing module 'lpf' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/8842/hdl/proc_sys_reset_v5_0_vh_rfs.vhd:816] 
+// Tcl Message: 	Parameter C_EXT_RST_WIDTH bound to: 4 - type: integer  	Parameter C_AUX_RST_WIDTH bound to: 4 - type: integer  	Parameter C_EXT_RESET_HIGH bound to: 1'b0  	Parameter C_AUX_RESET_HIGH bound to: 1'b0  
+// Tcl Message: INFO: [Synth 8-3491] module 'SRL16' declared at '/home/mtahir/Xilinx/Vivado/2019.1/scripts/rt/data/unisim_comp.v:77684' bound to instance 'POR_SRL_I' of component 'SRL16' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/8842/hdl/proc_sys_reset_v5_0_vh_rfs.vhd:868] 
+// Tcl Message: 	Parameter INIT bound to: 16'b0000000000000000  
+// Tcl Message: INFO: [Synth 8-638] synthesizing module 'cdc_sync' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/ef1e/hdl/lib_cdc_v1_0_rfs.vhd:106] 
+// Tcl Message: 	Parameter C_CDC_TYPE bound to: 1 - type: integer  	Parameter C_RESET_STATE bound to: 0 - type: integer  	Parameter C_SINGLE_BIT bound to: 1 - type: integer  	Parameter C_FLOP_INPUT bound to: 0 - type: integer  	Parameter C_VECTOR_WIDTH bound to: 2 - type: integer  	Parameter C_MTBF_STAGES bound to: 4 - type: integer  	Parameter INIT bound to: 1'b0  
+// Tcl Message: INFO: [Synth 8-113] binding component instance 'CROSS_PLEVEL_IN2SCNDRY_IN_cdc_to' to cell 'FDR' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/ef1e/hdl/lib_cdc_v1_0_rfs.vhd:514] 
+// Tcl Message: 	Parameter INIT bound to: 1'b0  
+// Tcl Message: INFO: [Synth 8-113] binding component instance 'CROSS_PLEVEL_IN2SCNDRY_s_level_out_d2' to cell 'FDR' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/ef1e/hdl/lib_cdc_v1_0_rfs.vhd:545] 
+// Tcl Message: 	Parameter INIT bound to: 1'b0  
+// Tcl Message: INFO: [Synth 8-113] binding component instance 'CROSS_PLEVEL_IN2SCNDRY_s_level_out_d3' to cell 'FDR' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/ef1e/hdl/lib_cdc_v1_0_rfs.vhd:554] 
+// Tcl Message: 	Parameter INIT bound to: 1'b0  
+// Tcl Message: INFO: [Synth 8-113] binding component instance 'CROSS_PLEVEL_IN2SCNDRY_s_level_out_d4' to cell 'FDR' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/ef1e/hdl/lib_cdc_v1_0_rfs.vhd:564] 
+// Tcl Message: 	Parameter INIT bound to: 1'b0  
+// Tcl Message: INFO: [Synth 8-113] binding component instance 'CROSS_PLEVEL_IN2SCNDRY_s_level_out_d5' to cell 'FDR' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/ef1e/hdl/lib_cdc_v1_0_rfs.vhd:574] 
+// Tcl Message: 	Parameter INIT bound to: 1'b0  
+// Tcl Message: 	Parameter C_SIZE bound to: 6 - type: integer  
+// Tcl Message: 	Parameter CONST_VAL bound to: 1 - type: integer  	Parameter CONST_WIDTH bound to: 1 - type: integer  
+// Tcl Message: INFO: [Synth 8-638] synthesizing module 'bd_4cab_psr0_0' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_smartconnect_0_0_1/bd_0/ip/ip_1/synth/bd_4cab_psr0_0.vhd:74] 
+// Tcl Message: 	Parameter C_FAMILY bound to: artix7 - type: string  	Parameter C_EXT_RST_WIDTH bound to: 4 - type: integer  	Parameter C_AUX_RST_WIDTH bound to: 1 - type: integer  	Parameter C_EXT_RESET_HIGH bound to: 1'b0  	Parameter C_AUX_RESET_HIGH bound to: 1'b0  	Parameter C_NUM_BUS_RST bound to: 1 - type: integer  	Parameter C_NUM_PERP_RST bound to: 1 - type: integer  	Parameter C_NUM_INTERCONNECT_ARESETN bound to: 1 - type: integer  	Parameter C_NUM_PERP_ARESETN bound to: 1 - type: integer  
+// Tcl Message: INFO: [Synth 8-3491] module 'proc_sys_reset' declared at '/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/8842/hdl/proc_sys_reset_v5_0_vh_rfs.vhd:1264' bound to instance 'U0' of component 'proc_sys_reset' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_smartconnect_0_0_1/bd_0/ip/ip_1/synth/bd_4cab_psr0_0.vhd:129] INFO: [Synth 8-638] synthesizing module 'proc_sys_reset__parameterized1' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/8842/hdl/proc_sys_reset_v5_0_vh_rfs.vhd:1323] 
+// Tcl Message: 	Parameter C_FAMILY bound to: artix7 - type: string  	Parameter C_EXT_RST_WIDTH bound to: 4 - type: integer  	Parameter C_AUX_RST_WIDTH bound to: 1 - type: integer  	Parameter C_EXT_RESET_HIGH bound to: 1'b0  	Parameter C_AUX_RESET_HIGH bound to: 1'b0  	Parameter C_NUM_BUS_RST bound to: 1 - type: integer  	Parameter C_NUM_PERP_RST bound to: 1 - type: integer  	Parameter C_NUM_INTERCONNECT_ARESETN bound to: 1 - type: integer  	Parameter C_NUM_PERP_ARESETN bound to: 1 - type: integer  	Parameter INIT bound to: 1'b1  	Parameter IS_C_INVERTED bound to: 1'b0  	Parameter IS_D_INVERTED bound to: 1'b0  	Parameter IS_R_INVERTED bound to: 1'b0  
+// Tcl Message: INFO: [Synth 8-113] binding component instance 'FDRE_inst' to cell 'FDRE' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/8842/hdl/proc_sys_reset_v5_0_vh_rfs.vhd:1392] 
+// Tcl Message: 	Parameter INIT bound to: 1'b1  	Parameter IS_C_INVERTED bound to: 1'b0  	Parameter IS_D_INVERTED bound to: 1'b0  	Parameter IS_R_INVERTED bound to: 1'b0  
+// Tcl Message: INFO: [Synth 8-113] binding component instance 'FDRE_BSR' to cell 'FDRE' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/8842/hdl/proc_sys_reset_v5_0_vh_rfs.vhd:1408] 
+// Tcl Message: 	Parameter INIT bound to: 1'b0  	Parameter IS_C_INVERTED bound to: 1'b0  	Parameter IS_D_INVERTED bound to: 1'b0  	Parameter IS_R_INVERTED bound to: 1'b0  
+// Tcl Message: INFO: [Synth 8-113] binding component instance 'FDRE_BSR_N' to cell 'FDRE' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/8842/hdl/proc_sys_reset_v5_0_vh_rfs.vhd:1434] 
+// Tcl Message: 	Parameter INIT bound to: 1'b1  	Parameter IS_C_INVERTED bound to: 1'b0  	Parameter IS_D_INVERTED bound to: 1'b0  	Parameter IS_R_INVERTED bound to: 1'b0  
+// Tcl Message: INFO: [Synth 8-113] binding component instance 'FDRE_PER' to cell 'FDRE' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/8842/hdl/proc_sys_reset_v5_0_vh_rfs.vhd:1457] 
+// Tcl Message: 	Parameter INIT bound to: 1'b0  	Parameter IS_C_INVERTED bound to: 1'b0  	Parameter IS_D_INVERTED bound to: 1'b0  	Parameter IS_R_INVERTED bound to: 1'b0  
+// Tcl Message: INFO: [Synth 8-113] binding component instance 'FDRE_PER_N' to cell 'FDRE' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/8842/hdl/proc_sys_reset_v5_0_vh_rfs.vhd:1481] INFO: [Synth 8-638] synthesizing module 'lpf__parameterized0' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/8842/hdl/proc_sys_reset_v5_0_vh_rfs.vhd:816] 
+// Tcl Message: 	Parameter C_EXT_RST_WIDTH bound to: 4 - type: integer  	Parameter C_AUX_RST_WIDTH bound to: 1 - type: integer  	Parameter C_EXT_RESET_HIGH bound to: 1'b0  	Parameter C_AUX_RESET_HIGH bound to: 1'b0  
+// Tcl Message: INFO: [Synth 8-638] synthesizing module 'bd_4cab_psr_aclk_0' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_smartconnect_0_0_1/bd_0/ip/ip_2/synth/bd_4cab_psr_aclk_0.vhd:74] 
+// Tcl Message: 	Parameter C_FAMILY bound to: artix7 - type: string  	Parameter C_EXT_RST_WIDTH bound to: 4 - type: integer  	Parameter C_AUX_RST_WIDTH bound to: 1 - type: integer  	Parameter C_EXT_RESET_HIGH bound to: 1'b0  	Parameter C_AUX_RESET_HIGH bound to: 1'b0  	Parameter C_NUM_BUS_RST bound to: 1 - type: integer  	Parameter C_NUM_PERP_RST bound to: 1 - type: integer  	Parameter C_NUM_INTERCONNECT_ARESETN bound to: 1 - type: integer  	Parameter C_NUM_PERP_ARESETN bound to: 1 - type: integer  
+// Tcl Message: INFO: [Synth 8-3491] module 'proc_sys_reset' declared at '/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/8842/hdl/proc_sys_reset_v5_0_vh_rfs.vhd:1264' bound to instance 'U0' of component 'proc_sys_reset' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_smartconnect_0_0_1/bd_0/ip/ip_2/synth/bd_4cab_psr_aclk_0.vhd:129] INFO: [Synth 8-256] done synthesizing module 'bd_4cab_psr_aclk_0' (138#1) [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_smartconnect_0_0_1/bd_0/ip/ip_2/synth/bd_4cab_psr_aclk_0.vhd:74] 
+// Tcl Message: INFO: [Synth 8-638] synthesizing module 'bd_4cab_psr_aclk1_0' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_smartconnect_0_0_1/bd_0/ip/ip_3/synth/bd_4cab_psr_aclk1_0.vhd:74] 
+// Tcl Message: 	Parameter C_FAMILY bound to: artix7 - type: string  	Parameter C_EXT_RST_WIDTH bound to: 4 - type: integer  	Parameter C_AUX_RST_WIDTH bound to: 1 - type: integer  	Parameter C_EXT_RESET_HIGH bound to: 1'b0  	Parameter C_AUX_RESET_HIGH bound to: 1'b0  	Parameter C_NUM_BUS_RST bound to: 1 - type: integer  	Parameter C_NUM_PERP_RST bound to: 1 - type: integer  	Parameter C_NUM_INTERCONNECT_ARESETN bound to: 1 - type: integer  	Parameter C_NUM_PERP_ARESETN bound to: 1 - type: integer  
+// Tcl Message: INFO: [Synth 8-3491] module 'proc_sys_reset' declared at '/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ipshared/8842/hdl/proc_sys_reset_v5_0_vh_rfs.vhd:1264' bound to instance 'U0' of component 'proc_sys_reset' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_smartconnect_0_0_1/bd_0/ip/ip_3/synth/bd_4cab_psr_aclk1_0.vhd:129] INFO: [Synth 8-256] done synthesizing module 'bd_4cab_psr_aclk1_0' (139#1) [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_smartconnect_0_0_1/bd_0/ip/ip_3/synth/bd_4cab_psr_aclk1_0.vhd:74] 
+// Tcl Message: --------------------------------------------------------------------------------- 
+// Tcl Message: Finished RTL Elaboration : Time (s): cpu = 00:00:14 ; elapsed = 00:00:15 . Memory (MB): peak = 7428.691 ; gain = 163.039 ; free physical = 6597 ; free virtual = 12734 
+// Tcl Message: --------------------------------------------------------------------------------- 
+// Tcl Message: RTL Elaboration failed 
+// Tcl Message: 320 Infos, 212 Warnings, 0 Critical Warnings and 7 Errors encountered. synth_design failed 
+// Tcl Message: ERROR: [Vivado_Tcl 4-5] Elaboration failed - please see the console for details 
+// CommandFailedException: ERROR: [Common 17-69] Command failed: ERROR: [Vivado_Tcl 4-5] Elaboration failed - please see the console for details  
+// 'dR' command handler elapsed time: 17 seconds
+// S (cl): Critical Messages: addNotify
+// Elapsed time: 15 seconds
+dismissDialog("Open Elaborated Design"); // by (cl)
+selectList(PAResourceAtoD.CmdMsgDialog_MESSAGES, "[Synth 8-439] module 'bd_4cab_m00e_0' not found [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_smartconnect_0_0_1/bd_0/synth/bd_4cab.v:1127]", 0); // b (F, S)
+// Elapsed time: 12 seconds
+selectList(PAResourceAtoD.CmdMsgDialog_MESSAGES, "[Synth 8-6156] failed synthesizing module 'top' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-Project/PCore_FPGA.srcs/sources_1/imports/UETRV-PCore/top.v:23]", 5); // b (F, S)
+// Elapsed time: 17 seconds
+selectList(PAResourceAtoD.CmdMsgDialog_MESSAGES, "[Synth 8-6156] failed synthesizing module 'nexys_shell' [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/synth/nexys_shell.v:13]", 4); // b (F, S)
+selectList(PAResourceAtoD.CmdMsgDialog_MESSAGES, "[Synth 8-439] module 'bd_4cab_m00e_0' not found [/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_smartconnect_0_0_1/bd_0/synth/bd_4cab.v:1127]", 0); // b (F, S)
+// Elapsed time: 13 seconds
+selectButton(PAResourceAtoD.CmdMsgDialog_OK, "OK"); // f (S)
+dismissDialog("Critical Messages"); // S (cl)
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Synthesis, Run Synthesis]", 14, false); // u (O, cl)
+// Run Command: PAResourceCommand.PACommandNames_RUN_SYNTHESIS
+// by (cl):  Resetting Runs : addNotify
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// Tcl Message: reset_run synth_1 
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// Tcl Message: launch_runs synth_1 -jobs 4 
+// Tcl Message: [Tue Aug 22 13:46:49 2023] Launched synth_1... Run output will be captured here: /home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-Project/Nexys-A7.runs/synth_1/runme.log 
+dismissDialog("Starting Design Runs"); // by (cl)
+// TclEventType: RUN_STATUS_CHANGE
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, top (top.v), shell : nexys_shell (nexys_shell.bd)]", 4, true); // B (F, cl) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, top (top.v), shell : nexys_shell (nexys_shell.bd)]", 4, true, false, false, false, false, true); // B (F, cl) - Double Click - Node
+// by (cl):  Open Block Design : addNotify
+// TclEventType: RSB_CHANGE_CURRENT_DIAGRAM
+// TclEventType: RSB_PROPERTY_CHANGE
+// TclEventType: RSB_OPEN_DIAGRAM
+// Tcl Message: open_bd_design {/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/nexys_shell.bd} 
+// Tcl Message: Adding component instance block -- xilinx.com:ip:smartconnect:1.0 - smartconnect_0 Adding component instance block -- xilinx.com:ip:proc_sys_reset:5.0 - proc_sys_reset_0 Adding component instance block -- xilinx.com:ip:mig_7series:4.2 - mig_7series_0 Successfully read diagram <nexys_shell> from BD file </home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/nexys_shell.bd> 
+// TclEventType: RSB_OPEN_DIAGRAM
+// WARNING: HEventQueue.dispatchEvent() is taking  1427 ms.
+// TclEventType: RSB_CONNECTION_CHANGE
+closeView(PAResourceOtoP.PAViews_PROJECT_SUMMARY, "Project Summary"); // v
+// TclEventType: RSB_LOCK_CHANGE
+// TclEventType: RSB_CHANGE_CURRENT_DIAGRAM
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: RSB_LOCK_CHANGE
+// TclEventType: RSB_CHANGE_CURRENT_DIAGRAM
+dismissDialog("Open Block Design"); // by (cl)
+selectView(PAResourceOtoP.PAViews_SYSTEM, "System", 74, 195, 601, 289, false, false, false, true, false); // gl (k, cl) - Popup Trigger
+selectMenu(PAResourceQtoS.SystemBuilderView_PINNING, "Pinning"); // ae (an, cl)
+selectMenuItem(PAResourceCommand.PACommandNames_VALIDATE_RSB_DESIGN, "Validate Design"); // ah (an, cl)
+// Run Command: PAResourceCommand.PACommandNames_VALIDATE_RSB_DESIGN
+// Tcl Command: 'validate_bd_design -force'
+selectButton("OptionPane.button", "Rerun Validate Design"); // JButton (A, G)
+// TclEventType: RSB_PARAM_PROP
+// TclEventType: RSB_SCRIPT_TASK
+// TclEventType: FILE_SET_CHANGE
+// by (cl):  Validate Design : addNotify
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: validate_bd_design -force 
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: RSB_CLOSE_DIAGRAM
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// HMemoryUtils.trashcanNow. Engine heap size: 2,019 MB. GUI used memory: 71 MB. Current time: 8/22/23, 1:47:08 PM PKT
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: REPORT_IP_STATUS_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: RSB_SCRIPT_TASK
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: RSB_PARAM_PROP
+dismissDialog("Validate Design"); // by (cl)
+// TclEventType: RUN_FAILED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// Elapsed time: 13 seconds
+selectButton("OptionPane.button", "OK"); // JButton (A, G)
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Synthesis, Run Synthesis]", 14, false); // u (O, cl)
+// Run Command: PAResourceCommand.PACommandNames_RUN_SYNTHESIS
+// al (cl): Save Project: addNotify
+selectButton(PAResourceQtoS.SaveProjectUtils_SAVE, "Save"); // a (al)
+// by (cl):  Save Constraints : addNotify
+// TclEventType: RSB_SAVE_DIAGRAM
+dismissDialog("Save Project"); // al (cl)
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: save_bd_design 
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: RSB_SAVE_DIAGRAM
+// Tcl Message: Wrote  : </home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/nexys_shell.bd>  Wrote  : </home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ui/bd_29f0980c.ui>  
+// by (cl):  Resetting Runs : addNotify
+// TclEventType: RUN_MODIFY
+dismissDialog("Save Constraints"); // by (cl)
+// TclEventType: RUN_RESET
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// Tcl Message: reset_run synth_1 
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RSB_SCRIPT_TASK
+// TclEventType: RSB_SAVE_DIAGRAM
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: RSB_SAVE_DIAGRAM
+// TclEventType: RSB_SCRIPT_TASK
+// Tcl Message: launch_runs synth_1 -jobs 4 
+// Tcl Message: INFO: [BD 41-1662] The design 'nexys_shell.bd' is already validated. Therefore parameter propagation will not be re-run. 
+// Tcl Message: VHDL Output written to : /home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/synth/nexys_shell.v VHDL Output written to : /home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/sim/nexys_shell.v VHDL Output written to : /home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/hdl/nexys_shell_wrapper.v 
+// TclEventType: FILE_SET_CHANGE
+// [Engine Memory]: 2,086 MB (+9312kb) [00:28:45]
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: Exporting to file /home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_smartconnect_0_0_1/bd_0/hw_handoff/nexys_shell_smartconnect_0_0.hwh Generated Block Design Tcl file /home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_smartconnect_0_0_1/bd_0/hw_handoff/nexys_shell_smartconnect_0_0_bd.tcl Generated Hardware Definition File /home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_smartconnect_0_0_1/bd_0/synth/nexys_shell_smartconnect_0_0.hwdef 
+// Tcl Message: INFO: [BD 41-1029] Generation completed for the IP Integrator block smartconnect_0 . INFO: [BD 41-1029] Generation completed for the IP Integrator block proc_sys_reset_0 . INFO: [BD 41-1029] Generation completed for the IP Integrator block mig_7series_0 . 
+// Tcl Message: Exporting to file /home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/hw_handoff/nexys_shell.hwh Generated Block Design Tcl file /home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/hw_handoff/nexys_shell_bd.tcl Generated Hardware Definition File /home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/synth/nexys_shell.hwdef 
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// Tcl Message: [Tue Aug 22 13:47:37 2023] Launched synth_1... Run output will be captured here: /home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-Project/Nexys-A7.runs/synth_1/runme.log 
+// Tcl Message: launch_runs: Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 7592.418 ; gain = 63.777 ; free physical = 6460 ; free virtual = 12610 
+// 'k' command handler elapsed time: 11 seconds
+dismissDialog("Starting Design Runs"); // by (cl)
+// HMemoryUtils.trashcanNow. Engine heap size: 2,084 MB. GUI used memory: 71 MB. Current time: 8/22/23, 1:47:38 PM PKT
+// TclEventType: RUN_STATUS_CHANGE
+selectTab((HResource) null, (HResource) null, "Sources", 0); // aK (aH, cl)
+selectTab((HResource) null, (HResource) null, "Messages", 1); // aK (aH, cl)
+// Elapsed time: 22 seconds
+selectCheckBox(PAResourceItoN.MsgView_CRITICAL_WARNINGS, (String) null, false); // g (aR, cl): FALSE
+// Elapsed time: 29 seconds
+selectTab((HResource) null, (HResource) null, "Log", 2); // aK (aH, cl)
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// ah (cl): Synthesis Completed: addNotify
+// [GUI Memory]: 133 MB (+395kb) [00:37:16]
+// HMemoryUtils.trashcanNow. Engine heap size: 2,100 MB. GUI used memory: 71 MB. Current time: 8/22/23, 2:17:38 PM PKT
+// HMemoryUtils.trashcanNow. Engine heap size: 2,075 MB. GUI used memory: 64 MB. Current time: 8/22/23, 2:47:38 PM PKT
+// Elapsed time: 4370 seconds
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (ah)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// by (cl):  Starting Design Runs : addNotify
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_STATUS_CHANGE
+// Tcl Message: launch_runs impl_1 -jobs 4 
+// Tcl Message: [Tue Aug 22 15:01:30 2023] Launched impl_1... Run output will be captured here: /home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-Project/Nexys-A7.runs/impl_1/runme.log 
+dismissDialog("Starting Design Runs"); // by (cl)
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_STEP_COMPLETED
+// ah (cl): Implementation Completed: addNotify
+// Elapsed time: 515 seconds
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (ah)
+// Run Command: PAResourceCommand.PACommandNames_GOTO_IMPLEMENTED_DESIGN
+// by (cl):  Open Implemented Design : addNotify
+// Tcl Message: open_run impl_1 
+// TclEventType: SDC_CONSTRAINT_ADD
+// TclEventType: POWER_CNS_STALE
+// TclEventType: SDC_CONSTRAINT_ADD
+// HMemoryUtils.trashcanNow. Engine heap size: 2,567 MB. GUI used memory: 63 MB. Current time: 8/22/23, 3:10:23 PM PKT
+// TclEventType: FLOORPLAN_MODIFY
+// TclEventType: DESIGN_NEW
+// HMemoryUtils.trashcanNow. Engine heap size: 2,577 MB. GUI used memory: 63 MB. Current time: 8/22/23, 3:10:26 PM PKT
+// [Engine Memory]: 2,577 MB (+405560kb) [01:51:35]
+// TclEventType: DESIGN_NEW
+// Xgd.load filename: /home/mtahir/Xilinx/Vivado/2019.1/data/parts/xilinx/artix7/devint/artix7/xc7a100t/xc7a100t.xgd; ZipEntry: xc7a100t_detail.xgd elapsed time: 0.6s
+// [Engine Memory]: 2,728 MB (+23204kb) [01:51:37]
+// Device: addNotify
+// DeviceView Instantiated
+// WARNING: HEventQueue.dispatchEvent() is taking  2560 ms.
+// TclEventType: CURR_DESIGN_SET
+// Tcl Message: INFO: [Netlist 29-17] Analyzing 1590 Unisim elements for replacement INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds INFO: [Project 1-479] Netlist was created with Vivado 2019.1 INFO: [Project 1-570] Preparing netlist for logic optimization INFO: [Timing 38-478] Restoring timing data from binary archive. INFO: [Timing 38-479] Binary timing data restore complete. INFO: [Project 1-856] Restoring constraints from binary archive. INFO: [Project 1-853] Binary constraint restore complete. 
+// Tcl Message: Reading XDEF placement. Reading placer database... Reading XDEF routing. 
+// Tcl Message: Read XDEF File: Time (s): cpu = 00:00:03 ; elapsed = 00:00:02 . Memory (MB): peak = 8027.145 ; gain = 19.008 ; free physical = 5764 ; free virtual = 11946 
+// Tcl Message: Restored from archive | CPU: 2.730000 secs | Memory: 30.337677 MB | 
+// Tcl Message: Finished XDEF File Restore: Time (s): cpu = 00:00:03 ; elapsed = 00:00:02 . Memory (MB): peak = 8027.145 ; gain = 19.008 ; free physical = 5764 ; free virtual = 11946 Netlist sorting complete. Time (s): cpu = 00:00:00.01 ; elapsed = 00:00:00 . Memory (MB): peak = 8027.145 ; gain = 0.000 ; free physical = 5766 ; free virtual = 11947 
+// Tcl Message: INFO: [Project 1-111] Unisim Transformation Summary:   A total of 322 instances were transformed.   IOBUFDS_INTERMDISABLE => IOBUFDS_INTERMDISABLE (IBUFDS_INTERMDISABLE_INT, IBUFDS_INTERMDISABLE_INT, INV, OBUFTDS, OBUFTDS): 2 instances   IOBUF_INTERMDISABLE => IOBUF_INTERMDISABLE (IBUF_INTERMDISABLE, OBUFT): 16 instances   OBUFDS => OBUFDS_DUAL_BUF (INV, OBUFDS, OBUFDS): 1 instances   RAM16X1S => RAM32X1S (RAMS32): 128 instances   RAM32M => RAM32M (RAMD32, RAMD32, RAMD32, RAMD32, RAMD32, RAMD32, RAMS32, RAMS32): 174 instances   SRLC32E => SRL16E: 1 instances  
+// TclEventType: DRC_ADDED
+// Device view-level: 0.0
+// RouteApi: Init Delay Mediator Swing Worker Finished
+// Tcl Message: open_run: Time (s): cpu = 00:00:33 ; elapsed = 00:00:24 . Memory (MB): peak = 8179.711 ; gain = 584.293 ; free physical = 5657 ; free virtual = 11841 
+// TclEventType: DRC_ADDED
+// TclEventType: METHODOLOGY_ADDED
+// [GUI Memory]: 143 MB (+3142kb) [01:51:40]
+// [GUI Memory]: 153 MB (+3483kb) [01:51:40]
+// TclEventType: HFED_INIT_ROUTE_STORAGE_COMPLETED
+// RouteApi::loadEngineXgd elapsed time: 6.5s
+// Device view-level: 0.1
+// TclEventType: POWER_UPDATED
+// [GUI Memory]: 163 MB (+2313kb) [01:51:47]
+// [GUI Memory]: 172 MB (+916kb) [01:51:47]
+// [GUI Memory]: 181 MB (+203kb) [01:51:48]
+// [GUI Memory]: 191 MB (+335kb) [01:51:48]
+// WARNING: HEventQueue.dispatchEvent() is taking  7028 ms.
+// Elapsed time: 35 seconds
+selectButton(RDIResource.ProgressDialog_CANCEL, "Cancel"); // a (by)
+// TclEventType: TIMING_SUMMARY_UPDATED
+// WARNING: HEventQueue.dispatchEvent() is taking  3352 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 2,896 MB. GUI used memory: 145 MB. Current time: 8/22/23, 3:10:45 PM PKT
+// [Engine Memory]: 2,888 MB (+24712kb) [01:51:54]
+// 'dR' command handler elapsed time: 39 seconds
+dismissDialog("Open Implemented Design"); // by (cl)
+// HMemoryUtils.trashcanNow. Engine heap size: 2,954 MB. GUI used memory: 144 MB. Current time: 8/22/23, 3:11:08 PM PKT
+// Elapsed time: 22 seconds
+expandTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Implementation]", 16); // u (O, cl)
+collapseTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Implementation]", 16); // u (O, cl)
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Program and Debug, Generate Bitstream]", 18, false); // u (O, cl)
+// Run Command: PAResourceCommand.PACommandNames_RUN_BITGEN
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// Tcl Message: launch_runs impl_1 -to_step write_bitstream -jobs 4 
+// Tcl Message: [Tue Aug 22 15:11:11 2023] Launched impl_1... Run output will be captured here: /home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-Project/Nexys-A7.runs/impl_1/runme.log 
+// TclEventType: RUN_STATUS_CHANGE
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STATUS_CHANGE
+// ah (cl): Bitstream Generation Completed: addNotify
+// Elapsed time: 301 seconds
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (ah)
+// Run Command: PAResourceCommand.PACommandNames_REPORTS_WINDOW
+dismissDialog("Bitstream Generation Completed"); // ah (cl)
+// [GUI Memory]: 201 MB (+1135kb) [01:57:23]
+selectTab((HResource) null, (HResource) null, "Timing", 8); // aK (aH, cl)
+// TclEventType: TIMING_RESULTS_UNLOAD
+closeFrame(PAResourceOtoP.PAViews_TIMING, "Timing - Timing Summary - impl_1 (saved)"); // az (aK, cl)
+selectButton(PAResourceTtoZ.TaskBanner_CLOSE, (String) null); // k (aA, cl)
+closeTask("Implementation", "Implemented Design", "DesignTask.RESULTS_ANALYSIS");
+// A (cl): Confirm Close: addNotify
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (A)
+// by (cl):  Close : addNotify
+dismissDialog("Confirm Close"); // A (cl)
+// TclEventType: DESIGN_CLOSE
+// HMemoryUtils.trashcanNow. Engine heap size: 2,914 MB. GUI used memory: 95 MB. Current time: 8/22/23, 3:16:24 PM PKT
+// Engine heap size: 2,914 MB. GUI used memory: 96 MB. Current time: 8/22/23, 3:16:24 PM PKT
+// WARNING: HEventQueue.dispatchEvent() is taking  1445 ms.
+// TclEventType: CURR_DESIGN_SET
+// Tcl Message: close_design 
+closeView(PAResourceOtoP.PAViews_PROJECT_SUMMARY, "Project Summary"); // v
+// TclEventType: DESIGN_CLOSE
+dismissDialog("Close"); // by (cl)
+// HMemoryUtils.trashcanNow. Engine heap size: 2,766 MB. GUI used memory: 70 MB. Current time: 8/22/23, 3:46:28 PM PKT
+// Elapsed time: 2041 seconds
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "System", 0); // k (j, cl)
+selectTab((HResource) null, "PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "System", 0, false, true); // k (j, cl) - Double Click
+maximizeView(PAResourceOtoP.PAViews_BASE_WORKSPACE, "BaseWorkspace"); // R (aH, cl)
+selectButton(PAResourceCommand.PACommandNames_ZOOM_IN, "System_zoom_in"); // B (f, cl)
+// Run Command: PAResourceCommand.PACommandNames_ZOOM_IN
+// Elapsed time: 11 seconds
+selectButton(PAResourceCommand.PACommandNames_ZOOM_IN, "System_zoom_in"); // B (f, cl)
+// Run Command: PAResourceCommand.PACommandNames_ZOOM_IN
+// Elapsed time: 11 seconds
+selectButton(PAResourceCommand.PACommandNames_ZOOM_OUT, "System_zoom_out"); // B (f, cl)
+// Run Command: PAResourceCommand.PACommandNames_ZOOM_OUT
+// HMemoryUtils.trashcanNow. Engine heap size: 2,758 MB. GUI used memory: 67 MB. Current time: 8/22/23, 4:16:28 PM PKT
+// Elapsed time: 3148 seconds
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Program and Debug, Generate Bitstream]", 18, false); // u (O, cl)
+// Run Command: PAResourceCommand.PACommandNames_RUN_BITGEN
+selectButton("OptionPane.button", "Cancel"); // JButton (A, G)
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Program and Debug, Open Hardware Manager]", 19, true); // u (O, cl) - Node
+// Run Command: PAResourceCommand.PACommandNames_OPEN_HARDWARE_MANAGER
+// Tcl Command: 'rdi::info_commands get_hw_probes'
+// Tcl Command: 'load_features labtools'
+// TclEventType: LOAD_FEATURE
+// by (cl):  Open Hardware Manager : addNotify
+// TclEventType: HW_SESSION_OPEN
+// Tcl Message: open_hw 
+dismissDialog("Open Hardware Manager"); // by (cl)
+selectButton(PAResourceOtoP.ProgramDebugTab_OPEN_TARGET, "Open target"); // h (cS, cl)
+selectMenuItem(PAResourceCommand.PACommandNames_AUTO_CONNECT_TARGET, "Auto Connect"); // ah (an, cl)
+// Run Command: PAResourceCommand.PACommandNames_AUTO_CONNECT_TARGET
+// by (cl):  Auto Connect : addNotify
+// TclEventType: HW_SERVER_UPDATE
+// Tcl Message: connect_hw_server 
+// Tcl Message: INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121 INFO: [Labtools 27-2222] Launching hw_server... INFO: [Labtools 27-2221] Launch Output:  ****** Xilinx hw_server v2019.1   **** Build date : May 24 2019 at 15:06:40     ** Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.   
+// TclEventType: HW_SERVER_UPDATE
+// TclEventType: HW_TARGET_CHANGE
+// TclEventType: HW_TARGET_CLOSE
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_SYSMON_ADD
+// TclEventType: HW_TARGET_UPDATE
+// WARNING: HEventQueue.dispatchEvent() is taking  2596 ms.
+// Tcl Message: open_hw_target 
+// Tcl Message: INFO: [Labtoolstcl 44-466] Opening hw_target localhost:3121/xilinx_tcf/Digilent/210292AD322FA 
+// HMemoryUtils.trashcanNow. Engine heap size: 3,400 MB. GUI used memory: 70 MB. Current time: 8/22/23, 4:43:35 PM PKT
+// TclEventType: HW_DEVICE_CHANGE
+// Tcl Message: set_property PROGRAM.FILE {/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-Project/Nexys-A7.runs/impl_1/top.bit} [get_hw_devices xc7a100t_0] 
+// Tcl Message: current_hw_device [get_hw_devices xc7a100t_0] 
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_SYSMON_CHANGE
+// TclEventType: HW_DEVICE_UPDATE
+// TclEventType: HW_DEVICE_CHANGE
+// Tcl Message: refresh_hw_device -update_hw_probes false [lindex [get_hw_devices xc7a100t_0] 0] 
+// Tcl Message: INFO: [Labtools 27-1434] Device xc7a100t (JTAG device index = 0) is programmed with a design that has no supported debug core(s) in it. 
+// [Engine Memory]: 3,408 MB (+394279kb) [03:24:45]
+dismissDialog("Auto Connect"); // by (cl)
+selectButton(PAResourceOtoP.ProgramDebugTab_PROGRAM_DEVICE, "Program device"); // h (cS, cl)
+// Run Command: PAResourceCommand.PACommandNames_PROGRAM_FPGA
+// bC (cl): Program Device: addNotify
+selectButton(PAResourceOtoP.ProgramFpgaDialog_SPECIFY_BITSTREAM_FILE, (String) null); // q (al, bC)
+// Elapsed time: 29 seconds
+setFileChooser("/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-Project/Nexys-A7.runs/impl_1/top.bit");
+selectButton(PAResourceOtoP.ProgramFpgaDialog_PROGRAM, "Program"); // a (bC)
+// by (cl):  Program Device : addNotify
+// TclEventType: HW_DEVICE_CHANGE
+dismissDialog("Program Device"); // bC (cl)
+// Tcl Message: set_property PROBES.FILE {} [get_hw_devices xc7a100t_0] 
+// Tcl Message: set_property FULL_PROBES.FILE {} [get_hw_devices xc7a100t_0] 
+// TclEventType: HW_DEVICE_CHANGE
+// Tcl Message: set_property PROGRAM.FILE {/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-Project/Nexys-A7.runs/impl_1/top.bit} [get_hw_devices xc7a100t_0] 
+// Tcl Message: program_hw_devices [get_hw_devices xc7a100t_0] 
+// TclEventType: HW_DEVICE_CHANGE
+// Tcl Message: INFO: [Labtools 27-3164] End of startup status: HIGH 
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_SYSMON_CHANGE
+// TclEventType: HW_DEVICE_UPDATE
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_DEVICE_PROBES_CHANGE
+// TclEventType: DEBUG_PROBE_SET_CHANGE
+// TclEventType: HW_DEVICE_PROBES_CHANGE
+// Tcl Message: refresh_hw_device [lindex [get_hw_devices xc7a100t_0] 0] 
+// Tcl Message: INFO: [Labtools 27-1434] Device xc7a100t (JTAG device index = 0) is programmed with a design that has no supported debug core(s) in it. 
+// 'I' command handler elapsed time: 38 seconds
+dismissDialog("Program Device"); // by (cl)
+// TclEventType: HW_TARGET_NEEDS_CLOSE
+// TclEventType: HW_TARGET_CLOSE
+// TclEventType: HW_SYSMON_DELETE
+// TclEventType: HW_TARGET_UPDATE
+// TclEventType: DEBUG_PROBE_DELETE
+// Tcl Message: ERROR: [Labtoolstcl 44-513] HW Target shutdown. Closing target: localhost:3121/xilinx_tcf/Digilent/210292AD322FA 
+// n (cl): Close Hardware Target: addNotify
+// TclEventType: HW_TARGET_NEEDS_CLOSE
+// TclEventType: HW_TARGET_CHANGE
+// TclEventType: HW_TARGET_CLOSE
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_SYSMON_ADD
+// TclEventType: HW_TARGET_UPDATE
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_SYSMON_CHANGE
+// TclEventType: HW_DEVICE_UPDATE
+// TclEventType: HW_DEVICE_CHANGE
+// Elapsed time: 325 seconds
+selectButton(PAResourceAtoD.CmdMsgDialog_OK, "OK"); // f (n)
+dismissDialog("Close Hardware Target"); // n (cl)
+// HMemoryUtils.trashcanNow. Engine heap size: 3,454 MB. GUI used memory: 71 MB. Current time: 8/22/23, 4:49:43 PM PKT
+// TclEventType: HW_TARGET_NEEDS_CLOSE
+// TclEventType: HW_TARGET_CLOSE
+// TclEventType: HW_SYSMON_DELETE
+// TclEventType: HW_TARGET_UPDATE
+// TclEventType: DEBUG_PROBE_DELETE
+// Tcl Message: ERROR: [Labtoolstcl 44-513] HW Target shutdown. Closing target: localhost:3121/xilinx_tcf/Digilent/210292AD322FA 
+// n (cl): Close Hardware Target: addNotify
+// TclEventType: HW_TARGET_NEEDS_CLOSE
+// TclEventType: HW_SERVER_UPDATE
+selectButton(PAResourceAtoD.CmdMsgDialog_OK, "OK"); // f (n)
+// TclEventType: HW_TARGET_NEEDS_CLOSE
+// TclEventType: HW_SERVER_UPDATE
+dismissDialog("Close Hardware Target"); // n (cl)
+// TclEventType: HW_TARGET_CHANGE
+// TclEventType: HW_TARGET_CLOSE
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_SYSMON_ADD
+// TclEventType: HW_TARGET_UPDATE
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_SYSMON_CHANGE
+// TclEventType: HW_DEVICE_UPDATE
+// TclEventType: HW_DEVICE_CHANGE
+selectButton(PAResourceOtoP.ProgramDebugTab_PROGRAM_DEVICE, "Program device"); // h (cS, cl)
+// Run Command: PAResourceCommand.PACommandNames_PROGRAM_FPGA
+// bC (cl): Program Device: addNotify
+// Elapsed time: 11 seconds
+selectButton(PAResourceOtoP.ProgramFpgaDialog_PROGRAM, "Program"); // a (bC)
+// by (cl):  Program Device : addNotify
+// TclEventType: HW_DEVICE_CHANGE
+dismissDialog("Program Device"); // bC (cl)
+// Tcl Message: set_property PROBES.FILE {} [get_hw_devices xc7a100t_0] 
+// Tcl Message: set_property FULL_PROBES.FILE {} [get_hw_devices xc7a100t_0] 
+// TclEventType: HW_DEVICE_CHANGE
+// Tcl Message: set_property PROGRAM.FILE {/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-Project/Nexys-A7.runs/impl_1/top.bit} [get_hw_devices xc7a100t_0] 
+// Tcl Message: program_hw_devices [get_hw_devices xc7a100t_0] 
+// TclEventType: HW_DEVICE_CHANGE
+// Tcl Message: INFO: [Labtools 27-3164] End of startup status: HIGH 
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_SYSMON_CHANGE
+// TclEventType: HW_DEVICE_UPDATE
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_DEVICE_PROBES_CHANGE
+// TclEventType: DEBUG_PROBE_SET_CHANGE
+// TclEventType: HW_DEVICE_PROBES_CHANGE
+// Tcl Message: refresh_hw_device [lindex [get_hw_devices xc7a100t_0] 0] 
+// Tcl Message: INFO: [Labtools 27-1434] Device xc7a100t (JTAG device index = 0) is programmed with a design that has no supported debug core(s) in it. 
+// 'I' command handler elapsed time: 13 seconds
+dismissDialog("Program Device"); // by (cl)
+// TclEventType: HW_TARGET_NEEDS_CLOSE
+// TclEventType: HW_TARGET_CLOSE
+// TclEventType: HW_SYSMON_DELETE
+// TclEventType: HW_TARGET_UPDATE
+// TclEventType: DEBUG_PROBE_DELETE
+// Tcl Message: ERROR: [Labtoolstcl 44-513] HW Target shutdown. Closing target: localhost:3121/xilinx_tcf/Digilent/210292AD322FA 
+// n (cl): Close Hardware Target: addNotify
+// Elapsed time: 926 seconds
+selectButton(PAResourceAtoD.CmdMsgDialog_OK, "OK"); // f (n)
+dismissDialog("Close Hardware Target"); // n (cl)
+// HMemoryUtils.trashcanNow. Engine heap size: 3,454 MB. GUI used memory: 83 MB. Current time: 8/22/23, 10:35:14 PM PKT
+// TclEventType: HW_TARGET_NEEDS_CLOSE
+// TclEventType: HW_SERVER_UPDATE
+// TclEventType: HW_TARGET_NEEDS_CLOSE
+// TclEventType: HW_SERVER_UPDATE
+// TclEventType: HW_TARGET_NEEDS_CLOSE
+// TclEventType: HW_TARGET_CHANGE
+// TclEventType: HW_TARGET_CLOSE
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_SYSMON_ADD
+// TclEventType: HW_TARGET_UPDATE
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_SYSMON_CHANGE
+// TclEventType: HW_DEVICE_UPDATE
+// TclEventType: HW_DEVICE_CHANGE
+// Elapsed time: 19875 seconds
+selectButton(PAResourceOtoP.ProgramDebugTab_PROGRAM_DEVICE, "Program device"); // h (cS, cl)
+// Run Command: PAResourceCommand.PACommandNames_PROGRAM_FPGA
+// bC (cl): Program Device: addNotify
+selectButton(PAResourceOtoP.ProgramFpgaDialog_PROGRAM, "Program"); // a (bC)
+selectButton(PAResourceOtoP.ProgramFpgaDialog_PROGRAM, "Program"); // a (bC)
+// by (cl):  Program Device : addNotify
+// TclEventType: HW_DEVICE_CHANGE
+dismissDialog("Program Device"); // bC (cl)
+// Tcl Message: set_property PROBES.FILE {} [get_hw_devices xc7a100t_0] 
+// Tcl Message: set_property FULL_PROBES.FILE {} [get_hw_devices xc7a100t_0] 
+// TclEventType: HW_DEVICE_CHANGE
+// Tcl Message: set_property PROGRAM.FILE {/home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-Project/Nexys-A7.runs/impl_1/top.bit} [get_hw_devices xc7a100t_0] 
+// Tcl Message: program_hw_devices [get_hw_devices xc7a100t_0] 
+// TclEventType: HW_DEVICE_CHANGE
+// Tcl Message: INFO: [Labtools 27-3164] End of startup status: HIGH 
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_SYSMON_CHANGE
+// TclEventType: HW_DEVICE_UPDATE
+// TclEventType: HW_DEVICE_CHANGE
+// TclEventType: HW_DEVICE_PROBES_CHANGE
+// TclEventType: DEBUG_PROBE_SET_CHANGE
+// TclEventType: HW_DEVICE_PROBES_CHANGE
+// Tcl Message: refresh_hw_device [lindex [get_hw_devices xc7a100t_0] 0] 
+// Tcl Message: INFO: [Labtools 27-1434] Device xc7a100t (JTAG device index = 0) is programmed with a design that has no supported debug core(s) in it. 
+// 'I' command handler elapsed time: 11 seconds
+selectButton(PAResourceOtoP.ProgramDebugTab_PROGRAM_DEVICE, "Program device"); // h
+dismissDialog("Program Device"); // by (cl)
+// HMemoryUtils.trashcanNow. Engine heap size: 3,454 MB. GUI used memory: 70 MB. Current time: 8/22/23, 11:05:15 PM PKT
+// WARNING: HEventQueue.dispatchEvent() is taking  22850829 ms.
+// TclEventType: HW_TARGET_NEEDS_CLOSE
+// HMemoryUtils.trashcanNow. Engine heap size: 3,454 MB. GUI used memory: 129 MB. Current time: 8/23/23, 5:50:08 AM PKT
+// TclEventType: HW_TARGET_NEEDS_CLOSE
+// TclEventType: HW_TARGET_CLOSE
+// TclEventType: HW_TARGET_NEEDS_CLOSE
+// TclEventType: HW_TARGET_CLOSE
+// TclEventType: HW_SYSMON_DELETE
+// TclEventType: HW_TARGET_NEEDS_CLOSE
+// TclEventType: HW_SYSMON_DELETE
+// TclEventType: HW_TARGET_UPDATE
+// TclEventType: DEBUG_PROBE_DELETE
+// Tcl Message: ERROR: [Labtoolstcl 44-513] HW Target shutdown. Closing target: localhost:3121/xilinx_tcf/Digilent/210292AD322FA 
+// n (cl): Close Hardware Target: addNotify
+// TclEventType: HW_SERVER_UPDATE
+// Elapsed time: 26004 seconds
+selectButton(PAResourceAtoD.CmdMsgDialog_OK, "OK"); // f (n)
+selectButton(PAResourceAtoD.CmdMsgDialog_OK, "OK"); // f (n)
+dismissDialog("Close Hardware Target"); // n (cl)
+// WARNING: HEventQueue.dispatchEvent() is taking  1190 ms.

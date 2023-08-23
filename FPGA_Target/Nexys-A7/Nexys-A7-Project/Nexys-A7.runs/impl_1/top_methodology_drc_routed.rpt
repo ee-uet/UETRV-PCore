@@ -1,0 +1,1471 @@
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+-----------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2019.1 (lin64) Build 2552052 Fri May 24 14:47:09 MDT 2019
+| Date         : Tue Aug 22 15:06:28 2023
+| Host         : mtahir-Inspiron-7520 running 64-bit Ubuntu 18.04.6 LTS
+| Command      : report_methodology -file top_methodology_drc_routed.rpt -pb top_methodology_drc_routed.pb -rpx top_methodology_drc_routed.rpx
+| Design       : top
+| Device       : xc7a100tcsg324-1
+| Speed File   : -1
+| Design State : Fully Routed
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+Report Methodology
+
+Table of Contents
+-----------------
+1. REPORT SUMMARY
+2. REPORT DETAILS
+
+1. REPORT SUMMARY
+-----------------
+            Netlist: netlist
+          Floorplan: design_1
+      Design limits: <entire design considered>
+             Max violations: <unlimited>
+             Violations found: 286
++-----------+----------+-------------------------------------------------+------------+
+| Rule      | Severity | Description                                     | Violations |
++-----------+----------+-------------------------------------------------+------------+
+| DPIR-1    | Warning  | Asynchronous driver check                       | 246        |
+| LUTAR-1   | Warning  | LUT drives async reset alert                    | 4          |
+| PDRC-190  | Warning  | Suboptimally placed synchronized register chain | 12         |
+| SYNTH-10  | Warning  | Wide multiplier                                 | 7          |
+| XDCB-5    | Warning  | Runtime inefficient way to find pin objects     | 1          |
+| REQP-1959 | Advisory | connects_SERDES_RST_driver_not_FF               | 16         |
++-----------+----------+-------------------------------------------------+------------+
+
+2. REPORT DETAILS
+-----------------
+DPIR-1#1 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/A[0] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#2 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/A[10] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#3 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/A[11] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#4 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/A[12] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#5 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/A[13] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#6 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/A[14] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#7 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/A[15] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#8 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/A[16] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#9 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/A[1] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#10 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/A[2] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#11 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/A[3] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#12 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/A[4] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#13 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/A[5] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#14 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/A[6] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#15 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/A[7] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#16 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/A[8] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#17 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/A[9] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#18 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/B[0] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#19 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/B[10] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#20 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/B[11] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#21 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/B[12] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#22 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/B[13] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#23 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/B[14] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#24 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/B[15] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#25 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/B[16] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#26 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/B[17] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#27 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/B[1] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#28 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/B[2] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#29 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/B[3] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#30 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/B[4] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#31 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/B[5] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#32 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/B[6] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#33 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/B[7] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#34 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/B[8] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#35 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0/B[9] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#36 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[0] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#37 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[10] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#38 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[11] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#39 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[12] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#40 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[13] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#41 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[14] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#42 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[15] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#43 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[16] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#44 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[17] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#45 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[18] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#46 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[19] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#47 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[1] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#48 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[20] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#49 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[21] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#50 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[22] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#51 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[23] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#52 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[24] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#53 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[25] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#54 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[26] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#55 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[27] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#56 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[28] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#57 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[29] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#58 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[2] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#59 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[3] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#60 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[4] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#61 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[5] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#62 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[6] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#63 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[7] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#64 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[8] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#65 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/A[9] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#66 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/B[0] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#67 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/B[10] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#68 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/B[11] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#69 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/B[12] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#70 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/B[13] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#71 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/B[14] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#72 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/B[15] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#73 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/B[16] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#74 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/B[17] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#75 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/B[1] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#76 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/B[2] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#77 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/B[3] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#78 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/B[4] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#79 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/B[5] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#80 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/B[6] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#81 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/B[7] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#82 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/B[8] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#83 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0/B[9] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#84 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/A[0] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#85 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/A[10] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#86 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/A[11] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#87 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/A[12] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#88 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/A[13] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#89 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/A[14] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#90 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/A[15] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#91 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/A[16] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#92 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/A[1] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#93 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/A[2] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#94 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/A[3] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#95 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/A[4] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#96 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/A[5] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#97 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/A[6] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#98 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/A[7] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#99 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/A[8] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#100 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/A[9] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#101 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/B[0] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#102 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/B[10] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#103 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/B[11] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#104 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/B[12] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#105 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/B[13] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#106 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/B[14] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#107 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/B[15] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#108 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/B[16] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#109 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/B[1] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#110 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/B[2] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#111 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/B[3] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#112 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/B[4] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#113 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/B[5] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#114 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/B[6] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#115 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/B[7] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#116 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/B[8] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#117 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1/B[9] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#118 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/A[0] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#119 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/A[10] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#120 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/A[11] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#121 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/A[12] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#122 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/A[13] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#123 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/A[14] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#124 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/A[15] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#125 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/A[16] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#126 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/A[1] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#127 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/A[2] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#128 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/A[3] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#129 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/A[4] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#130 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/A[5] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#131 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/A[6] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#132 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/A[7] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#133 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/A[8] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#134 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/A[9] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#135 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/B[0] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#136 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/B[10] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#137 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/B[11] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#138 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/B[12] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#139 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/B[13] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#140 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/B[14] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#141 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/B[15] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#142 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/B[16] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#143 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/B[17] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#144 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/B[1] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#145 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/B[2] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#146 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/B[3] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#147 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/B[4] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#148 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/B[5] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#149 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/B[6] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#150 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/B[7] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#151 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/B[8] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#152 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2/B[9] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#153 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/A[0] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#154 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/A[10] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#155 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/A[11] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#156 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/A[12] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#157 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/A[13] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#158 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/A[14] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#159 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/A[15] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#160 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/A[16] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#161 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/A[1] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#162 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/A[2] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#163 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/A[3] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#164 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/A[4] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#165 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/A[5] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#166 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/A[6] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#167 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/A[7] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#168 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/A[8] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#169 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/A[9] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#170 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/B[0] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#171 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/B[10] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#172 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/B[11] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#173 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/B[12] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#174 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/B[13] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#175 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/B[14] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#176 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/B[1] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#177 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/B[2] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#178 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/B[3] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#179 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/B[4] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#180 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/B[5] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#181 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/B[6] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#182 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/B[7] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#183 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/B[8] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#184 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3/B[9] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#185 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/A[0] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#186 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/A[10] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#187 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/A[11] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#188 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/A[12] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#189 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/A[13] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#190 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/A[14] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#191 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/A[1] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#192 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/A[2] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#193 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/A[3] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#194 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/A[4] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#195 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/A[5] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#196 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/A[6] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#197 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/A[7] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#198 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/A[8] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#199 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/A[9] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#200 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/B[0] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#201 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/B[10] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#202 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/B[11] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#203 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/B[12] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#204 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/B[13] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#205 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/B[14] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#206 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/B[1] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#207 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/B[2] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#208 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/B[3] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#209 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/B[4] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#210 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/B[5] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#211 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/B[6] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#212 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/B[7] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#213 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/B[8] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#214 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0/B[9] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#215 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/A[0] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#216 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/A[10] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#217 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/A[11] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#218 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/A[12] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#219 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/A[13] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#220 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/A[14] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#221 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/A[15] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#222 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/A[16] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#223 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/A[1] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#224 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/A[2] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#225 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/A[3] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#226 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/A[4] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#227 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/A[5] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#228 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/A[6] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#229 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/A[7] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#230 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/A[8] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#231 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/A[9] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#232 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/B[0] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#233 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/B[10] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#234 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/B[11] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#235 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/B[12] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#236 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/B[13] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#237 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/B[14] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#238 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/B[1] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#239 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/B[2] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#240 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/B[3] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#241 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/B[4] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#242 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/B[5] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#243 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/B[6] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#244 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/B[7] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#245 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/B[8] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+DPIR-1#246 Warning
+Asynchronous driver check  
+DSP st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 input pin st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1/B[9] is connected to registers with an asynchronous reset. This is preventing the possibility of merging these registers in to the DSP Block since the DSP block registers only possess synchronous reset capability.  It is suggested to recode or change these registers to remove the reset or use a synchronous reset to get the best optimization for performance, power and area.
+Related violations: <none>
+
+LUTAR-1#1 Warning
+LUT drives async reset alert  
+LUT cell shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_iodelay_ctrl/rstdiv2_sync_r[11]_i_1, with 2 or more inputs, drives asynchronous preset/clear pin(s) shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_ddr2_infrastructure/rstdiv0_sync_r1_reg_rep/PRE, shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_ddr2_infrastructure/rstdiv0_sync_r1_reg_rep__0/PRE, shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_ddr2_infrastructure/rstdiv0_sync_r1_reg_rep__1/PRE, shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_ddr2_infrastructure/rstdiv0_sync_r1_reg_rep__10/PRE, shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_ddr2_infrastructure/rstdiv0_sync_r1_reg_rep__11/PRE, shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_ddr2_infrastructure/rstdiv0_sync_r1_reg_rep__12/PRE, shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_ddr2_infrastructure/rstdiv0_sync_r1_reg_rep__13/PRE, shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_ddr2_infrastructure/rstdiv0_sync_r1_reg_rep__14/PRE, shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_ddr2_infrastructure/rstdiv0_sync_r1_reg_rep__2/PRE, shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_ddr2_infrastructure/rstdiv0_sync_r1_reg_rep__3/PRE, shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_ddr2_infrastructure/rstdiv0_sync_r1_reg_rep__4/PRE, shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_ddr2_infrastructure/rstdiv0_sync_r1_reg_rep__5/PRE, shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_ddr2_infrastructure/rstdiv0_sync_r1_reg_rep__6/PRE, shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_ddr2_infrastructure/rstdiv0_sync_r1_reg_rep__7/PRE, shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_ddr2_infrastructure/rstdiv0_sync_r1_reg_rep__8/PRE (the first 15 of 28 listed). The LUT may glitch and trigger an unexpected reset, even if it is a properly timed path.
+Related violations: <none>
+
+LUTAR-1#2 Warning
+LUT drives async reset alert  
+LUT cell shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_iodelay_ctrl/rstdiv2_sync_r[11]_i_1, with 2 or more inputs, drives asynchronous preset/clear pin(s) shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_iodelay_ctrl/rst_ref_sync_r_reg[0][0]/PRE, shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_iodelay_ctrl/rst_ref_sync_r_reg[0][10]/PRE, shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_iodelay_ctrl/rst_ref_sync_r_reg[0][11]/PRE, shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_iodelay_ctrl/rst_ref_sync_r_reg[0][12]/PRE, shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_iodelay_ctrl/rst_ref_sync_r_reg[0][13]/PRE, shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_iodelay_ctrl/rst_ref_sync_r_reg[0][14]/PRE, shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_iodelay_ctrl/rst_ref_sync_r_reg[0][1]/PRE, shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_iodelay_ctrl/rst_ref_sync_r_reg[0][2]/PRE, shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_iodelay_ctrl/rst_ref_sync_r_reg[0][3]/PRE, shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_iodelay_ctrl/rst_ref_sync_r_reg[0][4]/PRE, shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_iodelay_ctrl/rst_ref_sync_r_reg[0][5]/PRE, shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_iodelay_ctrl/rst_ref_sync_r_reg[0][6]/PRE, shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_iodelay_ctrl/rst_ref_sync_r_reg[0][7]/PRE, shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_iodelay_ctrl/rst_ref_sync_r_reg[0][8]/PRE, shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_iodelay_ctrl/rst_ref_sync_r_reg[0][9]/PRE (the first 15 of 15 listed). The LUT may glitch and trigger an unexpected reset, even if it is a properly timed path.
+Related violations: <none>
+
+LUTAR-1#3 Warning
+LUT drives async reset alert  
+LUT cell st/core_top_module/i___167, with 2 or more inputs, drives asynchronous preset/clear pin(s) st/core_top_module/pipeline_top_module/forward_stall_module/mul_stall_ff_reg/CLR. The LUT may glitch and trigger an unexpected reset, even if it is a properly timed path.
+Related violations: <none>
+
+LUTAR-1#4 Warning
+LUT drives async reset alert  
+LUT cell st/core_top_module/pipeline_top_module/decode_module/rf_module/register_file[10][31]_i_1, with 2 or more inputs, drives asynchronous preset/clear pin(s) adapter/ardone_reg/CLR, adapter/awdone_reg/CLR, adapter/wdone_reg/CLR, st/mem_top_module/FSM_onehot_mem_arbiter_state_ff_reg[1]/CLR, st/mem_top_module/FSM_onehot_mem_arbiter_state_ff_reg[2]/CLR, st/mem_top_module/FSM_onehot_mem_arbiter_state_ff_reg[3]/CLR, st/mem_top_module/FSM_onehot_mem_arbiter_state_ff_reg[4]/CLR, st/mem_top_module/cache2mem_ff_reg[addr][10]/CLR, st/mem_top_module/cache2mem_ff_reg[addr][11]/CLR, st/mem_top_module/cache2mem_ff_reg[addr][12]/CLR, st/mem_top_module/cache2mem_ff_reg[addr][13]/CLR, st/mem_top_module/cache2mem_ff_reg[addr][14]/CLR, st/mem_top_module/cache2mem_ff_reg[addr][15]/CLR, st/mem_top_module/cache2mem_ff_reg[addr][16]/CLR, st/mem_top_module/cache2mem_ff_reg[addr][17]/CLR (the first 15 of 1697 listed). The LUT may glitch and trigger an unexpected reset, even if it is a properly timed path.
+Related violations: <none>
+
+PDRC-190#1 Warning
+Suboptimally placed synchronized register chain  
+The FDRE cell shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/temp_mon_enabled.u_tempmon/device_temp_sync_r5_reg[0] in site SLICE_X28Y114 is part of a synchronized register chain that is suboptimally placed as the load FDRE cell shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/temp_mon_enabled.u_tempmon/device_temp_r_reg[0] is not placed in the same (SLICE) site.
+Related violations: <none>
+
+PDRC-190#2 Warning
+Suboptimally placed synchronized register chain  
+The FDRE cell shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/temp_mon_enabled.u_tempmon/device_temp_sync_r5_reg[10] in site SLICE_X31Y117 is part of a synchronized register chain that is suboptimally placed as the load FDRE cell shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/temp_mon_enabled.u_tempmon/device_temp_r_reg[10] is not placed in the same (SLICE) site.
+Related violations: <none>
+
+PDRC-190#3 Warning
+Suboptimally placed synchronized register chain  
+The FDRE cell shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/temp_mon_enabled.u_tempmon/device_temp_sync_r5_reg[11] in site SLICE_X30Y120 is part of a synchronized register chain that is suboptimally placed as the load FDRE cell shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/temp_mon_enabled.u_tempmon/device_temp_r_reg[11] is not placed in the same (SLICE) site.
+Related violations: <none>
+
+PDRC-190#4 Warning
+Suboptimally placed synchronized register chain  
+The FDRE cell shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/temp_mon_enabled.u_tempmon/device_temp_sync_r5_reg[1] in site SLICE_X30Y118 is part of a synchronized register chain that is suboptimally placed as the load FDRE cell shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/temp_mon_enabled.u_tempmon/device_temp_r_reg[1] is not placed in the same (SLICE) site.
+Related violations: <none>
+
+PDRC-190#5 Warning
+Suboptimally placed synchronized register chain  
+The FDRE cell shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/temp_mon_enabled.u_tempmon/device_temp_sync_r5_reg[2] in site SLICE_X31Y120 is part of a synchronized register chain that is suboptimally placed as the load FDRE cell shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/temp_mon_enabled.u_tempmon/device_temp_r_reg[2] is not placed in the same (SLICE) site.
+Related violations: <none>
+
+PDRC-190#6 Warning
+Suboptimally placed synchronized register chain  
+The FDRE cell shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/temp_mon_enabled.u_tempmon/device_temp_sync_r5_reg[3] in site SLICE_X28Y120 is part of a synchronized register chain that is suboptimally placed as the load FDRE cell shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/temp_mon_enabled.u_tempmon/device_temp_r_reg[3] is not placed in the same (SLICE) site.
+Related violations: <none>
+
+PDRC-190#7 Warning
+Suboptimally placed synchronized register chain  
+The FDRE cell shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/temp_mon_enabled.u_tempmon/device_temp_sync_r5_reg[4] in site SLICE_X29Y118 is part of a synchronized register chain that is suboptimally placed as the load FDRE cell shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/temp_mon_enabled.u_tempmon/device_temp_r_reg[4] is not placed in the same (SLICE) site.
+Related violations: <none>
+
+PDRC-190#8 Warning
+Suboptimally placed synchronized register chain  
+The FDRE cell shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/temp_mon_enabled.u_tempmon/device_temp_sync_r5_reg[5] in site SLICE_X29Y120 is part of a synchronized register chain that is suboptimally placed as the load FDRE cell shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/temp_mon_enabled.u_tempmon/device_temp_r_reg[5] is not placed in the same (SLICE) site.
+Related violations: <none>
+
+PDRC-190#9 Warning
+Suboptimally placed synchronized register chain  
+The FDRE cell shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/temp_mon_enabled.u_tempmon/device_temp_sync_r5_reg[6] in site SLICE_X30Y116 is part of a synchronized register chain that is suboptimally placed as the load FDRE cell shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/temp_mon_enabled.u_tempmon/device_temp_r_reg[6] is not placed in the same (SLICE) site.
+Related violations: <none>
+
+PDRC-190#10 Warning
+Suboptimally placed synchronized register chain  
+The FDRE cell shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/temp_mon_enabled.u_tempmon/device_temp_sync_r5_reg[7] in site SLICE_X29Y114 is part of a synchronized register chain that is suboptimally placed as the load FDRE cell shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/temp_mon_enabled.u_tempmon/device_temp_r_reg[7] is not placed in the same (SLICE) site.
+Related violations: <none>
+
+PDRC-190#11 Warning
+Suboptimally placed synchronized register chain  
+The FDRE cell shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/temp_mon_enabled.u_tempmon/device_temp_sync_r5_reg[8] in site SLICE_X28Y116 is part of a synchronized register chain that is suboptimally placed as the load FDRE cell shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/temp_mon_enabled.u_tempmon/device_temp_r_reg[8] is not placed in the same (SLICE) site.
+Related violations: <none>
+
+PDRC-190#12 Warning
+Suboptimally placed synchronized register chain  
+The FDRE cell shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/temp_mon_enabled.u_tempmon/device_temp_sync_r5_reg[9] in site SLICE_X28Y118 is part of a synchronized register chain that is suboptimally placed as the load FDRE cell shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/temp_mon_enabled.u_tempmon/device_temp_r_reg[9] is not placed in the same (SLICE) site.
+Related violations: <none>
+
+SYNTH-10#1 Warning
+Wide multiplier  
+Detected multiplier at st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0 of size 15x18, it is decomposed from a wide multipler into 4 DSP blocks.
+Related violations: <none>
+
+SYNTH-10#2 Warning
+Wide multiplier  
+Detected multiplier at st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__0 of size 15x15, it is decomposed from a wide multipler into 4 DSP blocks.
+Related violations: <none>
+
+SYNTH-10#3 Warning
+Wide multiplier  
+Detected multiplier at st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__1 of size 18x18, it is decomposed from a wide multipler into 4 DSP blocks.
+Related violations: <none>
+
+SYNTH-10#4 Warning
+Wide multiplier  
+Detected multiplier at st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next0__2 of size 18x15, it is decomposed from a wide multipler into 4 DSP blocks.
+Related violations: <none>
+
+SYNTH-10#5 Warning
+Wide multiplier  
+Detected multiplier at st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3 of size 16x18, it is decomposed from a wide multipler into 4 DSP blocks.
+Related violations: <none>
+
+SYNTH-10#6 Warning
+Wide multiplier  
+Detected multiplier at st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__0 of size 16x16, it is decomposed from a wide multipler into 4 DSP blocks.
+Related violations: <none>
+
+SYNTH-10#7 Warning
+Wide multiplier  
+Detected multiplier at st/core_top_module/pipeline_top_module/muldiv_module/alu_m_result_next3__1 of size 18x16, it is decomposed from a wide multipler into 4 DSP blocks.
+Related violations: <none>
+
+XDCB-5#1 Warning
+Runtime inefficient way to find pin objects  
+The option '-to : [get_pins -hier -include_replicated_objects -filter {NAME =~ *temp_mon_enabled.u_tempmon/device_temp_sync_r1_reg[*]/D}]' of constraint 'set_max_delay' uses inefficient query to find pin objects (see constraint position '10' in the Timing Constraint window in Vivado IDE). To reduce runtime, it is recommended to get the pins through the cell objects. Please refer to Using Constraints Guide (Constraints Efficiency). An example of optimal query is: get_pins -filter {REF_PIN_NAME=~yy*} -of_objects [get_cells -hierarchical xx*].
+Current XDC: /home/mtahir/SOC/FPGA/PCore_Git_FPGA/UETRV-PCore/FPGA_Target/Nexys-A7/Nexys-A7-ipbd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/nexys_shell_mig_7series_0_0/user_design/constraints/nexys_shell_mig_7series_0_0.xdc (Line: 344)
+Related violations: <none>
+
+REQP-1959#1 Advisory
+connects_SERDES_RST_driver_not_FF  
+shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_memc_ui_top_axi/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_A.ddr_byte_lane_A/ddr_byte_group_io/input_[1].iserdes_dq_.iserdesdq: The RST pin should only be driven by a Flip-flop.
+Related violations: <none>
+
+REQP-1959#2 Advisory
+connects_SERDES_RST_driver_not_FF  
+shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_memc_ui_top_axi/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_A.ddr_byte_lane_A/ddr_byte_group_io/input_[3].iserdes_dq_.iserdesdq: The RST pin should only be driven by a Flip-flop.
+Related violations: <none>
+
+REQP-1959#3 Advisory
+connects_SERDES_RST_driver_not_FF  
+shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_memc_ui_top_axi/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_A.ddr_byte_lane_A/ddr_byte_group_io/input_[4].iserdes_dq_.iserdesdq: The RST pin should only be driven by a Flip-flop.
+Related violations: <none>
+
+REQP-1959#4 Advisory
+connects_SERDES_RST_driver_not_FF  
+shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_memc_ui_top_axi/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_A.ddr_byte_lane_A/ddr_byte_group_io/input_[5].iserdes_dq_.iserdesdq: The RST pin should only be driven by a Flip-flop.
+Related violations: <none>
+
+REQP-1959#5 Advisory
+connects_SERDES_RST_driver_not_FF  
+shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_memc_ui_top_axi/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_A.ddr_byte_lane_A/ddr_byte_group_io/input_[6].iserdes_dq_.iserdesdq: The RST pin should only be driven by a Flip-flop.
+Related violations: <none>
+
+REQP-1959#6 Advisory
+connects_SERDES_RST_driver_not_FF  
+shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_memc_ui_top_axi/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_A.ddr_byte_lane_A/ddr_byte_group_io/input_[7].iserdes_dq_.iserdesdq: The RST pin should only be driven by a Flip-flop.
+Related violations: <none>
+
+REQP-1959#7 Advisory
+connects_SERDES_RST_driver_not_FF  
+shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_memc_ui_top_axi/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_A.ddr_byte_lane_A/ddr_byte_group_io/input_[8].iserdes_dq_.iserdesdq: The RST pin should only be driven by a Flip-flop.
+Related violations: <none>
+
+REQP-1959#8 Advisory
+connects_SERDES_RST_driver_not_FF  
+shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_memc_ui_top_axi/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_A.ddr_byte_lane_A/ddr_byte_group_io/input_[9].iserdes_dq_.iserdesdq: The RST pin should only be driven by a Flip-flop.
+Related violations: <none>
+
+REQP-1959#9 Advisory
+connects_SERDES_RST_driver_not_FF  
+shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_memc_ui_top_axi/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_C.ddr_byte_lane_C/ddr_byte_group_io/input_[0].iserdes_dq_.iserdesdq: The RST pin should only be driven by a Flip-flop.
+Related violations: <none>
+
+REQP-1959#10 Advisory
+connects_SERDES_RST_driver_not_FF  
+shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_memc_ui_top_axi/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_C.ddr_byte_lane_C/ddr_byte_group_io/input_[1].iserdes_dq_.iserdesdq: The RST pin should only be driven by a Flip-flop.
+Related violations: <none>
+
+REQP-1959#11 Advisory
+connects_SERDES_RST_driver_not_FF  
+shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_memc_ui_top_axi/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_C.ddr_byte_lane_C/ddr_byte_group_io/input_[2].iserdes_dq_.iserdesdq: The RST pin should only be driven by a Flip-flop.
+Related violations: <none>
+
+REQP-1959#12 Advisory
+connects_SERDES_RST_driver_not_FF  
+shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_memc_ui_top_axi/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_C.ddr_byte_lane_C/ddr_byte_group_io/input_[4].iserdes_dq_.iserdesdq: The RST pin should only be driven by a Flip-flop.
+Related violations: <none>
+
+REQP-1959#13 Advisory
+connects_SERDES_RST_driver_not_FF  
+shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_memc_ui_top_axi/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_C.ddr_byte_lane_C/ddr_byte_group_io/input_[5].iserdes_dq_.iserdesdq: The RST pin should only be driven by a Flip-flop.
+Related violations: <none>
+
+REQP-1959#14 Advisory
+connects_SERDES_RST_driver_not_FF  
+shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_memc_ui_top_axi/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_C.ddr_byte_lane_C/ddr_byte_group_io/input_[6].iserdes_dq_.iserdesdq: The RST pin should only be driven by a Flip-flop.
+Related violations: <none>
+
+REQP-1959#15 Advisory
+connects_SERDES_RST_driver_not_FF  
+shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_memc_ui_top_axi/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_C.ddr_byte_lane_C/ddr_byte_group_io/input_[7].iserdes_dq_.iserdesdq: The RST pin should only be driven by a Flip-flop.
+Related violations: <none>
+
+REQP-1959#16 Advisory
+connects_SERDES_RST_driver_not_FF  
+shell/mig_7series_0/u_nexys_shell_mig_7series_0_0_mig/u_memc_ui_top_axi/mem_intfc0/ddr_phy_top0/u_ddr_mc_phy_wrapper/u_ddr_mc_phy/ddr_phy_4lanes_0.u_ddr_phy_4lanes/ddr_byte_lane_C.ddr_byte_lane_C/ddr_byte_group_io/input_[8].iserdes_dq_.iserdesdq: The RST pin should only be driven by a Flip-flop.
+Related violations: <none>
+
+
