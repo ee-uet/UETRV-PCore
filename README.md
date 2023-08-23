@@ -112,7 +112,7 @@ New bitstream can be generated with the exisitng project or you may use the preb
   ```
   python3 serial_sendfile.py 1.25 imem.bin
   ```
-After successful downloading of image the booting process starts. A snapshot of the boot log is shown below. 
+After successful downloading of the image the booting process starts. A snapshot of the boot log is shown below. 
 
 ![bootlog](./docs/images/linux_boot_log.png)
 
