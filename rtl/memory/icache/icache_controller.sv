@@ -35,11 +35,12 @@ module icache_controller (
   //test code
   input wire                            sets_i;
   input wire                            ways_i;
+  input wire                            tag_i;//tag of instruction 
   //test code
 );
 
 //test code
-  type_icache_line_s                    cache_storage[ICACHE_NO_OF_SETS][ICACHE_NO_WAYS];
+  type_icache_line_s                    icache_storage[ICACHE_NO_OF_SETS][ICACHE_NO_WAYS];
 //test code
   
 type_icache_states_e                  icache_state_ff, icache_state_next;
@@ -47,9 +48,14 @@ logic                                 icache2if_ack;
 logic                                 icache_hit;
 logic                                 icache_miss;
 
+//test code
+logic [ICACHE_NO_OF_WAYS-1:0] icache_way_hit;
+assign icache_way_hit = icache_storage[ICACHE_NO_OF_SETS][ICACHE_NO_OF_WAYS].tag = tag_i;
+assign icache_hit = if2icache_req_i & imem_sel_i & icache_way_hit;
+//testcode
 
-assign icache_hit = if2icache_req_i & imem_sel_i & cache_hit_i;
-assign icache_miss = if2icache_req_i & imem_sel_i & ~cache_hit_i;
+//assign icache_hit = if2icache_req_i & imem_sel_i & cache_hit_i;
+//assign icache_miss = if2icache_req_i & imem_sel_i & ~cache_hit_i;
 
 // Cache controller state machine
 always_ff @(posedge clk_i) begin
