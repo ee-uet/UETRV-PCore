@@ -335,6 +335,7 @@ timeout_next = '0;
    endcase
  
 end
+`ifndef COMPLIANCE
 
 `ifndef DRAM
 //============================= Main memory interface =============================//
@@ -352,6 +353,19 @@ main_mem main_mem_module (
 assign cache2dram_o = cache2mem;
 assign mem2cache = dram2cache_i;
 `endif
+
+`else
+main_mem main_mem_module (
+    .rst_n                  (rst_n),
+    .clk                    (clk),
+    
+    // Main memory interface signals 
+    .cache2mem_i            (cache2mem),
+    .mem2cache_o            (mem2cache)
+
+);
+`endif
+
 
 // Output signal assignments
 assign icache2if_o  = bmem2if.ack ? bmem2if : icache2if; 
