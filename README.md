@@ -82,10 +82,10 @@ Using the same procedure as outlined above, we can simulate the Linux bootup usi
 - The Linux (version 6.1.0) with rootfs.cpio linked into the kernel
 - OpenSBI (ver. 0.9) based first order bootloader with Linux kernel as payload
 
-During booting process, the processor starts executing zero-level bootloader from `bmem` and then jumps to first-level bootloader (OpenSBI), which after necessary initializations, hands the control over to the kernel.    
+During booting process, the processor starts executing zero-level bootloader from `bmem` and then jumps to first-level bootloader (OpenSBI), which after necessary initializations, hands the control over to the kernel.
 
 ### Booting with Verilator
-Now run the following command to extract the `imem.txt` to `./sdk/example-linux/` and simulate the Linux booting process using this pre-built image. 
+For Verilator based simulation one configurtion is required. Open the file `rtl/defines/pcore_config_defs.svh` and uncomment the line \` `define RTL_SIMULATION 1`. Now run the following command to extract the `imem.txt` to `./sdk/example-linux/` and simulate the Linux booting process using this pre-built image. 
 
     make sim-verilate-linux
 
@@ -96,6 +96,7 @@ The processor is tested using Nexys-A7 (100T) FPGA board and Vivado 2019. Type i
 ```
 vivado PCore_FPGA/PCore_FPGA.xpr
 ```
+Make sure that \` `define RTL_SIMULATION 1` in the file `rtl/defines/pcore_config_defs.svh` is commented out. 
 
 ### Generate bitstream
 New bitstream can be generated with the exisitng project or you may use the prebuilt bitstream in folder ``FPGA_Target/Bit_stream``
