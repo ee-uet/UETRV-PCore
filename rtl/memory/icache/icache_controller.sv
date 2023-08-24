@@ -38,7 +38,7 @@ module icache_controller (
 );
 
 //test code
-  type_icache_line_s                    icache_storage[ICACHE_NO_OF_SETS][ICACHE_NO_WAYS];
+type_icache_ways		                   icache_way;
 //test code
   
 type_icache_states_e                  icache_state_ff, icache_state_next;
@@ -47,14 +47,22 @@ logic                                 icache_hit;
 logic                                 icache_miss;
 
 //test code
-logic [ICACHE_NO_OF_WAYS-1:0] icache_way_hit;
-assign icache_way_hit = icache_storage[ICACHE_NO_OF_SETS][ICACHE_NO_OF_WAYS].tag = tag_i;//checking for required data in a way 
-assign icache_hit = if2icache_req_i & imem_sel_i & icache_way_hit;//indicating cache hit if way_hit signal is HIGH along with other 2 conditions 
-assign icache_miss = if2icache_req_i & imem_sel_i & ~icache_way_hit;
-//testcode
+logic 				      icache_hit_set0;
+logic 				      icache_hit_set1;
+logic 				      icache_miss_set0;
+logic 				      icache_miss_set1;
+//test code
+
+  
 
 //assign icache_hit = if2icache_req_i & imem_sel_i & cache_hit_i;
 //assign icache_miss = if2icache_req_i & imem_sel_i & ~cache_hit_i;
+//test code
+assign icache_hit_set0 = if2icache_req_i & imem_sel_i & cache_hit_i & (icache_way == way0);
+assign icache_hit_set1 = if2icache_req_i & imem_sel_i & cache_hit_i & (icache_way == way1);
+assign icache_miss_set0 = if2icache_req_i & imem_sel_i & ~cache_hit_i & (icache_way == way0);
+assign icache_miss_set1 = if2icache_req_i & imem_sel_i & ~cache_hit_i & (icache_way == way1);
+//test code
 
 // Cache controller state machine
 always_ff @(posedge clk_i) begin
@@ -74,13 +82,28 @@ always_comb begin
     unique case (icache_state_ff)
         ICACHE_IDLE: begin
             // In case of miss, initiate main memory read cycle   
-            if (icache_miss) begin           
+            /**if (icache_miss) begin           
                 icache2mem_req_o = 1'b1;
                 icache_state_next = ICACHE_READ_MEMORY;
             end else begin
                 icache_state_next = ICACHE_IDLE;
             end
+        end**/
+          
+        //test code
+         ICACHE_IDLE: begin
+            // In case of miss, initiate main memory read cycle   
+            if (icache_miss_set0) begin           
+                icache2mem_req_o = 1'b0;
+                icache_state_next = ICACHE_READ_WAY0;
+            end 
+	   else if(icache_miss_set1) begin
+		            icache2mem_req_o = 1'b1;
+                icache_state_next = ICACHE_READ_MEMORY;
+            end
         end
+       //test code
+          
         ICACHE_READ_MEMORY: begin  
             // Response from main memory is received          
             if (mem2icache_ack_i) begin
