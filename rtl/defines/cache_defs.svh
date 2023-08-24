@@ -33,10 +33,22 @@ parameter ICACHE_IDX_BITS    = $clog2(ICACHE_NO_OF_SETS);
 parameter ICACHE_TAG_BITS    = ICACHE_ADDR_WIDTH - ICACHE_IDX_BITS - ICACHE_OFFSET_BITS; 
 parameter ICACHE_TAG_LSB     = ICACHE_ADDR_WIDTH - ICACHE_TAG_BITS; 
 
+//test code
+typedef enum{
+    way0 = 1'b0;
+    way1 = 1'b1;
+}type_icache_ways;
+//test code
+
 typedef enum {
     ICACHE_IDLE, 
-    ICACHE_READ_MISS_SET0,
-    ICACHE_READ_MISS_SET1,
+    
+    //test code
+    ICACHE_READ_WAY0,
+    ICACHE_READ_WAY1,
+    //test code
+    
+    //ICACHE_READ_MISS
     ICACHE_READ_MEMORY, 
     ICACHE_ALLOCATE 
 } type_icache_states_e; 
