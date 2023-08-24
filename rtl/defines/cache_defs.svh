@@ -35,7 +35,8 @@ parameter ICACHE_TAG_LSB     = ICACHE_ADDR_WIDTH - ICACHE_TAG_BITS;
 
 typedef enum {
     ICACHE_IDLE, 
-    ICACHE_READ_MISS, 
+    ICACHE_READ_MISS_SET0,
+    ICACHE_READ_MISS_SET1,
     ICACHE_READ_MEMORY, 
     ICACHE_ALLOCATE 
 } type_icache_states_e; 
