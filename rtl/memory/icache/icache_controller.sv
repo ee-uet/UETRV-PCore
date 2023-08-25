@@ -32,9 +32,6 @@ module icache_controller (
   input  wire                           mem2icache_ack_i,
   output logic                          icache2mem_req_o
 
-  //test code
-  input wire                            tag_i;//tag of instruction 
-  //test code
 );
 
 //test code
