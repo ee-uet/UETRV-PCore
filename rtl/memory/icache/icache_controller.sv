@@ -102,7 +102,7 @@ always_comb begin
         end
        //test code
           
-        ICACHE_READ_MEMORY: begin  
+        /**ICACHE_READ_MEMORY: begin  
             // Response from main memory is received          
             if (mem2icache_ack_i) begin
                 icache_state_next = ICACHE_IDLE;
@@ -112,7 +112,31 @@ always_comb begin
                 icache_state_next = ICACHE_READ_MEMORY;
                  icache2mem_req_o = 1'b1;
             end
+        end**/
+	    //test code
+	    ICACHE_READ_MEMORY: begin  
+            // Response from main memory is received          
+            if (mem2icache_ack_i) 
+	    begin
+                if(icache_way == way0) begin
+		icache_state_next = ICACHE_ALLOCATE;
+		end
+		if(icache_way == way1) begin
+		icache_state_next = ICACHE_ALLOCATE;
+		end
+		else begin
+		icache_state_next = ICACHE_IDLE;
+		end
+                cache_rw_o = 1'b1;
+                icache2mem_req_o = 1'b0;
+            end 
+
+		else begin
+                icache_state_next = ICACHE_READ_MEMORY;
+                icache2mem_req_o = 1'b1;
+            end
         end
+	    //test code
     endcase
 
     // Kill any ongoing main memory read request if:
