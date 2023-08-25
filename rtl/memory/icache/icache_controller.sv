@@ -77,8 +77,8 @@ always_comb begin
     cache_rw_o = '0;
     
     unique case (icache_state_ff)
-        ICACHE_IDLE: begin
-            // In case of miss, initiate main memory read cycle   
+        /**ICACHE_IDLE: begin
+            In case of miss, initiate main memory read cycle   
             /**if (icache_miss) begin           
                 icache2mem_req_o = 1'b1;
                 icache_state_next = ICACHE_READ_MEMORY;
@@ -95,7 +95,7 @@ always_comb begin
                 icache_state_next = ICACHE_READ_WAY1;
             end 
 		 else if(icache_miss_way1) begin
-		            icache2mem_req_o = 1'b1;
+		icache2mem_req_o = 1'b1;
                 icache_state_next = ICACHE_READ_MEMORY;
             end
         end
