@@ -55,10 +55,10 @@ logic 				      icache_miss_set1;
 //assign icache_hit = if2icache_req_i & imem_sel_i & cache_hit_i;
 //assign icache_miss = if2icache_req_i & imem_sel_i & ~cache_hit_i;
 //test code
-assign icache_hit_set0 = if2icache_req_i & imem_sel_i & cache_hit_i & (icache_way == way0);
-assign icache_hit_set1 = if2icache_req_i & imem_sel_i & cache_hit_i & (icache_way == way1);
-assign icache_miss_set0 = if2icache_req_i & imem_sel_i & ~cache_hit_i & (icache_way == way0);
-assign icache_miss_set1 = if2icache_req_i & imem_sel_i & ~cache_hit_i & (icache_way == way1);
+assign icache_hit_way0 = if2icache_req_i & imem_sel_i & cache_hit_i & (icache_way == way0);
+assign icache_hit_way1 = if2icache_req_i & imem_sel_i & cache_hit_i & (icache_way == way1);
+assign icache_miss_way0 = if2icache_req_i & imem_sel_i & ~cache_hit_i & (icache_way == way0);
+assign icache_miss_way1 = if2icache_req_i & imem_sel_i & ~cache_hit_i & (icache_way == way1);
 //test code
 
 // Cache controller state machine
@@ -90,11 +90,11 @@ always_comb begin
         //test code
          ICACHE_IDLE: begin
             // In case of miss, initiate main memory read cycle   
-            if (icache_miss_set0) begin           
+		 if (icache_miss_way0) begin           
                 icache2mem_req_o = 1'b0;
-                icache_state_next = ICACHE_READ_WAY0;
+                icache_state_next = ICACHE_READ_WAY1;
             end 
-	   else if(icache_miss_set1) begin
+		 else if(icache_miss_way1) begin
 		            icache2mem_req_o = 1'b1;
                 icache_state_next = ICACHE_READ_MEMORY;
             end
