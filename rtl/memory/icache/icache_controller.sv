@@ -98,7 +98,7 @@ always_comb begin
 		icache2mem_req_o = 1'b1;
                 icache_state_next = ICACHE_READ_MEMORY;
             end
-		 else icache_state_next = ICACHE_IDLE;
+		else icache_state_next = ICACHE_IDLE;
         end
        //test code
           
