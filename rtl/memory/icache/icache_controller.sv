@@ -44,10 +44,10 @@ logic                                 icache_hit;
 logic                                 icache_miss;
 
 //test code
-logic 				      icache_hit_set0;
-logic 				      icache_hit_set1;
-logic 				      icache_miss_set0;
-logic 				      icache_miss_set1;
+logic 				      icache_hit_way0;
+logic 				      icache_hit_way1;
+logic 				      icache_miss_way0;
+logic 				      icache_miss_way1;
 //test code
 
   
