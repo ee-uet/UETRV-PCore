@@ -157,13 +157,23 @@ always_comb begin
 end
 
 // Generate the response for the fetch stage
-always_comb begin
+/**always_comb begin
     if (icache_hit) begin
         icache2if_ack = 1;
     end else begin
         icache2if_ack = 0;
     end
+end**/
+//test code
+always_comb begin
+if(icache_hit_way0 | icache_hit_way1) begin
+icache2if_ack = 1'b1;
 end
+
+else begin
+icache2if_ack = 1'b0;
+end
+//test code
 
 always_ff@(posedge clk_i) begin
   if(~rst_ni) begin
