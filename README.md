@@ -11,10 +11,10 @@ UETRV_Pcore is a RISC-V based application class SoC integrating a 5-stage pipeli
 - Sv32 based MMU support and is capable of running Linux.
 - Cache size, TLB entries etc., are configurable.
 - Intergated PLIC, CLINT, uart, spi peripherals. 
-- Uses RISOF framework to run architecture compatibility tests.
+- Uses RISCOF framework to run architecture compatibility tests.
 
 ### System Design Overview
-The UETRV_Pcore is an applicaion class processor capable of running Linux. A simplified 5-stage pipelined block diagram is shown below. The M-extension is implemented as a coprocessor while memory-management-unit (MMU) module is shared by instruction and data memory (alternatively called load-store-unit (LSU)) interfaces of the pipeline. Specifically, the page-table-walker (PTW) of the MMU is shared and there are separate TLBs (translation look aside buffers) for instruction and data memory interfaces. The A-extension is implemented as part of the LSU module.
+The UETRV_Pcore is an application class processor capable of running Linux. A simplified 5-stage pipelined block diagram is shown below. The M-extension is implemented as a coprocessor while memory-management-unit (MMU) module is shared by instruction and data memory (alternatively called load-store-unit (LSU)) interfaces of the pipeline. Specifically, the page-table-walker (PTW) of the MMU is shared and there are separate TLBs (translation look aside buffers) for instruction and data memory interfaces. The A-extension is implemented as part of the LSU module.
 
 ![pipeline](./docs/images/pipeline.png)
 
@@ -85,14 +85,14 @@ Using the same procedure as outlined above, we can simulate the Linux bootup usi
 During booting process, the processor starts executing zero-level bootloader from `bmem` and then jumps to first-level bootloader (OpenSBI), which after necessary initializations, hands the control over to the kernel.
 
 ### Booting with Verilator
-For Verilator based simulation one configurtion is required. Open the file `rtl/defines/pcore_config_defs.svh` and uncomment the line \` `define RTL_SIMULATION 1`. Now run the following command to extract the `imem.txt` to `./sdk/example-linux/` and simulate the Linux booting process using this pre-built image. 
+For Verilator based simulation, one configurtion is required. Open the file `rtl/defines/pcore_config_defs.svh` and uncomment the line \` `define RTL_SIMULATION 1`. Now run the following command to extract the `imem.txt` to `./sdk/example-linux/` and simulate the Linux booting process using this pre-built image. 
 
     make sim-verilate-linux
 
 The output is logged to the `uart_logdata.log` file (a copy of this log is available in `./sdk/`). 
 
 ### Booting on FPGA Board 
-The processor is tested using Nexys-A7 (100T) FPGA board and Vivado 2019. Type in the following command to open the project in Vivado 2019
+The processor is tested using Nexys-A7 (100T) FPGA board and Vivado 2019. Type the following command to open the project in Vivado 2019
 ```
 vivado PCore_FPGA/PCore_FPGA.xpr
 ```
