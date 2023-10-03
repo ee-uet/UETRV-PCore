@@ -14,7 +14,6 @@ transcript
 *.mpf_new
 *.log
 sim/
-build/
 transcript
 *_work/
 sim_build/
