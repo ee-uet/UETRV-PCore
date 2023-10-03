@@ -64,8 +64,8 @@
 `define BMEM_SEL_ADDR_HIGH           31
 `define BMEM_SEL_ADDR_LOW            12
 
-`define DRAM                         1
-//`define RTL_SIMULATION               1 
+//`define DRAM                         1
+`define RTL_SIMULATION               1 
 
 // Pipeline stage definitions
 `define IF2ID_PIPELINE_STAGE         1
@@ -81,7 +81,7 @@
 `define UART_REG_OFFSET_WIDTH        12
 `define PLIC_REG_OFFSET_WIDTH        24
 `define CLINT_ADDR_WIDTH             16
-`define CLINT_PRESCALER              7'd10
+`define CLINT_PRESCALER              7'd9
 
 typedef enum logic [`CLINT_ADDR_WIDTH-1:0] {
     MTIME_LOW_R     = 16'hbff8,

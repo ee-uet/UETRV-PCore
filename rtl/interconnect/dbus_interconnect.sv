@@ -30,7 +30,6 @@ module dbus_interconnect (
     input wire type_peri2dbus_s                    clint2dbus_i,             // Signals from CLINT module
     input wire type_peri2dbus_s                    plic2dbus_i,              // Signals from PLIC module
     input wire type_peri2dbus_s                    bmem2dbus_i,              // Signals from DATA memory 
-    input wire type_peri2dbus_s                    uartns2dbus_i,            // Signals from UART module
     input wire type_peri2dbus_s                    spi2dbus_i,               // Signals from SPI module
 
     output logic                                   dmem_sel_o,               // DATA memory selection line
@@ -38,7 +37,6 @@ module dbus_interconnect (
     output logic                                   clint_sel_o,              // CLINT selection line
     output logic                                   plic_sel_o,               // PLIC selection line
     output logic                                   bmem_sel_o,               // Boot memory selection line
-    output logic                                   uart_ns_sel_o,            // UART selection line
     output logic                                   spi_sel_o,                // SPI selection line
 
     output type_dbus2peri_s                        dbus2peri_o               // Signals from dbus to peripheral 
@@ -59,7 +57,6 @@ logic                                 uart_addr_match;
 logic                                 clint_addr_match;
 logic                                 plic_addr_match;
 logic                                 bmem_addr_match;
-logic                                 uart_ns_addr_match;
 logic                                 spi_addr_match;
 
 logic                                 dmem_sel;
@@ -67,7 +64,6 @@ logic                                 uart_sel;
 logic                                 clint_sel;
 logic                                 plic_sel;
 logic                                 bmem_sel;
-logic                                 uart_ns_sel;
 logic                                 spi_sel;
 
 // Assign input signals
@@ -86,7 +82,6 @@ assign bmem_addr_match  = (dbus_addr[`BMEM_SEL_ADDR_HIGH:`BMEM_SEL_ADDR_LOW] == 
 assign uart_addr_match  = (dbus_addr[`PERI_SEL_ADDR_HIGH:`PERI_SEL_ADDR_LOW] == `UART_ADDR_MATCH);
 assign plic_addr_match  = (dbus_addr[`PERI_SEL_ADDR_HIGH:`PERI_SEL_ADDR_LOW] == `PLIC_ADDR_MATCH);
 assign clint_addr_match = (dbus_addr[`PERI_SEL_ADDR_HIGH:`PERI_SEL_ADDR_LOW] == `CLINT_ADDR_MATCH);
-assign uart_ns_addr_match = (dbus_addr[`PERI_SEL_ADDR_HIGH:`PERI_SEL_ADDR_LOW] == `UART_NS_ADDR_MATCH);
 assign spi_addr_match   = (dbus_addr[`PERI_SEL_ADDR_HIGH:`PERI_SEL_ADDR_LOW] == `SPI_ADDR_MATCH);
 
 //=================================== Store operation =====================================//
@@ -150,7 +145,6 @@ always_comb begin
     plic_sel  = 1'b0;
     uart_sel  = 1'b0;
     bmem_sel  = 1'b0;
-    uart_ns_sel = 1'b0;
     spi_sel   = 1'b0;
     
     if ((dmem_addr_match & dbus_req) | dcache_flush_i) begin
@@ -161,8 +155,6 @@ always_comb begin
         plic_sel = 1'b1;
     end else if (uart_addr_match & dbus_req) begin
         uart_sel  = 1'b1;
-    end else if (uart_ns_addr_match & dbus_req) begin
-        uart_ns_sel  = 1'b1;
     end else if (spi_addr_match & dbus_req) begin
         spi_sel  = 1'b1;
     end else if (bmem_addr_match & dbus_req) begin
@@ -184,7 +176,6 @@ assign uart_sel_o  = uart_sel;
 assign clint_sel_o = clint_sel;
 assign plic_sel_o  = plic_sel;
 assign bmem_sel_o  = bmem_sel;
-assign uart_ns_sel_o  = uart_ns_sel;
 assign spi_sel_o   = spi_sel;
 
 // Mux for the peripheral module read data
@@ -192,7 +183,6 @@ assign dbus2lsu_o = dmem_sel  ? type_dbus2lsu_s'(dcache2dbus_i)
                   : clint_sel ? type_dbus2lsu_s'(clint2dbus_i)
                   : plic_sel  ? type_dbus2lsu_s'(plic2dbus_i)
                   : uart_sel  ? type_dbus2lsu_s'(uart2dbus_i)  
-                  : uart_ns_sel ? type_dbus2lsu_s'(uartns2dbus_i)
                   : spi_sel   ? type_dbus2lsu_s'(spi2dbus_i)
                   : bmem_sel  ? type_dbus2lsu_s'(bmem2dbus_i)  
                   : '0;

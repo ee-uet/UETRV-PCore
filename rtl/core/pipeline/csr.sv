@@ -1241,8 +1241,7 @@ end
 // Signals for machine mode exception/interrupt response generation
 assign m_mode_global_ie = ((priv_mode_ff == PRIV_MODE_M) & csr_mstatus_ff.mie) | (priv_mode_ff != PRIV_MODE_M) ; //// to be done
 assign m_mode_irq_req   = irq_req && ~irq_delegated_req && m_mode_global_ie ;
-// assign ms_mode_ecall_req = ((exc_code == EXC_CODE_ECALL_SMODE) || (exc_code == EXC_CODE_ECALL_MMODE));
-assign m_mode_exc_req   = exc_req && ~exc_delegated_req; // ms_mode_ecall_req;
+assign m_mode_exc_req   = (exc_req && ~exc_delegated_req) || (exc_req && exc_delegated_req && (priv_mode_ff == PRIV_MODE_M));
 assign mret_pc_req      = mret_req & ~m_mode_exc_req & ~m_mode_irq_req;
 
 // New pc for machine mode
@@ -1270,7 +1269,7 @@ assign exc_delegated_req = exc_req & csr_medeleg_ff[exc_code];
 assign s_mode_enabled   = (priv_mode_ff == PRIV_MODE_S);
 assign u_mode_ecall_req = (exc_code == EXC_CODE_ECALL_UMODE);
 assign break_exc_req    = (exc_code == EXC_CODE_BREAKPOINT);
-assign s_mode_exc_req   = exc_delegated_req; //(break_exc_req | pf_exc_req | u_mode_ecall_req) & 
+assign s_mode_exc_req   = exc_delegated_req && (priv_mode_ff != PRIV_MODE_M); //(break_exc_req | pf_exc_req | u_mode_ecall_req) & 
 
 
 assign s_mode_global_ie = ((priv_mode_ff == PRIV_MODE_S) & csr_mstatus_ff.sie) | (priv_mode_ff == PRIV_MODE_U);

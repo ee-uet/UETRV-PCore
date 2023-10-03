@@ -53,9 +53,9 @@ module pipeline_top (
    input wire type_clint2csr_s          clint2csr_i,
 
    // IRQ interface
-   input wire type_pipe2csr_s           core2pipe_i,
+   input wire type_pipe2csr_s           core2pipe_i
 
-   input wire type_debug_port_s         debug_port_i 
+ //  input wire type_debug_port_s         debug_port_i 
 );
 
 
@@ -221,8 +221,8 @@ decode decode_module (
     .id2exe_ctrl_o              (id2exe_ctrl),
     .id2exe_data_o              (id2exe_data),
     .csr2id_fb_i                (csr2id_fb),
-    .wrb2id_fb_i                (wrb2id_fb),
-    .debug_port_i               (debug_port_i)
+    .wrb2id_fb_i                (wrb2id_fb)
+   // .debug_port_i               (debug_port_i)
 );
 
 

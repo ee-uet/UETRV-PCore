@@ -30,12 +30,6 @@ module soc_top (
     input   logic                        irq_ext_i,
     input   logic                        irq_soft_i,
     
-    // Uart interface IO signals
-    input   logic                        uart_rxd_i,
-    output                               uart_txd_o,
-
-    input   logic                        uart_ns_rxd_i,
-    output                               uart_ns_txd_o,
 
     // SPI interface signals
     // SPI bus interface signals including clock, chip_select, MOSI and MISO  
@@ -54,7 +48,11 @@ module soc_top (
     input  wire  [127:0]                 data_i,
 `endif
 
-    input wire type_debug_port_s         debug_port_i
+  //  input wire type_debug_port_s         debug_port_i,
+
+    // Uart interface IO signals
+    input   logic                        uart_rxd_i,
+    output                               uart_txd_o
 );
 
 `ifdef DRAM
@@ -92,14 +90,11 @@ logic                                   uart_sel;
 logic                                   clint_sel;
 logic                                   plic_sel;
 logic                                   bmem_sel;
-logic                                   uart_ns_sel;
 logic                                   spi_sel;
 
 logic                                   dcache_flush;
 logic                                   lsu_flush;
-
-//logic                                   uart_ns_rxd_i;
-//logic                                   uart_ns_txd_o; 
+ 
 
 // IRQ ignals
 logic                                   irq_uart;
@@ -115,7 +110,6 @@ type_peri2dbus_s                        uart2dbus;
 type_peri2dbus_s                        clint2dbus;
 type_peri2dbus_s                        plic2dbus; 
 type_peri2dbus_s                        bmem2dbus;              // Signals from boot memory 
-type_peri2dbus_s                        uartns2dbus;
 type_peri2dbus_s                        spi2dbus;
 
 
@@ -147,9 +141,9 @@ core_top core_top_module (
     .clint2csr_i         (clint2csr),
 
     // IRQ lines
-    .core2pipe_i         (core2pipe),
-
-    .debug_port_i        (debug_port_i)
+    .core2pipe_i         (core2pipe)
+    
+    // , .debug_port_i        (debug_port_i)
 );
 
 //==================================  Data bus interconnect ==================================//
@@ -168,7 +162,6 @@ dbus_interconnect dbus_interconnect_module (
     .clint_sel_o           (clint_sel), 
     .plic_sel_o            (plic_sel),
     .bmem_sel_o            (bmem_sel), 
-    .uart_ns_sel_o         (uart_ns_sel),
     .spi_sel_o             (spi_sel),
 
     // Signals from dbus to peripherals
@@ -180,7 +173,6 @@ dbus_interconnect dbus_interconnect_module (
     .clint2dbus_i          (clint2dbus),
     .plic2dbus_i           (plic2dbus),
     .bmem2dbus_i           (bmem2dbus),
-    .uartns2dbus_i         (uartns2dbus),
     .spi2dbus_i            (spi2dbus)
 );
 
@@ -196,19 +188,6 @@ uart uart_module (
     .uart_irq_o            (irq_uart),
     .uart_rxd_i            (uart_rxd_i),
     .uart_txd_o            (uart_txd_o)
-);
-
-uart_ns uart_ns_module (
-    .rst_n                 (rst_n    ),
-    .clk                   (clk      ),
-
-    // Data bus and IO interface signals 
-    .dbus2uart_i           (dbus2peri),  // This should be updated after the WB/AHBL bus interface is used
-    .uart_ns_sel_i         (uart_ns_sel),
-    .uart2dbus_o           (uartns2dbus),
-    .uart_ns_irq_o         (irq_ns_uart),
-    .uart_ns_rxd_i         (uart_ns_rxd_i),
-    .uart_ns_txd_o         (uart_ns_txd_o)
 );
 
 clint clint_module (
@@ -233,7 +212,7 @@ plic_top plic_top_module (
     .plic_sel_i            (plic_sel),
     .plic2dbus_o           (plic2dbus),
     .edge_select_i         (PLIC_SOURCE_COUNT'(0)),
-    .irq_src_i             ({irq_ns_uart, irq_uart}),
+    .irq_src_i             ({'0, irq_uart}),
     .irq_targets_o         ({irq_plic_target_1, irq_plic_target_0})
 );
 

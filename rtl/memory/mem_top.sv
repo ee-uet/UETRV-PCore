@@ -324,18 +324,19 @@ timeout_next = '0;
        end
 
        MEM_ARBITER_DKILL: begin
-           if (mem2cache.ack) begin
+           if (mem2cache.ack || timeout_flag) begin
                mem2dcache.r_data = '0;
                mem2dcache.ack    = 1'b0;
                mem_arbiter_state_next = MEM_ARBITER_IDLE;
-           end 
+           end else begin
+               timeout_next = timeout_ff + 1;
+           end   
        end
 
       default: begin     end
    endcase
  
 end
-`ifndef COMPLIANCE
 
 `ifndef DRAM
 //============================= Main memory interface =============================//
@@ -353,19 +354,6 @@ main_mem main_mem_module (
 assign cache2dram_o = cache2mem;
 assign mem2cache = dram2cache_i;
 `endif
-
-`else
-main_mem main_mem_module (
-    .rst_n                  (rst_n),
-    .clk                    (clk),
-    
-    // Main memory interface signals 
-    .cache2mem_i            (cache2mem),
-    .mem2cache_o            (mem2cache)
-
-);
-`endif
-
 
 // Output signal assignments
 assign icache2if_o  = bmem2if.ack ? bmem2if : icache2if; 

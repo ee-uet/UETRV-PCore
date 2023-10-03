@@ -8,7 +8,6 @@
 // Author: Shehzeen Malik, UET Lahore
 // Date: 13.7.2022
 
-
 `ifndef VERILATOR
 `include "../../defines/uart_defs.svh"
 `else
@@ -35,6 +34,7 @@ module uart (
     output logic                                   uart_txd_o
 );
 
+`define                                 FIFOSIZE        8
 
 // Signal definitions for Dbus interface
 logic [3:0]                             reg_addr;
@@ -52,7 +52,7 @@ logic                                   frame_err;
 logic                                   rx_empty;
 
 logic [`UART_DATA_SIZE-1:0]              uart_rx_byte;
-logic [`UART_DATA_SIZE-1:0] 	            uart_tx_byte;
+logic [`UART_DATA_SIZE-1:0] 	        uart_tx_byte;
 logic                                   two_stop_bits;
 
 logic [`UART_DATA_SIZE-1:0]              uart_reg_rx_ff, uart_reg_rx_next;	
@@ -69,7 +69,15 @@ logic                                   tx_reg_wr_flag;
 logic                                   baud_reg_wr_flag;
 logic                                   txctrl_reg_wr_flag;
 logic                                   rxctrl_reg_wr_flag;
-logic                                   int_mask_reg_wr_flag; 
+logic                                   int_mask_reg_wr_flag;
+
+logic [7:0] rx_fifo[0:`FIFOSIZE];
+logic [7:0] r_ptr = 0;
+logic [7:0] fifo_out;
+logic fifo_not_empty;
+logic fifo_full;
+logic rx_data_read;
+logic rx_data_write; 
 	
 	
 //================================= UART register read operations ==================================//
@@ -86,10 +94,10 @@ always_comb begin
                                   rx_empty   = 1'b1;
                               end
             // UART baud rate configuration register
-            UART_BAUD_R     : reg_r_data = {24'b0, uart_reg_baud_ff};
+            UART_BAUD_R     : reg_r_data = {16'b0, uart_reg_baud_ff};
 
             // UART control and status registers
-            UART_STATUS_R   : reg_r_data = {{`XLEN-`UART_DATA_SIZE{1'b0}}, uart_reg_status_ff};
+            UART_STATUS_R   : reg_r_data = {12'b0, uart_reg_status_ff};
             UART_TXCTRL_R   : reg_r_data = {12'b0, uart_reg_txctrl_ff};
             UART_RXCTRL_R   : reg_r_data = {12'b0, uart_reg_rxctrl_ff};
  
@@ -143,8 +151,8 @@ end
 
 always_comb begin 
 
-    if (rx_valid) begin
-        uart_reg_rx_next = uart_rx_byte; 
+    if (fifo_not_empty) begin
+        uart_reg_rx_next = fifo_out; 
     end else begin                         
         uart_reg_rx_next = uart_reg_rx_ff; 
     end       
@@ -179,13 +187,14 @@ always_ff @(negedge rst_n, posedge clk) begin
     if (~rst_n) begin
         uart_reg_baud_ff <= 'h10;        
     end else begin
-        uart_reg_baud_ff <= 'h1a;  //uart_reg_baud_next;
+//        uart_reg_baud_ff <= uart_reg_baud_next;
+        uart_reg_baud_ff <= 'h0a;
     end
 end
 
 always_comb begin 
     if (baud_reg_wr_flag) begin
-        uart_reg_baud_next = reg_w_data[7:0];         
+        uart_reg_baud_next = reg_w_data[15:0];         
     end else begin                         
         uart_reg_baud_next = uart_reg_baud_ff;         
     end       
@@ -234,6 +243,7 @@ end
 always_ff @(negedge rst_n, posedge clk) begin
     if (~rst_n) begin
         uart_reg_status_ff <= '0;        
+
     end else begin
         uart_reg_status_ff <= uart_reg_status_next;
     end
@@ -241,21 +251,14 @@ end
 
 always_comb begin 
     uart_reg_status_next = uart_reg_status_ff;
+    
+    if (fifo_full)  
+        uart_reg_status_next[1] = 1'b1;
+    else            
+        uart_reg_status_next[1] = fifo_not_empty;
+    
+    uart_reg_status_next[0] = tx_ready;   
 
-    case (1'b1)
-        frame_err          : begin
-         //   uart_reg_status_next[4] = 1'b1;
-        end
-        rx_valid           : begin
-            uart_reg_status_next[1] = 1'b1;
-        end
-        rx_empty           : begin
-            uart_reg_status_next[1] = 1'b0; 
-        end
-        default            : begin
-            uart_reg_status_next[0] = tx_ready; 
-        end
-    endcase      
 end
 
 // Update UART interrupt mask register 
@@ -282,7 +285,7 @@ type_peri2dbus_s                      uart2dbus_ff;
 
 // Signal interface to Wishbone bus
 assign reg_addr   = type_uart_regs_e'(dbus2uart_i.addr[5:2]);
-assign reg_w_data = dbus2uart_i.w_data;
+assign reg_w_data = dbus2uart_i.w_data[15:0];
 assign reg_rd_req = !dbus2uart_i.w_en && dbus2uart_i.req && uart_sel_i;
 assign reg_wr_req = dbus2uart_i.w_en  && dbus2uart_i.req && uart_sel_i;
 
@@ -333,6 +336,49 @@ uart_rx uart_rx_module (
     .valid_o                    (rx_valid),
     .frame_err_o                (frame_err)
 );
-    
+
+
+
+
+
+always_comb begin
+    fifo_out        = rx_fifo[r_ptr];
+    fifo_not_empty  = (r_ptr != 8'h0);
+    fifo_full       = (r_ptr == `FIFOSIZE-1);
+    rx_data_read    = reg_rd_req & ~uart2dbus_ff.ack & (reg_addr == UART_RXDATA_R);
+    rx_data_write   = rx_valid;
+end   
+
+int i, k;
+
+always_ff @(negedge rst_n, posedge clk) begin
+    if (~rst_n) begin
+        r_ptr    <= '0;
+         for (k = 0; k <= `FIFOSIZE; k++)
+            rx_fifo[k] <= '0;
+
+    end else if (rx_data_write & ~rx_data_read) begin
+    // if write only, r_ptr += 1
+        for (i = 2; i <= `FIFOSIZE; i++) 
+            rx_fifo[i]  <= rx_fifo[i-1];
+
+        rx_fifo[1]  <= uart_rx_byte;
+                    
+        if (r_ptr < `FIFOSIZE)             
+            r_ptr <= r_ptr + 8'h1;
+    end else if (~rx_data_write &  rx_data_read) begin
+    // if read only,  r_ptr -= 1
+        if (r_ptr > 0)                     
+            r_ptr <= r_ptr - 8'h1;
+    end else if (rx_data_write & rx_data_read) begin
+    // if both,  no change to r_ptr
+        for (i = 2; i <= `FIFOSIZE; i++) 
+            rx_fifo[i]  <= rx_fifo[i-1];
+
+        rx_fifo[1]  <= uart_rx_byte;
+
+    end
+end
+   
     
 endmodule	

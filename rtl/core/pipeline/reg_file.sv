@@ -27,9 +27,9 @@ module reg_file (
 
     input   logic                      id2rf_rd_wr_req_i,   // write request
     input   logic [`RF_AWIDTH-1:0]     id2rf_rd_addr_i,     // rd write address
-    input   logic [`XLEN-1:0]          id2rf_rd_data_i,     // rd write data
+    input   logic [`XLEN-1:0]          id2rf_rd_data_i     // rd write data
 
-    input wire type_debug_port_s       debug_port_i
+ //   input wire type_debug_port_s       debug_port_i
 );
 
 // register file instantiation
@@ -61,9 +61,9 @@ always_ff @( negedge clk) begin
         register_file[id2rf_rd_addr_i] <= id2rf_rd_data_i;
     end
 
-    if (debug_port_i.reg_wr_req) begin
-        register_file[debug_port_i.reg_addr] <= debug_port_i.reg_data;
-    end
+  //  if (debug_port_i.reg_wr_req) begin
+  //      register_file[debug_port_i.reg_addr] <= debug_port_i.reg_data;
+  //  end
 end
 
 

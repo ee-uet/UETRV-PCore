@@ -43,9 +43,9 @@ module core_top (
    input wire type_clint2csr_s          clint2csr_i,
 
    // IRQ interface
-   input wire type_pipe2csr_s           core2pipe_i,
+   input wire type_pipe2csr_s           core2pipe_i
 
-   input wire type_debug_port_s         debug_port_i 
+ //  input wire type_debug_port_s         debug_port_i 
 );
 
 // Local signals for MMU interface
@@ -81,9 +81,9 @@ pipeline_top pipeline_top_module (
     .clint2csr_i         (clint2csr_i),
 
     // IRQ lines
-    .core2pipe_i         (core2pipe_i),
+    .core2pipe_i         (core2pipe_i)
 
-    .debug_port_i        (debug_port_i)
+   // .debug_port_i        (debug_port_i)
 );
 
 //==================================  MMU for virtual memory ==================================//

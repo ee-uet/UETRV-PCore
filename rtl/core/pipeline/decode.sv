@@ -31,9 +31,9 @@ module decode (
     input wire type_csr2id_fb_s               csr2id_fb_i,
 
     // Writeback <---> Decode feedback interface
-    input wire type_wrb2id_fb_s               wrb2id_fb_i,
+    input wire type_wrb2id_fb_s               wrb2id_fb_i
 
-    input wire type_debug_port_s              debug_port_i
+  //  input wire type_debug_port_s              debug_port_i
 );
 
 //============================= Local signals and their assignments =============================//
@@ -499,8 +499,8 @@ reg_file rf_module (
    .rf2id_rs2_data_o     (rf2id_rs2_data),
    .id2rf_rd_wr_req_i    (wrb2id_fb_i.rd_wr_req),
    .id2rf_rd_addr_i      (wrb2id_fb_i.rd_addr ),
-   .id2rf_rd_data_i      (wrb2id_fb_i.rd_data),
-   .debug_port_i         (debug_port_i)        
+   .id2rf_rd_data_i      (wrb2id_fb_i.rd_data)
+ //  .debug_port_i         (debug_port_i)        
 );
 
 
