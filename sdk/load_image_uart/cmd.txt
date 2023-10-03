@@ -1,1 +1,0 @@
-python3 serial_sendfile.py 4 imem.bin
