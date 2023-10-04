@@ -13,17 +13,16 @@ reg [1023:0]              max_cycles;
 reg [1023:0]              main_time = '0;
 
 soc_top dut (
-.clk                     (clk),
-.rst_n                   (reset),
-.irq_ext_i               (irq_ext),
-.irq_soft_i              (irq_soft),
-.uart_rxd_i              (uart_rx),
-.uart_txd_o              (uart_tx),
-.spi_clk_o               (spi_clk),
-.spi_cs_o                (spi_cs),
-.spi_miso_i              (spi_miso),
-.spi_mosi_o              (spi_mosi),
-.debug_port_i            ()
+  .clk                     (clk),
+  .rst_n                   (reset),
+  .irq_ext_i               (irq_ext),
+  .irq_soft_i              (irq_soft),
+  .uart_rxd_i              (uart_rx),
+  .uart_txd_o              (uart_tx),
+  .spi_clk_o               (spi_clk),
+  .spi_cs_o                (spi_cs),
+  .spi_miso_i              (spi_miso),
+  .spi_mosi_o              (spi_mosi)
 ); 
 
 initial begin
