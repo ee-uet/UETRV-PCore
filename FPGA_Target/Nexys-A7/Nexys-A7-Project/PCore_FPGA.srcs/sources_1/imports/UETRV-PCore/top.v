@@ -43,10 +43,7 @@ input ck_rst,
   output reg   [7:0] r_an,
  
   input uart_rxd_in,
-  output uart_txd_out,
-
-  input uart_ns_rxd_in,
-  output uart_ns_txd_out
+  output uart_txd_out
 );
 
    wire clk_20;
@@ -61,7 +58,7 @@ input ck_rst,
       .CLKIN1_PERIOD(10.0),      // Input clock period in ns to ps resolution (i.e. 33.333 is 30 MHz).
       // CLKOUT0_DIVIDE - CLKOUT5_DIVIDE: Divide amount for each CLKOUT (1-128)
       .CLKOUT0_DIVIDE(4),
-      .CLKOUT1_DIVIDE(25),
+      .CLKOUT1_DIVIDE(32),
       .CLKOUT2_DIVIDE(1),
       .CLKOUT3_DIVIDE(1),
       .CLKOUT4_DIVIDE(1),
@@ -128,10 +125,7 @@ soc_top st(
     
     // Uart interface IO signals
     .uart_rxd_i(uart_rxd_in),
-    .uart_txd_o(uart_txd_out),
-
-    .uart_ns_rxd_i(uart_ns_rxd_in),
-    .uart_ns_txd_o(uart_ns_txd_out)
+    .uart_txd_o(uart_txd_out)
 
 );   
 
@@ -292,7 +286,7 @@ wb2axi  adapter
     wire MY_CLK;
     
     always@(posedge clk_20) begin
-        /*    _7seg_disp <= {st.core_top_module.pipeline_top_module.csr_module.csr_pc_ff[31:28],
+           /* _7seg_disp <= { st.core_top_module.pipeline_top_module.csr_module.csr_pc_ff[31:28],
                            1'b0,
                            st.mem_top_module.mem_arbiter_state_ff,  
                            2'b0,
@@ -302,10 +296,10 @@ wb2axi  adapter
                            st.core_top_module.pipeline_top_module.fetch_module.kill_req,
                            st.core_top_module.pipeline_top_module.fetch_module.if2icache_o.icache_flush,
                            st.core_top_module.pipeline_top_module.lsu_module.ld_st_addr[31:28], 
-                           st.core_top_module.pipeline_top_module.csr_module.csr_pc_ff[11:0]};
-                           */
-        //  _7seg_disp = st.core_top_module.pipeline_top_module.fetch_module.pc_ff;
-          _7seg_disp = st.clint_module.mtimecmp_ff[31:0];
+                           st.core_top_module.pipeline_top_module.csr_module.csr_pc_ff[11:0]}; */
+                           
+          _7seg_disp = st.core_top_module.pipeline_top_module.fetch_module.pc_ff;
+        //  _7seg_disp <= st.clint_module.mtime_ff[31:0];
     end
                     
     always @(posedge clk_20) begin

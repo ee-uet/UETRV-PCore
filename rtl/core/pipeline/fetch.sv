@@ -61,6 +61,7 @@ type_fwd2if_s                        fwd2if;
 // Exception related signals
 type_exc_code_e                      exc_code_next, exc_code_ff;
 logic                                exc_req_next, exc_req_ff;
+logic                                irq_req_next, irq_req_ff;
 logic                                kill_req;
 
 // Imem address generation
@@ -81,7 +82,7 @@ assign fwd2if    = fwd2if_i;
 assign pc_misaligned = pc_ff[1] | pc_ff[0];
 
 // Stall signal for IF stage
-assign if_stall = fwd2if.if_stall | (~icache2if.ack);
+assign if_stall = fwd2if.if_stall | (~icache2if.ack) | irq_req_next;
 
 // PC update state machine
 always_ff @(posedge clk) begin
@@ -145,7 +146,26 @@ exc_code_next  = exc_code_ff;
 end
 
 
-// Kill request to kill an on going reqyest
+always_ff @(posedge clk) begin
+    if (~rst_n) begin
+        irq_req_ff  <= '0; 
+    end else begin
+        irq_req_ff  <= irq_req_next;
+    end
+end
+
+always_comb begin
+irq_req_next   = irq_req_ff;
+   
+    if (fwd2if.csr_new_pc_req | fwd2if.exe_new_pc_req | (~fwd2if.if_stall & irq_req_ff)) begin    // 
+        irq_req_next  = 1'b0;
+    end else if (csr2if_fb.irq_req & ~irq_req_ff) begin
+        irq_req_next   = 1'b1;
+    end 
+
+end
+
+// Kill request to kill an on going request
 assign kill_req = fwd2if.csr_new_pc_req | fwd2if.exe_new_pc_req;
 
 // Update the outputs to MMU and Imem modules
@@ -160,13 +180,14 @@ assign if2icache_o.req_kill     = kill_req;
 assign if2icache_o.icache_flush = csr2if_fb.icache_flush;   
 
 // Update the outputs to ID stage
-assign if2id_data.instr         = icache2if.ack ? icache2if.r_data : `INSTR_NOP;
+assign if2id_data.instr         = ((~icache2if.ack) | irq_req_next) ? `INSTR_NOP : icache2if.r_data;
 assign if2id_data.pc            = pc_ff;
 assign if2id_data.pc_next       = pc_next;
 assign if2id_data.instr_flushed = 1'b0;
 
 assign if2id_data.exc_code      = exc_code_next;
 assign if2id_ctrl.exc_req       = exc_req_next;
+assign if2id_ctrl.irq_req       = irq_req_next;
 
 // Generate stall request to forward_stall module
 assign if2fwd_stall_o           = if2mmu.i_req & ~icache2if.ack;

@@ -305,7 +305,8 @@ assign exe2lsu_ctrl.rd_wr_req  = (|id2exe_ctrl.csr_ops)
 
 // Assign the output control signals for CSR   
 assign exe2csr_ctrl.csr_ops    = id2exe_ctrl.csr_ops;
-assign exe2csr_ctrl.exc_req    = id2exe_ctrl.exc_req;                      
+assign exe2csr_ctrl.exc_req    = id2exe_ctrl.exc_req;
+assign exe2csr_ctrl.irq_req    = id2exe_ctrl.irq_req;                      
 assign exe2csr_ctrl.sys_ops    = id2exe_ctrl.sys_ops;  
 assign exe2csr_ctrl.fence_i_req = fence_i_req;                     
 

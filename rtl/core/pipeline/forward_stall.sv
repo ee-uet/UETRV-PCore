@@ -145,7 +145,6 @@ assign fwd2ptop.pipe_fwd_wrb_rs1   = fwd2exe.fwd_wrb_rs1;
 assign fwd2ptop.pipe_fwd_wrb_rs2   = fwd2exe.fwd_wrb_rs2;
 
 assign fwd2csr.pipe_stall          = lsu_mul_stall_ff;
-assign fwd2csr.irq_stall           = if_id_exe_stall | lsu_mul_stall_ff;  
 
 // Generate different PC update or stall signals for IF stage
 assign fwd2if.exe_new_pc_req = exe_new_pc_req & (~csr2fwd.new_pc_req);

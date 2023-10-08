@@ -18,7 +18,7 @@
 parameter ICACHE_ADDR_WIDTH  = `XLEN;
 parameter ICACHE_DATA_WIDTH  = `XLEN;
 parameter ICACHE_LINE_WIDTH  = 128;            // Line width is in bits
-parameter ICACHE_NO_OF_SETS  = 16;
+parameter ICACHE_NO_OF_SETS  = 256;
 
 parameter ICACHE_OFFSET_BITS = $clog2(ICACHE_LINE_WIDTH/8);
 parameter ICACHE_IDX_BITS    = $clog2(ICACHE_NO_OF_SETS); 
@@ -70,7 +70,7 @@ typedef struct packed {
 parameter DCACHE_ADDR_WIDTH  = `XLEN;
 parameter DCACHE_DATA_WIDTH  = `XLEN;
 parameter DCACHE_LINE_WIDTH  = 128;            // Line width is in bits
-parameter DCACHE_NO_OF_SETS  = 8;
+parameter DCACHE_NO_OF_SETS  = 256;
 
 parameter DCACHE_OFFSET_BITS = $clog2(DCACHE_LINE_WIDTH/8);
 parameter DCACHE_IDX_BITS    = $clog2(DCACHE_NO_OF_SETS); 

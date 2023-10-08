@@ -65,7 +65,7 @@ type_exe2lsu_data_s          exe2lsu_data;
 type_exe2lsu_ctrl_s          exe2lsu_ctrl;
 type_lsu2wrb_data_s          lsu2wrb_data;
 type_lsu2wrb_ctrl_s          lsu2wrb_ctrl;
-type_lsu2dbus_s              lsu2dbus_ff, lsu2dbus_next;
+type_lsu2dbus_s              lsu2dbus;
 type_dbus2lsu_s              dbus2lsu;
 type_lsu2csr_data_s          lsu2csr_data;
 type_lsu2csr_ctrl_s          lsu2csr_ctrl;
@@ -120,7 +120,7 @@ always_comb begin
    case (ld_ops)
       LD_OPS_LB,
       LD_OPS_LBU : begin
-         case (lsu2dbus_ff.addr[1:0]) 
+         case (lsu2dbus.addr[1:0]) 
             2'b00 : begin 
                rdata_byte = dbus2lsu.r_data[7:0]; 
             end 
@@ -139,7 +139,7 @@ always_comb begin
       end // LD_OPS_LB, LD_OPS_LBU 
       LD_OPS_LH,
       LD_OPS_LHU : begin 
-         case (lsu2dbus_ff.addr[1]) 
+         case (lsu2dbus.addr[1]) 
             1'b0 : begin
                rdata_hword = dbus2lsu.r_data[15:0];
             end 
@@ -183,24 +183,15 @@ always_comb begin
     if (is_amo) begin 
         ld_req                  = amo2lsu_ctrl.ld_req; 
         st_req                  = amo2lsu_ctrl.st_req;
-        lsu2dbus_next.w_data         = amo2lsu_data.w_data;
+        lsu2dbus.w_data         = amo2lsu_data.w_data;
         lsu2wrb_ctrl.rd_wr_req  = amo2lsu_ctrl.rd_wr_req;
     end else begin
         ld_req                  = |ld_ops; 
         st_req                  = |(exe2lsu_ctrl.st_ops);
-        lsu2dbus_next.w_data         = exe2lsu_data.rs2_data;
+        lsu2dbus.w_data         = exe2lsu_data.rs2_data;
         lsu2wrb_ctrl.rd_wr_req  = exe2lsu_ctrl.rd_wr_req;
     end
 end
-
-always_ff @(posedge clk) begin
-    if (~rst_n || dbus2lsu.ack) begin
-        lsu2dbus_ff <= '0;
-    end else begin
-        lsu2dbus_ff <= lsu2dbus_next;
-    end
-end
-
 
 //=================================== Output signals update =====================================//
 
@@ -254,11 +245,11 @@ assign lsu2fwd.lsu_req = lsu_amo_req;
 assign lsu2fwd.lsu_ack = lsu_amo_ack;
 
 // Signals to data memory interface
-assign lsu2dbus_next.addr   = mmu2lsu.d_paddr[`XLEN-1:0]; 
-assign lsu2dbus_next.ld_req = ld_req & (mmu2lsu.d_hit);
-assign lsu2dbus_next.st_req = st_req & (mmu2lsu.d_hit);
-// MT: assign dbus_next.w_data = exe2lsu_data.rs2_data;
-assign lsu2dbus_next.st_ops = exe2lsu_ctrl.st_ops;
+assign lsu2dbus.addr   = mmu2lsu.d_paddr[`XLEN-1:0]; 
+assign lsu2dbus.ld_req = ld_req & (mmu2lsu.d_hit);
+assign lsu2dbus.st_req = st_req & (mmu2lsu.d_hit);
+// MT: assign lsu2dbus.w_data = exe2lsu_data.rs2_data;
+assign lsu2dbus.st_ops = exe2lsu_ctrl.st_ops;
 
 // Signals for MMU
 assign lsu2mmu.satp_ppn       = csr2lsu_data.satp_ppn;
@@ -284,7 +275,7 @@ assign lsu2wrb_ctrl_o = lsu2wrb_ctrl;
 assign lsu2amo_data_o = lsu2amo_data;   
 assign lsu2amo_ctrl_o = lsu2amo_ctrl;
 
-assign lsu2dbus_o     = lsu2dbus_ff; 
+assign lsu2dbus_o     = lsu2dbus; 
 assign lsu2fwd_o      = lsu2fwd;
 assign lsu2mmu_o      = lsu2mmu;
 

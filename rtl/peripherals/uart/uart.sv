@@ -51,17 +51,17 @@ logic                                   rx_valid;
 logic                                   frame_err;
 logic                                   rx_empty;
 
-logic [`UART_DATA_SIZE-1:0]              uart_rx_byte;
+logic [`UART_DATA_SIZE-1:0]             uart_rx_byte;
 logic [`UART_DATA_SIZE-1:0] 	        uart_tx_byte;
 logic                                   two_stop_bits;
 
-logic [`UART_DATA_SIZE-1:0]              uart_reg_rx_ff, uart_reg_rx_next;	
-logic [`UART_DATA_SIZE-1:0]              uart_reg_tx_ff, uart_reg_tx_next;
+logic [`UART_DATA_SIZE-1:0]             uart_reg_rx_ff, uart_reg_rx_next;	
+logic [`UART_DATA_SIZE-1:0]             uart_reg_tx_ff, uart_reg_tx_next;
 logic [UART_BAUD_DIV_SIZE-1:0]          uart_reg_baud_ff, uart_reg_baud_next;
 logic [19:0]                            uart_reg_txctrl_ff, uart_reg_txctrl_next;
 logic [19:0]                            uart_reg_rxctrl_ff, uart_reg_rxctrl_next;
-logic [`UART_DATA_SIZE-1:0]              uart_reg_status_ff, uart_reg_status_next;
-logic [`UART_DATA_SIZE-1:0]              uart_reg_int_mask_ff, uart_reg_int_mask_next;
+logic [`UART_DATA_SIZE-1:0]             uart_reg_status_ff, uart_reg_status_next;
+logic [`UART_DATA_SIZE-1:0]             uart_reg_int_mask_ff, uart_reg_int_mask_next;
    
 // Register address decoding signals
 logic                                   rx_reg_wr_flag;
@@ -71,13 +71,13 @@ logic                                   txctrl_reg_wr_flag;
 logic                                   rxctrl_reg_wr_flag;
 logic                                   int_mask_reg_wr_flag;
 
-logic [7:0] rx_fifo[0:`FIFOSIZE];
-logic [7:0] r_ptr = 0;
-logic [7:0] fifo_out;
-logic fifo_not_empty;
-logic fifo_full;
-logic rx_data_read;
-logic rx_data_write; 
+logic                                   [7:0] rx_fifo[0:`FIFOSIZE];
+logic                                   [7:0] r_ptr = 0;
+logic                                   [7:0] fifo_out;
+logic                                   fifo_not_empty;
+logic                                   fifo_full;
+logic                                   rx_data_read;
+logic                                   rx_data_write; 
 	
 	
 //================================= UART register read operations ==================================//
@@ -97,7 +97,7 @@ always_comb begin
             UART_BAUD_R     : reg_r_data = {16'b0, uart_reg_baud_ff};
 
             // UART control and status registers
-            UART_STATUS_R   : reg_r_data = {12'b0, uart_reg_status_ff};
+            UART_STATUS_R   : reg_r_data = {24'b0, uart_reg_status_ff};
             UART_TXCTRL_R   : reg_r_data = {12'b0, uart_reg_txctrl_ff};
             UART_RXCTRL_R   : reg_r_data = {12'b0, uart_reg_rxctrl_ff};
  
@@ -285,7 +285,7 @@ type_peri2dbus_s                      uart2dbus_ff;
 
 // Signal interface to Wishbone bus
 assign reg_addr   = type_uart_regs_e'(dbus2uart_i.addr[5:2]);
-assign reg_w_data = dbus2uart_i.w_data[15:0];
+assign reg_w_data = dbus2uart_i.w_data;
 assign reg_rd_req = !dbus2uart_i.w_en && dbus2uart_i.req && uart_sel_i;
 assign reg_wr_req = dbus2uart_i.w_en  && dbus2uart_i.req && uart_sel_i;
 
@@ -336,8 +336,6 @@ uart_rx uart_rx_module (
     .valid_o                    (rx_valid),
     .frame_err_o                (frame_err)
 );
-
-
 
 
 

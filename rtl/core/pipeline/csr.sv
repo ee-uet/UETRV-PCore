@@ -79,6 +79,7 @@ type_exc_code_e                  csr_wr_exc_code;
 logic                            csr_exc_req;
 logic                            exc_req;
 type_exc_code_e                  exc_code; 
+logic                            irq_req_sync;
 
 logic [`XLEN-1:0]                csr_pc_ff, csr_pc_next; 
 logic                            pipe_stall_flush;
@@ -171,7 +172,7 @@ logic                            ssip_irq_req;
 logic                            uart_irq_req;
 logic                            timer_irq_ff;
 logic                            ext_irq0_ff, ext_irq1_ff;
-logic                            irq_accept_flag;
+//logic                            irq_accept_flag;
 
 // M-mode interrupt/exception related signals
 logic                            m_mode_global_ie;
@@ -233,11 +234,6 @@ logic                            csr_vaddr_iflush_req;
 logic                            icache_flush_req;
 logic                            fence_i_req;
 
-// User mode time 
-logic [`XLEN-1:0]                time_low_ff, time_low_next;
-logic [`XLEN-1:0]                time_high_ff, time_high_next; 
-
-
 // Input signal assignmnets
 assign exe2csr_data = exe2csr_data_i;
 assign exe2csr_ctrl = exe2csr_ctrl_i; 
@@ -260,30 +256,6 @@ assign ld_misalign_exc_req = ((ld_ops == LD_OPS_LW)  && (|ld_st_addr[1:0]))
 assign st_misalign_exc_req = ((st_ops == ST_OPS_SW)  && (|ld_st_addr[1:0])) 
                            | ((st_ops == ST_OPS_SH)  && (ld_st_addr[0]));
 
-
-
-
-// User mode time (from memory mapped timer implemented as part of CLINT module)
-always_comb begin
-    time_low_next = time_low_ff;
-    time_high_next = time_high_ff;
-
-    if (clint2csr.flag == 1'b1) begin   // flag =  1 indicates low 32-bits of timer
-        time_low_next = clint2csr.timer_val;
-    end else begin
-        time_high_next = clint2csr.timer_val;
-    end
-end
-
-always_ff @(negedge rst_n, posedge clk) begin
-    if (~rst_n) begin
-        time_low_ff  <= '0;
-        time_high_ff <= '0; 
-    end else begin
-        time_low_ff  <= time_low_next;
-        time_high_ff <= time_high_next;
-    end
-end
                     
 //================================== CSR read operations ==================================//
 
@@ -305,8 +277,8 @@ always_comb begin
             CSR_ADDR_CYCLE          : csr_rdata    = csr_mcycle_ff;
             CSR_ADDR_MCYCLEH,
             CSR_ADDR_CYCLEH         : csr_rdata    = csr_mcycleh_ff;
-            CSR_ADDR_TIME           : csr_rdata    = time_low_ff;
-            CSR_ADDR_TIMEH          : csr_rdata    = time_high_ff;
+            CSR_ADDR_TIME           : csr_rdata    = clint2csr.timer_val_low;
+            CSR_ADDR_TIMEH          : csr_rdata    = clint2csr.timer_val_high;
             CSR_ADDR_MINSTRET,
             CSR_ADDR_INSTRET        : csr_rdata    = csr_minstret_ff;
             CSR_ADDR_MINSTRETH,
@@ -898,19 +870,20 @@ always_comb begin
     end
 end
 
-assign irq_accept_flag = (~fwd2csr.irq_stall) & (~(exe2csr_data.instr_flushed & ~wfi_next));
-
+// Timer interrupt enablement
 always_ff @(negedge rst_n, posedge clk) begin
     if (~rst_n) begin
         ext_irq0_ff  <= 1'b0;
         ext_irq1_ff  <= 1'b0; 
         timer_irq_ff <= 1'b0; 
     end else begin
-        ext_irq0_ff   <= pipe2csr.ext_irq[0] & irq_accept_flag;
-        ext_irq1_ff   <= pipe2csr.ext_irq[1] & irq_accept_flag;
-        timer_irq_ff <= pipe2csr.timer_irq & irq_accept_flag;
+        ext_irq0_ff  <= pipe2csr.ext_irq[0];
+        ext_irq1_ff  <= pipe2csr.ext_irq[1];
+        timer_irq_ff <= pipe2csr.timer_irq;
     end
 end
+
+assign irq_req_sync = m_irq_req & m_mode_global_ie;
 
 // Update the mscratch (machine scratch) CSR 
 // -----------------------------------------
@@ -1170,7 +1143,7 @@ always_comb begin : wfi
     wfi_next = wfi_ff;
 
     // If any enabled interrupt becomes pending un-stall the core? Should it be enabled?
-    if (irq_req) begin
+    if (irq_req | irq_req_sync) begin
         wfi_next = 1'b0;
     // raise the wait for interrupt flag here
     end else if (wfi_req) begin
@@ -1223,7 +1196,7 @@ assign ssip_irq_req = csr_mip_ff.ssip & csr_mie_ff.ssie;
 
 assign m_irq_req = meip_irq_req | mtip_irq_req | msip_irq_req;
 assign s_irq_req = seip_irq_req | stip_irq_req | ssip_irq_req;
-assign irq_req   = m_irq_req | s_irq_req;
+assign irq_req   = exe2csr_ctrl.irq_req | s_irq_req;  // m_irq_req
 
 // IRQ codes for cause register 
 always_comb begin
@@ -1309,6 +1282,7 @@ assign csr2if_fb.pc_new    = s_mode_pc_req ? s_mode_new_pc        : m_mode_pc_re
                                            ? m_mode_new_pc        : csr_vaddr_iflush_req
                                            ? lsu2csr_data.pc_next : csr_pc_next;
 assign csr2if_fb.icache_flush = icache_flush_req;
+assign csr2if_fb.irq_req = irq_req_sync;
 
 // New PC request signal is sent to forwarding module and is processed along with
 // Other PC update requests from other modules (e.g. new PC request from EXE module) 

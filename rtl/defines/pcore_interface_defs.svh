@@ -171,6 +171,7 @@ typedef struct packed {
 // Fetch-2-Decode control signals
 typedef struct packed {                            
     logic                            exc_req;
+    logic                            irq_req;
 } type_if2id_ctrl_s;
 
 // Decode-2-Execute data and control signals
@@ -207,6 +208,7 @@ typedef struct packed {
     logic                            branch_req;
     logic                            fence_i_req;
     logic                            fence_req;
+    logic                            irq_req;
 } type_id2exe_ctrl_s;
 
 // Execute-2-Memory data and control signals
@@ -243,6 +245,7 @@ typedef struct packed {
     type_csr_ops_e                   csr_ops;
     type_sys_ops_e                   sys_ops;
     logic                            exc_req;
+    logic                            irq_req;
     logic                            csr_rd_req;
     logic                            csr_wr_req;
     logic                            fence_i_req;
@@ -330,7 +333,8 @@ typedef struct packed {
 // CSR-2-Fetch interface feedback signals
 typedef struct packed {                            
     logic [`XLEN-1:0]                pc_new;
-    logic                            icache_flush;  
+    logic                            icache_flush; 
+    logic                            irq_req;
 } type_csr2if_fb_s;
 
 // CSR-2-Decode interface feedback signals
@@ -412,7 +416,6 @@ typedef struct packed {
 // Forwarding-2-CSR interface signals
 typedef struct packed {  
     logic                            pipe_stall; 
-    logic                            irq_stall;                           
 } type_fwd2csr_s;
 
 // Forwarding-2-LSU interface signals
@@ -433,8 +436,8 @@ typedef struct packed {
 
 // Clint-2-CSR machine timer signals
 typedef struct packed {                            
-    logic [`XLEN-1:0]                timer_val;  
-    logic                            flag;
+    logic [`XLEN-1:0]                timer_val_low;  
+    logic [`XLEN-1:0]                timer_val_high;  
 } type_clint2csr_s;
 
 

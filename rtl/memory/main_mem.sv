@@ -105,17 +105,17 @@ always_ff @(posedge clk) begin
 
     if (~rst_n) begin
         delay_counter <= '0; 
-    end else if (mem_req) begin
+    end /* else if (mem_req) begin
         delay_counter <= delay_counter + 7'd1;
-    end  else begin
-        delay_counter <= '0;
-       // delay_counter <= delay_counter + 7'd1;
+    end */ else begin
+       // delay_counter <= '0;
+        delay_counter <= delay_counter + 7'd1;
     end
 
 end
 
 // assign response_flag = (~mem_wen) ? 1'b1 : delay_counter[2];
-assign response_flag = delay_counter[2];
+assign response_flag = delay_counter[1];
 
 
 

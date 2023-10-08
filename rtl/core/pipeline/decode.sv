@@ -483,7 +483,9 @@ end // Decoder logic
 //=================================== Output signals update ====================================//
 
 // MT TODO: Feedforward (pipeline) signals should be made configurable for enabling/disabling 
-// pipeline stages 
+// pipeline stages
+assign id2exe_ctrl.irq_req = if2id_ctrl.irq_req;
+  
 assign id2exe_ctrl_o = id2exe_ctrl;
 assign id2exe_data_o = id2exe_data; 
 

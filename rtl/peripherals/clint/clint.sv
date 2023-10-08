@@ -53,11 +53,10 @@ logic                                   mtimecmp_hi_wr_flag;
 	
 // Local sinals for internal use
 logic                                   timer_overflow_ff, timer_overflow_next;
-logic                                   mtime_select_ff;
 type_clint2csr_s                        clint2csr;
 
 // Timer prescaler
-logic [6:0]                             timer_prescaler_ff, timer_prescaler_next;
+logic [3:0]                             timer_prescaler_ff, timer_prescaler_next;
 logic                                   timer_prescaler_overflow;
 
 	
@@ -76,17 +75,6 @@ always_comb begin
             MTIMECMP_HIGH_R : r_data = mtimecmp_ff[63:32];
             default         : r_data = '0;
         endcase // reg_addr
-    end
-end
-
-always_comb begin
-
-    if(mtime_select_ff == 1'b1) begin
-        clint2csr.timer_val = mtime_ff[31:0];
-        clint2csr.flag      = 1'b1;
-    end else begin
-        clint2csr.timer_val = mtime_ff[63:32];
-        clint2csr.flag      = 1'b0;
     end
 end
 
@@ -136,10 +124,8 @@ end
 always_ff @(posedge clk) begin
     if (~rst_n) begin
         mtime_ff <= '0;
-        mtime_select_ff <= 1'b0;
     end else begin       
         mtime_ff <= mtime_next;
-        mtime_select_ff <= ~mtime_select_ff;
     end
 end
 
@@ -183,7 +169,7 @@ always_comb begin
     if (timer_prescaler_overflow) begin
         timer_prescaler_next = '0;
     end else begin
-        timer_prescaler_next = timer_prescaler_ff + 7'd1;
+        timer_prescaler_next = timer_prescaler_ff + 4'd1;
     end
 end
 
@@ -217,6 +203,9 @@ end
 
 
 // Update output signals 
+assign clint2csr.timer_val_low  = mtime_ff[31:0];
+assign clint2csr.timer_val_high = mtime_ff[63:32];
+
 assign clint_timer_irq_o = timer_overflow_ff;
 assign clint2csr_o       = clint2csr;
 
