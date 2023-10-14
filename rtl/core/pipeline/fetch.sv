@@ -11,9 +11,11 @@
 `ifndef VERILATOR
 `include "../../defines/mmu_defs.svh"
 `include "../../defines/cache_defs.svh"
+`include "../../defines/c_ext_defs.svh"
 `else
 `include "mmu_defs.svh"
 `include "cache_defs.svh"
+`include "c_ext_defs.svh"
 `endif
 
 module fetch (
@@ -41,7 +43,12 @@ module fetch (
     
     // Forward <---> Fetch interface
     input wire type_fwd2if_s                        fwd2if_i,
-    output logic                                    if2fwd_stall_o
+    output logic                                    if2fwd_stall_o,
+
+
+    // IF <---> C Extension
+    input wire type_cext2if_s                       cext2if_i,
+    output type_if2cext_s                           if2cext_o
 );
 
 
@@ -69,6 +76,16 @@ logic [`XLEN-1:0]                    pc_ff;              // Current value of pro
 logic [`XLEN-1:0]                    pc_next;            // Updated value of PC
 logic                                if_stall;
 logic                                pc_misaligned;
+logic                                c_top_stall;
+
+
+// the ouput signals to c extention 
+assign if2cext_o.instr_un = icache2if.r_data;
+assign if2cext_o.pc_ff = pc_ff;
+assign if2cext_o.icache_valid   = icache2if.ack;
+
+assign c_top_stall = cext2if_i.stall;
+assign if_misallign = c_top_stall;
 
 
 assign icache2if = icache2if_i;
@@ -79,10 +96,10 @@ assign csr2if_fb = csr2if_fb_i;
 assign fwd2if    = fwd2if_i;
 
 // Evaluation for misaligned address
-assign pc_misaligned = pc_ff[1] | pc_ff[0];
+assign pc_misaligned =  pc_ff[0];
 
 // Stall signal for IF stage
-assign if_stall = fwd2if.if_stall | (~icache2if.ack) | irq_req_next;
+assign if_stall = fwd2if.if_stall | (~icache2if.ack) | irq_req_next | c_top_stall;
 
 // PC update state machine
 always_ff @(posedge clk) begin
@@ -94,7 +111,8 @@ always_ff @(posedge clk) begin
 end
 
 always_comb begin
-    pc_next = (pc_ff + 32'd4);
+    if(cext2if_i.is_comp) pc_next = pc_ff +32'h2;
+    else pc_next = (pc_ff + 32'd4);
 
     case (1'b1)
         fwd2if.csr_new_pc_req : begin
@@ -157,7 +175,7 @@ end
 always_comb begin
 irq_req_next   = irq_req_ff;
    
-    if (fwd2if.csr_new_pc_req | fwd2if.exe_new_pc_req | (~fwd2if.if_stall & irq_req_ff)) begin    // 
+    if (fwd2if.csr_new_pc_req | fwd2if.exe_new_pc_req | (~fwd2if.if_stall & irq_req_ff & ~c_top_stall)) begin    // 
         irq_req_next  = 1'b0;
     end else if (csr2if_fb.irq_req & ~irq_req_ff) begin
         irq_req_next   = 1'b1;
@@ -169,7 +187,17 @@ end
 assign kill_req = fwd2if.csr_new_pc_req | fwd2if.exe_new_pc_req;
 
 // Update the outputs to MMU and Imem modules
-assign if2mmu.i_vaddr = pc_next;
+//
+always_comb begin : mmu_address     // changed to send only word alligned addresses to mmu
+if2mmu.i_vaddr=pc_next;
+    if (if_misallign & ~fwd2if.csr_new_pc_req & ~fwd2if.wfi_req  & ~fwd2if.exe_new_pc_req)  begin   //check if misalligned 
+        if (pc_ff[1] ) if2mmu.i_vaddr = (cext2if_i.pc_aligned - 32'h2) ;
+        else if (~pc_ff[1] ) if2mmu.i_vaddr=cext2if_i.pc_aligned ;
+    end
+    else if (pc_ff[1]) if2mmu.i_vaddr= (pc_next-32'h2);
+    else if2mmu.i_vaddr=pc_next;
+end
+
 assign if2mmu.i_req   = `IMEM_INST_REQ; 
 assign if2mmu.i_kill  = kill_req;
 
@@ -180,7 +208,7 @@ assign if2icache_o.req_kill     = kill_req;
 assign if2icache_o.icache_flush = csr2if_fb.icache_flush;   
 
 // Update the outputs to ID stage
-assign if2id_data.instr         = ((~icache2if.ack) | irq_req_next) ? `INSTR_NOP : icache2if.r_data;
+assign if2id_data.instr         = ((~icache2if.ack) | irq_req_next) ? `INSTR_NOP : cext2if_i.instr;
 assign if2id_data.pc            = pc_ff;
 assign if2id_data.pc_next       = pc_next;
 assign if2id_data.instr_flushed = 1'b0;
