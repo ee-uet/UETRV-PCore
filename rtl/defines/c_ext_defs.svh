@@ -4,7 +4,7 @@
 //
 // Description: Definitions file for c-extension signals.
 //
-// Author: Ateeb Tahir, DDRC, UET Lahore
+// Author: Ateeb Tahir, UET Lahore
 // Date: 21.7.2023
 
 
