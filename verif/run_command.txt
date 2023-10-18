@@ -1,0 +1,1 @@
+riscof run --config config.ini --suite /home/abdul_waheed/Desktop/UETRV-PCore/verif/riscv-arch-test/riscv-test-suite/rv32i_m/I --env /home/abdul_waheed/Desktop/UETRV-PCore/verif/riscv-arch-test/riscv-test-suite/env
