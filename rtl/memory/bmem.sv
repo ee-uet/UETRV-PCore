@@ -626,7 +626,7 @@ const logic [`XLEN-1:0] bmem [BMEM_SIZE] = '{
     32'h00000000
 };
 
-`elsif RTL_SIMULATION
+`else
   
 localparam BMEM_SIZE          = 386;   // Memory size is in words 
 localparam BMEM_ADDR_BUS_SIZE = $clog2(BMEM_SIZE); 
