@@ -16,8 +16,8 @@
 `endif
 
 module wb_dcache_top (
-    input wire                         clk_i,
-    input wire                         rst_ni,
+    input wire                         clk,
+    input wire                         rst_n,
     input wire                         dmem_sel_i,
     input wire                         dcache_flush_i,
     input wire                         dcache_kill_i,
@@ -51,8 +51,8 @@ assign mem2dcache    = mem2dcache_i;
 
 
 wb_dcache_controller wb_dcache_controller_module(
-  .clk_i                   (clk_i), 
-  .rst_ni                  (rst_ni),
+  .clk                     (clk), 
+  .rst_n                   (rst_n),
 
    // Interface signals for cache datapath
   .cache_hit_i             (cache_hit),
@@ -80,8 +80,8 @@ wb_dcache_controller wb_dcache_controller_module(
 );  
 
 wb_dcache_datapath wb_dcache_datapath_module(
-  .clk_i                   (clk_i),
-  .rst_ni                  (rst_ni),
+  .clk                     (clk),
+  .rst_n                   (rst_n),
 
   // Interface signals for cache datapath
   .cache_wr_i              (cache_wr),
@@ -94,6 +94,7 @@ wb_dcache_datapath wb_dcache_datapath_module(
 
   // LSU/MMU <---> data cache signals
   .dcache_flush_i          (dcache_flush_i),
+  .lsummu2dcache_req_i     (lsummu2dcache.req),
   .lsummu2dcache_addr_i    (lsummu2dcache.addr),
   .lsummu2dcache_wdata_i   (lsummu2dcache.w_data),
   .sel_byte_i              (lsummu2dcache.sel_byte),

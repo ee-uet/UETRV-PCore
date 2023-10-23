@@ -34,7 +34,7 @@ module uart (
     output logic                                   uart_txd_o
 );
 
-`define                                 FIFOSIZE        8
+`define                                 FIFOSIZE        4
 
 // Signal definitions for Dbus interface
 logic [3:0]                             reg_addr;

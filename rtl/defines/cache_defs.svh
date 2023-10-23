@@ -18,7 +18,7 @@
 parameter ICACHE_ADDR_WIDTH  = `XLEN;
 parameter ICACHE_DATA_WIDTH  = `XLEN;
 parameter ICACHE_LINE_WIDTH  = 128;            // Line width is in bits
-parameter ICACHE_NO_OF_SETS  = 256;
+parameter ICACHE_NO_OF_SETS  = `ICACHE_SETS; // 2048;
 
 parameter ICACHE_OFFSET_BITS = $clog2(ICACHE_LINE_WIDTH/8);
 parameter ICACHE_IDX_BITS    = $clog2(ICACHE_NO_OF_SETS); 
@@ -27,8 +27,8 @@ parameter ICACHE_TAG_LSB     = ICACHE_ADDR_WIDTH - ICACHE_TAG_BITS;
 
 typedef enum logic [1:0] {
     ICACHE_IDLE, 
-    ICACHE_READ_MISS, 
     ICACHE_READ_MEMORY, 
+    ICACHE_WRITE, 
     ICACHE_ALLOCATE 
 } type_icache_states_e; 
 
@@ -70,7 +70,7 @@ typedef struct packed {
 parameter DCACHE_ADDR_WIDTH  = `XLEN;
 parameter DCACHE_DATA_WIDTH  = `XLEN;
 parameter DCACHE_LINE_WIDTH  = 128;            // Line width is in bits
-parameter DCACHE_NO_OF_SETS  = 256;
+parameter DCACHE_NO_OF_SETS  = `DCACHE_SETS; // 1024;
 
 parameter DCACHE_OFFSET_BITS = $clog2(DCACHE_LINE_WIDTH/8);
 parameter DCACHE_IDX_BITS    = $clog2(DCACHE_NO_OF_SETS); 
@@ -81,15 +81,16 @@ parameter DCACHE_MAX_IDX     = DCACHE_IDX_BITS'(DCACHE_NO_OF_SETS - 1);
 
 typedef enum logic [2:0] {
     DCACHE_IDLE, 
-    DCACHE_READ,
-    DCACHE_WRITE,  
+    DCACHE_PROCESS_REQ,
+    DCACHE_WRITE,
+    DCACHE_FLUSH_NEXT,  
     DCACHE_ALLOCATE, 
     DCACHE_WRITE_BACK,
     DCACHE_FLUSH,  
     DCACHE_FLUSH_DONE
 } type_dcache_states_e; 
 
-// Bus interface from IF to icache  
+// Bus interface from LSU to dcache  
 typedef struct packed {                            
     logic [DCACHE_ADDR_WIDTH-1:0]    addr;
     logic [DCACHE_DATA_WIDTH-1:0]    w_data;
@@ -119,10 +120,9 @@ typedef struct packed {
 
   
 typedef struct packed {
- //   logic [DCACHE_LINE_WIDTH-1:0]    data;
-    logic [DCACHE_TAG_BITS-1:0]      tag;
+    logic [7:0]                      dirty;
     logic                            valid;
-    logic                            dirty;
+    logic [22:0]                     tag;
 } type_dcache_tag_s;
 
 typedef bit [DCACHE_LINE_WIDTH-1:0] type_dcache_data_s;

@@ -15,6 +15,10 @@
 //`define DRAM                         1
 `define RTL_SIMULATION               1 
 `endif
+
+`define ICACHE_SETS                  2048
+`define DCACHE_SETS                  512
+
 //============================= CORE PARAMETERS ========================//
 
 // Width of main registers and buses
@@ -82,7 +86,6 @@
 `define UART_REG_OFFSET_WIDTH        12
 `define PLIC_REG_OFFSET_WIDTH        24
 `define CLINT_ADDR_WIDTH             16
-`define CLINT_PRESCALER              4'd4
 
 typedef enum logic [`CLINT_ADDR_WIDTH-1:0] {
     MTIME_LOW_R     = 16'hbff8,

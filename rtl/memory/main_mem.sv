@@ -115,7 +115,7 @@ always_ff @(posedge clk) begin
 end
 
 // assign response_flag = (~mem_wen) ? 1'b1 : delay_counter[2];
-assign response_flag = delay_counter[1];
+assign response_flag = delay_counter[0];
 
 
 

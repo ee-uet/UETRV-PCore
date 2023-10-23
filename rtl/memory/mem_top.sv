@@ -116,8 +116,8 @@ bmem_interface bmem_interface_module (
 );
 
 icache_top icache_top_module(
-    .clk_i                  (clk),
-    .rst_ni                 (rst_n),
+    .clk                    (clk),
+    .rst_n                  (rst_n),
 
     // Instruction fetch to instruction cache interface
     .if2icache_i            (if2icache),
@@ -214,8 +214,8 @@ end
 
 //========================== Data cache top module ===========================//
 wb_dcache_top wb_dcache_top_module(
-    .clk_i                  (clk),
-    .rst_ni                 (rst_n),
+    .clk                    (clk),
+    .rst_n                  (rst_n),
 
     // LSU/MMU to data cache interface
     .lsummu2dcache_i        (lsummu2dcache), // lsummu2dmem
@@ -310,7 +310,14 @@ timeout_next = '0;
                mem2icache.ack    = 1'b1;
                mem_arbiter_state_next = MEM_ARBITER_IDLE;
 
-           end 
+           end else if (timeout_flag) begin
+               mem2icache.r_data = '0;
+               mem2icache.ack    = 1'b0;
+               mem_arbiter_state_next = MEM_ARBITER_IDLE;
+
+           end else begin
+               timeout_next = timeout_ff + 1;
+           end  
        end
 
        MEM_ARBITER_IKILL: begin
@@ -362,4 +369,3 @@ assign dcache2dbus_o = dcache2dbus;
 assign dcache2mmu_o  = dcache2mmu; 
 
 endmodule : mem_top
-

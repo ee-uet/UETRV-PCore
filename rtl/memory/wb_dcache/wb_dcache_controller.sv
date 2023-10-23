@@ -16,8 +16,8 @@
 `endif
 
 module wb_dcache_controller (
-    input wire                            clk_i, 
-    input wire                            rst_ni,
+    input wire                            clk, 
+    input wire                            rst_n,
 
     // Interface signals to/from cache datapath
     input wire                            cache_hit_i,
@@ -47,7 +47,7 @@ module wb_dcache_controller (
 type_dcache_states_e                  dcache_state_ff, dcache_state_next;
 logic [DCACHE_IDX_BITS-1:0]           evict_index_next, evict_index_ff;
 
-logic                                 lsummu2dcache_wr;
+logic                                 lsummu2dcache_wr_ff;
 logic                                 dcache2lsummu_ack;
 logic                                 dcache_hit;
 logic                                 dcache_miss;
@@ -59,18 +59,29 @@ logic                                 cache_wrb_req;
 logic                                 cache_wr;
 logic                                 cache_line_wr;
 logic                                 cache_line_clean;
-
 logic                                 dcache2mem_kill;
+logic                                 lsummu2dcache_req_ff, dmem_sel_ff;
 
-assign lsummu2dcache_wr = lsummu2dcache_wr_i;
 
-assign dcache_hit   = lsummu2dcache_req_i & dmem_sel_i & cache_hit_i;
-assign dcache_miss  = lsummu2dcache_req_i & dmem_sel_i & ~cache_hit_i ;
+assign dcache_hit   = lsummu2dcache_req_ff & dmem_sel_ff & cache_hit_i;
+assign dcache_miss  = lsummu2dcache_req_ff & dmem_sel_ff & ~cache_hit_i ;
 assign dcache_evict = cache_evict_req_i;
 
+always_ff@(posedge clk) begin
+  if(!rst_n) begin
+      lsummu2dcache_req_ff <= '0;
+      dmem_sel_ff          <= '0;
+      lsummu2dcache_wr_ff  <= '0;
+  end else begin
+      lsummu2dcache_req_ff <= lsummu2dcache_req_i;
+      dmem_sel_ff          <= dmem_sel_i;
+      lsummu2dcache_wr_ff  <= lsummu2dcache_wr_i;
+  end
+end
+
 // Cache controller state machine
-always_ff @(posedge clk_i) begin
-  if (~rst_ni) begin
+always_ff @(posedge clk) begin
+  if (~rst_n) begin
       dcache_state_ff <= DCACHE_IDLE;
       evict_index_ff  <= '0;
   end else begin
@@ -97,14 +108,28 @@ always_comb begin
             // In case of flush, go to FLUSH State
             if (dcache_flush_i) begin                    
                 dcache_state_next = DCACHE_FLUSH;
-            end else if (dcache_hit) begin 
-            // In case of hit, perform the cache read/write operation              
-                if (lsummu2dcache_wr) begin
-                    dcache_state_next = DCACHE_WRITE;
-                    cache_wr          = 1'b1;
-                end else begin 
-                    dcache_state_next = DCACHE_READ;
+            end else  if (lsummu2dcache_req_i) begin
+                dcache_state_next = DCACHE_PROCESS_REQ;
+            end else begin
+                dcache_state_next = DCACHE_IDLE;
+                evict_index_next  = '0;
+            end
+        end
+        DCACHE_PROCESS_REQ: begin  
+            // Process the cache data request  
+
+            if (dcache_hit) begin 
+            // In case of hit, perform the cache read/write operation   
+                       
+                if (lsummu2dcache_wr_ff) begin
+                    cache_wr      = 1'b1;
+                    dcache_state_next = DCACHE_IDLE; 
+                    dcache2lsummu_ack = 1'b1;  
+                end else begin
+                    dcache2lsummu_ack = 1'b1;  
+                    dcache_state_next = DCACHE_IDLE; 
                 end
+               
             end else if (dcache_miss) begin           
                if (dcache_evict) begin
                     dcache_state_next = DCACHE_WRITE_BACK;
@@ -113,26 +138,19 @@ always_comb begin
                     cache_wrb_req     = 1'b1;
                 end else begin 
                     dcache_state_next = DCACHE_ALLOCATE;
+                    dcache2mem_req    = 1'b1;
                 end
-            end else begin
-                dcache_state_next = DCACHE_IDLE;
-                evict_index_next  = '0;
-            end
+            end           
         end
-        DCACHE_READ: begin  
-            // Send ack from cache, data will be returned by cache datapath          
-            dcache_state_next = DCACHE_IDLE;
-            dcache2lsummu_ack = 1'b1;
+        DCACHE_WRITE: begin
+             dcache_state_next = DCACHE_IDLE; 
+             dcache2lsummu_ack = 1'b1;  
         end
-        DCACHE_WRITE: begin  
-            // Ack from cache, data is written simultaneously          
-            dcache_state_next = DCACHE_IDLE;
-            dcache2lsummu_ack = 1'b1;      
-        end
+
         DCACHE_ALLOCATE: begin  
             // Response from main memory is received          
             if (mem2dcache_ack_i) begin
-                dcache_state_next = DCACHE_IDLE;
+                dcache_state_next = DCACHE_PROCESS_REQ;
                 cache_line_wr     = 1'b1;
             end else begin
                dcache_state_next = DCACHE_ALLOCATE;
@@ -142,11 +160,16 @@ always_comb begin
         DCACHE_WRITE_BACK: begin  
             // Response from main memory is received          
             if (mem2dcache_ack_i) begin  
-                dcache_state_next = DCACHE_ALLOCATE;
+              //  dcache_state_next = DCACHE_ALLOCATE;
                 if (dcache_flush_i) begin
-                    dcache_state_next = DCACHE_FLUSH;
+                    dcache_state_next = DCACHE_FLUSH_NEXT; // DCACHE_FLUSH;
                     cache_line_clean  = 1'b1;
-                    evict_index_next  = evict_index_ff + 1;
+                    if (~(&evict_index_ff)) begin  // evict_index_ff < DCACHE_MAX_IDX
+                        evict_index_next  = evict_index_ff + 1;
+                    end
+                end else begin
+                    dcache_state_next = DCACHE_ALLOCATE;
+                    dcache2mem_req    = 1'b1;
                 end 
             end else begin
                 dcache_state_next = DCACHE_WRITE_BACK;
@@ -155,6 +178,10 @@ always_comb begin
                 cache_wrb_req     = 1'b1;
             end
         end
+        DCACHE_FLUSH_NEXT: begin  
+            // Ack from cache, data is written simultaneously          
+            dcache_state_next = DCACHE_FLUSH;     
+        end
         DCACHE_FLUSH: begin
 
             if (dcache_evict) begin
@@ -162,12 +189,14 @@ always_comb begin
                 dcache2mem_req    = 1'b1;
                 dcache2mem_wr     = 1'b1;
                 cache_wrb_req     = 1'b1;
-            end else begin 
-                evict_index_next = evict_index_ff + 1;
-                if (evict_index_ff == DCACHE_MAX_IDX) begin
+            end else begin                 
+                if (&evict_index_ff) begin  // evict_index_ff == DCACHE_MAX_IDX
                     dcache_state_next = DCACHE_FLUSH_DONE;
                 //    dcache2lsummu_ack = 1'b1;
                     evict_index_next  = '0;
+                end else begin
+                    evict_index_next = evict_index_ff + 1;
+                    dcache_state_next = DCACHE_FLUSH_NEXT;
                 end
             end
 
