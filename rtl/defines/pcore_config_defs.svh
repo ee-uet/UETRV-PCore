@@ -12,8 +12,8 @@
 `define PCORE_CONFIG_DEFS
 
 `ifndef COMPLIANCE
-`define DRAM                         1
-//`define RTL_SIMULATION               1 
+//`define DRAM                         1
+`define RTL_SIMULATION               1 
 `endif
 //============================= CORE PARAMETERS ========================//
 
