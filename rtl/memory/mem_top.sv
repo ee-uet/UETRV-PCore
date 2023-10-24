@@ -39,11 +39,11 @@ module mem_top (
     input wire                                      dcache_flush_i,
     input wire                                      lsu_flush_i,
 
-// `ifdef DRAM
+`ifdef DRAM
     // DDR memory interface
     input wire type_mem2cache_s                     dram2cache_i,
     output type_cache2mem_s                         cache2dram_o,
-// `endif
+`endif
 
  // Selection signal from address decoder of dbus interconnect 
     input   logic                                   dmem_sel_i,
@@ -338,7 +338,7 @@ timeout_next = '0;
  
 end
 
-// `ifndef DRAM
+`ifndef DRAM
 //============================= Main memory interface =============================//
 main_mem main_mem_module (
     .rst_n                  (rst_n),
@@ -349,11 +349,11 @@ main_mem main_mem_module (
     .mem2cache_o            (mem2cache)
 
 );
-// `else
-// //============================= DRAM memory interface =============================//
-// assign cache2dram_o = cache2mem;
-// assign mem2cache = dram2cache_i;
-// `endif
+`else
+//============================= DRAM memory interface =============================//
+assign cache2dram_o = cache2mem;
+assign mem2cache = dram2cache_i;
+`endif
 
 // Output signal assignments
 assign icache2if_o  = bmem2if.ack ? bmem2if : icache2if; 

@@ -67,8 +67,8 @@ always_ff@(posedge clk) begin
   if (dut.uart_module.tx_valid_ff == 1)
     $fwrite(uartlog_filepointer, "%c", dut.uart_module.uart_reg_tx_ff);
 
-  // if (dut.uart_ns_module.tx_valid_ff == 1)
-  //   $fwrite(uartlog_filepointer, "%c", dut.uart_ns_module.uart_reg_tx_ff);
+  if (dut.uart_ns_module.tx_valid_ff == 1)
+    $fwrite(uartlog_filepointer, "%c", dut.uart_ns_module.uart_reg_tx_ff);
 end
 
 `else

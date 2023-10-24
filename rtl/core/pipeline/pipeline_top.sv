@@ -6,21 +6,16 @@
 //
 // Author: Muhammad Tahir, UET Lahore
 // Date: 11.8.2022
-//
-// Updated: 11.10.2022 by Ateeb Tahir
-
 
 
 `ifndef VERILATOR
 `include "../../defines/mmu_defs.svh"
 `include "../../defines/m_ext_defs.svh"
 `include "../../defines/a_ext_defs.svh"
-`include "../../defines/c_ext_defs.svh"
 `include "../../defines/cache_defs.svh"
 `else
 `include "mmu_defs.svh"
 `include "m_ext_defs.svh"
-`include "a_ext_defs.svh"
 `include "a_ext_defs.svh"
 `include "cache_defs.svh"
 `endif
@@ -74,10 +69,6 @@ type_id2exe_data_s                      id2exe_data, id2exe_data_next;
 
 type_exe2lsu_ctrl_s                     exe2lsu_ctrl, exe2lsu_ctrl_next;
 type_exe2lsu_data_s                     exe2lsu_data, exe2lsu_data_next;
-
-// C-extension related signals
-type_cext2if_s                          cext2if;
-type_if2cext_s                          if2cext;
 
 // M-extension related signals
 type_exe2mul_s                          exe2mul;
@@ -172,19 +163,7 @@ fetch fetch_module (
     .exe2if_fb_i                (exe2if_fb),
     .csr2if_fb_i                (csr2if_fb),
     .fwd2if_i                   (fwd2if),
-    .if2fwd_stall_o             (if2fwd_stall),
-
-    .cext2if_i                  (cext2if),
-    .if2cext_o                  (if2cext)
-);
-
-c_top c_top (
-    .clk                        (clk),
-    .reset                      (rst_n),
-    .br_taken_i                 (fwd2if.exe_new_pc_req | fwd2if.csr_new_pc_req | csr2if_fb.icache_flush),
-
-    .if2cext_i                  (if2cext),
-    .cext2if_o                  (cext2if)
+    .if2fwd_stall_o             (if2fwd_stall)
 );
 
 // Fetch <-----> Decode pipeline/nopipeline  
@@ -581,3 +560,4 @@ assign lsu2mmu_o    = lsu2mmu;
 assign if2icache_o  = if2icache;
 
 endmodule : pipeline_top
+

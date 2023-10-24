@@ -66,8 +66,8 @@ sim-verilate-linux: verilate
 	@echo "Initiating Linux Bootup in Verilator Simulation..."
 	@echo
 	rm  -f  ./sdk/example-linux/imem.txt
-#unzip ./sdk/example-linux/imem.zip -d ./sdk/example-linux/
-	$(ver-library)/Vpcore_tb +imem=./pcore.hex +max_cycles=30000000 +vcd=$(vcd)
+	unzip ./sdk/example-linux/imem.zip -d ./sdk/example-linux/
+	$(ver-library)/Vpcore_tb +imem=$(imem_linux) +max_cycles=300000000 +vcd=$(vcd)
 
 clean-all:
 	rm -rf ver_work/ *.log *.vcd 					\
