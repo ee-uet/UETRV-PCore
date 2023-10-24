@@ -1,0 +1,754 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Product Version: Vivado v2019.1 (64-bit)              -->
+<!--                                                         -->
+<!-- Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.   -->
+
+<Project Version="7" Minor="40" Path="/home/mtahir/SOC/FPGA/UETRV_PCore_FPGA_working3/PCore_FPGA/PCore_FPGA.xpr">
+  <DefaultLaunch Dir="$PRUNDIR"/>
+  <Configuration>
+    <Option Name="Id" Val="bbe3d65f87264bc38eac1aea31f37533"/>
+    <Option Name="Part" Val="xc7a100tcsg324-1"/>
+    <Option Name="CompiledLibDir" Val="$PCACHEDIR/compile_simlib"/>
+    <Option Name="CompiledLibDirXSim" Val=""/>
+    <Option Name="CompiledLibDirModelSim" Val="$PCACHEDIR/compile_simlib/modelsim"/>
+    <Option Name="CompiledLibDirQuesta" Val="$PCACHEDIR/compile_simlib/questa"/>
+    <Option Name="CompiledLibDirIES" Val="$PCACHEDIR/compile_simlib/ies"/>
+    <Option Name="CompiledLibDirXcelium" Val="$PCACHEDIR/compile_simlib/xcelium"/>
+    <Option Name="CompiledLibDirVCS" Val="$PCACHEDIR/compile_simlib/vcs"/>
+    <Option Name="CompiledLibDirRiviera" Val="$PCACHEDIR/compile_simlib/riviera"/>
+    <Option Name="CompiledLibDirActivehdl" Val="$PCACHEDIR/compile_simlib/activehdl"/>
+    <Option Name="BoardPart" Val="digilentinc.com:nexys-a7-100t:part0:1.3"/>
+    <Option Name="BoardPartRepoPaths" Val="$PPRDIR/../../../../.Xilinx/Vivado/2019.1/xhub/board_store"/>
+    <Option Name="BoardPartRepoPaths" Val="$PPRDIR/../../../../Xilinx/Vivado/2019.1/data/boards/board_files/nexys-a7-100t"/>
+    <Option Name="ActiveSimSet" Val="sim_1"/>
+    <Option Name="DefaultLib" Val="xil_defaultlib"/>
+    <Option Name="ProjectType" Val="Default"/>
+    <Option Name="IPOutputRepo" Val="$PCACHEDIR/ip"/>
+    <Option Name="IPCachePermission" Val="read"/>
+    <Option Name="IPCachePermission" Val="write"/>
+    <Option Name="EnableCoreContainer" Val="FALSE"/>
+    <Option Name="CreateRefXciForCoreContainers" Val="FALSE"/>
+    <Option Name="IPUserFilesDir" Val="$PIPUSERFILESDIR"/>
+    <Option Name="IPStaticSourceDir" Val="$PIPUSERFILESDIR/ipstatic"/>
+    <Option Name="EnableBDX" Val="FALSE"/>
+    <Option Name="DSAVendor" Val="xilinx"/>
+    <Option Name="DSABoardId" Val="nexys-a7-100t"/>
+    <Option Name="DSANumComputeUnits" Val="60"/>
+    <Option Name="WTXSimLaunchSim" Val="0"/>
+    <Option Name="WTModelSimLaunchSim" Val="0"/>
+    <Option Name="WTQuestaLaunchSim" Val="0"/>
+    <Option Name="WTIesLaunchSim" Val="0"/>
+    <Option Name="WTVcsLaunchSim" Val="0"/>
+    <Option Name="WTRivieraLaunchSim" Val="0"/>
+    <Option Name="WTActivehdlLaunchSim" Val="0"/>
+    <Option Name="WTXSimExportSim" Val="15"/>
+    <Option Name="WTModelSimExportSim" Val="15"/>
+    <Option Name="WTQuestaExportSim" Val="15"/>
+    <Option Name="WTIesExportSim" Val="15"/>
+    <Option Name="WTVcsExportSim" Val="15"/>
+    <Option Name="WTRivieraExportSim" Val="15"/>
+    <Option Name="WTActivehdlExportSim" Val="15"/>
+    <Option Name="GenerateIPUpgradeLog" Val="TRUE"/>
+    <Option Name="XSimRadix" Val="hex"/>
+    <Option Name="XSimTimeUnit" Val="ns"/>
+    <Option Name="XSimArrayDisplayLimit" Val="1024"/>
+    <Option Name="XSimTraceLimit" Val="65536"/>
+    <Option Name="SimTypes" Val="rtl"/>
+    <Option Name="SimTypes" Val="bfm"/>
+    <Option Name="SimTypes" Val="tlm"/>
+    <Option Name="SimTypes" Val="tlm_dpi"/>
+    <Option Name="MEMEnableMemoryMapGeneration" Val="TRUE"/>
+  </Configuration>
+  <FileSets Version="1" Minor="31">
+    <FileSet Name="sources_1" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
+      <Filter Type="Srcs"/>
+      <File Path="$PSRCDIR/sources_1/bd/nexys_shell/nexys_shell.bd">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/defines/pcore_config_defs.svh">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/defines/pcore_config_defs.svh"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/defines/a_ext_defs.svh">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/defines/a_ext_defs.svh"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/core/pipeline/amo.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/core/pipeline/amo.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/defines/mmu_defs.svh">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/defines/mmu_defs.svh"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/defines/cache_defs.svh">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/defines/cache_defs.svh"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/defines/pcore_interface_defs.svh">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/defines/pcore_interface_defs.svh"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/defines/pcore_csr_defs.svh">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/defines/pcore_csr_defs.svh"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/memory/bmem.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/memory/bmem.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/memory/bmem_interface.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/memory/bmem_interface.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/peripherals/clint/clint.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/peripherals/clint/clint.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/defines/ddr_defs.svh">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/defines/ddr_defs.svh"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/defines/plic_defs.svh">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/defines/plic_defs.svh"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/core/core_top.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/core/core_top.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/core/pipeline/csr.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/core/pipeline/csr.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/interconnect/dbus_interconnect.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/interconnect/dbus_interconnect.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/memory/wb_dcache/dcache_data_ram.sv">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/memory/wb_dcache/dcache_tag_ram.sv">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/core/pipeline/decode.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/core/pipeline/decode.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/defines/m_ext_defs.svh">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/defines/m_ext_defs.svh"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/core/pipeline/divider.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/core/pipeline/divider.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/core/mmu/dtlb.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/core/mmu/dtlb.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/core/pipeline/execute.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/core/pipeline/execute.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/core/pipeline/fetch.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/core/pipeline/fetch.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/core/pipeline/forward_stall.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/core/pipeline/forward_stall.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/memory/icache/icache_data_ram.sv">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/memory/icache/icache_tag_ram.sv">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/memory/icache/icache_top.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/memory/icache/icache_top.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/core/mmu/itlb.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/core/mmu/itlb.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/core/pipeline/lsu.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/core/pipeline/lsu.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/memory/mem_top.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/memory/mem_top.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/core/mmu/mmu.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/core/mmu/mmu.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/core/pipeline/muldiv.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/core/pipeline/muldiv.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/core/pipeline/pipeline_top.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/core/pipeline/pipeline_top.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/peripherals/plic/plic_gateway.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/peripherals/plic/plic_gateway.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/peripherals/plic/plic_regs.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/peripherals/plic/plic_regs.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/peripherals/plic/plic_target.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/peripherals/plic/plic_target.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/peripherals/plic/plic_top.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/peripherals/plic/plic_top.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/core/mmu/ptw.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/core/mmu/ptw.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/core/pipeline/reg_file.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/core/pipeline/reg_file.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/soc_top.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/soc_top.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/defines/spi_defs.svh">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/defines/spi_defs.svh"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/peripherals/spi/spi_controller.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/peripherals/spi/spi_controller.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/peripherals/spi/spi_datapath.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/peripherals/spi/spi_datapath.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/peripherals/spi/spi_fifo.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/peripherals/spi/spi_fifo.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/peripherals/spi/spi_regs.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/peripherals/spi/spi_regs.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/peripherals/spi/spi_top.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/peripherals/spi/spi_top.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/defines/uart_defs.svh">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/defines/uart_defs.svh"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/peripherals/uart/uart.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/peripherals/uart/uart.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/peripherals/uart/uart_rx.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/peripherals/uart/uart_rx.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/peripherals/uart/uart_tx.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/peripherals/uart/uart_tx.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/UETRV-PCore/wb2axi.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/wb2axi.sv"/>
+          <Attr Name="ImportTime" Val="1689757750"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/memory/wb_dcache/wb_dcache_controller.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/memory/wb_dcache/wb_dcache_controller.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/memory/wb_dcache/wb_dcache_datapath.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/memory/wb_dcache/wb_dcache_datapath.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/memory/wb_dcache/wb_dcache_top.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/memory/wb_dcache/wb_dcache_top.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/core/pipeline/writeback.sv">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/core/pipeline/writeback.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/UETRV-PCore/top.v">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/top.v"/>
+          <Attr Name="ImportTime" Val="1689757750"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/imports/rtl/memory/main_mem.sv">
+        <FileInfo>
+          <Attr Name="AutoDisabled" Val="1"/>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/rtl/memory/main_mem.sv"/>
+          <Attr Name="ImportTime" Val="1689757756"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedIn" Val="simulation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/mig_a.prj">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="ScopedToCell" Val="nexys_shell_mig_7series_0_0"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/mig_b.prj">
+        <FileInfo>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="ScopedToCell" Val="nexys_shell_mig_7series_0_0"/>
+        </FileInfo>
+      </File>
+      <Config>
+        <Option Name="DesignMode" Val="RTL"/>
+        <Option Name="TopModule" Val="top"/>
+        <Option Name="TopAutoSet" Val="TRUE"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="constrs_1" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_1">
+      <Filter Type="Constrs"/>
+      <File Path="$PSRCDIR/constrs_1/imports/tcl/1-clock.xdc">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/fpga/tcl/1-clock.xdc"/>
+          <Attr Name="ImportTime" Val="1689757750"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/constrs_1/imports/tcl/2-pins.xdc">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/fpga/tcl/2-pins.xdc"/>
+          <Attr Name="ImportTime" Val="1689757750"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+        </FileInfo>
+      </File>
+      <File Path="$PSRCDIR/constrs_1/imports/tcl/3-bitstream.xdc">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PPRDIR/../UETRV-PCore/fpga/tcl/3-bitstream.xdc"/>
+          <Attr Name="ImportTime" Val="1689757750"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+        </FileInfo>
+      </File>
+      <Config>
+        <Option Name="TargetConstrsFile" Val="$PSRCDIR/constrs_1/imports/tcl/2-pins.xdc"/>
+        <Option Name="ConstrsType" Val="XDC"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="sim_1" Type="SimulationSrcs" RelSrcDir="$PSRCDIR/sim_1">
+      <Filter Type="Srcs"/>
+      <Config>
+        <Option Name="DesignMode" Val="RTL"/>
+        <Option Name="TopModule" Val="top"/>
+        <Option Name="TopLib" Val="xil_defaultlib"/>
+        <Option Name="TopAutoSet" Val="TRUE"/>
+        <Option Name="TransportPathDelay" Val="0"/>
+        <Option Name="TransportIntDelay" Val="0"/>
+        <Option Name="SrcSet" Val="sources_1"/>
+      </Config>
+    </FileSet>
+    <FileSet Name="utils_1" Type="Utils" RelSrcDir="$PSRCDIR/utils_1">
+      <Filter Type="Utils"/>
+      <File Path="$PSRCDIR/utils_1/imports/synth_1/top.dcp">
+        <FileInfo>
+          <Attr Name="ImportPath" Val="$PRUNDIR/synth_1/top.dcp"/>
+          <Attr Name="ImportTime" Val="1697993441"/>
+          <Attr Name="UsedIn" Val="synthesis"/>
+          <Attr Name="UsedIn" Val="implementation"/>
+          <Attr Name="UsedInSteps" Val="synth_1"/>
+          <Attr Name="AutoDcp" Val="1"/>
+        </FileInfo>
+      </File>
+      <Config>
+        <Option Name="TopAutoSet" Val="TRUE"/>
+      </Config>
+    </FileSet>
+  </FileSets>
+  <Simulators>
+    <Simulator Name="XSim">
+      <Option Name="Description" Val="Vivado Simulator"/>
+      <Option Name="CompiledLib" Val="0"/>
+    </Simulator>
+    <Simulator Name="ModelSim">
+      <Option Name="Description" Val="ModelSim Simulator"/>
+    </Simulator>
+    <Simulator Name="Questa">
+      <Option Name="Description" Val="Questa Advanced Simulator"/>
+    </Simulator>
+    <Simulator Name="IES">
+      <Option Name="Description" Val="Incisive Enterprise Simulator (IES)"/>
+    </Simulator>
+    <Simulator Name="Xcelium">
+      <Option Name="Description" Val="Xcelium Parallel Simulator"/>
+    </Simulator>
+    <Simulator Name="VCS">
+      <Option Name="Description" Val="Verilog Compiler Simulator (VCS)"/>
+    </Simulator>
+    <Simulator Name="Riviera">
+      <Option Name="Description" Val="Riviera-PRO Simulator"/>
+    </Simulator>
+  </Simulators>
+  <Runs Version="1" Minor="10">
+    <Run Id="synth_1" Type="Ft3:Synth" SrcSet="sources_1" Part="xc7a100tcsg324-1" ConstrsSet="constrs_1" Description="Vivado Synthesis Defaults" AutoIncrementalCheckpoint="true" IncrementalCheckpoint="$PSRCDIR/utils_1/imports/synth_1/top.dcp" WriteIncrSynthDcp="true" State="current" Dir="$PRUNDIR/synth_1" IncludeInArchive="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Synthesis Defaults" Flow="Vivado Synthesis 2019"/>
+        <Step Id="synth_design"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy Name="Vivado Synthesis Default Reports" Flow="Vivado Synthesis 2019"/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+    <Run Id="impl_1" Type="Ft2:EntireDesign" Part="xc7a100tcsg324-1" ConstrsSet="constrs_1" Description="Default settings for Implementation." AutoIncrementalCheckpoint="false" WriteIncrSynthDcp="false" State="current" Dir="$PRUNDIR/impl_1" SynthRun="synth_1" IncludeInArchive="true" GenFullBitstream="true">
+      <Strategy Version="1" Minor="2">
+        <StratHandle Name="Vivado Implementation Defaults" Flow="Vivado Implementation 2019"/>
+        <Step Id="init_design"/>
+        <Step Id="opt_design"/>
+        <Step Id="power_opt_design"/>
+        <Step Id="place_design"/>
+        <Step Id="post_place_power_opt_design"/>
+        <Step Id="phys_opt_design"/>
+        <Step Id="route_design"/>
+        <Step Id="post_route_phys_opt_design"/>
+        <Step Id="write_bitstream"/>
+      </Strategy>
+      <GeneratedRun Dir="$PRUNDIR" File="gen_run.xml"/>
+      <ReportStrategy Name="Vivado Implementation Default Reports" Flow="Vivado Implementation 2019"/>
+      <Report Name="ROUTE_DESIGN.REPORT_METHODOLOGY" Enabled="1"/>
+    </Run>
+  </Runs>
+  <Board>
+    <Jumpers/>
+  </Board>
+  <DashboardSummary Version="1" Minor="0">
+    <Dashboards>
+      <Dashboard Name="default_dashboard">
+        <Gadgets>
+          <Gadget Name="drc_1" Type="drc" Version="1" Row="2" Column="0">
+            <GadgetParam Name="REPORTS" Type="string_list" Value="impl_1#impl_1_route_report_drc_0 "/>
+          </Gadget>
+          <Gadget Name="methodology_1" Type="methodology" Version="1" Row="2" Column="1">
+            <GadgetParam Name="REPORTS" Type="string_list" Value="impl_1#impl_1_route_report_methodology_0 "/>
+          </Gadget>
+          <Gadget Name="power_1" Type="power" Version="1" Row="1" Column="0">
+            <GadgetParam Name="REPORTS" Type="string_list" Value="impl_1#impl_1_route_report_power_0 "/>
+          </Gadget>
+          <Gadget Name="timing_1" Type="timing" Version="1" Row="0" Column="1">
+            <GadgetParam Name="REPORTS" Type="string_list" Value="impl_1#impl_1_route_report_timing_summary_0 "/>
+          </Gadget>
+          <Gadget Name="utilization_1" Type="utilization" Version="1" Row="0" Column="0">
+            <GadgetParam Name="REPORTS" Type="string_list" Value="synth_1#synth_1_synth_report_utilization_0 "/>
+            <GadgetParam Name="RUN.STEP" Type="string" Value="synth_design"/>
+            <GadgetParam Name="RUN.TYPE" Type="string" Value="synthesis"/>
+          </Gadget>
+          <Gadget Name="utilization_2" Type="utilization" Version="1" Row="1" Column="1">
+            <GadgetParam Name="REPORTS" Type="string_list" Value="impl_1#impl_1_place_report_utilization_0 "/>
+          </Gadget>
+        </Gadgets>
+      </Dashboard>
+      <CurrentDashboard>default_dashboard</CurrentDashboard>
+    </Dashboards>
+  </DashboardSummary>
+  <BootPmcSettings Version="1" Minor="0">
+    <Parameters>
+      <Parameter Name="PMC_CDO.ATTRS.LOADADDR" Value="" Type="string"/>
+      <Parameter Name="BOOT.PMC.QSPI_ENABLE" Value="0" Type="string"/>
+      <Parameter Name="BOOT.PMC.QSPI_FB_CLK" Value="0" Type="string"/>
+      <Parameter Name="BOOT.PMC.QSPI_FREQ" Value="300" Type="string"/>
+      <Parameter Name="BOOT.PMC.QSPI_BUS_WIDTH" Value="x1" Type="string"/>
+      <Parameter Name="BOOT.PMC.QSPI_DATA_MODE" Value="Single" Type="string"/>
+      <Parameter Name="BOOT.PMC.SD0_ENABLE" Value="0" Type="string"/>
+      <Parameter Name="BOOT.PMC.SD0_FREQ" Value="200" Type="string"/>
+      <Parameter Name="BOOT.PMC.SD0_SLOT_TYPE" Value="SD 2.0" Type="string"/>
+      <Parameter Name="BOOT.PMC.SD0_DATA_TRANSFER_MODE" Value="4Bit" Type="string"/>
+      <Parameter Name="BOOT.PMC.SD1_ENABLE" Value="0" Type="string"/>
+      <Parameter Name="BOOT.PMC.SD1_FREQ" Value="200" Type="string"/>
+      <Parameter Name="BOOT.PMC.SD1_SLOT_TYPE" Value="SD 2.0" Type="string"/>
+      <Parameter Name="BOOT.PMC.SD1_DATA_TRANSFER_MODE" Value="4Bit" Type="string"/>
+      <Parameter Name="BOOT.PMC.OSPI_ENABLE" Value="0" Type="string"/>
+      <Parameter Name="BOOT.PMC.OSPI_FREQ" Value="300" Type="string"/>
+      <Parameter Name="BOOT.USB_ENABLE" Value="0" Type="string"/>
+      <Parameter Name="BOOT.PMC.SMAP_ENABLE" Value="0" Type="string"/>
+      <Parameter Name="BOOT.PMC.SMAP_DATA_WIDTH" Value="32 Bit" Type="string"/>
+      <Parameter Name="BOOT.PMC.OSC_FREQ" Value="33.333" Type="string"/>
+      <Parameter Name="BOOT.SECONDARY.PCIE_ENABLE" Value="0" Type="string"/>
+    </Parameters>
+  </BootPmcSettings>
+</Project>

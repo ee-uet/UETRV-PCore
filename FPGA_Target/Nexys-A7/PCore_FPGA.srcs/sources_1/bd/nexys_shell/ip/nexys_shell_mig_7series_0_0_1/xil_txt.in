@@ -1,0 +1,24 @@
+SET_FLAG MODE INTERACTIVE
+SET_FLAG STANDALONE_MODE TRUE
+SET_PREFERENCE ipi_mode yes
+SET_PREFERENCE is_ip_locked false
+SET_PREFERENCE devicefamily artix7
+SET_PREFERENCE device xc7a100t
+SET_PREFERENCE speedgrade -1
+SET_PREFERENCE package csg324
+SET_PREFERENCE verilogsim true
+SET_PREFERENCE vhdlsim false
+SET_PREFERENCE designentry Verilog
+SET_PREFERENCE outputdirectory /home/mtahir/.Xil/Vivado-3008-mtahir-Inspiron-7520/coregen/nexys_shell_mig_7series_0_0/_tmp/
+SET_PREFERENCE subworkingdirectory /home/mtahir/.Xil/Vivado-3008-mtahir-Inspiron-7520/coregen/nexys_shell_mig_7series_0_0/_tmp/
+SET_PREFERENCE flowvendor Other
+SET_PREFERENCE tool vivado
+SET_PREFERENCE compnamestatus 0
+SET_PARAMETER component_name nexys_shell_mig_7series_0_0
+SET_PARAMETER xml_input_file /home/mtahir/SOC/FPGA/UETRV_PCore_FPGA_working3/PCore_FPGA/PCore_FPGA.srcs/sources_1/bd/nexys_shell/ip/nexys_shell_mig_7series_0_0_1/mig_a.prj
+SET_PARAMETER data_dir_path /home/mtahir/Xilinx/Vivado/2019.1/data/ip/xilinx/mig_7series_v4_2
+SET_CORE_NAME Memory Interface Generator (MIG 7 Series)
+SET_CORE_VERSION 4.2
+SET_CORE_VLNV xilinx.com:ip:mig_7series:4.2
+SET_CORE_PATH /home/mtahir/Xilinx/Vivado/2019.1/data/ip/xilinx/mig_7series_v4_2
+SET_CORE_DATASHEET /home/mtahir/Xilinx/Vivado/2019.1/data/ip/xilinx/mig_7series_v4_2/data/docs/ds176_7series_MIS.pdf

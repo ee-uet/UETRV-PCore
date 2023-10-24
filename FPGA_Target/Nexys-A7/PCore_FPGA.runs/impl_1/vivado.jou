@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2019.1 (64-bit)
+# SW Build 2552052 on Fri May 24 14:47:09 MDT 2019
+# IP Build 2548770 on Fri May 24 18:01:18 MDT 2019
+# Start of session at: Sun Oct 22 21:59:27 2023
+# Process ID: 28055
+# Current directory: /home/mtahir/SOC/FPGA/UETRV_PCore_FPGA_working3/PCore_FPGA/PCore_FPGA.runs/impl_1
+# Command line: vivado -log top.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source top.tcl -notrace
+# Log file: /home/mtahir/SOC/FPGA/UETRV_PCore_FPGA_working3/PCore_FPGA/PCore_FPGA.runs/impl_1/top.vdi
+# Journal file: /home/mtahir/SOC/FPGA/UETRV_PCore_FPGA_working3/PCore_FPGA/PCore_FPGA.runs/impl_1/vivado.jou
+#-----------------------------------------------------------
+source top.tcl -notrace

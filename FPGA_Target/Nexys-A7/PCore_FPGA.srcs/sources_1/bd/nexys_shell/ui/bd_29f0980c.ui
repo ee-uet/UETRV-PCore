@@ -1,0 +1,29 @@
+{
+   "ActiveEmotionalView":"Default View",
+   "Default View_ScaleFactor":"0.934902",
+   "Default View_TopLeft":"-123,-34",
+   "ExpandedHierarchyInLayout":"",
+   "guistr":"# # String gsaved with Nlview 7.0.19  2019-03-26 bk=1.5019 VDI=41 GEI=35 GUI=JA:9.0 TLS
+#  -string -flagsOSRD
+preplace port m_axi -pg 1 -lvl 0 -x -30 -y 50 -defaultsOSRD
+preplace port ddr2_sdram -pg 1 -lvl 4 -x 1020 -y 250 -defaultsOSRD
+preplace port clk -pg 1 -lvl 0 -x -30 -y 80 -defaultsOSRD
+preplace port rst_n -pg 1 -lvl 0 -x -30 -y 110 -defaultsOSRD
+preplace port sys_clk_i -pg 1 -lvl 0 -x -30 -y -10 -defaultsOSRD
+preplace inst smartconnect_0 -pg 1 -lvl 1 -x 160 -y 80 -defaultsOSRD
+preplace inst proc_sys_reset_0 -pg 1 -lvl 2 -x 500 -y 300 -defaultsOSRD
+preplace inst mig_7series_0 -pg 1 -lvl 3 -x 830 -y 300 -defaultsOSRD
+preplace netloc mig_7series_0_mmcm_locked 1 1 3 310 400 N 400 960
+preplace netloc proc_sys_reset_0_peripheral_aresetn 1 2 1 690 330n
+preplace netloc rst_n_1 1 0 3 0 -10 300 190 680
+preplace netloc sys_clk_i_1 1 0 3 -10J -20 NJ -20 690
+preplace netloc mig_7series_0_ui_clk 1 0 4 10 200 310J 200 NJ 200 960
+preplace netloc clk_1 1 0 1 10 70n
+preplace netloc smartconnect_0_M00_AXI 1 1 2 NJ 80 700
+preplace netloc mig_7series_0_DDR2 1 3 1 970J 250n
+preplace netloc m_axi_1 1 0 1 NJ 50
+levelinfo -pg 1 -30 160 500 830 1020
+pagesize -pg 1 -db -bbox -sgen -150 -160 1160 470
+"
+}
+0
