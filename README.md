@@ -2,10 +2,10 @@
 [![pcore-riscof](https://github.com/ee-uet/UETRV-PCore/actions/workflows/main.yml/badge.svg)](https://github.com/ee-uet/UETRV-PCore/actions/workflows/main.yml)
 [![Documentation status](https://img.shields.io/badge/Docs-Passing-brightgreen)](https://uetrv-pcore-doc.readthedocs.io/en/main/index.html)
 
-UETRV_Pcore is a RISC-V based application class SoC integrating a 5-stage pipelined processor with memory and peripherals. Currently, the core implements RV32IMAZicsr ISA based on User-level ISA Version 2.0 and Privileged Architecture Version 1.11 supporting M/S/U modes. Following are the key features of the SoC:
+UETRV_Pcore is a RISC-V based application class SoC integrating a 5-stage pipelined processor with memory and peripherals. Currently, the core implements RV32IMACZicsr ISA based on User-level ISA Version 2.0 and Privileged Architecture Version 1.11 supporting M/S/U modes. Following are the key features of the SoC:
 
 ## Key Features
-- 32-bit RISC-V ISA core that supports base integer (I) and multiplication and division (M), atomic (A) and Zicsr (Z) extensions (RV32IMAZicsr).
+- 32-bit RISC-V ISA core that supports base integer (I) and multiplication and division (M), atomic (A), compressed (C) and Zicsr (Z) extensions (RV32IMACZicsr).
 - Supports user, supervisor and machine mode privilege levels.
 - Support for instruction / data (writeback) caches.
 - Sv32 based MMU support and is capable of running Linux.
