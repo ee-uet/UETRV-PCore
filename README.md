@@ -108,10 +108,10 @@ New bitstream can be generated with the exisitng project or you may use the preb
   cd sdk/load_image
   python3 serial_sendfile.py <baud_rate in MHz> <path/to/image/file>
   ```
-* Baud rate of existing bitstream is ``1250000``. Sample Linux image is saved in ``sdk/load_image`` folder.
+* Baud rate of existing bitstream is ``4000000``. Sample Linux image is saved in ``sdk/load_image`` folder.
 * If using default baud rate and default bitstream, the following command can be run
   ```
-  python3 serial_sendfile.py 1.25 imem.bin
+  python3 serial_sendfile.py 4 imem.bin
   ```
 After successful downloading of the image the booting process starts. A snapshot of the boot log is shown below. 
 
