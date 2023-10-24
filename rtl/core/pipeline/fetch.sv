@@ -79,7 +79,7 @@ assign csr2if_fb = csr2if_fb_i;
 assign fwd2if    = fwd2if_i;
 
 // Evaluation for misaligned address
-assign pc_misaligned = pc_ff[1] | pc_ff[0];
+assign pc_misaligned = pc_ff[0];
 
 // Stall signal for IF stage
 assign if_stall = fwd2if.if_stall | (~icache2if.ack) | irq_req_next;
@@ -94,7 +94,7 @@ always_ff @(posedge clk) begin
 end
 
 always_comb begin
-    pc_next = (pc_ff + 32'd4);
+    pc_next = (pc_ff + (icache2if.comp_ack ? 32'd2 : 32'd4));
 
     case (1'b1)
         fwd2if.csr_new_pc_req : begin
@@ -178,6 +178,8 @@ assign if2icache_o.req  = mmu2if.i_hit;              // `IMEM_INST_REQ;
 
 assign if2icache_o.req_kill     = kill_req;
 assign if2icache_o.icache_flush = csr2if_fb.icache_flush;   
+
+assign if2icache_o.if_stall     = fwd2if.if_stall;
 
 // Update the outputs to ID stage
 assign if2id_data.instr         = ((~icache2if.ack) | irq_req_next) ? `INSTR_NOP : icache2if.r_data;
