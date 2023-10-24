@@ -27,7 +27,9 @@ module prefetch (
     input wire type_if2icache_s                     if2pf_i
 );
 
-// Interface for Realign
+`ifdef COMPRESSED
+
+// Interface for Realigner
 type_icache2if_s pf2ralgn, ralgn2dcmp, dcmp2if;;
 type_if2icache_s ralgn2pf, if2ralgn;
 
@@ -60,5 +62,13 @@ decompress decompress_module (
 
 assign pf2if_o      = dcmp2if;
 assign pf2icache_o  = ralgn2pf;
+
+`else 
+
+assign pf2if_o.comp_ack = 1'b0;
+assign pf2if_o          = icache2pf_i;
+assign pf2icache_o      = if2pf_i;
+
+`endif
 
 endmodule : prefetch

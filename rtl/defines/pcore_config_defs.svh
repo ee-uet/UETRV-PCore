@@ -19,6 +19,7 @@
 `define ICACHE_SETS                  2048
 `define DCACHE_SETS                  512
 
+`define COMPRESSED                   1
 //============================= CORE PARAMETERS ========================//
 
 // Width of main registers and buses
