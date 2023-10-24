@@ -21,6 +21,7 @@ uartbuild_root := sdk/example-uart/build/
 src := bench/pcore_tb.sv							\
 	   $(wildcard rtl/*.sv)							\
 	   $(wildcard rtl/core/*.sv)						\
+	   $(wildcard rtl/core/pipeline/*.v)					\
 	   $(wildcard rtl/core/*/*.sv)						\
 	   $(wildcard rtl/interconnect/*.sv)					\
 	   $(wildcard rtl/memory/*.sv)						\
@@ -36,10 +37,12 @@ verilate_command := $(verilator) +define+$(defines) 				\
 					-Wno-TIMESCALEMOD 			\
 					-Wno-MULTIDRIVEN 			\
 					-Wno-CASEOVERLAP 			\
-        				-Wno-WIDTH  			\
+        				-Wno-WIDTH  				\
 					-Wno-UNOPTFLAT 				\
 					-Wno-IMPLICIT 				\
 					-Wno-PINMISSING 			\
+					--prof-cfuncs 				\
+					-DVL_DEBUG -CFLAGS 			\
 					--Mdir $(ver-library)			\
 					--exe bench/pcore_tb.cpp		\
 					--trace-structs --trace
@@ -70,9 +73,6 @@ sim-verilate-linux: verilate
 	$(ver-library)/Vpcore_tb +imem=$(imem_linux) +max_cycles=300000000 +vcd=$(vcd)
 
 clean-all:
-	rm -rf ver_work/ *.log *.vcd 					\
-	$(uartbuild_root)*.o  $(uartbuild_root)*.bin 			\
-	$(uartbuild_root)*.hex $(uartbuild_root)*.elf 			\
-	$(uartbuild_root)*.dump						\
+	rm -rf ver_work/ *.log *.vcd \
 	verif/*work/
 

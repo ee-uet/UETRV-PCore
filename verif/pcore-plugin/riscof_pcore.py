@@ -57,7 +57,7 @@ class pcore(pluginTemplate):
        self.toplevel = 'pcore_tb'
        self.buidldir = 'sim_work'
        comp_pcore = 'verilator --Mdir {0} +define+COMPLIANCE=1 -cc \
-        $(find ../rtl/ -type f -name "*.sv")\
+        $(find ../rtl/ -type f -name "*v")\
         ../bench/{1}.sv  \
         -Wno-TIMESCALEMOD -Wno-MULTIDRIVEN -Wno-CASEOVERLAP \
         -Wno-WIDTH -Wno-UNOPTFLAT -Wno-IMPLICIT -Wno-PINMISSING \
@@ -69,7 +69,7 @@ class pcore(pluginTemplate):
 
        # Simulate
        self.sim_pcore = './{0}/V{1} \
-        +max_cycles=100000000 \
+        +max_cycles=1000000 \
         +imem={2}/{3}.hex'
 
     def build(self, isa_yaml, platform_yaml):
