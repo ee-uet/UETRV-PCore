@@ -79,7 +79,11 @@ assign csr2if_fb = csr2if_fb_i;
 assign fwd2if    = fwd2if_i;
 
 // Evaluation for misaligned address
+`ifdef COMPRESSED
 assign pc_misaligned = pc_ff[0];
+`else
+assign pc_misaligned = pc_ff[1] | pc_ff[0];
+`endif 
 
 // Stall signal for IF stage
 assign if_stall = fwd2if.if_stall | (~icache2if.ack) | irq_req_next;
