@@ -40,16 +40,6 @@ logic                                       ralgnInstr_sel, ralgn2if_ack, nextIc
 assign if2ralgn             = if2ralgn_i;
 assign icache2ralgn         = icache2ralgn_i;
 
-// Icache <---> Realign, pass through by default
-assign ralgn2icache.icache_flush = if2ralgn.icache_flush;
-assign ralgn2icache.if_stall     = if2ralgn.if_stall;
-assign ralgn2icache.req          = if2ralgn.req;
-assign ralgn2icache.req_kill     = if2ralgn.req_kill;
-assign ralgn2icache.addr         = (nextIcache_req & ~if2ralgn.req_kill) ? (if2ralgn.addr + 32'b100) : if2ralgn.addr;
-
-assign ralgn2if.ack         = ralgn2if_ack & icache2ralgn.ack;
-assign ralgn2if.r_data      = ralgnInstr_sel ? realigned_instr : icache2ralgn.r_data;
-
 // concatenated instruction
 assign realigned_instr      = {icache2ralgn.r_data[15:0], lowerhw_buf};
 
@@ -101,6 +91,16 @@ always_comb begin
         default: begin  end
     endcase
 end
+
+assign ralgn2icache.icache_flush = if2ralgn.icache_flush;
+assign ralgn2icache.if_stall     = if2ralgn.if_stall;
+assign ralgn2icache.req          = if2ralgn.req;
+assign ralgn2icache.req_kill     = if2ralgn.req_kill;
+assign ralgn2icache.addr         = (nextIcache_req & ~if2ralgn.req_kill) ? (if2ralgn.addr + 32'b100) : if2ralgn.addr;
+
+assign ralgn2if.ack              = ralgn2if_ack & icache2ralgn.ack;
+assign ralgn2if.r_data           = ralgnInstr_sel ? realigned_instr : icache2ralgn.r_data;
+assign ralgn2if.comp_ack         = 0;
 
 // Output signal assigments
 assign ralgn2icache_o   = ralgn2icache;
