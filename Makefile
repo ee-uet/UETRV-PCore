@@ -41,8 +41,6 @@ verilate_command := $(verilator) +define+$(defines) 				\
 					-Wno-UNOPTFLAT 				\
 					-Wno-IMPLICIT 				\
 					-Wno-PINMISSING 			\
-					--prof-cfuncs 				\
-					-DVL_DEBUG -CFLAGS 			\
 					--Mdir $(ver-library)			\
 					--exe bench/pcore_tb.cpp		\
 					--trace-structs --trace
