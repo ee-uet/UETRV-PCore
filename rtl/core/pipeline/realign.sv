@@ -41,8 +41,11 @@ assign if2ralgn             = if2ralgn_i;
 assign icache2ralgn         = icache2ralgn_i;
 
 // Icache <---> Realign, pass through by default
-assign ralgn2icache         = if2ralgn; 
-assign ralgn2icache.addr    = (nextIcache_req & ~if2ralgn.req_kill) ? (if2ralgn.addr + 32'b100) : if2ralgn.addr;
+assign ralgn2icache.icache_flush = if2ralgn.icache_flush;
+assign ralgn2icache.if_stall     = if2ralgn.if_stall;
+assign ralgn2icache.req          = if2ralgn.req;
+assign ralgn2icache.req_kill     = if2ralgn.req_kill;
+assign ralgn2icache.addr         = (nextIcache_req & ~if2ralgn.req_kill) ? (if2ralgn.addr + 32'b100) : if2ralgn.addr;
 
 assign ralgn2if.ack         = ralgn2if_ack & icache2ralgn.ack;
 assign ralgn2if.r_data      = ralgnInstr_sel ? realigned_instr : icache2ralgn.r_data;
@@ -92,7 +95,8 @@ always_comb begin
             else if(icache2ralgn.ack) begin
                 nextIcache_req      = if2ralgn.addr[1] ? 1'b1 : 1'b0;
                 ralgn_state_next    = if2ralgn.addr[1] ? RALGN_IF_ACK : RALGN_IDLE;
-            end
+            end else 
+                ralgn_state_next    = RALGN_IF_ACK;
         end
         default: begin  end
     endcase
