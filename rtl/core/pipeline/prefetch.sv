@@ -39,25 +39,22 @@ assign if2ralgn     = if2pf_i;
 realign realign_module (
     .rst_n                      (rst_n),
     .clk                        (clk),
-    // REALIGN <------> ICache
+
+    // ICache <------> REALIGN
     .ralgn2icache_o             (ralgn2pf),
     .icache2ralgn_i             (pf2ralgn),
-    // IF <-----> REALIGN
+
+    // REALIGN <-----> Decompress
     .ralgn2if_o                 (ralgn2dcmp),
     .if2ralgn_i                 (if2ralgn)
 );
 
-// Todo: Make the following code consistent with the PCore sv code base. 
-//       Functionally working as of now.
-wire isComp;
-assign dcmp2if = ralgn2dcmp;
-assign dcmp2if.comp_ack   = isComp & ~if2ralgn.req_kill;
-decompress decompress_module (
-    .i_clk       (clk),
-    .i_instr     (ralgn2dcmp.r_data),
-    .i_ack       (ralgn2dcmp.ack),
-    .o_instr     (dcmp2if.r_data),
-    .o_iscomp    (isComp)
+decompress decode_module (
+    // Decompress <-----> IF
+    .ralgn2dcmp_i               (ralgn2dcmp),
+    .req_kill_i                 (if2ralgn.req_kill),
+
+    .dcmp2if_o                  (dcmp2if)
 );
 
 assign pf2if_o      = dcmp2if;
@@ -66,7 +63,8 @@ assign pf2icache_o  = ralgn2pf;
 `else 
 
 assign pf2if_o.comp_ack = 1'b0;
-assign pf2if_o          = icache2pf_i;
+assign pf2if_o.ack      = icache2pf_i.ack;
+assign pf2if.r_data     = icache2pf_i.r_data;
 assign pf2icache_o      = if2pf_i;
 
 `endif
