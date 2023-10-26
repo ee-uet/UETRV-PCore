@@ -11,7 +11,7 @@ ver-library ?= ver_work
 defines     ?= 
 
 # default command line arguments
-imem_uart  ?= sdk/example-uart/hello.hex
+imem_uart  ?= sdk/example-uart/build/hello.hex
 imem_linux ?= sdk/example-linux/imem.txt
 max_cycles ?= 100000
 vcd        ?= 0
@@ -41,8 +41,6 @@ verilate_command := $(verilator) +define+$(defines) 				\
 					-Wno-UNOPTFLAT 				\
 					-Wno-IMPLICIT 				\
 					-Wno-PINMISSING 			\
-					--prof-cfuncs 				\
-					-DVL_DEBUG -CFLAGS 			\
 					--Mdir $(ver-library)			\
 					--exe bench/pcore_tb.cpp		\
 					--trace-structs --trace
@@ -55,12 +53,16 @@ verilate:
 sim-verilate-uart: verilate
 	@echo
 	@echo
-	@echo "Running User Program available at $(imem)"
 	@echo "Output is captured in uart_logdata.log"
 	@echo
 	$(ver-library)/Vpcore_tb +imem=$(imem_uart) +max_cycles=$(max_cycles) +vcd=$(vcd)
 
 sim-verilate-linux: verilate
+	@echo
+	@echo "Extracting Linux Image..."
+	@echo
+	rm -f ./sdk/example-linux/imem.txt
+	unzip ./sdk/example-linux/imem.zip -d ./sdk/example-linux/
 	@echo
 	@echo
 	@echo "Output is captured in uart_logdata.log"
@@ -68,8 +70,6 @@ sim-verilate-linux: verilate
 	@echo
 	@echo "Initiating Linux Bootup in Verilator Simulation..."
 	@echo
-	rm  -f  ./sdk/example-linux/imem.txt
-	unzip ./sdk/example-linux/imem.zip -d ./sdk/example-linux/
 	$(ver-library)/Vpcore_tb +imem=$(imem_linux) +max_cycles=300000000 +vcd=$(vcd)
 
 clean-all:
