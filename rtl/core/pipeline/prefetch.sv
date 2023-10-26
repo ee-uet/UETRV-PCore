@@ -64,7 +64,7 @@ assign pf2icache_o  = ralgn2pf;
 
 assign pf2if_o.comp_ack = 1'b0;
 assign pf2if_o.ack      = icache2pf_i.ack;
-assign pf2if.r_data     = icache2pf_i.r_data;
+assign pf2if_o.r_data   = icache2pf_i.r_data;
 assign pf2icache_o      = if2pf_i;
 
 `endif

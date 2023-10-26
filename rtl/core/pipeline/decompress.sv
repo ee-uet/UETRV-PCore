@@ -233,7 +233,7 @@ end
 assign dcmp2if.comp_ack = ~illegal_instr & ~req_kill_i;
 assign dcmp2if.ack      = ralgn2dcmp.ack;
 
-assign  dcmp2if_o       = dcmp2if; 
+assign dcmp2if_o        = dcmp2if; 
 
 
-endmodule
+endmodule : decompress
