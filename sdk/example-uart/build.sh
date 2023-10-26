@@ -1,11 +1,11 @@
 # !bin/bash
 mkdir -p build
-riscv64-unknown-elf-as -c -o build/isr.o src/isr.s -march=rv32im_zicsr -mabi=ilp32
-riscv64-unknown-elf-as -c -o build/startup.o src/startup.s -march=rv32ima_zicsr -mabi=ilp32
+riscv64-unknown-elf-as -c -o build/isr.o src/isr.s -march=rv32imc_zicsr -mabi=ilp32
+riscv64-unknown-elf-as -c -o build/startup.o src/startup.s -march=rv32imac_zicsr -mabi=ilp32
 
-riscv64-unknown-elf-gcc -c -O -o build/uart.o Interfaces/uart.c -march=rv32im_zicsr -mabi=ilp32
-riscv64-unknown-elf-gcc -c -O -o build/plic.o Interfaces/plic.c -march=rv32im_zicsr -mabi=ilp32
-riscv64-unknown-elf-gcc -c -O -o build/main.o src/main.c -march=rv32im_zicsr -mabi=ilp32
+riscv64-unknown-elf-gcc -c -O -o build/uart.o Interfaces/uart.c -march=rv32imc_zicsr -mabi=ilp32
+riscv64-unknown-elf-gcc -c -O -o build/plic.o Interfaces/plic.c -march=rv32imc_zicsr -mabi=ilp32
+riscv64-unknown-elf-gcc -c -O -o build/main.o src/main.c -march=rv32imc_zicsr -mabi=ilp32
 
 riscv64-unknown-elf-gcc -O -o build/main.elf build/startup.o build/isr.o build/uart.o build/plic.o build/main.o -T linker.ld -nostdlib -march=rv32i_zicsr -mabi=ilp32
 
