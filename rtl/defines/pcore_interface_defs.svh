@@ -17,12 +17,6 @@
 
 //============================== ISA related definitions ================================//
 
-typedef enum logic [1:0] {
-    RALGN_IDLE, 
-    RALGN_ICACHE_REQ,
-    RALGN_IF_ACK
-} type_ralgn_states_e;
-
 typedef enum logic [4:0] {
     OPCODE_LOAD_INST      = 5'b00000,
     OPCODE_STORE_INST     = 5'b01000,

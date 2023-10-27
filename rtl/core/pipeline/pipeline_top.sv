@@ -94,10 +94,6 @@ type_dbus2lsu_s                         dbus2lsu;
 type_if2icache_s                        if2icache;              
 type_icache2if_s                        icache2if;
 
-// Interfaces for Icache <---> Pre-fetch <---> Instruction Fetch
-type_if2icache_s                        pf2icache, if2pf;
-type_icache2if_s                        icache2pf, pf2if;
-
 // Interfaces for writeback module
 type_lsu2wrb_ctrl_s                     lsu2wrb_ctrl;
 type_lsu2wrb_data_s                     lsu2wrb_data;
@@ -147,22 +143,6 @@ assign mmu2if    = mmu2if_i;
 assign mmu2lsu   = mmu2lsu_i;
 assign icache2if = icache2if_i;
 
-//================================= Prefetch to Fetch interface ================================//
-
-// pass through Icache IOs
-assign if2icache = pf2icache;
-assign icache2pf = icache2if;
-
-prefetch prefetch_module (
-    .rst_n                      (rst_n),
-    .clk                        (clk),
-    // ICache <---> Pre-fetch interface
-    .pf2icache_o                (pf2icache),
-    .icache2pf_i                (icache2pf),
-    // Pre-fetch <---> IF interface
-    .pf2if_o                    (pf2if),
-    .if2pf_i                    (if2pf)
-);
 
 //================================= Fetch to decode interface ==================================//
 
@@ -172,8 +152,8 @@ fetch fetch_module (
     .clk                        (clk),
 
     // IF module interface signals 
-    .if2icache_o                (if2pf),
-    .icache2if_i                (pf2if),
+    .if2icache_o                (if2icache),
+    .icache2if_i                (icache2if),
 
     .if2mmu_o                   (if2mmu),
     .mmu2if_i                   (mmu2if),

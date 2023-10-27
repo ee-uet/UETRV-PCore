@@ -935,10 +935,10 @@ always_comb begin
         m_mode_lsu_pf_exc_req   : begin
             csr_mtval_next = lsu2csr_data.dbus_addr;
         end
-        (m_mode_i_pf_exc_req | m_mode_break_exc_req): begin
+        m_mode_i_pf_exc_req : begin
             csr_mtval_next = csr_pc_next;
         end
-        (ms_mode_ecall_req | m_mode_irq_req) : begin
+        (ms_mode_ecall_req | m_mode_break_exc_req | m_mode_irq_req) : begin
             csr_mtval_next = '0;
         end
         csr_mtval_wr_flag      : begin  

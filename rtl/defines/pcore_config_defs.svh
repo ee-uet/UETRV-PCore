@@ -12,14 +12,13 @@
 `define PCORE_CONFIG_DEFS
 
 `ifndef COMPLIANCE
-//`define DRAM                         1
-`define RTL_SIMULATION               1 
+`define DRAM                         1
+//`define RTL_SIMULATION               1 
 `endif
 
 `define ICACHE_SETS                  2048
 `define DCACHE_SETS                  512
 
-`define COMPRESSED                   1
 //============================= CORE PARAMETERS ========================//
 
 // Width of main registers and buses

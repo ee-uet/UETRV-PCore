@@ -35,6 +35,7 @@ logic                          cache_hit;
 logic                          cache_rw;
 logic                          cache_req;
 logic                          icache_flush;
+logic                          cache_valid_bit;
 
 type_if2icache_s               if2icache;
 type_mem2icache_s              mem2icache;
@@ -42,7 +43,7 @@ type_icache2if_s               icache2if;
 type_icache2mem_s              icache2mem;
 
 type_icache_states_e                 icache_state_ff, icache_state_next;
-type_icache_line_s                   icache_rd_buf, icache_wr_buff;
+type_icache_line_s                   icache_rd_buf;
 logic                                icache2if_ack, icache2if_ack_ff;
 logic                                icache_hit;
 logic                                icache_miss;
@@ -55,34 +56,60 @@ logic [ICACHE_TAG_BITS-1:0]          addr_tag, addr_tag_ff;
 logic [1:0]                          addr_offset, addr_offset_ff;
 logic [ICACHE_IDX_BITS-1:0]          addr_index;
 
+logic [ICACHE_IDX_BITS-1:0]          flush_index_next, flush_index_ff;
+logic                                icache_flush_ff;
+logic                                icache_flush_done;
+
+
 assign if2icache         = if2icache_i;
 assign mem2icache.r_data = mem2icache_i.r_data;
 assign mem2icache.ack    = mem2icache_i.ack;
 
-assign icache_flush = if2icache.icache_flush;
+assign icache_flush = if2icache.icache_flush || icache_flush_ff;
 
 assign cache_hit   = (addr_tag_ff == icache_rd_buf.tag) && icache_rd_buf.valid && ~icache_flush; // MT
 assign icache_hit  = if2icache_req & imem_sel_ff & cache_hit;
 assign icache_miss = if2icache_req & imem_sel_ff & ~cache_hit;
 
+
+// Cache flush flag
+always_ff @(posedge clk) begin
+  if (!rst_n) begin
+      icache_flush_ff  <= '0;
+  end else if (if2icache.icache_flush) begin
+      icache_flush_ff <= 1'b1;
+  end else if (icache_flush_done) begin
+      icache_flush_ff <= 1'b0;
+  end /*else begin
+      icache_flush_ff <= icache_flush_ff;
+  end */
+end
+
 // Cache controller state machine
 always_ff @(posedge clk) begin
   if (!rst_n) begin
       icache_state_ff <= ICACHE_IDLE;
+      flush_index_ff  <= '0;
   end else begin
       icache_state_ff <= icache_state_next;
+      flush_index_ff  <= flush_index_next;
   end
 end
  
 always_comb begin
     icache_state_next = icache_state_ff;
+    flush_index_next  = '0; //flush_index_ff;
     icache2mem.req  = '0;
     cache_rw = '0;
+    cache_valid_bit = '0;
+    icache_flush_done = 1'b0;
     
     unique case (icache_state_ff)
         ICACHE_IDLE: begin
             // In case of miss, initiate main memory read cycle   
-            if (icache_miss & ~if2icache.req_kill) begin           
+            if (if2icache.icache_flush) begin           
+                icache_state_next = ICACHE_FLUSH;
+            end else if (icache_miss & ~if2icache.req_kill) begin           
                 icache2mem.req = 1'b1;
                 icache_state_next = ICACHE_READ_MEMORY;
             end else begin
@@ -99,21 +126,31 @@ always_comb begin
             end else if (mem2icache.ack) begin
                 icache_state_next = ICACHE_IDLE;
                 cache_rw = 1'b1;
+                cache_valid_bit = 1'b1;
                 icache2mem.req = 1'b0;
             end else begin
                 icache_state_next = ICACHE_READ_MEMORY;
                 icache2mem.req = 1'b1;
             end
         end
-  /*      ICACHE_WRITE: begin 
-            icache_state_next = ICACHE_IDLE;
-        end */
+        ICACHE_FLUSH: begin
+                
+            if (&flush_index_ff) begin  
+                icache_flush_done = 1'b1;
+                icache_state_next = ICACHE_IDLE;
+            end else begin
+                flush_index_next = flush_index_ff + 1;
+                icache_state_next = ICACHE_FLUSH;
+                cache_rw = 1'b1;
+                cache_valid_bit = 1'b0;
+            end
+        end
+       
         default: begin      end
     endcase
 
     // Kill any ongoing main memory read request if:
-    //     1) There is a jump/branch/exception/interrupt leading to new PC
-    //     2) The new PC points to boot memory region (only happens on reset) 
+    //     1) The new PC points to boot memory region (only happens on reset) 
     if (~imem_sel_i) begin  // | if2icache_req_kill_i
         icache_state_next = ICACHE_IDLE;
         cache_rw = 1'b0;
@@ -167,8 +204,9 @@ end
 //assign icache2if_ack_o = icache2if_ack;
 assign cache_req = if2icache.req & imem_sel_i;
 assign addr_tag       = if2icache.addr[ICACHE_ADDR_WIDTH-1:ICACHE_TAG_LSB];
-assign addr_index     = if2icache.addr[ICACHE_TAG_LSB-1:ICACHE_OFFSET_BITS];
 assign addr_offset    = if2icache.addr[ICACHE_OFFSET_BITS-1:2];
+//assign addr_index     = if2icache.addr[ICACHE_TAG_LSB-1:ICACHE_OFFSET_BITS];
+assign addr_index  = icache_flush_ff ? flush_index_ff : if2icache.addr[ICACHE_TAG_LSB-1:ICACHE_OFFSET_BITS];
 
 always_comb begin
     unique case (addr_offset_ff) // MT
@@ -180,10 +218,7 @@ always_comb begin
     endcase
 end
 
-
-assign icache_wr_buff.tag   = addr_tag;
-assign icache_wr_buff.valid = 1'b1;
-assign icache_wr_tag        = {1'b1, {`XLEN-ICACHE_TAG_BITS-1{1'b0}}, addr_tag}; 
+assign icache_wr_tag  = {cache_valid_bit, {`XLEN-ICACHE_TAG_BITS-1{1'b0}}, addr_tag}; 
 
 assign icache_rd_buf.tag   = icache_rd_tag[ICACHE_TAG_BITS-1:0];
 assign icache_rd_buf.valid = icache_rd_tag[31];

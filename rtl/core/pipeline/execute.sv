@@ -346,11 +346,7 @@ assign exe2fwd_o       = exe2fwd;
 assign exe2mul_o       = exe2mul;
 
 // Update the feedback signals from EXE to IF stage                         
-`ifdef COMPRESSED
-assign exe2if_fb.pc_new       = {alu_result[31:1], 1'b0};
-`else
 assign exe2if_fb.pc_new       = {alu_result[31:2], 2'b0};  // fence_i_req ? id2exe_data.pc_next :  
-`endif
 // assign exe2if_fb.icache_flush = fence_i_req;                         
 assign exe2if_fb_o            = exe2if_fb;                  
 

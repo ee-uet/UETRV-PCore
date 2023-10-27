@@ -13,7 +13,7 @@
 
 `include "pcore_interface_defs.svh"
 
-parameter int unsigned TLB_ENTRIES = 8;
+parameter int unsigned TLB_ENTRIES = 16;
 parameter int unsigned DTLB_ENTRIES = 8;
 parameter int unsigned DTLB_WIDTH = $clog2(DTLB_ENTRIES);
 

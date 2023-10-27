@@ -28,7 +28,7 @@ parameter ICACHE_TAG_LSB     = ICACHE_ADDR_WIDTH - ICACHE_TAG_BITS;
 typedef enum logic [1:0] {
     ICACHE_IDLE, 
     ICACHE_READ_MEMORY, 
-    ICACHE_WRITE, 
+    ICACHE_FLUSH, 
     ICACHE_ALLOCATE 
 } type_icache_states_e; 
 
@@ -38,14 +38,12 @@ typedef struct packed {
     logic                            req;
     logic                            req_kill;
     logic                            icache_flush; 
-    logic                            if_stall;
 } type_if2icache_s;
 
 // Bus interface from Icache to IF
 typedef struct packed {                            
     logic [ICACHE_DATA_WIDTH-1:0]    r_data;
     logic                            ack;  
-    logic                            comp_ack;
 } type_icache2if_s;
 
 
