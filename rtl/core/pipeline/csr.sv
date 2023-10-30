@@ -837,7 +837,11 @@ always_comb begin
             csr_mepc_next = csr_pc_next;
         end
         csr_mepc_wr_flag : begin  
+            `ifdef COMPRESSED
+            csr_mepc_next = {csr_wdata[`XLEN-1:1], 1'b0};
+            `else
             csr_mepc_next = {csr_wdata[`XLEN-1:2], 2'b00};
+            `endif
         end
         default          : begin        end
     endcase
@@ -1074,7 +1078,11 @@ always_comb begin
             csr_sepc_next = csr_pc_next;
         end
         csr_sepc_wr_flag : begin  
+            `ifdef COMPRESSED
+            csr_sepc_next = {csr_wdata[`XLEN-1:1], 1'b0};
+            `else
             csr_sepc_next = {csr_wdata[`XLEN-1:2], 2'b00};
+            `endif
         end
         default          : begin
             csr_sepc_next = csr_sepc_ff;

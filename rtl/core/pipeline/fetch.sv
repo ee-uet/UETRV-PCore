@@ -183,7 +183,7 @@ assign if2icache_o.req  = mmu2if.i_hit;              // `IMEM_INST_REQ;
 assign if2icache_o.req_kill     = kill_req;
 assign if2icache_o.icache_flush = csr2if_fb.icache_flush;   
 
-assign if2icache_o.if_stall     = fwd2if.if_stall;
+assign if2icache_o.if_stall     = fwd2if.if_stall | irq_req_next;
 
 // Update the outputs to ID stage
 assign if2id_data.instr         = ((~icache2if.ack) | irq_req_next) ? `INSTR_NOP : icache2if.r_data;
