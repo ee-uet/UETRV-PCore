@@ -68,13 +68,14 @@ always_comb begin
             ralgn_state_next        = if2ralgn.addr[1] ? RALGN_ICACHE_REQ : RALGN_IDLE;
         end
         RALGN_ICACHE_REQ: begin
-            ralgn2if_ack            = 1'b0;
             ralgnInstr_sel          = 1'b1;
-            if(if2ralgn.req_kill)
+            if(if2ralgn.req_kill) begin
                 ralgn_state_next    = if2ralgn.addr[1] ? RALGN_ICACHE_REQ : RALGN_IDLE;
-            else begin
+                ralgn2if_ack        = if2ralgn.addr[1] ? 1'b0 : 1'b1;
+            end else begin
                 ralgn_state_next    = icache2ralgn.ack ? RALGN_IF_ACK : RALGN_ICACHE_REQ;
                 nextIcache_req      = icache2ralgn.ack ? 1'b1 : 1'b0;
+                ralgn2if_ack        = 1'b0;
             end
         end
         RALGN_IF_ACK: begin
@@ -100,7 +101,7 @@ assign ralgn2icache.addr         = (nextIcache_req & ~if2ralgn.req_kill) ? (if2r
 
 assign ralgn2if.ack              = ralgn2if_ack & icache2ralgn.ack;
 assign ralgn2if.r_data           = ralgnInstr_sel ? realigned_instr : icache2ralgn.r_data;
-assign ralgn2if.comp_ack         = 0;
+assign ralgn2if.comp_ack         = 1'b0;
 
 // Output signal assigments
 assign ralgn2icache_o   = ralgn2icache;
