@@ -45,7 +45,9 @@ assign realigned_instr      = {icache2ralgn.r_data[15:0], prefetch_buf_data[31:1
 
 // Update the pre-fetch buffer
 always_ff @(posedge clk) begin
-    if (icache2ralgn.ack & ~if2ralgn.if_stall & buf_en) begin
+    if (if2ralgn.req_kill) 
+        prefetch_buf_data <= 32'd0;
+    else if (icache2ralgn.ack & ~if2ralgn.if_stall & buf_en) begin
         prefetch_buf_data <= icache2ralgn.r_data;
     end
 end
