@@ -20,7 +20,8 @@
 typedef enum logic [1:0] {
     RALGN_IDLE, 
     RALGN_ICACHE_REQ,
-    RALGN_IF_ACK
+    RALGN_COMP_ACK,
+    RALGN_UNCOMP_ACK
 } type_ralgn_states_e;
 
 typedef enum logic [4:0] {
