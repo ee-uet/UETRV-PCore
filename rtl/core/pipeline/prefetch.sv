@@ -49,7 +49,7 @@ realign realign_module (
     .if2ralgn_i                 (if2ralgn)
 );
 
-decompress decode_module (
+decompress decompress_module (
     // Decompress <-----> IF
     .ralgn2dcmp_i               (ralgn2dcmp),
     .req_kill_i                 (if2ralgn.req_kill),
