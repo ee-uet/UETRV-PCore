@@ -837,7 +837,11 @@ always_comb begin
             csr_mepc_next = csr_pc_next;
         end
         csr_mepc_wr_flag : begin  
+            `ifdef COMPRESSED
+            csr_mepc_next = {csr_wdata[`XLEN-1:1], 1'b0};
+            `else
             csr_mepc_next = {csr_wdata[`XLEN-1:2], 2'b00};
+            `endif
         end
         default          : begin        end
     endcase
@@ -935,10 +939,10 @@ always_comb begin
         m_mode_lsu_pf_exc_req   : begin
             csr_mtval_next = lsu2csr_data.dbus_addr;
         end
-        m_mode_i_pf_exc_req : begin
+        (m_mode_i_pf_exc_req | m_mode_break_exc_req): begin
             csr_mtval_next = csr_pc_next;
         end
-        (ms_mode_ecall_req | m_mode_break_exc_req | m_mode_irq_req) : begin
+        (ms_mode_ecall_req | m_mode_irq_req) : begin
             csr_mtval_next = '0;
         end
         csr_mtval_wr_flag      : begin  
@@ -1074,7 +1078,11 @@ always_comb begin
             csr_sepc_next = csr_pc_next;
         end
         csr_sepc_wr_flag : begin  
+            `ifdef COMPRESSED
+            csr_sepc_next = {csr_wdata[`XLEN-1:1], 1'b0};
+            `else
             csr_sepc_next = {csr_wdata[`XLEN-1:2], 2'b00};
+            `endif
         end
         default          : begin
             csr_sepc_next = csr_sepc_ff;

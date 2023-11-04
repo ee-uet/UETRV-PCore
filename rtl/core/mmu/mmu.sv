@@ -93,7 +93,7 @@ always_comb begin
     // Check if vaddr translation is enabled
     if (lsu2mmu.en_vaddr) begin
         mmu2if.i_paddr = {itlb2mmu.pte.ppn, if2mmu.i_vaddr[11:0]};
-        mmu2if.i_hit   = itlb2mmu.hit;
+        mmu2if.i_hit   = itlb2mmu.hit & ~lsu2mmu.tlb_flush;
 
         // In case this is a superpage, the page-offset field will be of 22 bits
         if (itlb2mmu.page_4M) begin
