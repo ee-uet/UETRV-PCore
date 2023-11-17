@@ -15,7 +15,7 @@ UETRV_Pcore is a RISC-V based application class SoC integrating a 5-stage pipeli
 - Intergated PLIC, CLINT, uart, spi peripherals. 
 - Uses RISOF framework to run architecture compatibility tests.
 - Coremark: **2.0 Coremark/MHz** with DDR2 based main memory.
-- LUTs for core &lt 4.5k and &lt 6k for the SoC.
+- LUTs for core (including MMU) < 4.5k and for the SoC (including cache controllers but excluding DDR controller) < 6k.
 
 ### System Design Overview
 The UETRV_Pcore is an applicaion class processor capable of running Linux. A simplified 5-stage pipelined block diagram is shown below. The M-extension is implemented as a coprocessor while memory-management-unit (MMU) module is shared by instruction and data memory (alternatively called load-store-unit (LSU)) interfaces of the pipeline. Specifically, the page-table-walker (PTW) of the MMU is shared and there are separate TLBs (translation look aside buffers) for instruction and data memory interfaces. The A-extension is implemented as part of the LSU module.
