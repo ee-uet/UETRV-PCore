@@ -61,11 +61,11 @@ type_mem2icache_s                       mem2icache;
 type_mmu2dcache_s                       mmu2dcache;               
 type_dcache2mmu_s                       dcache2mmu;
 
-type_dbus2peri_s                        dbus2peri; // lsummu2dmem;
-type_peri2dbus_s                        dcache2dbus; // dmem2lsummu;              // Signals from data memory
+type_dbus2peri_s                        dbus2peri; 
+type_peri2dbus_s                        dcache2dbus;                        // Signals from data memory
 type_peri2dbus_s                        bmem2dbus;  
 
-type_lsummu2dcache_s                    lsummu2dcache, lsummu2dcache_ff, lsummu2dcache_next;
+type_lsummu2dcache_s                    lsummu2dcache; 
 type_dcache2lsummu_s                    dcache2lsummu;
 type_mem2dcache_s                       mem2dcache;
 type_dcache2mem_s                       dcache2mem;
@@ -86,7 +86,7 @@ logic                                   dcache_kill_req;
 logic                                   dcache2mem_kill;
 
 logic                                   timeout_flag;
-logic [7:0]                             timeout_next, timeout_ff; 
+logic [5:0]                             timeout_next, timeout_ff; 
 
 // Signal assignments
 assign mmu2dcache = mmu2dcache_i;
@@ -108,7 +108,7 @@ bmem_interface bmem_interface_module (
     .bmem_d_sel_i         (bmem_sel),
     .bmem2dbus_o          (bmem2dbus),
 
-   // Instruction memory interface signals 
+    // Instruction memory interface signals 
     .if2bmem_i            (if2icache),
     .bmem_iaddr_match_i   (bmem_iaddr_match),
     .bmem2if_o            (bmem2if)
@@ -135,16 +135,13 @@ icache_top icache_top_module(
 always_ff @(posedge clk) begin
     if (~rst_n) begin
         cache_arbiter_state_ff <= DCACHE_ARBITER_IDLE; 
-        lsummu2dcache_ff       <= '0;
     end else begin
         cache_arbiter_state_ff <= cache_arbiter_state_next;
-        lsummu2dcache_ff       <= lsummu2dcache_next;
     end
 end
 
 always_comb begin
 lsummu2dcache = '0;
-lsummu2dcache_next = lsummu2dcache_ff;
 dcache2dbus   = '0;
 dcache2mmu    = '0;
 cache_arbiter_state_next  = cache_arbiter_state_ff;
@@ -168,14 +165,12 @@ dcache_kill_req = '0;
                lsummu2dcache.req      = 1'b1;
                cache_arbiter_state_next = DCACHE_ARBITER_MMU;
            end
-           lsummu2dcache_next = lsummu2dcache; 
        end
 
        DCACHE_ARBITER_LSU: begin
            if (dcache2lsummu.ack) begin
                dcache2dbus.r_data = dcache2lsummu.r_data;
                dcache2dbus.ack    = 1'b1;
-               lsummu2dcache_next      = '0;
                cache_arbiter_state_next = DCACHE_ARBITER_IDLE;
            end else begin
                cache_arbiter_state_next = DCACHE_ARBITER_LSU;
@@ -195,7 +190,6 @@ dcache_kill_req = '0;
            end else if (dcache2lsummu.ack) begin
                dcache2mmu.r_data  = dcache2lsummu.r_data;
                dcache2mmu.r_valid = 1'b1;
-               lsummu2dcache_next      = '0;
                cache_arbiter_state_next = DCACHE_ARBITER_IDLE;
            end else begin
                cache_arbiter_state_next = DCACHE_ARBITER_MMU;
@@ -246,9 +240,8 @@ always_ff @(negedge rst_n, posedge clk) begin
 end
 
 
-assign timeout_flag = (timeout_ff == 8'hEF);
+assign timeout_flag = (timeout_ff == 6'h2F);
 always_comb begin
-// cache2mem = '0;
 cache2mem = cache2mem_ff;
 mem2dcache   = '0;
 mem2icache   = '0;

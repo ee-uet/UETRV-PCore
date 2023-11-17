@@ -82,10 +82,11 @@ typedef enum logic [11:0] {
    
     // Machine mode cycle count, instruction retire and other counter registers 
     CSR_ADDR_MCYCLE        = 12'hB00,
-    CSR_ADDR_MCYCLEH       = 12'hB80,
     CSR_ADDR_MINSTRET      = 12'hB02,
-    CSR_ADDR_MINSTRETH     = 12'hB82,
     CSR_ADDR_MHPMCOUNTER3  = 12'hB03,
+
+    CSR_ADDR_MINSTRETH     = 12'hB82,
+    CSR_ADDR_MCYCLEH       = 12'hB80,
     CSR_ADDR_MHPMCOUNTER3H = 12'hB83,
 
     CSR_ADDR_MCOUNTINHIBIT = 12'h320,

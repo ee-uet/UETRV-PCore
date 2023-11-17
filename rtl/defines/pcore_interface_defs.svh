@@ -68,17 +68,21 @@ typedef enum logic [3:0] {
 } type_alu_i_ops_e;
 
 
-typedef enum logic [3:0] {
-    ALU_M_OPS_NONE = '0,   // ALU is idle 
-    ALU_M_OPS_MUL    =  4'b0100,        // low((oprnd1) * (oprnd2))
-    ALU_M_OPS_MULH   =  4'b0101,        // high(oprnd1 * oprnd2)
-    ALU_M_OPS_MULHSU =  4'b0110,        // high(oprnd1 * (oprnd2))
-    ALU_M_OPS_MULHU  =  4'b0111,        // high((oprnd1) * (oprnd2))
-    ALU_M_OPS_DIV    =  4'b1000,          // oprnd1 s/ oprnd2
-    ALU_M_OPS_DIVU   =  4'b1001,         // oprnd1 u/ oprnd2
-    ALU_M_OPS_REM    =  4'b1010,          // oprnd1 s% oprnd2
-    ALU_M_OPS_REMU   =  4'b1011          // oprnd1 u% oprnd2
+typedef enum logic [2:0] {
+    ALU_M_OPS_NONE   = '0,   // ALU is idle 
+    ALU_M_OPS_MUL    =  3'b100,        // low((oprnd1) * (oprnd2))
+    ALU_M_OPS_MULH   =  3'b101,        // high(oprnd1 * oprnd2)
+    ALU_M_OPS_MULHSU =  3'b110,        // high(oprnd1 * (oprnd2))
+    ALU_M_OPS_MULHU  =  3'b111         // high((oprnd1) * (oprnd2))
 } type_alu_m_ops_e;
+
+typedef enum logic [2:0] {
+    ALU_D_OPS_NONE   = '0,   // ALU is idle 
+    ALU_D_OPS_DIV    =  3'b100,         // oprnd1 s/ oprnd2
+    ALU_D_OPS_DIVU   =  3'b101,         // oprnd1 u/ oprnd2
+    ALU_D_OPS_REM    =  3'b110,         // oprnd1 s% oprnd2
+    ALU_D_OPS_REMU   =  3'b111          // oprnd1 u% oprnd2
+} type_alu_d_ops_e;
 
 
 typedef enum logic [2:0] {
@@ -116,7 +120,7 @@ typedef enum logic [2:0] {
     RD_WRB_INC_PC,                        // Writeback PC (return address) for JAL/JALR
     RD_WRB_DMEM,                          // Writeback selection for Load operation from DMEM
     RD_WRB_CSR,                           // Writeback for reading CSR
-    RD_WRB_M_ALU                          // Writeback from M-Extension
+    RD_WRB_D_ALU                          // Writeback from M-Extension for divide
 } type_rd_wrb_sel_e;
 
 
@@ -189,6 +193,7 @@ typedef struct packed {
 typedef struct packed {                           
     type_alu_i_ops_e                 alu_i_ops;
     type_alu_m_ops_e                 alu_m_ops;
+    type_alu_d_ops_e                 alu_d_ops;
     type_ld_ops_e                    ld_ops;
     type_st_ops_e                    st_ops;
     type_br_ops_e                    branch_ops;

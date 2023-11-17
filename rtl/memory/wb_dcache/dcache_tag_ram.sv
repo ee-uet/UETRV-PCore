@@ -34,28 +34,22 @@ parameter DATA_WIDTH = NUM_COL*COL_WIDTH          // Data Width in bits
 // Memory
 reg [DATA_WIDTH-1:0]             dcache_tagram[DCACHE_NO_OF_SETS-1:0];
 
-// Cache write operation
+
 generate
 genvar i;
 
-for(i=0;i<NUM_COL;i=i+1) begin
-always @ (posedge clk) begin
-    if (wr_en[i]) begin
-         dcache_tagram[addr][i*COL_WIDTH +: COL_WIDTH] <= wdata[i*COL_WIDTH +: COL_WIDTH];
+    for (i=0; i < NUM_COL; i++) begin
+        always_ff @(posedge clk) begin
+          //  if (en_a) begin
+                if (wr_en[i]) begin
+                    dcache_tagram[addr][i*COL_WIDTH +: COL_WIDTH] <= wdata[i*COL_WIDTH +: COL_WIDTH];
+                    rdata[i*COL_WIDTH +: COL_WIDTH]               <= wdata[i*COL_WIDTH +: COL_WIDTH];
+                end else begin
+                    rdata[i*COL_WIDTH +: COL_WIDTH]               <= dcache_tagram[addr][i*COL_WIDTH +: COL_WIDTH];
+                end
+         //   end
+        end
     end
-end
-end
 endgenerate
-
-// Cache read operation
-always @ (posedge clk) begin
-    if(!rst_n) begin
-        rdata <= '0;
-    end else if (&wr_en) begin
-        rdata <= wdata;
-    end else begin
-        rdata <= dcache_tagram[addr]; 
-    end 
-end
 
 endmodule 

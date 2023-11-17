@@ -24,7 +24,7 @@ module execute (
     input  wire type_id2exe_ctrl_s       id2exe_ctrl_i,            // Structure for control signals from decode to execute 
 
     // EXE <---> M-Extension interface
-    output type_exe2mul_s                exe2mul_o,
+    output type_exe2div_s                exe2div_o,
 
     // EXE <---> LSU interface
     output type_exe2lsu_data_s           exe2lsu_data_o,
@@ -58,7 +58,7 @@ type_exe2csr_ctrl_s                  exe2csr_ctrl;
 type_exe2csr_data_s                  exe2csr_data;
 
 // Signals for M-extension
-type_exe2mul_s                       exe2mul;
+type_exe2div_s                       exe2div;
 
 type_exe2if_fb_s                     exe2if_fb;
 type_alu_i_ops_e                     alu_i_operator;
@@ -251,7 +251,40 @@ always_comb begin
    endcase
 end
 
-//============================ Signal evaluation for CSR operations ===============================// 
+//============================ Signal evaluations for Multiplication operations ===============================// 
+//assign mul_cmd = {((alu_m_ops_ff[1] & alu_m_ops_ff[0]) | (alu_m_ops_ff[1] & ~alu_m_ops_ff[0])),
+//  ((alu_m_ops_ff[1] & alu_m_ops_ff[0]) | (~alu_m_ops_ff[1] & alu_m_ops_ff[0]))};
+
+type_alu_m_ops_e                    alu_m_ops;
+logic                               is_opr1_signed;
+logic                               is_opr2_signed;
+logic                               opr1_sgn;
+logic                               opr2_sgn;
+logic                               mul_cmd, mul_cmd_hi;
+
+logic [`XLEN:0]                     mul_opr1;
+logic [`XLEN:0]                     mul_opr2;
+
+logic [2*`XLEN-1:0]                 mul_output;
+logic [`XLEN-1:0]                   alu_m_result;
+
+
+assign alu_m_ops      = type_alu_m_ops_e'(id2exe_ctrl_i.alu_m_ops);
+assign mul_cmd        = |alu_m_ops;
+assign mul_cmd_hi     = alu_m_ops[1] | alu_m_ops[0];
+assign is_opr1_signed = ~(alu_m_ops[1] & alu_m_ops[0]); 
+assign is_opr2_signed = ~alu_m_ops[1];
+assign opr1_sgn       = is_opr1_signed & alu_operand_1[`XLEN-1];
+assign opr2_sgn       = is_opr2_signed & alu_operand_2[`XLEN-1];
+
+assign mul_opr1 = $signed({opr1_sgn, alu_operand_1});
+assign mul_opr2 = $signed({opr2_sgn, alu_operand_2});
+assign mul_output = mul_opr1 * mul_opr2; 
+
+assign alu_m_result = mul_cmd_hi ? mul_output[2*`XLEN-1:`XLEN]
+                    : mul_output[`XLEN-1:0];
+
+//============================ Signal evaluations for CSR operations ===============================// 
 always_comb begin
 
     case (id2exe_ctrl.csr_ops)
@@ -276,14 +309,14 @@ end
 //==================================== Output signals update ======================================// 
 
 // Update the output data signals for M-Extension
-assign exe2mul.alu_operand_1 = alu_operand_1;
-assign exe2mul.alu_operand_2 = alu_operand_2;
+assign exe2div.alu_operand_1 = alu_operand_1;
+assign exe2div.alu_operand_2 = alu_operand_2;
 
 // Assign the output control signals for M-Extension
-assign exe2mul.alu_m_ops  = id2exe_ctrl.alu_m_ops;
+assign exe2div.alu_d_ops  = id2exe_ctrl.alu_d_ops;
 
 // Update the output data signals for LSU
-assign exe2lsu_data.alu_result = alu_result;
+assign exe2lsu_data.alu_result = mul_cmd ? alu_m_result : alu_result;
 assign exe2lsu_data.pc_next    = id2exe_data.pc_next;
 assign exe2lsu_data.rs2_data   = operand_rs2_data; // MT: This should be verified due to forwarding
 
@@ -343,7 +376,7 @@ assign exe2csr_ctrl_o  = exe2csr_ctrl;
 assign exe2csr_data_o  = exe2csr_data;
 assign exe2fwd_o       = exe2fwd;
 
-assign exe2mul_o       = exe2mul;
+assign exe2div_o       = exe2div;
 
 // Update the feedback signals from EXE to IF stage                         
 assign exe2if_fb.pc_new       = {alu_result[31:2], 2'b0};  // fence_i_req ? id2exe_data.pc_next :  

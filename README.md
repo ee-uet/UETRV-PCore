@@ -9,9 +9,13 @@ UETRV_Pcore is a RISC-V based application class SoC integrating a 5-stage pipeli
 - Supports user, supervisor and machine mode privilege levels.
 - Support for instruction / data (writeback) caches.
 - Sv32 based MMU support and is capable of running Linux.
+- 32 KB 4-way set associative instruction cache.
+- 32-KB direct mapped write-back data cache. 
 - Cache size, TLB entries etc., are configurable.
 - Intergated PLIC, CLINT, uart, spi peripherals. 
 - Uses RISOF framework to run architecture compatibility tests.
+- Coremark: **2.0 Coremark/MHz** with DDR2 based main memory.
+- LUTs for core &lt 4.5k and &lt 6k for the SoC.
 
 ### System Design Overview
 The UETRV_Pcore is an applicaion class processor capable of running Linux. A simplified 5-stage pipelined block diagram is shown below. The M-extension is implemented as a coprocessor while memory-management-unit (MMU) module is shared by instruction and data memory (alternatively called load-store-unit (LSU)) interfaces of the pipeline. Specifically, the page-table-walker (PTW) of the MMU is shared and there are separate TLBs (translation look aside buffers) for instruction and data memory interfaces. The A-extension is implemented as part of the LSU module.
@@ -96,10 +100,10 @@ The processor is tested using Nexys-A7 (100T) FPGA board and Vivado 2019. Type i
 ```
 vivado PCore_FPGA/PCore_FPGA.xpr
 ```
-Make sure that \` `define RTL_SIMULATION 1` in the file `rtl/defines/pcore_config_defs.svh` is commented out. 
+Make sure that \` `define RTL_SIMULATION 1` is commented out, while \` `define DRAM 1` is uncommented in the file `rtl/defines/pcore_config_defs.svh`. The instruction and data cache sizes can also be configured here. 
 
 ### Generate bitstream
-New bitstream can be generated with the exisitng project or you may use the prebuilt bitstream in folder ``FPGA_Target/Bit_stream``
+New bitstream can be generated with the exisitng project or you may use the prebuilt bitstream available in the folder ``FPGA_Target/Bit_stream``
 
 ### Booting Linux Image
 * Load the bitstream on the FPGA, your serial monitor will show message `Load File`

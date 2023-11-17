@@ -40,8 +40,8 @@ module fetch (
     input wire type_csr2if_fb_s                     csr2if_fb_i,
     
     // Forward <---> Fetch interface
-    input wire type_fwd2if_s                        fwd2if_i,
-    output logic                                    if2fwd_stall_o
+    input wire type_fwd2if_s                        fwd2if_i
+   // output logic                                    if2fwd_stall_o
 );
 
 
@@ -65,8 +65,9 @@ logic                                irq_req_next, irq_req_ff;
 logic                                kill_req;
 
 // Imem address generation
-logic [`XLEN-1:0]                    pc_ff;              // Current value of program counter (PC)
-logic [`XLEN-1:0]                    pc_next;            // Updated value of PC
+logic [`XLEN-1:0]                    pc_ff, pc_plus_4;              // Current value of program counter (PC)
+logic [`XLEN-1:0]                    pc_next;                       // Updated value of PC
+logic [`XLEN-1:0]                    instr_word;
 logic                                if_stall;
 logic                                pc_misaligned;
 
@@ -93,8 +94,10 @@ always_ff @(posedge clk) begin
     end
 end
 
+assign pc_plus_4 = pc_ff + 32'd4;
+
 always_comb begin
-    pc_next = (pc_ff + 32'd4);
+    pc_next = (pc_plus_4);
 
     case (1'b1)
         fwd2if.csr_new_pc_req : begin
@@ -108,10 +111,26 @@ always_comb begin
         end
         if_stall              : begin  
             pc_next = pc_ff;
+        end 
+        is_jal                : begin  // MT JAL
+            pc_next = pc_ff + jal_imm; // pc_new_jal;
         end
         default                 : begin       end
     endcase
 end
+
+////////////////////////////////////////////////////////////////
+logic [`XLEN-1:0]                    pc_new_jal; 
+logic [`XLEN-1:0]                    jal_imm;            
+logic                                is_jal;
+
+assign jal_imm = {{12{instr_word[31]}}, instr_word[19:12], instr_word[20], instr_word[30:21], 1'b0};
+//assign pc_new_jal = pc_ff + jal_imm;
+
+assign is_jal = if2id_data.instr[6:2] == OPCODE_JAL_INST;
+
+////////////////////////////////////////////////////////////////
+
 
 // Instruction fetch related exceptions including address misaligned, instruction page fault 
 // as well as instruction access fault
@@ -168,6 +187,8 @@ end
 // Kill request to kill an on going request
 assign kill_req = fwd2if.csr_new_pc_req | fwd2if.exe_new_pc_req;
 
+assign instr_word = ((~icache2if.ack) | irq_req_next) ? `INSTR_NOP : icache2if.r_data;
+
 // Update the outputs to MMU and Imem modules
 assign if2mmu.i_vaddr = pc_next;
 assign if2mmu.i_req   = `IMEM_INST_REQ; 
@@ -180,9 +201,9 @@ assign if2icache_o.req_kill     = kill_req;
 assign if2icache_o.icache_flush = csr2if_fb.icache_flush;   
 
 // Update the outputs to ID stage
-assign if2id_data.instr         = ((~icache2if.ack) | irq_req_next) ? `INSTR_NOP : icache2if.r_data;
+assign if2id_data.instr         = instr_word;
 assign if2id_data.pc            = pc_ff;
-assign if2id_data.pc_next       = pc_next;
+assign if2id_data.pc_next       = is_jal ? (pc_plus_4) : pc_next;
 assign if2id_data.instr_flushed = 1'b0;
 
 assign if2id_data.exc_code      = exc_code_next;
@@ -190,7 +211,7 @@ assign if2id_ctrl.exc_req       = exc_req_next;
 assign if2id_ctrl.irq_req       = irq_req_next;
 
 // Generate stall request to forward_stall module
-assign if2fwd_stall_o           = if2mmu.i_req & ~icache2if.ack;
+//assign if2fwd_stall_o           = if2mmu.i_req & ~icache2if.ack;
 
 assign if2id_data_o             = if2id_data;
 assign if2id_ctrl_o             = if2id_ctrl;

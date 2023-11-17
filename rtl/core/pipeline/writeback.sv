@@ -27,7 +27,7 @@ module writeback (
     input wire type_csr2wrb_data_s           csr2wrb_data_i,
 
     // M-extension <---> Writeback interface
-    input wire type_mul2wrb_s                mul2wrb_i,
+    input wire type_div2wrb_s                div2wrb_i,
 
     // Writeback <---> ID interface for feedback signals
     output type_wrb2id_fb_s                  wrb2id_fb_o,
@@ -43,7 +43,7 @@ module writeback (
 type_lsu2wrb_data_s            lsu2wrb_data;
 type_lsu2wrb_ctrl_s            lsu2wrb_ctrl;
 type_csr2wrb_data_s            csr2wrb_data;
-type_mul2wrb_s                 mul2wrb;
+type_div2wrb_s                 div2wrb;
 
 type_wrb2id_fb_s               wrb2id_fb;
 logic [`XLEN-1:0]              wrb_rd_data;
@@ -52,7 +52,7 @@ logic [`XLEN-1:0]              wrb_rd_data;
 assign lsu2wrb_data = lsu2wrb_data_i;
 assign lsu2wrb_ctrl = lsu2wrb_ctrl_i;
 assign csr2wrb_data = csr2wrb_data_i;
-assign mul2wrb      = mul2wrb_i;
+assign div2wrb      = div2wrb_i;
  
 // Writeback MUX for output signal selection
 always_comb begin
@@ -71,8 +71,8 @@ always_comb begin
          RD_WRB_CSR    : begin
              wrb_rd_data = csr2wrb_data.csr_rdata;
          end
-         RD_WRB_M_ALU  : begin
-             wrb_rd_data = mul2wrb.alu_m_result;
+         RD_WRB_D_ALU  : begin
+             wrb_rd_data = div2wrb.alu_d_result;
          end
          default       : wrb_rd_data  = '0;              // default case 
      endcase

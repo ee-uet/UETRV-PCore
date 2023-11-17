@@ -269,7 +269,7 @@ always_comb begin
             // Machine information registers (read-only)
             CSR_ADDR_MVENDORID      : csr_rdata    = `UETLHR_MVENDORID; 
             CSR_ADDR_MARCHID        : csr_rdata    = `PCORE_MARCHID;
-            CSR_ADDR_MIMPID         : csr_rdata    = '0;                     // Not implemented
+        //    CSR_ADDR_MIMPID         : csr_rdata    = '0;                     // Not implemented
             CSR_ADDR_MHARTID        : csr_rdata    = pipe2csr.csr_mhartid;
 
             // Machine mode cycle and performance counter registers
@@ -286,8 +286,8 @@ always_comb begin
             CSR_ADDR_MCOUNTEREN     : csr_rdata    = csr_mcounteren_ff;
             CSR_ADDR_MCOUNTINHIBIT  : csr_rdata    = csr_mcountinhibit_ff;
             
-            CSR_ADDR_MHPMCOUNTER3,
-            CSR_ADDR_MHPMCOUNTER3H  : csr_rdata    = '0;                    // Not implemented
+        //    CSR_ADDR_MHPMCOUNTER3,
+        //    CSR_ADDR_MHPMCOUNTER3H  : csr_rdata    = '0;                    // Not implemented
 
             // Read machine mode trap setup registers
             CSR_ADDR_MSTATUS        : csr_rdata    = csr_mstatus_ff;
@@ -322,14 +322,15 @@ always_comb begin
                     csr_rdata = csr_satp_ff;
                 end
             end
-            CSR_ADDR_PMPCFG0,
+       /*     CSR_ADDR_PMPCFG0,
             CSR_ADDR_PMPADDR0,
             CSR_ADDR_PMPADDR1,
             CSR_ADDR_PMPADDR2,
             CSR_ADDR_PMPADDR3       : csr_rdata    = '0;
-            
+         */   
             default                 : begin
-                csr_rd_exc_req  = exe2csr_ctrl.csr_rd_req;              
+              //  csr_rd_exc_req  = exe2csr_ctrl.csr_rd_req;
+                                      csr_rdata    = '0;           
             end
         endcase // exu2csr_data.csr_addr
     end
@@ -382,8 +383,8 @@ always_comb begin
             CSR_ADDR_MCOUNTEREN     : csr_mcounteren_wr_flag     = 1'b1;
             CSR_ADDR_MCOUNTINHIBIT  : csr_mcountinhibit_wr_flag  = 1'b1;
 
-            CSR_ADDR_MHPMCOUNTER3,
-            CSR_ADDR_MHPMCOUNTER3H  : begin end                       // Not implemented
+        //    CSR_ADDR_MHPMCOUNTER3,
+        //    CSR_ADDR_MHPMCOUNTER3H  : begin end                       // Not implemented
 
             // Machine mode flags for trap setup and handling registers write operation
             CSR_ADDR_MSTATUS        : csr_mstatus_wr_flag  = 1'b1;
@@ -391,8 +392,8 @@ always_comb begin
             CSR_ADDR_MIDELEG        : csr_mideleg_wr_flag  = 1'b1; 
             CSR_ADDR_MIE            : csr_mie_wr_flag      = 1'b1;
             CSR_ADDR_MTVEC          : csr_mtvec_wr_flag    = 1'b1;
-            CSR_ADDR_MISA           : begin end                       // MISA is read only
-            CSR_ADDR_MHARTID        : begin end                       // MHARTID is read only
+        //    CSR_ADDR_MISA           : begin end                       // MISA is read only
+        //    CSR_ADDR_MHARTID        : begin end                       // MHARTID is read only
 
             CSR_ADDR_MSCRATCH       : csr_mscratch_wr_flag = 1'b1;
             CSR_ADDR_MEPC           : csr_mepc_wr_flag     = 1'b1;
@@ -412,14 +413,14 @@ always_comb begin
             CSR_ADDR_SCOUNTEREN     : csr_scounteren_wr_flag = 1'b1;
             
             // PMP configuration (not implemented yet)
-            CSR_ADDR_PMPCFG0,
+         /*   CSR_ADDR_PMPCFG0,
             CSR_ADDR_PMPADDR0,
             CSR_ADDR_PMPADDR1,
             CSR_ADDR_PMPADDR2,
             CSR_ADDR_PMPADDR3       : begin    end 
-
+          */
             default                 : begin
-                csr_wr_exc_req  = 1'b1;             
+              //  csr_wr_exc_req  = 1'b1;             
             end
         endcase // exu2csr_data.csr_addr
     end // exe2csr_ctrl.csr_wr_req
@@ -1275,8 +1276,8 @@ assign m_mode_pc_req = mret_pc_req || m_mode_exc_req || m_mode_irq_req;
 assign fence_i_req   = exe2csr_ctrl.fence_i_req;
 assign icache_flush_req = fence_i_req & lsu2csr_ctrl.dcache_flush_ack;
 
-// New PC value is fed-back to IF module 
-assign csr_vaddr_iflush_req = csr_satp_wr_flag | icache_flush_req; // Pipeline flush in case page table base address is updated
+// New PC value is fed-back to IF module and pipeline is flushed in case page table base address is updated
+assign csr_vaddr_iflush_req = csr_satp_wr_flag | icache_flush_req; // | sfence_vma_req; 
 // assign csr_virtual_addr_req = csr_satp_next[31] & ~csr_satp_ff[31];
 assign csr2if_fb.pc_new    = s_mode_pc_req ? s_mode_new_pc        : m_mode_pc_req 
                                            ? m_mode_new_pc        : csr_vaddr_iflush_req

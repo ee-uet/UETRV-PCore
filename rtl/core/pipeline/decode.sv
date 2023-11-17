@@ -92,6 +92,7 @@ always_comb begin
     // Operation selecion for different modules
     id2exe_ctrl.alu_i_ops  = ALU_I_OPS_NONE;
     id2exe_ctrl.alu_m_ops  = ALU_M_OPS_NONE;
+    id2exe_ctrl.alu_d_ops  = ALU_D_OPS_NONE;
     id2exe_ctrl.ld_ops     = LD_OPS_NONE;
     id2exe_ctrl.st_ops     = ST_OPS_NONE;
     id2exe_ctrl.branch_ops = BR_OPS_NONE;
@@ -126,12 +127,12 @@ always_comb begin
     illegal_instr       = 1'b0;
 
     // Check for instruction memory access fault
-    if (if2id_ctrl.exc_req) begin
+ /*   if (if2id_ctrl.exc_req) begin
         id2exe_ctrl.exc_req  = 1'b1;
         id2exe_data.exc_code = if2id_data.exc_code;    
         
     end else begin  // no instruction memory access fault
-        case (instr_opcode)
+  */      case (instr_opcode)
             OPCODE_ARITH_INST  : begin
                 
                 id2exe_ctrl.rd_wrb_sel       = RD_WRB_ALU;
@@ -161,17 +162,19 @@ always_comb begin
                     end // 7'b0100000
 
                     7'b0000001 : begin
-                        id2exe_ctrl.rd_wrb_sel             = RD_WRB_M_ALU;
-
+                        if (funct3_opcode[2]) begin
+                            id2exe_ctrl.rd_wrb_sel = RD_WRB_D_ALU;
+                        end
                         case (funct3_opcode)
                             3'b000 : id2exe_ctrl.alu_m_ops = ALU_M_OPS_MUL;
                             3'b001 : id2exe_ctrl.alu_m_ops = ALU_M_OPS_MULH;
                             3'b010 : id2exe_ctrl.alu_m_ops = ALU_M_OPS_MULHSU;
                             3'b011 : id2exe_ctrl.alu_m_ops = ALU_M_OPS_MULHU;
-                            3'b100 : id2exe_ctrl.alu_m_ops = ALU_M_OPS_DIV;
-                            3'b101 : id2exe_ctrl.alu_m_ops = ALU_M_OPS_DIVU;
-                            3'b110 : id2exe_ctrl.alu_m_ops = ALU_M_OPS_REM;
-                            3'b111 : id2exe_ctrl.alu_m_ops = ALU_M_OPS_REMU;
+
+                            3'b100 : id2exe_ctrl.alu_d_ops = ALU_D_OPS_DIV;
+                            3'b101 : id2exe_ctrl.alu_d_ops = ALU_D_OPS_DIVU;
+                            3'b110 : id2exe_ctrl.alu_d_ops = ALU_D_OPS_REM;
+                            3'b111 : id2exe_ctrl.alu_d_ops = ALU_D_OPS_REMU;
                         endcase // funct3_opcode
                     end // 7'b0000001
 
@@ -325,7 +328,7 @@ always_comb begin
                 id2exe_ctrl.alu_opr2_sel = ALU_OPR2_IMM;
                 id2exe_ctrl.alu_i_ops    = ALU_I_OPS_ADD;
                 id2exe_ctrl.rd_wr_req    = 1'b1;
-                id2exe_ctrl.jump_req     = 1'b1;
+                id2exe_ctrl.jump_req     = 1'b0; // MT JAL
                 id2exe_data.imm          = {{12{instr_codeword[31]}}, instr_codeword[19:12], instr_codeword[20], instr_codeword[30:21], 1'b0};
                 
             end // OPCODE_JAL_INST
@@ -453,12 +456,13 @@ always_comb begin
                 illegal_instr = 1'b1;
             end
         endcase // instr_opcode (Instruction opcode) 
-    end // no instruction memory fault
+  //  end // no instruction memory fault
 
    // Handle the illegal instruction
-  if(illegal_instr)  begin
+   if(illegal_instr | if2id_ctrl.exc_req)  begin
      id2exe_ctrl.alu_i_ops   = ALU_I_OPS_NONE;
      id2exe_ctrl.alu_m_ops   = ALU_M_OPS_NONE;
+     id2exe_ctrl.alu_d_ops   = ALU_D_OPS_NONE;
      id2exe_ctrl.ld_ops      = LD_OPS_NONE;
      id2exe_ctrl.st_ops      = ST_OPS_NONE;
      id2exe_ctrl.branch_ops  = BR_OPS_NONE;
@@ -473,8 +477,12 @@ always_comb begin
      id2exe_ctrl.branch_req  = 1'b0;
      id2exe_ctrl.fence_i_req = 1'b0;
      id2exe_ctrl.fence_req   = 1'b0;
-
+     
+     if (if2id_ctrl.exc_req) begin
+         id2exe_data.exc_code = if2id_data.exc_code; 
+     end else begin
      id2exe_data.exc_code    = EXC_CODE_ILLEGAL_INSTR;
+     end
    end
 
     

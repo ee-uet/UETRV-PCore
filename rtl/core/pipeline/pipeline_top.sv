@@ -71,7 +71,7 @@ type_exe2lsu_ctrl_s                     exe2lsu_ctrl, exe2lsu_ctrl_next;
 type_exe2lsu_data_s                     exe2lsu_data, exe2lsu_data_next;
 
 // M-extension related signals
-type_exe2mul_s                          exe2mul;
+type_exe2div_s                          exe2div;
 
 // Interfaces for CSR module
 type_exe2csr_data_s                     exe2csr_data, exe2csr_data_next;
@@ -98,12 +98,12 @@ type_icache2if_s                        icache2if;
 type_lsu2wrb_ctrl_s                     lsu2wrb_ctrl;
 type_lsu2wrb_data_s                     lsu2wrb_data;
 type_csr2wrb_data_s                     csr2wrb_data;
-type_mul2wrb_s                          mul2wrb;
+type_div2wrb_s                          div2wrb;
 
 type_lsu2wrb_data_s                     lsu2wrb_data_next;
 type_lsu2wrb_ctrl_s                     lsu2wrb_ctrl_next;
 type_csr2wrb_data_s                     csr2wrb_data_next;
-type_mul2wrb_s                          mul2wrb_next;
+type_div2wrb_s                          div2wrb_next;
 
 // Interfaces for feedback signals
 type_csr2if_fb_s                        csr2if_fb;
@@ -113,7 +113,7 @@ type_wrb2id_fb_s                        wrb2id_fb;
 
 logic [`XLEN-1:0]                       lsu2exe_fb_alu_result;
 logic [`XLEN-1:0]                       wrb2exe_fb_rd_data;
-logic                                   if2fwd_stall;
+//logic                                   if2fwd_stall;
 
 // Interfaces for forwarding module
 // To forwarding module
@@ -121,7 +121,7 @@ type_exe2fwd_s                          exe2fwd;
 type_wrb2fwd_s                          wrb2fwd;
 type_lsu2fwd_s                          lsu2fwd;
 type_csr2fwd_s                          csr2fwd;
-type_mul2fwd_s                          mul2fwd;
+type_div2fwd_s                          div2fwd;
 
 // From forwarding module
 type_fwd2exe_s                          fwd2exe;
@@ -162,8 +162,8 @@ fetch fetch_module (
     .if2id_ctrl_o               (if2id_ctrl),
     .exe2if_fb_i                (exe2if_fb),
     .csr2if_fb_i                (csr2if_fb),
-    .fwd2if_i                   (fwd2if),
-    .if2fwd_stall_o             (if2fwd_stall)
+    .fwd2if_i                   (fwd2if)
+ //   .if2fwd_stall_o             (if2fwd_stall)
 );
 
 // Fetch <-----> Decode pipeline/nopipeline  
@@ -291,7 +291,7 @@ execute execute_module (
 `endif
 
     // EXE <---> M-Extension interface signals
-    .exe2mul_o                  (exe2mul),
+    .exe2div_o                  (exe2div),
 
     // EXE <---> LSU module interface signals
     .exe2lsu_ctrl_o             (exe2lsu_ctrl),
@@ -442,19 +442,19 @@ csr csr_module (
 type_lsu2wrb_data_s                     lsu2wrb_data_pipe_ff;
 type_lsu2wrb_ctrl_s                     lsu2wrb_ctrl_pipe_ff;
 type_csr2wrb_data_s                     csr2wrb_data_pipe_ff;
-type_mul2wrb_s                          mul2wrb_pipe_ff;
+type_div2wrb_s                          div2wrb_pipe_ff;
 
 always_ff @(posedge clk) begin
     if (~rst_n) begin
         lsu2wrb_data_pipe_ff <= '0;
         lsu2wrb_ctrl_pipe_ff <= '0;
         csr2wrb_data_pipe_ff <= '0;
-        mul2wrb_pipe_ff      <= '0; 
+        div2wrb_pipe_ff      <= '0; 
     end else begin
         lsu2wrb_data_pipe_ff <= lsu2wrb_data_next;
         lsu2wrb_ctrl_pipe_ff <= lsu2wrb_ctrl_next;
         csr2wrb_data_pipe_ff <= csr2wrb_data_next;
-        mul2wrb_pipe_ff      <= mul2wrb_next;
+        div2wrb_pipe_ff      <= div2wrb_next;
     end
 end
 
@@ -462,12 +462,12 @@ always_comb begin
     lsu2wrb_data_next = lsu2wrb_data;
     lsu2wrb_ctrl_next = lsu2wrb_ctrl;
     csr2wrb_data_next = csr2wrb_data; 
-    mul2wrb_next      = mul2wrb;
+    div2wrb_next      = div2wrb;
      
     if (fwd2ptop.exe2lsu_pipe_stall | fwd2ptop.lsu2wrb_pipe_flush) begin // On LSU stall, we flush WRB stage
         lsu2wrb_ctrl_next = '0;
         lsu2wrb_data_next = '0;
-        mul2wrb_next      = '0;
+        div2wrb_next      = '0;
     end 
 end 
 
@@ -484,12 +484,12 @@ writeback writeback_module (
     .lsu2wrb_ctrl_i             (lsu2wrb_ctrl_pipe_ff),
     .lsu2wrb_data_i             (lsu2wrb_data_pipe_ff),
     .csr2wrb_data_i             (csr2wrb_data_pipe_ff),
-    .mul2wrb_i                  (mul2wrb_pipe_ff),
+    .div2wrb_i                  (div2wrb_pipe_ff),
 `else
     .lsu2wrb_ctrl_i             (lsu2wrb_ctrl),
     .lsu2wrb_data_i             (lsu2wrb_data),
     .csr2wrb_data_i             (csr2wrb_data),
-    .mul2wrb_i                  (mul2wrb),
+    .div2wrb_i                  (div2wrb),
 `endif
 
     .wrb2id_fb_o                (wrb2id_fb),
@@ -506,9 +506,9 @@ forward_stall forward_stall_module (
     .wrb2fwd_i                  (wrb2fwd),
     .lsu2fwd_i                  (lsu2fwd),
     .csr2fwd_i                  (csr2fwd),
-    .mul2fwd_i                  (mul2fwd),
+    .div2fwd_i                  (div2fwd),
     .exe2fwd_i                  (exe2fwd),
-    .if2fwd_stall_i             (if2fwd_stall),
+ //   .if2fwd_stall_i             (if2fwd_stall),
 
     .fwd2if_o                   (fwd2if),
     .fwd2exe_o                  (fwd2exe),
@@ -518,23 +518,23 @@ forward_stall forward_stall_module (
 );
 
 
-//============================ Multiply/divide moulde for M-extension ============================//
-muldiv muldiv_module(
+//============================ divtiply/divide moulde for M-extension ============================//
+divide divide_module(
     .rst_n                      (rst_n        ),            // reset
     .clk                        (clk          ),            // clock
 
     // EXE <---> M-extension interface
-    .exe2mul_i                  (exe2mul), 
+    .exe2div_i                  (exe2div), 
 
     // Stall and Flush signals
-    .fwd2mul_stall_i            (fwd2ptop.exe2lsu_pipe_stall),
-    .fwd2mul_flush_i            (fwd2ptop.exe2lsu_pipe_flush | fwd2ptop.lsu2wrb_pipe_flush),
+    .fwd2div_stall_i            (fwd2ptop.exe2lsu_pipe_stall),
+    .fwd2div_flush_i            (fwd2ptop.exe2lsu_pipe_flush | fwd2ptop.lsu2wrb_pipe_flush),
 
     // M-extension <---> Forward-stall interface
-    .mul2fwd_o                  (mul2fwd),
+    .div2fwd_o                  (div2fwd),
 
     // M-extension <---> Writeback interface
-    .mul2wrb_o                  (mul2wrb)
+    .div2wrb_o                  (div2wrb)
 );
 
 

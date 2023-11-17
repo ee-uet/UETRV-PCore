@@ -36,10 +36,10 @@ module bmem_interface (
 //================================= Ibus interface ==================================//
 // Local signals
 type_if2icache_s                      if2bmem;               
-type_icache2if_s                      bmem2if_ff, bmem2if_next;
+//type_icache2if_s                      bmem2if_ff, bmem2if_next;
 
 type_dbus2peri_s                      dbus2bmem;
-type_peri2dbus_s                      bmem2dbus_ff, bmem2dbus_next;
+//type_peri2dbus_s                      bmem2dbus_ff, bmem2dbus_next;
 
 logic [`XLEN-1:0]                     bmem_i_addr;
 logic [`XLEN-1:0]                     bmem_d_addr;
@@ -50,6 +50,10 @@ logic                                 bmem_i_sel;
 logic                                 bmem_d_sel;
 logic                                 bmem_iaddr_match;
 logic                                 bmem_req;
+
+logic                                 bmem2if_ack_ff, bmem2if_ack_next;
+logic                                 bmem2dbus_ack_ff, bmem2dbus_ack_next;
+
 
 // Local signal assignments
 assign if2bmem     = if2bmem_i;
@@ -65,48 +69,33 @@ assign bmem_d_sel  = (dbus2bmem.req & bmem_d_sel_i);
 assign bmem_rd_addr = bmem_d_sel ? bmem_d_addr 
                     : bmem_i_sel ? bmem_i_addr : '0; 
 
-// assign bmem_rdata = bmem[bmem_rd_addr];
-
 // Synchronous memory read operation for IF module interface
 always_ff @ (negedge rst_n, posedge clk) begin 
     if (~rst_n) begin
-        bmem2if_ff.ack    <= 1'b0;
-        bmem2if_ff.r_data <= `INSTR_NOP;
+        bmem2if_ack_ff    <= 1'b0;
+        bmem2dbus_ack_ff  <= 1'b0;
     end else begin                         
-        bmem2if_ff        <= bmem2if_next;   
+        bmem2if_ack_ff    <= bmem2if_ack_next; 
+        bmem2dbus_ack_ff  <= bmem2dbus_ack_next;
     end
 end
 
 always_comb begin 
-    bmem2if_next = '0;
+    bmem2if_ack_next = '0;
+    bmem2dbus_ack_next = '0;
+
     if (bmem_i_sel & ~bmem_d_sel) begin                         
-        bmem2if_next.ack    = 1'b1;
-        bmem2if_next.r_data = bmem_rdata;   
+        bmem2if_ack_next    = 1'b1; 
+    end else if (bmem_d_sel) begin
+        bmem2dbus_ack_next  = 1'b1;
     end
 end
 
+assign bmem2dbus_o.r_data = bmem_rdata; 
+assign bmem2dbus_o.ack    = bmem2dbus_ack_ff; 
 
-// Synchronous memory read operation for Dbus module interface
-always_ff @ (negedge rst_n, posedge clk) begin 
-    if (~rst_n) begin
-        bmem2dbus_ff.ack    <= 1'b0;
-        bmem2dbus_ff.r_data <= '0;
-    end else begin                         
-        bmem2dbus_ff        <= bmem2dbus_next;   
-    end
-end
-
-// Synchronous memory read operation
-always_comb begin 
-    bmem2dbus_next = '0;
-    if (bmem_d_sel & ~bmem2dbus_ff.ack) begin                         
-        bmem2dbus_next.ack    = 1'b1;
-        bmem2dbus_next.r_data = bmem_rdata;   
-    end
-end
-
-assign bmem2dbus_o = bmem2dbus_ff; 
-assign bmem2if_o   = bmem2if_ff; 
+assign bmem2if_o.r_data   = bmem_rdata; 
+assign bmem2if_o.ack      = bmem2if_ack_ff;
 
 //================= Boot memory module and associated interfaces ==================//
 
@@ -114,6 +103,9 @@ assign bmem_req = bmem_i_sel | bmem_d_sel;
 
 // Boot memory module instantiation 
 bmem bmem_module (
+     .rst_n                       (rst_n),
+     .clk                         (clk),
+
      .if2bmem_addr_i              (bmem_rd_addr),
      .if2bmem_req_i               (bmem_req),
      .bmem2if_data_o              (bmem_rdata)
