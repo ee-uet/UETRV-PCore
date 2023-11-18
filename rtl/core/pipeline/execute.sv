@@ -272,8 +272,8 @@ logic [`XLEN-1:0]                   alu_m_result;
 assign alu_m_ops      = type_alu_m_ops_e'(id2exe_ctrl_i.alu_m_ops);
 assign mul_cmd        = |alu_m_ops;
 assign mul_cmd_hi     = alu_m_ops[1] | alu_m_ops[0];
-assign is_opr1_signed = alu_m_ops[1];                // ~(alu_m_ops[1] & alu_m_ops[0]); 
-assign is_opr2_signed = alu_m_ops[1] & alu_m_ops[0]; // ~alu_m_ops[1];
+assign is_opr2_signed = alu_m_ops[1];                // ~(alu_m_ops[1] & alu_m_ops[0]); 
+assign is_opr1_signed = alu_m_ops[1] & alu_m_ops[0]; // ~alu_m_ops[1];
 assign opr1_sgn       = is_opr1_signed & alu_operand_1[`XLEN-1];
 assign opr2_sgn       = is_opr2_signed & alu_operand_2[`XLEN-1];
 
