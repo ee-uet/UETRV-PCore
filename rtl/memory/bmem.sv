@@ -595,6 +595,7 @@ always @ (posedge clk) begin
         10'd557: r_data <= 32'h02010113;
         10'd558: r_data <= 32'h00008067;
         10'd559: r_data <= 32'h00000000;
+        default: r_data <= 32'h00000000;
     endcase
 end
 
@@ -997,6 +998,7 @@ always @ (posedge clk) begin
         9'd383: r_data <= 32'h702d7475;
         9'd384: r_data <= 32'h00687461;
         9'd385: r_data <= 32'h00000000;
+        default: r_data <= 32'h00000000;
     endcase
 end
 
