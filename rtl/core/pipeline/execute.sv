@@ -262,20 +262,39 @@ logic                               opr1_sgn;
 logic                               opr2_sgn;
 logic                               mul_cmd, mul_cmd_hi;
 
-logic [`XLEN:0]                     mul_opr1;
-logic [`XLEN:0]                     mul_opr2;
+logic signed [`XLEN:0]              mul_opr1;
+logic signed [`XLEN:0]              mul_opr2;
 
-logic [2*`XLEN-1:0]                 mul_output;
+logic signed [2*`XLEN-1:0]          mul_output;
 logic [`XLEN-1:0]                   alu_m_result;
+logic                               sign_a, sign_b;
 
+  // Sign Select MUX
+  always_comb begin
+    case (alu_m_ops)
+    // signed multiplication
+    ALU_M_OPS_MULH : begin
+      sign_a = 1'b1;
+      sign_b = 1'b1;
+    end
+    // signed - unsigned multiplication 
+    ALU_M_OPS_MULHSU : begin
+      sign_a = 1'b1;
+      sign_b = 1'b0;
+    end 
+    // unsigned multiplication
+    default :begin
+      sign_a = 1'b0;
+      sign_b = 1'b0;
+    end
+    endcase
+  end
 
 assign alu_m_ops      = type_alu_m_ops_e'(id2exe_ctrl_i.alu_m_ops);
 assign mul_cmd        = |alu_m_ops;
 assign mul_cmd_hi     = alu_m_ops[1] | alu_m_ops[0];
-assign is_opr1_signed = alu_m_ops[1];                // ~(alu_m_ops[1] & alu_m_ops[0]); 
-assign is_opr2_signed = alu_m_ops[1] & alu_m_ops[0]; // ~alu_m_ops[1];
-assign opr1_sgn       = is_opr1_signed & alu_operand_1[`XLEN-1];
-assign opr2_sgn       = is_opr2_signed & alu_operand_2[`XLEN-1];
+assign opr1_sgn       = sign_a & alu_operand_1[`XLEN-1];
+assign opr2_sgn       = sign_b & alu_operand_2[`XLEN-1];
 
 assign mul_opr1 = $signed({opr1_sgn, alu_operand_1});
 assign mul_opr2 = $signed({opr2_sgn, alu_operand_2});
