@@ -251,6 +251,31 @@ always_comb begin
    endcase
 end
 
+//============================ Signal evaluations for Bit Manipulation operations ===============================// 
+type_alu_zba_ops_e      alu_zba_ops;
+logic [`XLEN-1:0]       alu_b_result;
+
+assign alu_zba_ops  = type_alu_zba_ops_e'(id2exe_ctrl_i.alu_zba_ops);
+
+assign bitmanip_cmd = |alu_zba_ops;
+
+always_comb begin
+   case (alu_zba_ops)
+      ALU_ZBA_OPS_SH1ADD : begin
+         alu_b_result = (alu_operand_1 << 1) + alu_operand_2;
+      end
+      ALU_ZBA_OPS_SH2ADD : begin
+         alu_b_result = (alu_operand_1 << 2) + alu_operand_2;
+      end
+      ALU_ZBA_OPS_SH3ADD : begin
+         alu_b_result = (alu_operand_1 << 3) + alu_operand_2;
+      end
+      default: begin
+         alu_b_result = '0;
+      end
+   endcase
+end
+
 //============================ Signal evaluations for Multiplication operations ===============================// 
 //assign mul_cmd = {((alu_m_ops_ff[1] & alu_m_ops_ff[0]) | (alu_m_ops_ff[1] & ~alu_m_ops_ff[0])),
 //  ((alu_m_ops_ff[1] & alu_m_ops_ff[0]) | (~alu_m_ops_ff[1] & alu_m_ops_ff[0]))};
@@ -317,7 +342,7 @@ assign exe2div.alu_operand_2 = alu_operand_2;
 assign exe2div.alu_d_ops  = id2exe_ctrl.alu_d_ops;
 
 // Update the output data signals for LSU
-assign exe2lsu_data.alu_result = mul_cmd ? alu_m_result : alu_result;
+assign exe2lsu_data.alu_result = mul_cmd ? alu_m_result : (bitmanip_cmd ? alu_b_result : alu_result);
 assign exe2lsu_data.pc_next    = id2exe_data.pc_next;
 assign exe2lsu_data.rs2_data   = operand_rs2_data; // MT: This should be verified due to forwarding
 

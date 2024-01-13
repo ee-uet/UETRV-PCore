@@ -92,6 +92,7 @@ always_comb begin
     // Operation selecion for different modules
     id2exe_ctrl.alu_i_ops  = ALU_I_OPS_NONE;
     id2exe_ctrl.alu_m_ops  = ALU_M_OPS_NONE;
+    id2exe_ctrl.alu_zba_ops = ALU_ZBA_OPS_NONE;
     id2exe_ctrl.alu_d_ops  = ALU_D_OPS_NONE;
     id2exe_ctrl.ld_ops     = LD_OPS_NONE;
     id2exe_ctrl.st_ops     = ST_OPS_NONE;
@@ -160,7 +161,14 @@ always_comb begin
                             default : illegal_instr         = 1'b1;
                         endcase // funct3_opcode
                     end // 7'b0100000
-
+                    7'b0010000: begin
+                        case (funct3_opcode)
+                            3'b010: id2exe_ctrl.alu_zba_ops = ALU_ZBA_OPS_SH1ADD;
+                            3'b100: id2exe_ctrl.alu_zba_ops = ALU_ZBA_OPS_SH2ADD;
+                            3'b110: id2exe_ctrl.alu_zba_ops = ALU_ZBA_OPS_SH3ADD;
+                            default : illegal_instr         = 1'b1;
+                        endcase // funct3_opcode
+                    end // 7'b0010000
                     7'b0000001 : begin
                         if (funct3_opcode[2]) begin
                             id2exe_ctrl.rd_wrb_sel = RD_WRB_D_ALU;
@@ -462,6 +470,7 @@ always_comb begin
    if(illegal_instr | if2id_ctrl.exc_req)  begin
      id2exe_ctrl.alu_i_ops   = ALU_I_OPS_NONE;
      id2exe_ctrl.alu_m_ops   = ALU_M_OPS_NONE;
+     id2exe_ctrl.alu_zba_ops = ALU_ZBA_OPS_NONE;
      id2exe_ctrl.alu_d_ops   = ALU_D_OPS_NONE;
      id2exe_ctrl.ld_ops      = LD_OPS_NONE;
      id2exe_ctrl.st_ops      = ST_OPS_NONE;

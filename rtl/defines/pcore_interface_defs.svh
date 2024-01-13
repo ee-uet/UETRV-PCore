@@ -84,6 +84,12 @@ typedef enum logic [2:0] {
     ALU_D_OPS_REMU   =  3'b111          // oprnd1 u% oprnd2
 } type_alu_d_ops_e;
 
+typedef enum logic [3:0] {
+    ALU_ZBA_OPS_NONE   = '0,    // ALU is idle
+    ALU_ZBA_OPS_SH1ADD,   // (oprnd1 << 1) + oprnd2
+    ALU_ZBA_OPS_SH2ADD,   // (oprnd1 << 2) + oprnd2
+    ALU_ZBA_OPS_SH3ADD    // (oprnd1 << 3) + oprnd2
+} type_alu_zba_ops_e;
 
 typedef enum logic [2:0] {
 // Operations for conditional branch instructions
@@ -194,6 +200,7 @@ typedef struct packed {
     type_alu_i_ops_e                 alu_i_ops;
     type_alu_m_ops_e                 alu_m_ops;
     type_alu_d_ops_e                 alu_d_ops;
+    type_alu_zba_ops_e               alu_zba_ops;
     type_ld_ops_e                    ld_ops;
     type_st_ops_e                    st_ops;
     type_br_ops_e                    branch_ops;
