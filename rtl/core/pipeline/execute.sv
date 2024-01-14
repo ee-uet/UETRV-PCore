@@ -252,15 +252,59 @@ always_comb begin
 end
 
 //============================ Signal evaluations for Bit Manipulation operations ===============================// 
-type_alu_zba_ops_e      alu_zba_ops;
+type_alu_b_ops_e        alu_b_ops;
 logic [`XLEN-1:0]       alu_b_result;
 
-assign alu_zba_ops  = type_alu_zba_ops_e'(id2exe_ctrl_i.alu_zba_ops);
+assign alu_b_ops    = type_alu_b_ops_e'(id2exe_ctrl_i.alu_b_ops);
 
-assign bitmanip_cmd = |alu_zba_ops;
+assign bitmanip_cmd = |alu_b_ops;
+
+logic             is_ctz;
+logic [`XLEN-1:0] max_result, maxu_result;
+logic [`XLEN-1:0] min_result, minu_result;
+logic             is_cpop;
+logic [`XLEN-1:0] cnt_data;
+logic [`XLEN:0]   cnt_en;
+logic [5:0]       cnt_result;
+logic [`XLEN-1:0] alu_operand_1_rev;
+
+/////////////////
+//// Min/Max ////
+/////////////////
+assign max_result  = ~(cmp_neg ^ cmp_overflow) ? alu_operand_1 : alu_operand_2;
+assign maxu_result = ~cmp_output[`XLEN] ? alu_operand_1 : alu_operand_2;
+
+assign min_result  = (cmp_neg ^ cmp_overflow) ? alu_operand_1 : alu_operand_2;
+assign minu_result = cmp_output[`XLEN] ? alu_operand_1 : alu_operand_2;
+
 
 always_comb begin
-   case (alu_zba_ops)
+   for (int unsigned k = 0; k < 32; k++) begin
+      alu_operand_1_rev[k] = alu_operand_1[31-k];
+   end   
+end
+
+assign is_ctz  = (alu_b_ops == ALU_ZBB_OPS_CTZ);
+assign is_cpop = (alu_b_ops == ALU_ZBB_OPS_CPOP);
+
+assign cnt_data = is_cpop ? alu_operand_1 : (is_ctz ? ~alu_operand_1 : ~alu_operand_1_rev);
+
+always_comb begin
+   cnt_result = '0;
+   cnt_en     = {32'b0, 1'b1};
+
+   for (int unsigned i=0; i<32; i++) begin
+      // keep counting if all the bits are 1, starting from LSB
+      // always count in case of c_pop OP.
+      cnt_en[i+1] = is_cpop || (cnt_en[i] && cnt_data[i]);
+      if (cnt_en[i]) begin
+         cnt_result = cnt_result + {5'h0, cnt_data[i]};
+      end
+   end
+end
+
+always_comb begin
+   case (alu_b_ops)
       ALU_ZBA_OPS_SH1ADD : begin
          alu_b_result = (alu_operand_1 << 1) + alu_operand_2;
       end
@@ -269,6 +313,54 @@ always_comb begin
       end
       ALU_ZBA_OPS_SH3ADD : begin
          alu_b_result = (alu_operand_1 << 3) + alu_operand_2;
+      end
+      ALU_ZBB_OPS_ANDN : begin
+         alu_b_result = alu_operand_1 & (~alu_operand_2);
+      end
+      ALU_ZBB_OPS_ORN : begin
+         alu_b_result = alu_operand_1 | (~alu_operand_2);
+      end
+      ALU_ZBB_OPS_XNOR : begin
+         alu_b_result = alu_operand_1 ^ (~alu_operand_2);
+      end
+      ALU_ZBB_OPS_CLZ,
+      ALU_ZBB_OPS_CTZ,
+      ALU_ZBB_OPS_CPOP : begin
+         alu_b_result = cnt_result;
+      end
+      ALU_ZBB_OPS_MAX : begin
+         alu_b_result = max_result;
+      end
+      ALU_ZBB_OPS_MAXU : begin
+         alu_b_result = maxu_result;
+      end
+      ALU_ZBB_OPS_MIN : begin
+         alu_b_result = min_result;
+      end
+      ALU_ZBB_OPS_MINU : begin
+         alu_b_result = minu_result;
+      end
+      ALU_ZBB_OPS_SEXTB : begin
+         alu_b_result = {{24{alu_operand_1[7]}}, alu_operand_1[7:0]};
+      end
+      ALU_ZBB_OPS_SEXTH : begin
+         alu_b_result = {{16{alu_operand_1[15]}}, alu_operand_1[15:0]};
+      end
+      ALU_ZBB_OPS_ZEXTH : begin
+         alu_b_result = {16'b0, alu_operand_1[15:0]};
+      end
+      ALU_ZBB_OPS_ROL : begin
+         alu_b_result = (alu_operand_1 << shift_amt) | (alu_operand_1 >> (`XLEN-shift_amt));
+      end
+      ALU_ZBB_OPS_ROR,
+      ALU_ZBB_OPS_RORI : begin
+         alu_b_result = (alu_operand_1 >> shift_amt) | (alu_operand_1 << (`XLEN-shift_amt));
+      end
+      ALU_ZBB_OPS_ORC : begin
+         alu_b_result = {{8{|alu_operand_1[31:24]}}, {8{|alu_operand_1[23:16]}}, {8{|alu_operand_1[15:8]}}, {8{|alu_operand_1[7:0]}}};
+      end
+      ALU_ZBB_OPS_REV8 : begin
+         alu_b_result = {alu_operand_1[7:0], alu_operand_1[15:8], alu_operand_1[23:16], alu_operand_1[31:24]};
       end
       default: begin
          alu_b_result = '0;
