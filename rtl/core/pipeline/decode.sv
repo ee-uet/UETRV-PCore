@@ -190,6 +190,9 @@ always_comb begin
                     end // 7'b0000001
                     7'b0000101 : begin
                         case (funct3_opcode)
+                            3'b001 : id2exe_ctrl.alu_b_ops = ALU_ZBC_OPS_CLMUL;
+                            3'b010 : id2exe_ctrl.alu_b_ops = ALU_ZBC_OPS_CLMULR;
+                            3'b011 : id2exe_ctrl.alu_b_ops = ALU_ZBC_OPS_CLMULH;
                             3'b100 : id2exe_ctrl.alu_b_ops = ALU_ZBB_OPS_MIN;
                             3'b101 : id2exe_ctrl.alu_b_ops = ALU_ZBB_OPS_MINU;
                             3'b110 : id2exe_ctrl.alu_b_ops = ALU_ZBB_OPS_MAX;

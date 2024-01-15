@@ -117,7 +117,11 @@ typedef enum logic [32:0] {
     ALU_ZBS_OPS_BINV,
     ALU_ZBS_OPS_BINVI,
     ALU_ZBS_OPS_BSET,
-    ALU_ZBS_OPS_BSETI
+    ALU_ZBS_OPS_BSETI,
+    // Zbc Ops
+    ALU_ZBC_OPS_CLMUL,
+    ALU_ZBC_OPS_CLMULH,
+    ALU_ZBC_OPS_CLMULR
 } type_alu_b_ops_e;
 
 typedef enum logic [2:0] {

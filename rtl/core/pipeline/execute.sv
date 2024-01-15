@@ -266,8 +266,16 @@ logic             is_cpop;
 logic [`XLEN-1:0] cnt_data;
 logic [`XLEN:0]   cnt_en;
 logic [5:0]       cnt_result;
-logic [`XLEN-1:0] alu_operand_1_rev;
+logic [`XLEN-1:0] alu_operand_1_rev, alu_operand_2_rev;
 logic [`XLEN-1:0] zbs_index;
+logic [`XLEN-1:0] clmul_operand_1, clmul_operand_2, clmul_result, clmulr_result;
+
+for (genvar i = 0; i < `XLEN; i++) begin
+   assign alu_operand_1_rev[i] = alu_operand_1[(`XLEN-1) - i];
+   assign alu_operand_2_rev[i] = alu_operand_2[(`XLEN-1) - i];
+   assign clmulr_result[i] = clmul_result[(`XLEN-1) - i];
+end
+
 /////////////////
 //// Min/Max ////
 /////////////////
@@ -277,16 +285,29 @@ assign maxu_result = ~cmp_output[`XLEN] ? alu_operand_1 : alu_operand_2;
 assign min_result  = (cmp_neg ^ cmp_overflow) ? alu_operand_1 : alu_operand_2;
 assign minu_result = cmp_output[`XLEN] ? alu_operand_1 : alu_operand_2;
 
-///////////////
-//// index ////
-///////////////
+///////////////////
+//// zbs index ////
+///////////////////
 assign zbs_index = 1 << (alu_operand_2 & (`XLEN-1));
 
+////////////////////////////////
+//// clmul, clmulh, clmulr /////
+////////////////////////////////
+
+assign clmul_operand_1 = (alu_b_ops == ALU_ZBC_OPS_CLMULH | alu_b_ops == ALU_ZBC_OPS_CLMULR) ? alu_operand_1_rev : alu_operand_1;
+assign clmul_operand_2 = (alu_b_ops == ALU_ZBC_OPS_CLMULH | alu_b_ops == ALU_ZBC_OPS_CLMULR) ? alu_operand_2_rev : alu_operand_2;
+
 always_comb begin
-   for (int unsigned k = 0; k < 32; k++) begin
-      alu_operand_1_rev[k] = alu_operand_1[31-k];
-   end   
+   clmul_result = '0;
+   for (int i = 0; i <= `XLEN; i++) begin
+      clmul_result = ((clmul_operand_2 >> i) & 1) ? clmul_result ^ (clmul_operand_1 << i) : clmul_result;
+   end
 end
+
+
+////////////////////////
+//// lzc, tzc, cpop ////
+////////////////////////
 
 assign is_ctz  = (alu_b_ops == ALU_ZBB_OPS_CTZ);
 assign is_cpop = (alu_b_ops == ALU_ZBB_OPS_CPOP);
@@ -298,7 +319,7 @@ always_comb begin
    cnt_en     = {32'b0, 1'b1};
 
    for (int unsigned i=0; i<32; i++) begin
-      // keep counting if all the bits are 1, starting from LSB
+      // keep counting if all the previous bits are 1, starting from LSB
       // always count in case of c_pop OP.
       cnt_en[i+1] = is_cpop || (cnt_en[i] && cnt_data[i]);
       if (cnt_en[i]) begin
@@ -381,6 +402,15 @@ always_comb begin
       ALU_ZBS_OPS_BINV,
       ALU_ZBS_OPS_BINVI : begin
          alu_b_result = alu_operand_1 ^ zbs_index;
+      end
+      ALU_ZBC_OPS_CLMUL : begin
+         alu_b_result = clmul_result;
+      end
+      ALU_ZBC_OPS_CLMULR : begin
+         alu_b_result = clmulr_result;
+      end
+      ALU_ZBC_OPS_CLMULH : begin
+         alu_b_result = clmulr_result >> 1;
       end
       default: begin
          alu_b_result = '0;
