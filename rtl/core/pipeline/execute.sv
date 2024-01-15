@@ -267,7 +267,7 @@ logic [`XLEN-1:0] cnt_data;
 logic [`XLEN:0]   cnt_en;
 logic [5:0]       cnt_result;
 logic [`XLEN-1:0] alu_operand_1_rev;
-
+logic [`XLEN-1:0] zbs_index;
 /////////////////
 //// Min/Max ////
 /////////////////
@@ -277,6 +277,10 @@ assign maxu_result = ~cmp_output[`XLEN] ? alu_operand_1 : alu_operand_2;
 assign min_result  = (cmp_neg ^ cmp_overflow) ? alu_operand_1 : alu_operand_2;
 assign minu_result = cmp_output[`XLEN] ? alu_operand_1 : alu_operand_2;
 
+///////////////
+//// index ////
+///////////////
+assign zbs_index = 1 << (alu_operand_2 & (`XLEN-1));
 
 always_comb begin
    for (int unsigned k = 0; k < 32; k++) begin
@@ -361,6 +365,22 @@ always_comb begin
       end
       ALU_ZBB_OPS_REV8 : begin
          alu_b_result = {alu_operand_1[7:0], alu_operand_1[15:8], alu_operand_1[23:16], alu_operand_1[31:24]};
+      end
+      ALU_ZBS_OPS_BCLR,
+      ALU_ZBS_OPS_BCLRI : begin
+         alu_b_result = alu_operand_1 & (~zbs_index);
+      end
+      ALU_ZBS_OPS_BSET,
+      ALU_ZBS_OPS_BSETI : begin
+         alu_b_result = alu_operand_1 | zbs_index;
+      end
+      ALU_ZBS_OPS_BEXT,
+      ALU_ZBS_OPS_BEXTI : begin
+         alu_b_result = |(alu_operand_1 & zbs_index);
+      end
+      ALU_ZBS_OPS_BINV,
+      ALU_ZBS_OPS_BINVI : begin
+         alu_b_result = alu_operand_1 ^ zbs_index;
       end
       default: begin
          alu_b_result = '0;

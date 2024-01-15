@@ -207,7 +207,19 @@ always_comb begin
                             default: illegal_instr         = 1'b1;
                         endcase
                     end
-
+                    7'b0100100 : begin
+                        case (funct3_opcode)
+                            3'b001 : id2exe_ctrl.alu_b_ops = ALU_ZBS_OPS_BCLR;
+                            3'b101 : id2exe_ctrl.alu_b_ops = ALU_ZBS_OPS_BEXT;
+                            default: illegal_instr         = 1'b1;
+                        endcase
+                    end
+                    7'b0110100 : begin
+                        id2exe_ctrl.alu_b_ops = ALU_ZBS_OPS_BINV;
+                    end
+                    7'b0010100 : begin
+                        id2exe_ctrl.alu_b_ops = ALU_ZBS_OPS_BSET;
+                    end
                     default : illegal_instr = 1'b1;
                 endcase // funct7_opcode
                
@@ -254,6 +266,18 @@ always_comb begin
                                     default: illegal_instr  =  1'b1;
                                 endcase
                             end
+                            7'b0010100: begin
+                                id2exe_data.imm       = `XLEN'(shift_amt);
+                                id2exe_ctrl.alu_b_ops = ALU_ZBS_OPS_BSETI;
+                            end
+                            7'b0100100: begin
+                                id2exe_data.imm       = `XLEN'(shift_amt);
+                                id2exe_ctrl.alu_b_ops = ALU_ZBS_OPS_BCLRI;
+                            end
+                            7'b0110100: begin
+                                id2exe_data.imm       = `XLEN'(shift_amt);
+                                id2exe_ctrl.alu_b_ops = ALU_ZBS_OPS_BINVI;
+                            end
                             default: illegal_instr  =  1'b1;
                         endcase
                     end
@@ -281,6 +305,11 @@ always_comb begin
 
                             7'b0110100 : begin
                                 id2exe_ctrl.alu_b_ops = ALU_ZBB_OPS_REV8;
+                            end
+
+                            7'b0100100: begin
+                                id2exe_data.imm       = `XLEN'(shift_amt);
+                                id2exe_ctrl.alu_b_ops = ALU_ZBS_OPS_BEXTI;
                             end
 
                             default : illegal_instr  =  1'b1;
