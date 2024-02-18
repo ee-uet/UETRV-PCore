@@ -251,6 +251,173 @@ always_comb begin
    endcase
 end
 
+//============================ Signal evaluations for Bit Manipulation operations ===============================// 
+type_alu_b_ops_e        alu_b_ops;
+logic [`XLEN-1:0]       alu_b_result;
+
+assign alu_b_ops    = type_alu_b_ops_e'(id2exe_ctrl_i.alu_b_ops);
+
+assign bitmanip_cmd = |alu_b_ops;
+
+logic             is_ctz;
+logic [`XLEN-1:0] max_result, maxu_result;
+logic [`XLEN-1:0] min_result, minu_result;
+logic             is_cpop;
+logic [`XLEN-1:0] cnt_data;
+logic [`XLEN:0]   cnt_en;
+logic [5:0]       cnt_result;
+logic [`XLEN-1:0] alu_operand_1_rev, alu_operand_2_rev;
+logic [`XLEN-1:0] zbs_index;
+logic [`XLEN-1:0] clmul_operand_1, clmul_operand_2, clmul_result, clmulr_result;
+
+for (genvar i = 0; i < `XLEN; i++) begin
+   assign alu_operand_1_rev[i] = alu_operand_1[(`XLEN-1) - i];
+   assign alu_operand_2_rev[i] = alu_operand_2[(`XLEN-1) - i];
+   assign clmulr_result[i] = clmul_result[(`XLEN-1) - i];
+end
+
+/////////////////
+//// Min/Max ////
+/////////////////
+assign max_result  = ~(cmp_neg ^ cmp_overflow) ? alu_operand_1 : alu_operand_2;
+assign maxu_result = ~cmp_output[`XLEN] ? alu_operand_1 : alu_operand_2;
+
+assign min_result  = (cmp_neg ^ cmp_overflow) ? alu_operand_1 : alu_operand_2;
+assign minu_result = cmp_output[`XLEN] ? alu_operand_1 : alu_operand_2;
+
+///////////////////
+//// zbs index ////
+///////////////////
+assign zbs_index = 1 << (alu_operand_2 & (`XLEN-1));
+
+////////////////////////////////
+//// clmul, clmulh, clmulr /////
+////////////////////////////////
+
+assign clmul_operand_1 = (alu_b_ops == ALU_ZBC_OPS_CLMULH | alu_b_ops == ALU_ZBC_OPS_CLMULR) ? alu_operand_1_rev : alu_operand_1;
+assign clmul_operand_2 = (alu_b_ops == ALU_ZBC_OPS_CLMULH | alu_b_ops == ALU_ZBC_OPS_CLMULR) ? alu_operand_2_rev : alu_operand_2;
+
+always_comb begin
+   clmul_result = '0;
+   for (int i = 0; i <= `XLEN; i++) begin
+      clmul_result = ((clmul_operand_2 >> i) & 1) ? clmul_result ^ (clmul_operand_1 << i) : clmul_result;
+   end
+end
+
+
+////////////////////////
+//// lzc, tzc, cpop ////
+////////////////////////
+
+assign is_ctz  = (alu_b_ops == ALU_ZBB_OPS_CTZ);
+assign is_cpop = (alu_b_ops == ALU_ZBB_OPS_CPOP);
+
+assign cnt_data = is_cpop ? alu_operand_1 : (is_ctz ? ~alu_operand_1 : ~alu_operand_1_rev);
+
+always_comb begin
+   cnt_result = '0;
+   cnt_en     = {32'b0, 1'b1};
+
+   for (int unsigned i=0; i<32; i++) begin
+      // keep counting if all the previous bits are 1, starting from LSB
+      // always count in case of c_pop OP.
+      cnt_en[i+1] = is_cpop || (cnt_en[i] && cnt_data[i]);
+      if (cnt_en[i]) begin
+         cnt_result = cnt_result + {5'h0, cnt_data[i]};
+      end
+   end
+end
+
+always_comb begin
+   case (alu_b_ops)
+      ALU_ZBA_OPS_SH1ADD : begin
+         alu_b_result = (alu_operand_1 << 1) + alu_operand_2;
+      end
+      ALU_ZBA_OPS_SH2ADD : begin
+         alu_b_result = (alu_operand_1 << 2) + alu_operand_2;
+      end
+      ALU_ZBA_OPS_SH3ADD : begin
+         alu_b_result = (alu_operand_1 << 3) + alu_operand_2;
+      end
+      ALU_ZBB_OPS_ANDN : begin
+         alu_b_result = alu_operand_1 & (~alu_operand_2);
+      end
+      ALU_ZBB_OPS_ORN : begin
+         alu_b_result = alu_operand_1 | (~alu_operand_2);
+      end
+      ALU_ZBB_OPS_XNOR : begin
+         alu_b_result = alu_operand_1 ^ (~alu_operand_2);
+      end
+      ALU_ZBB_OPS_CLZ,
+      ALU_ZBB_OPS_CTZ,
+      ALU_ZBB_OPS_CPOP : begin
+         alu_b_result = cnt_result;
+      end
+      ALU_ZBB_OPS_MAX : begin
+         alu_b_result = max_result;
+      end
+      ALU_ZBB_OPS_MAXU : begin
+         alu_b_result = maxu_result;
+      end
+      ALU_ZBB_OPS_MIN : begin
+         alu_b_result = min_result;
+      end
+      ALU_ZBB_OPS_MINU : begin
+         alu_b_result = minu_result;
+      end
+      ALU_ZBB_OPS_SEXTB : begin
+         alu_b_result = {{24{alu_operand_1[7]}}, alu_operand_1[7:0]};
+      end
+      ALU_ZBB_OPS_SEXTH : begin
+         alu_b_result = {{16{alu_operand_1[15]}}, alu_operand_1[15:0]};
+      end
+      ALU_ZBB_OPS_ZEXTH : begin
+         alu_b_result = {16'b0, alu_operand_1[15:0]};
+      end
+      ALU_ZBB_OPS_ROL : begin
+         alu_b_result = (alu_operand_1 << shift_amt) | (alu_operand_1 >> (`XLEN-shift_amt));
+      end
+      ALU_ZBB_OPS_ROR,
+      ALU_ZBB_OPS_RORI : begin
+         alu_b_result = (alu_operand_1 >> shift_amt) | (alu_operand_1 << (`XLEN-shift_amt));
+      end
+      ALU_ZBB_OPS_ORC : begin
+         alu_b_result = {{8{|alu_operand_1[31:24]}}, {8{|alu_operand_1[23:16]}}, {8{|alu_operand_1[15:8]}}, {8{|alu_operand_1[7:0]}}};
+      end
+      ALU_ZBB_OPS_REV8 : begin
+         alu_b_result = {alu_operand_1[7:0], alu_operand_1[15:8], alu_operand_1[23:16], alu_operand_1[31:24]};
+      end
+      ALU_ZBS_OPS_BCLR,
+      ALU_ZBS_OPS_BCLRI : begin
+         alu_b_result = alu_operand_1 & (~zbs_index);
+      end
+      ALU_ZBS_OPS_BSET,
+      ALU_ZBS_OPS_BSETI : begin
+         alu_b_result = alu_operand_1 | zbs_index;
+      end
+      ALU_ZBS_OPS_BEXT,
+      ALU_ZBS_OPS_BEXTI : begin
+         alu_b_result = |(alu_operand_1 & zbs_index);
+      end
+      ALU_ZBS_OPS_BINV,
+      ALU_ZBS_OPS_BINVI : begin
+         alu_b_result = alu_operand_1 ^ zbs_index;
+      end
+      ALU_ZBC_OPS_CLMUL : begin
+         alu_b_result = clmul_result;
+      end
+      ALU_ZBC_OPS_CLMULR : begin
+         alu_b_result = clmulr_result;
+      end
+      ALU_ZBC_OPS_CLMULH : begin
+         alu_b_result = clmulr_result >> 1;
+      end
+      default: begin
+         alu_b_result = '0;
+      end
+   endcase
+end
+
 //============================ Signal evaluations for Multiplication operations ===============================// 
 //assign mul_cmd = {((alu_m_ops_ff[1] & alu_m_ops_ff[0]) | (alu_m_ops_ff[1] & ~alu_m_ops_ff[0])),
 //  ((alu_m_ops_ff[1] & alu_m_ops_ff[0]) | (~alu_m_ops_ff[1] & alu_m_ops_ff[0]))};
@@ -317,7 +484,7 @@ assign exe2div.alu_operand_2 = alu_operand_2;
 assign exe2div.alu_d_ops  = id2exe_ctrl.alu_d_ops;
 
 // Update the output data signals for LSU
-assign exe2lsu_data.alu_result = mul_cmd ? alu_m_result : alu_result;
+assign exe2lsu_data.alu_result = mul_cmd ? alu_m_result : (bitmanip_cmd ? alu_b_result : alu_result);
 assign exe2lsu_data.pc_next    = id2exe_data.pc_next;
 assign exe2lsu_data.rs2_data   = operand_rs2_data; // MT: This should be verified due to forwarding
 
