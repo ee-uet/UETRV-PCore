@@ -29,7 +29,15 @@ jobs:
        sudo apt-get install verilator device-tree-compiler
        pip3 install git+https://github.com/riscv/riscof.git
        pip3 install --force-reinstall riscv_isac
-       
+
+    - name: Check Python Environment
+      run: |
+       python3 --version
+       pip3 --version
+       pip3 list
+       pip3 show riscof
+       pip3 show riscv_isac
+
 
     - name: Setup toolchain
       run: |
