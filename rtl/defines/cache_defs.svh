@@ -105,6 +105,33 @@ typedef struct packed {
     logic                            ack;   
 } type_dcache2lsummu_s;
 
+// Bus interface from STB to dcache
+typedef struct packed {
+    logic [DCACHE_ADDR_WIDTH-1:0]   addr;
+    logic [DCACHE_DATA_WIDTH-1:0]   w_data;
+    logic [3:0]                     sel_byte;
+    logic                           w_en;
+    logic                           req;
+} type_stb2dcache_s;
+
+typedef struct packed {                            
+    logic [DCACHE_DATA_WIDTH-1:0]   r_data;
+    logic                           ack;
+} type_dcache2stb_s;
+
+// Bus interface from LSU to STB
+typedef struct packed {
+    logic [DCACHE_ADDR_WIDTH-1:0]    addr;
+    logic [DCACHE_DATA_WIDTH-1:0]    w_data;
+    logic [3:0]                      sel_byte;  
+    logic                            w_en;  
+    logic                            req;
+} type_lsummu2stb_s;
+
+typedef struct packed {
+    logic                            ack;
+    logic                            stall;
+} type_stb2lsummu_s;
 
 typedef struct packed {
     logic [DCACHE_ADDR_WIDTH-1:0]    addr;
