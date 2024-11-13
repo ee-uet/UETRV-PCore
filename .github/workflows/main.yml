@@ -19,7 +19,7 @@ jobs:
       with:
         path: pcore
 
-    - name: Install verilator and riscof
+   - name: Install verilator and riscof
   run: |
     sudo apt-get update
     sudo apt-get install -y python3 python3-pip python3-venv
