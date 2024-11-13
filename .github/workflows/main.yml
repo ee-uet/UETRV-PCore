@@ -1,6 +1,12 @@
 name: Pcore-riscof
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - '**'   # Trigger on all branches (including those from forks)
+  pull_request:
+    branches:
+      - main   # Trigger on PRs targeting the main branch
 
 jobs:
 
