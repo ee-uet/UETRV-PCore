@@ -83,6 +83,14 @@ class pcore(pluginTemplate):
           self.isa += 'm'
       if "C" in ispec["ISA"]:
           self.isa += 'c'
+      if "Zba" in ispec["ISA"]:
+          self.isa += 'zba'
+      if "Zbb" in ispec["ISA"]:
+          self.isa += '_zbb'
+      if "Zbs" in ispec["ISA"]:
+          self.isa += '_zbs'
+      if "Zbc" in ispec["ISA"]:
+          self.isa += '_zbc'
 
       self.compile_cmd = self.compile_cmd+' -mabi='+('lp64 ' if 64 in ispec['supported_xlen'] else 'ilp32 ')
 

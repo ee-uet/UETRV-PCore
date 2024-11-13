@@ -92,6 +92,7 @@ always_comb begin
     // Operation selecion for different modules
     id2exe_ctrl.alu_i_ops  = ALU_I_OPS_NONE;
     id2exe_ctrl.alu_m_ops  = ALU_M_OPS_NONE;
+    id2exe_ctrl.alu_b_ops  = ALU_B_OPS_NONE;
     id2exe_ctrl.alu_d_ops  = ALU_D_OPS_NONE;
     id2exe_ctrl.ld_ops     = LD_OPS_NONE;
     id2exe_ctrl.st_ops     = ST_OPS_NONE;
@@ -156,11 +157,21 @@ always_comb begin
                     7'b0100000 : begin
                         case (funct3_opcode)
                             3'b000  : id2exe_ctrl.alu_i_ops = ALU_I_OPS_SUB;
+                            3'b100  : id2exe_ctrl.alu_b_ops = ALU_ZBB_OPS_XNOR;
                             3'b101  : id2exe_ctrl.alu_i_ops = ALU_I_OPS_SRA;
+                            3'b110  : id2exe_ctrl.alu_b_ops = ALU_ZBB_OPS_ORN;
+                            3'b111  : id2exe_ctrl.alu_b_ops = ALU_ZBB_OPS_ANDN;
                             default : illegal_instr         = 1'b1;
                         endcase // funct3_opcode
                     end // 7'b0100000
-
+                    7'b0010000: begin
+                        case (funct3_opcode)
+                            3'b010: id2exe_ctrl.alu_b_ops = ALU_ZBA_OPS_SH1ADD;
+                            3'b100: id2exe_ctrl.alu_b_ops = ALU_ZBA_OPS_SH2ADD;
+                            3'b110: id2exe_ctrl.alu_b_ops = ALU_ZBA_OPS_SH3ADD;
+                            default : illegal_instr       = 1'b1;
+                        endcase // funct3_opcode
+                    end // 7'b0010000
                     7'b0000001 : begin
                         if (funct3_opcode[2]) begin
                             id2exe_ctrl.rd_wrb_sel = RD_WRB_D_ALU;
@@ -177,7 +188,41 @@ always_comb begin
                             3'b111 : id2exe_ctrl.alu_d_ops = ALU_D_OPS_REMU;
                         endcase // funct3_opcode
                     end // 7'b0000001
-
+                    7'b0000101 : begin
+                        case (funct3_opcode)
+                            3'b001 : id2exe_ctrl.alu_b_ops = ALU_ZBC_OPS_CLMUL;
+                            3'b010 : id2exe_ctrl.alu_b_ops = ALU_ZBC_OPS_CLMULR;
+                            3'b011 : id2exe_ctrl.alu_b_ops = ALU_ZBC_OPS_CLMULH;
+                            3'b100 : id2exe_ctrl.alu_b_ops = ALU_ZBB_OPS_MIN;
+                            3'b101 : id2exe_ctrl.alu_b_ops = ALU_ZBB_OPS_MINU;
+                            3'b110 : id2exe_ctrl.alu_b_ops = ALU_ZBB_OPS_MAX;
+                            3'b111 : id2exe_ctrl.alu_b_ops = ALU_ZBB_OPS_MAXU;
+                            default: illegal_instr         = 1'b1;
+                        endcase
+                    end // 7'b0000101
+                    7'b0000100 : begin
+                        id2exe_ctrl.alu_b_ops = ALU_ZBB_OPS_ZEXTH;
+                    end
+                    7'b0110000 : begin
+                        case (funct3_opcode)
+                            3'b001 : id2exe_ctrl.alu_b_ops = ALU_ZBB_OPS_ROL;
+                            3'b101 : id2exe_ctrl.alu_b_ops = ALU_ZBB_OPS_ROR;
+                            default: illegal_instr         = 1'b1;
+                        endcase
+                    end
+                    7'b0100100 : begin
+                        case (funct3_opcode)
+                            3'b001 : id2exe_ctrl.alu_b_ops = ALU_ZBS_OPS_BCLR;
+                            3'b101 : id2exe_ctrl.alu_b_ops = ALU_ZBS_OPS_BEXT;
+                            default: illegal_instr         = 1'b1;
+                        endcase
+                    end
+                    7'b0110100 : begin
+                        id2exe_ctrl.alu_b_ops = ALU_ZBS_OPS_BINV;
+                    end
+                    7'b0010100 : begin
+                        id2exe_ctrl.alu_b_ops = ALU_ZBS_OPS_BSET;
+                    end
                     default : illegal_instr = 1'b1;
                 endcase // funct7_opcode
                
@@ -199,8 +244,45 @@ always_comb begin
                     3'b110 : id2exe_ctrl.alu_i_ops = ALU_I_OPS_OR;            // OR Immediate
                     3'b111 : id2exe_ctrl.alu_i_ops = ALU_I_OPS_AND;           // AND Immediate
                     3'b001 : begin
-                              id2exe_data.imm     = `XLEN'(shift_amt);     // Zero Extend the shift amount
-                              id2exe_ctrl.alu_i_ops = ALU_I_OPS_SLL;           // Shift Left Logical Immediate
+                        case (funct7_opcode)
+                            7'b0000000: begin
+                                id2exe_data.imm     = `XLEN'(shift_amt);     // Zero Extend the shift amount
+                                id2exe_ctrl.alu_i_ops = ALU_I_OPS_SLL;           // Shift Left Logical Immediate
+                            end
+                            7'b0110000: begin
+                                case (funct5_opcode)
+                                    5'b00000 : begin
+                                        id2exe_ctrl.alu_b_ops = ALU_ZBB_OPS_CLZ;
+                                    end
+                                    5'b00001 : begin
+                                        id2exe_ctrl.alu_b_ops = ALU_ZBB_OPS_CTZ;
+                                    end
+                                    5'b00010 : begin
+                                        id2exe_ctrl.alu_b_ops = ALU_ZBB_OPS_CPOP;
+                                    end
+                                    5'b00100 : begin
+                                        id2exe_ctrl.alu_b_ops = ALU_ZBB_OPS_SEXTB;
+                                    end
+                                    5'b00101 : begin
+                                        id2exe_ctrl.alu_b_ops = ALU_ZBB_OPS_SEXTH;
+                                    end
+                                    default: illegal_instr  =  1'b1;
+                                endcase
+                            end
+                            7'b0010100: begin
+                                id2exe_data.imm       = `XLEN'(shift_amt);
+                                id2exe_ctrl.alu_b_ops = ALU_ZBS_OPS_BSETI;
+                            end
+                            7'b0100100: begin
+                                id2exe_data.imm       = `XLEN'(shift_amt);
+                                id2exe_ctrl.alu_b_ops = ALU_ZBS_OPS_BCLRI;
+                            end
+                            7'b0110100: begin
+                                id2exe_data.imm       = `XLEN'(shift_amt);
+                                id2exe_ctrl.alu_b_ops = ALU_ZBS_OPS_BINVI;
+                            end
+                            default: illegal_instr  =  1'b1;
+                        endcase
                     end
                     3'b101 : begin
                         case (funct7_opcode)
@@ -215,6 +297,24 @@ always_comb begin
                                 id2exe_ctrl.alu_i_ops = ALU_I_OPS_SRA;          // Shift Right Arithmetic Immediate
                             end
                             
+                            7'b0110000 : begin
+                                id2exe_data.imm     = `XLEN'(shift_amt);   
+                                id2exe_ctrl.alu_b_ops = ALU_ZBB_OPS_RORI;          // Shift Right Arithmetic Immediate
+                            end
+
+                            7'b0010100 : begin
+                                id2exe_ctrl.alu_b_ops = ALU_ZBB_OPS_ORC;
+                            end
+
+                            7'b0110100 : begin
+                                id2exe_ctrl.alu_b_ops = ALU_ZBB_OPS_REV8;
+                            end
+
+                            7'b0100100: begin
+                                id2exe_data.imm       = `XLEN'(shift_amt);
+                                id2exe_ctrl.alu_b_ops = ALU_ZBS_OPS_BEXTI;
+                            end
+
                             default : illegal_instr  =  1'b1;
                         endcase // funct7_opcode
                     end
@@ -462,6 +562,7 @@ always_comb begin
    if(illegal_instr | if2id_ctrl.exc_req)  begin
      id2exe_ctrl.alu_i_ops   = ALU_I_OPS_NONE;
      id2exe_ctrl.alu_m_ops   = ALU_M_OPS_NONE;
+     id2exe_ctrl.alu_b_ops   = ALU_B_OPS_NONE;
      id2exe_ctrl.alu_d_ops   = ALU_D_OPS_NONE;
      id2exe_ctrl.ld_ops      = LD_OPS_NONE;
      id2exe_ctrl.st_ops      = ST_OPS_NONE;
