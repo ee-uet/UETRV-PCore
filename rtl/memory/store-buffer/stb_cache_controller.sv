@@ -106,7 +106,7 @@ logic req, w_en, dm_sel;
                     end
                     else if (dcache2stb_ack && !stb_empty) begin
                         req         = 1'b0;  
-                        rd_sel      = 1'b1;   
+                        rd_sel      = 1'b0;   
                         w_en        = 1'b0;
                         dm_sel      = 1'b1;
                         stb_rd_en   = 1'b1;
@@ -114,7 +114,7 @@ logic req, w_en, dm_sel;
                     end
                     else if (dcache2stb_ack && stb_empty) begin
                         req         = 1'b0;  
-                        rd_sel      = 1'b1;  
+                        rd_sel      = 1'b0;  
                         w_en        = 1'b0;
                         dm_sel      = 1'b1;
                         stb_rd_en   = 1'b1;

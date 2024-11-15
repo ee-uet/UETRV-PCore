@@ -44,7 +44,7 @@ module store_buffer_top #(
     logic stb_bypass;
 
     assign stb2lsummu_rdata = dcache2stb_rdata;                     // bypassing rdata signal
-    assign stb_bypass = ((lsummu2stb_req & !lsummu2stb_w_en) | (!lsummu2stb_req & !lsummu2stb_w_en)) & dmem_sel_i & stb_empty;
+    assign stb_bypass = ((lsummu2stb_req & !lsummu2stb_w_en) | (!lsummu2stb_req & !lsummu2stb_w_en)) & stb_empty;
 
     // Instantiate the Store Buffer Datapath
     store_buffer_datapath #(
