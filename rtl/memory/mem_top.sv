@@ -65,8 +65,8 @@ type_dbus2peri_s                        dbus2peri;
 type_peri2dbus_s                        dcache2dbus;                        // Signals from data memory
 type_peri2dbus_s                        bmem2dbus;  
 
-type_lsummu2dcache_s                    lsummu2dcache; 
-type_dcache2lsummu_s                    dcache2lsummu;
+type_lsummu2dcache_s                    lsummu2dcache,stb2dcache; 
+type_dcache2lsummu_s                    dcache2lsummu,dcache2stb;
 type_mem2dcache_s                       mem2dcache;
 type_dcache2mem_s                       dcache2mem;
 
@@ -87,6 +87,15 @@ logic                                   dcache2mem_kill;
 
 logic                                   timeout_flag;
 logic [5:0]                             timeout_next, timeout_ff; 
+
+// Store Buffer related signals
+//type_stb2dcache_s                       stb2dcache;
+//type_dcache2stb_s                       dcache2stb;
+
+type_lsummu2stb_s                       lsummu2stb;
+type_stb2lsummu_s                       stb2lsummu;
+logic                                   stb_dmem_sel_o;
+logic                                   stb2dcache_empty;
 
 // Signal assignments
 assign mmu2dcache = mmu2dcache_i;
@@ -156,6 +165,7 @@ dcache_kill_req = '0;
                lsummu2dcache.sel_byte = dbus2peri.sel_byte;
                lsummu2dcache.w_en     = dbus2peri.w_en;
                lsummu2dcache.req      = dbus2peri.req;
+               
                cache_arbiter_state_next = DCACHE_ARBITER_LSU;
            end else if (~dmem_sel & mmu2dcache.r_req & ~mmu2dcache.flush_req) begin
                lsummu2dcache.addr     = mmu2dcache.paddr;
@@ -206,8 +216,63 @@ dcache_kill_req = '0;
  
 end 
 
+//========================== Store Buffer top module ===========================//
+store_buffer_top store_buffer_top_module (
+    .clk                    (clk),
+    .rst_n                  (rst_n),
+
+    // LSU --> store_buffer_top
+    .lsummu2stb_addr        (lsummu2dcache.addr),
+    .lsummu2stb_wdata       (lsummu2dcache.w_data),
+    .lsummu2stb_sel_byte    (lsummu2dcache.sel_byte),
+    .lsummu2stb_w_en        (lsummu2dcache.w_en),
+    .lsummu2stb_req         (lsummu2dcache.req),
+    .dmem_sel_i             (dmem_sel),
+
+    // store_buffer_top --> LSU
+    .stb2lsummu_ack         (dcache2lsummu.ack),
+    .stb2lsummu_rdata       (dcache2lsummu.r_data),
+    
+    .stb2lsummu_stall       (stb2lsummu.stall),
+
+
+    // store_buffer_top --> dcache
+    .stb2dcache_addr        (stb2dcache.addr),
+    .stb2dcache_wdata       (stb2dcache.w_data),
+    .stb2dcache_sel_byte    (stb2dcache.sel_byte),
+    .stb2dcache_w_en        (stb2dcache.w_en),
+    .stb2dcache_req         (stb2dcache.req),
+    
+    .stb2dcache_empty       (stb2dcache_empty),
+    .dmem_sel_o             (stb_dmem_sel_o),
+
+    .dcache2stb_ack         (dcache2stb.ack),
+    .dcache2stb_rdata       (dcache2stb.r_data)
+);
+
 //========================== Data cache top module ===========================//
 wb_dcache_top wb_dcache_top_module(
+    .clk                    (clk),
+    .rst_n                  (rst_n),
+
+    // LSU/MMU to data cache interface
+    .lsummu2dcache_i        (stb2dcache), // lsummu2dmem
+
+    .dcache2lsummu_o        (dcache2stb), // dmem2lsummu
+
+    .stb2dcache_empty       (stb2dcache_empty),
+
+    .dcache_kill_i          (dcache_kill_req),
+    .dcache2mem_kill_o      (dcache2mem_kill),
+  
+    // Data cache to main memory interface  
+    .mem2dcache_i           (mem2dcache),
+    .dcache2mem_o           (dcache2mem),
+
+    .dcache_flush_i         (dcache_flush_i),
+    .dmem_sel_i             (stb_dmem_sel_o | mmu2dcache.r_req)
+);
+/*wb_dcache_top wb_dcache_top_module(
     .clk                    (clk),
     .rst_n                  (rst_n),
 
@@ -222,7 +287,7 @@ wb_dcache_top wb_dcache_top_module(
     .dcache2mem_o           (dcache2mem),
     .dcache_flush_i         (dcache_flush_i),
     .dmem_sel_i             (dmem_sel | mmu2dcache.r_req)
-);
+);*/
 
 //============================= Main memory and its memory interface =============================//
 // Arbitration between data and instruction caches for main memory access
@@ -362,3 +427,4 @@ assign dcache2dbus_o = dcache2dbus;
 assign dcache2mmu_o  = dcache2mmu; 
 
 endmodule : mem_top
+
