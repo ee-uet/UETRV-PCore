@@ -1,6 +1,12 @@
 name: Pcore-riscof
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - '**'   # Trigger on all branches (including those from forks)
+  pull_request:
+    branches:
+      - main   # Trigger on PRs targeting the main branch
 
 jobs:
 
@@ -15,12 +21,14 @@ jobs:
 
     - name: Install verilator and riscof
       run: |
-        sudo apt-get install -y python3-setuptools
-        echo 'deb http://download.opensuse.org/repositories/home:/phiwag:/edatools/xUbuntu_20.04/ /' | sudo tee /etc/apt/sources.list.d/home:phiwag:edatools.list
-        curl -fsSL https://download.opensuse.org/repositories/home:phiwag:edatools/xUbuntu_20.04/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_phiwag_edatools.gpg > /dev/null
-        sudo apt update
-        sudo apt install verilator device-tree-compiler
-        pip3 install git+https://github.com/riscv/riscof.git
+       sudo apt-get update
+       sudo apt-get install -y python3 python3-pip python3-venv
+       pip3 install --upgrade pip
+       sudo apt-get install -y gcc git autoconf automake libtool curl make unzip
+       sudo apt-get install autoconf automake autotools-dev curl python3 python3-pip libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev libexpat-dev ninja-build git cmake libglib2.0-dev libslirp-dev
+       sudo apt-get install verilator device-tree-compiler
+       pip3 install git+https://github.com/riscv/riscof.git
+
 
     - name: Setup toolchain
       run: |
@@ -37,6 +45,11 @@ jobs:
       run: |
         tar -xzf pcore/verif/bin/sail-riscv.tar.gz
         echo $GITHUB_WORKSPACE/sail-riscv >> $GITHUB_PATH
+
+    - name: Install riscv-isac
+      run: |
+        cd pcore/verif/bin/riscv-isac
+        pip3 install --editable .
 
     - name: Run Verification Framework
       run: |

@@ -84,6 +84,45 @@ typedef enum logic [2:0] {
     ALU_D_OPS_REMU   =  3'b111          // oprnd1 u% oprnd2
 } type_alu_d_ops_e;
 
+typedef enum logic [32:0] {
+    ALU_B_OPS_NONE   = '0,    // ALU is idle
+    // Zba OPS
+    ALU_ZBA_OPS_SH1ADD,   // (oprnd1 << 1) + oprnd2
+    ALU_ZBA_OPS_SH2ADD,   // (oprnd1 << 2) + oprnd2
+    ALU_ZBA_OPS_SH3ADD,   // (oprnd1 << 3) + oprnd2
+    // Zbb Ops
+    ALU_ZBB_OPS_ANDN,     // oprnd1 & ~oprnd2
+    ALU_ZBB_OPS_ORN,      // oprnd1 | ~oprnd2
+    ALU_ZBB_OPS_XNOR,     // ~oprnd1 ^ oprnd2
+    ALU_ZBB_OPS_CLZ,      // count leading zeros
+    ALU_ZBB_OPS_CTZ,      // count trailing zeros
+    ALU_ZBB_OPS_CPOP,     // count no. of set bits
+    ALU_ZBB_OPS_MAX,      // Returns larger of two signed numbers
+    ALU_ZBB_OPS_MAXU,     // Returns larger of two unsigned numbers
+    ALU_ZBB_OPS_MIN,      // Returns smaller of two signed numbers
+    ALU_ZBB_OPS_MINU,     // Returns smaller of two unsigned numbers
+    ALU_ZBB_OPS_SEXTB,
+    ALU_ZBB_OPS_SEXTH,
+    ALU_ZBB_OPS_ZEXTH,
+    ALU_ZBB_OPS_ROL,
+    ALU_ZBB_OPS_ROR,
+    ALU_ZBB_OPS_RORI,
+    ALU_ZBB_OPS_ORC,
+    ALU_ZBB_OPS_REV8,
+    // Zbs Ops
+    ALU_ZBS_OPS_BCLR,
+    ALU_ZBS_OPS_BCLRI,
+    ALU_ZBS_OPS_BEXT,
+    ALU_ZBS_OPS_BEXTI,
+    ALU_ZBS_OPS_BINV,
+    ALU_ZBS_OPS_BINVI,
+    ALU_ZBS_OPS_BSET,
+    ALU_ZBS_OPS_BSETI,
+    // Zbc Ops
+    ALU_ZBC_OPS_CLMUL,
+    ALU_ZBC_OPS_CLMULH,
+    ALU_ZBC_OPS_CLMULR
+} type_alu_b_ops_e;
 
 typedef enum logic [2:0] {
 // Operations for conditional branch instructions
@@ -194,6 +233,7 @@ typedef struct packed {
     type_alu_i_ops_e                 alu_i_ops;
     type_alu_m_ops_e                 alu_m_ops;
     type_alu_d_ops_e                 alu_d_ops;
+    type_alu_b_ops_e                 alu_b_ops;
     type_ld_ops_e                    ld_ops;
     type_st_ops_e                    st_ops;
     type_br_ops_e                    branch_ops;
