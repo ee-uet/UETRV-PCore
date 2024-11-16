@@ -65,8 +65,8 @@ type_dbus2peri_s                        dbus2peri;
 type_peri2dbus_s                        dcache2dbus;                        // Signals from data memory
 type_peri2dbus_s                        bmem2dbus;  
 
-type_lsummu2dcache_s                    lsummu2dcache,stb2dcache; 
-type_dcache2lsummu_s                    dcache2lsummu,dcache2stb;
+//type_lsummu2dcache_s                    lsummu2dcache;
+//type_dcache2lsummu_s                    dcache2lsummu;
 type_mem2dcache_s                       mem2dcache;
 type_dcache2mem_s                       dcache2mem;
 
@@ -89,12 +89,13 @@ logic                                   timeout_flag;
 logic [5:0]                             timeout_next, timeout_ff; 
 
 // Store Buffer related signals
-//type_stb2dcache_s                       stb2dcache;
-//type_dcache2stb_s                       dcache2stb;
+type_stb2dcache_s                       stb2dcache;
+type_dcache2stb_s                       dcache2stb;
 
 type_lsummu2stb_s                       lsummu2stb;
 type_stb2lsummu_s                       stb2lsummu;
 logic                                   stb_dmem_sel_o;
+//logic                                   stb2lsummu_stall;
 logic                                   stb2dcache_empty;
 
 // Signal assignments
@@ -150,7 +151,7 @@ always_ff @(posedge clk) begin
 end
 
 always_comb begin
-lsummu2dcache = '0;
+lsummu2stb    = '0;
 dcache2dbus   = '0;
 dcache2mmu    = '0;
 cache_arbiter_state_next  = cache_arbiter_state_ff;
@@ -160,35 +161,35 @@ dcache_kill_req = '0;
 
        DCACHE_ARBITER_IDLE: begin
            if (dmem_sel) begin
-               lsummu2dcache.addr     = dbus2peri.addr;
-               lsummu2dcache.w_data   = dbus2peri.w_data;
-               lsummu2dcache.sel_byte = dbus2peri.sel_byte;
-               lsummu2dcache.w_en     = dbus2peri.w_en;
-               lsummu2dcache.req      = dbus2peri.req;
+               lsummu2stb.addr     = dbus2peri.addr;
+               lsummu2stb.w_data   = dbus2peri.w_data;
+               lsummu2stb.sel_byte = dbus2peri.sel_byte;
+               lsummu2stb.w_en     = dbus2peri.w_en;
+               lsummu2stb.req      = dbus2peri.req;
                
                cache_arbiter_state_next = DCACHE_ARBITER_LSU;
            end else if (~dmem_sel & mmu2dcache.r_req & ~mmu2dcache.flush_req) begin
-               lsummu2dcache.addr     = mmu2dcache.paddr;
-               lsummu2dcache.w_data   = '0;
-               lsummu2dcache.sel_byte = '0;
-               lsummu2dcache.w_en     = '0;
-               lsummu2dcache.req      = 1'b1;
+               lsummu2stb.addr     = mmu2dcache.paddr;
+               lsummu2stb.w_data   = '0;
+               lsummu2stb.sel_byte = '0;
+               lsummu2stb.w_en     = '0;
+               lsummu2stb.req      = 1'b1;
                cache_arbiter_state_next = DCACHE_ARBITER_MMU;
            end
        end
 
        DCACHE_ARBITER_LSU: begin
-           if (dcache2lsummu.ack) begin
-               dcache2dbus.r_data = dcache2lsummu.r_data;
+           if (stb2lsummu.ack) begin
+               dcache2dbus.r_data = stb2lsummu.r_data;
                dcache2dbus.ack    = 1'b1;
                cache_arbiter_state_next = DCACHE_ARBITER_IDLE;
            end else begin
                cache_arbiter_state_next = DCACHE_ARBITER_LSU;
-               lsummu2dcache.addr     = dbus2peri.addr;
-               lsummu2dcache.w_data   = dbus2peri.w_data;
-               lsummu2dcache.sel_byte = dbus2peri.sel_byte;
-               lsummu2dcache.w_en     = dbus2peri.w_en;
-               lsummu2dcache.req      = dbus2peri.req;
+               lsummu2stb.addr     = dbus2peri.addr;
+               lsummu2stb.w_data   = dbus2peri.w_data;
+               lsummu2stb.sel_byte = dbus2peri.sel_byte;
+               lsummu2stb.w_en     = dbus2peri.w_en;
+               lsummu2stb.req      = dbus2peri.req;
            end 
 
        end
@@ -197,17 +198,17 @@ dcache_kill_req = '0;
            if (mmu2dcache.flush_req) begin 
                cache_arbiter_state_next = DCACHE_ARBITER_IDLE;
                dcache_kill_req = 1'b1;
-           end else if (dcache2lsummu.ack) begin
-               dcache2mmu.r_data  = dcache2lsummu.r_data;
+           end else if (stb2lsummu.ack) begin
+               dcache2mmu.r_data  = stb2lsummu.r_data;
                dcache2mmu.r_valid = 1'b1;
                cache_arbiter_state_next = DCACHE_ARBITER_IDLE;
            end else begin
                cache_arbiter_state_next = DCACHE_ARBITER_MMU;
-               lsummu2dcache.addr     = mmu2dcache.paddr;
-               lsummu2dcache.w_data   = '0;
-               lsummu2dcache.sel_byte = '0;
-               lsummu2dcache.w_en     = '0;
-               lsummu2dcache.req      = 1'b1;
+               lsummu2stb.addr     = mmu2dcache.paddr;
+               lsummu2stb.w_data   = '0;
+               lsummu2stb.sel_byte = '0;
+               lsummu2stb.w_en     = '0;
+               lsummu2stb.req      = 1'b1;
            end 
        end
 
@@ -221,33 +222,22 @@ store_buffer_top store_buffer_top_module (
     .clk                    (clk),
     .rst_n                  (rst_n),
 
-    // LSU --> store_buffer_top
-    .lsummu2stb_addr        (lsummu2dcache.addr),
-    .lsummu2stb_wdata       (lsummu2dcache.w_data),
-    .lsummu2stb_sel_byte    (lsummu2dcache.sel_byte),
-    .lsummu2stb_w_en        (lsummu2dcache.w_en),
-    .lsummu2stb_req         (lsummu2dcache.req),
+// LSU --> store_buffer_top
+    .lsummu2stb_i           (lsummu2stb),
     .dmem_sel_i             (dmem_sel),
 
-    // store_buffer_top --> LSU
-    .stb2lsummu_ack         (dcache2lsummu.ack),
-    .stb2lsummu_rdata       (dcache2lsummu.r_data),
-    
-    .stb2lsummu_stall       (stb2lsummu.stall),
+// store_buffer_top --> LSU
+    .stb2lsummu_o           (stb2lsummu),    
+    //.stb2lsummu_stall       (stb2lsummu_stall),
 
 
-    // store_buffer_top --> dcache
-    .stb2dcache_addr        (stb2dcache.addr),
-    .stb2dcache_wdata       (stb2dcache.w_data),
-    .stb2dcache_sel_byte    (stb2dcache.sel_byte),
-    .stb2dcache_w_en        (stb2dcache.w_en),
-    .stb2dcache_req         (stb2dcache.req),
-    
+// store_buffer_top --> dcache
+    .stb2dcache_o           (stb2dcache),
     .stb2dcache_empty       (stb2dcache_empty),
     .dmem_sel_o             (stb_dmem_sel_o),
 
-    .dcache2stb_ack         (dcache2stb.ack),
-    .dcache2stb_rdata       (dcache2stb.r_data)
+// dcache --> store_buffer_top
+    .dcache2stb_i           (dcache2stb)
 );
 
 //========================== Data cache top module ===========================//
@@ -272,22 +262,6 @@ wb_dcache_top wb_dcache_top_module(
     .dcache_flush_i         (dcache_flush_i),
     .dmem_sel_i             (stb_dmem_sel_o | mmu2dcache.r_req)
 );
-/*wb_dcache_top wb_dcache_top_module(
-    .clk                    (clk),
-    .rst_n                  (rst_n),
-
-    // LSU/MMU to data cache interface
-    .lsummu2dcache_i        (lsummu2dcache), // lsummu2dmem
-    .dcache2lsummu_o        (dcache2lsummu), // dmem2lsummu
-    .dcache_kill_i          (dcache_kill_req),
-    .dcache2mem_kill_o      (dcache2mem_kill),
-  
-    // Data cache to main memory interface  
-    .mem2dcache_i           (mem2dcache),
-    .dcache2mem_o           (dcache2mem),
-    .dcache_flush_i         (dcache_flush_i),
-    .dmem_sel_i             (dmem_sel | mmu2dcache.r_req)
-);*/
 
 //============================= Main memory and its memory interface =============================//
 // Arbitration between data and instruction caches for main memory access

@@ -129,8 +129,8 @@ typedef struct packed {
 } type_lsummu2stb_s;
 
 typedef struct packed {
-    logic                            ack;
-    logic                            stall;
+    logic                            ack;                            
+    logic [DCACHE_DATA_WIDTH-1:0]    r_data;
 } type_stb2lsummu_s;
 
 typedef struct packed {

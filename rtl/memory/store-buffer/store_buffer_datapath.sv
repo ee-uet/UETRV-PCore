@@ -1,30 +1,46 @@
+// Copyright 2023 University of Engineering and Technology Lahore.
+// Licensed under the Apache License, Version 2.0, see LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
+//
+// Description: The Store Buffer module. 
+//
+// Author: Fazail Ali Butt, UET Lahore
+// Date: 15.11.2024
+
+`ifndef VERILATOR
+`include "../defines/mmu_defs.svh"
+`include "../defines/cache_defs.svh"
+`include "../defines/ddr_defs.svh"
+`else
+`include "mmu_defs.svh"
+`include "cache_defs.svh"
+`include "ddr_defs.svh"
+`endif
+
 module store_buffer_datapath #(
-    parameter BLEN = 4,         // Buffer Length
-    parameter ADDR_WIDTH = 32,
-    parameter DATA_WIDTH = 32,
-    parameter BYTE_SEL_WIDTH = 4
+    parameter BLEN = 4         // Buffer Length
 )(
     input  logic                        clk,
     input  logic                        rst_n,
 
-    // LSU --> store_buffer_datapath
-    input  logic [ADDR_WIDTH-1:0]       lsummu2stb_addr,        // Address input from LSU/MMU
-    input  logic [DATA_WIDTH-1:0]       lsummu2stb_wdata,       // Data input from LSU/MMU
-    input  logic [BYTE_SEL_WIDTH-1:0]   lsummu2stb_sel_byte,    // Byte selection input from LSU/MMU
+// LSU --> store_buffer_datapath
+    input  logic [DCACHE_ADDR_WIDTH-1:0]    lsummu2stb_addr,        // Address input from LSU/MMU
+    input  logic [DCACHE_DATA_WIDTH-1:0]    lsummu2stb_wdata,       // Data input from LSU/MMU
+    input  logic [3:0]                      lsummu2stb_sel_byte,    // Byte selection input from LSU/MMU
     
-    // lsu_stb_controller --> store_buffer_datapath
-    input  logic                        stb_wr_en,              // Write enable signal
+// lsu_stb_controller --> store_buffer_datapath
+    input  logic                            stb_wr_en,              // Write enable signal
 
-    // stb_cache_controller --> store_buffer_datapath
-    input  logic                        stb_rd_en,              // Read enable signal
-    input  logic                        rd_sel,                 // Read Selection signal
+// stb_cache_controller --> store_buffer_datapath
+    input  logic                            stb_rd_en,              // Read enable signal
+    input  logic                            rd_sel,                 // Read Selection signal
 
-    // store_buffer_datapath --> dcache 
-    output logic [ADDR_WIDTH-1:0]       stb2dcache_addr,        // Address output to Cache
-    output logic [DATA_WIDTH-1:0]       stb2dcache_wdata,        // Data output to Cache
-    output logic [BYTE_SEL_WIDTH-1:0]   stb2dcache_sel_byte,    // Byte selection output to Cache
+// store_buffer_datapath --> dcache 
+    output logic [DCACHE_ADDR_WIDTH-1:0]    stb2dcache_addr,        // Address output to Cache
+    output logic [DCACHE_DATA_WIDTH-1:0]    stb2dcache_wdata,        // Data output to Cache
+    output logic [3:0]                      stb2dcache_sel_byte,    // Byte selection output to Cache
 
-    // store_buffer_datapath --> store buffer controllers
+// store_buffer_datapath --> store buffer controllers
     output logic                        stb_full,               // Full signal
     output logic                        stb_empty,               // Empty signal
 
@@ -32,10 +48,10 @@ module store_buffer_datapath #(
 );
 
     // Buffer Registers (arrays to hold multiple entries)
-    logic [ADDR_WIDTH-1:0]     addr_buf     [BLEN-1:0];
-    logic [DATA_WIDTH-1:0]     data_buf     [BLEN-1:0];
-    logic [BYTE_SEL_WIDTH-1:0] sel_byte_buf [BLEN-1:0];
-    logic [BLEN-1:0]           valid_buf;                   // Valid entries in buffer
+    logic [DCACHE_ADDR_WIDTH-1:0]     addr_buf     [BLEN-1:0];
+    logic [DCACHE_DATA_WIDTH-1:0]     data_buf     [BLEN-1:0];
+    logic [3:0]                       sel_byte_buf [BLEN-1:0];
+    // logic [BLEN-1:0]                   valid_buf;                   // Valid entries in buffer
 
     // Buffer Counter (to track read and write index)
     logic [$clog2(BLEN)-1:0]  rd_index, rd_index_add;
