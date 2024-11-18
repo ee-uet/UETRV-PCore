@@ -30,9 +30,9 @@ module wb_dcache_controller (
     output logic [DCACHE_IDX_BITS-1:0]    evict_index_o,
  
     // LSU/MMU to data cache interface
-    input wire                            lsummu2dcache_req_i,
-    input wire                            lsummu2dcache_wr_i,
-    output logic                          dcache2lsummu_ack_o,
+    input wire                            stb2dcache_req_i,
+    input wire                            stb2dcache_wr_i,
+    output logic                          dcache2stb_ack_o,
     input wire                            dcache_kill_i,
 
     // Data memory to data cache interface
@@ -47,8 +47,8 @@ module wb_dcache_controller (
 type_dcache_states_e                  dcache_state_ff, dcache_state_next;
 logic [DCACHE_IDX_BITS-1:0]           evict_index_next, evict_index_ff;
 
-logic                                 lsummu2dcache_wr_ff;
-logic                                 dcache2lsummu_ack;
+logic                                 stb2dcache_wr_ff;
+logic                                 dcache2stb_ack;
 logic                                 dcache_hit;
 logic                                 dcache_miss;
 logic                                 dcache_evict;
@@ -60,22 +60,22 @@ logic                                 cache_wr;
 logic                                 cache_line_wr;
 logic                                 cache_line_clean;
 logic                                 dcache2mem_kill;
-logic                                 lsummu2dcache_req_ff, dmem_sel_ff;
+logic                                 stb2dcache_req_ff, dmem_sel_ff;
 
 
-assign dcache_hit   = lsummu2dcache_req_ff & dmem_sel_ff & cache_hit_i;
-assign dcache_miss  = lsummu2dcache_req_ff & dmem_sel_ff & ~cache_hit_i ;
+assign dcache_hit   = stb2dcache_req_ff & dmem_sel_ff & cache_hit_i;
+assign dcache_miss  = stb2dcache_req_ff & dmem_sel_ff & ~cache_hit_i ;
 assign dcache_evict = cache_evict_req_i;
 
 always_ff@(posedge clk) begin
   if(!rst_n) begin
-      lsummu2dcache_req_ff <= '0;
+      stb2dcache_req_ff <= '0;
       dmem_sel_ff          <= '0;
-      lsummu2dcache_wr_ff  <= '0;
+      stb2dcache_wr_ff  <= '0;
   end else begin
-      lsummu2dcache_req_ff <= lsummu2dcache_req_i;
+      stb2dcache_req_ff <= stb2dcache_req_i;
       dmem_sel_ff          <= dmem_sel_i;
-      lsummu2dcache_wr_ff  <= lsummu2dcache_wr_i;
+      stb2dcache_wr_ff  <= stb2dcache_wr_i;
   end
 end
 
@@ -94,7 +94,7 @@ end
 always_comb begin
     dcache_state_next = dcache_state_ff;
     evict_index_next  = evict_index_ff;
-    dcache2lsummu_ack = 1'b0;
+    dcache2stb_ack = 1'b0;
     dcache2mem_req    = 1'b0;
     dcache2mem_wr     = 1'b0;
     cache_wrb_req     = 1'b0;
@@ -108,7 +108,7 @@ always_comb begin
             // In case of flush, go to FLUSH State
             if (dcache_flush_i) begin                    
                 dcache_state_next = DCACHE_FLUSH;
-            end else  if (lsummu2dcache_req_i) begin
+            end else  if (stb2dcache_req_i) begin
                 dcache_state_next = DCACHE_PROCESS_REQ;
             end else begin
                 dcache_state_next = DCACHE_IDLE;
@@ -121,12 +121,12 @@ always_comb begin
             if (dcache_hit) begin 
             // In case of hit, perform the cache read/write operation   
                        
-                if (lsummu2dcache_wr_ff) begin
+                if (stb2dcache_wr_ff) begin
                     cache_wr      = 1'b1;
                     dcache_state_next = DCACHE_IDLE; 
-                    dcache2lsummu_ack = 1'b1;  
+                    dcache2stb_ack = 1'b1;  
                 end else begin
-                    dcache2lsummu_ack = 1'b1;  
+                    dcache2stb_ack = 1'b1;  
                     dcache_state_next = DCACHE_IDLE; 
                 end
                
@@ -144,7 +144,7 @@ always_comb begin
         end
         DCACHE_WRITE: begin
              dcache_state_next = DCACHE_IDLE; 
-             dcache2lsummu_ack = 1'b1;  
+             dcache2stb_ack = 1'b1;  
         end
 
         DCACHE_ALLOCATE: begin  
@@ -192,7 +192,7 @@ always_comb begin
             end else begin                 
                 if (&evict_index_ff) begin  // evict_index_ff == DCACHE_MAX_IDX
                     dcache_state_next = DCACHE_FLUSH_DONE;
-                //    dcache2lsummu_ack = 1'b1;
+                //    dcache2stb_ack = 1'b1;
                     evict_index_next  = '0;
                 end else begin
                     evict_index_next = evict_index_ff + 1;
@@ -202,7 +202,7 @@ always_comb begin
 
         end
         DCACHE_FLUSH_DONE: begin
-            dcache2lsummu_ack = 1'b1;
+            dcache2stb_ack = 1'b1;
             dcache_state_next = DCACHE_IDLE;
         end
         default: begin
@@ -232,6 +232,6 @@ assign dcache2mem_wr_o     = dcache2mem_wr;
 assign dcache2mem_req_o    = dcache2mem_req;
 assign dcache2mem_kill_o   = dcache2mem_kill;
 
-assign dcache2lsummu_ack_o = dcache2lsummu_ack;
+assign dcache2stb_ack_o = dcache2stb_ack;
   
 endmodule

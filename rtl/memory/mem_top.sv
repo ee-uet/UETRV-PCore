@@ -95,7 +95,6 @@ type_dcache2stb_s                       dcache2stb;
 type_lsummu2stb_s                       lsummu2stb;
 type_stb2lsummu_s                       stb2lsummu;
 logic                                   stb_dmem_sel_o;
-//logic                                   stb2lsummu_stall;
 logic                                   stb2dcache_empty;
 
 // Signal assignments
@@ -222,14 +221,12 @@ store_buffer_top store_buffer_top_module (
     .clk                    (clk),
     .rst_n                  (rst_n),
 
-// LSU --> store_buffer_top
+// LSU/MMU --> store_buffer_top
     .lsummu2stb_i           (lsummu2stb),
     .dmem_sel_i             (dmem_sel),
 
-// store_buffer_top --> LSU
+// store_buffer_top --> LSU/MMU
     .stb2lsummu_o           (stb2lsummu),    
-    //.stb2lsummu_stall       (stb2lsummu_stall),
-
 
 // store_buffer_top --> dcache
     .stb2dcache_o           (stb2dcache),
@@ -246,9 +243,9 @@ wb_dcache_top wb_dcache_top_module(
     .rst_n                  (rst_n),
 
     // LSU/MMU to data cache interface
-    .lsummu2dcache_i        (stb2dcache), // lsummu2dmem
+    .stb2dcache_i           (stb2dcache), // stb2dcache
 
-    .dcache2lsummu_o        (dcache2stb), // dmem2lsummu
+    .dcache2stb_o           (dcache2stb), // dcache2stb
 
     .stb2dcache_empty       (stb2dcache_empty),
 

@@ -79,6 +79,9 @@ parameter DCACHE_TAG_LSB     = DCACHE_ADDR_WIDTH - DCACHE_TAG_BITS;
 
 parameter DCACHE_MAX_IDX     = DCACHE_IDX_BITS'(DCACHE_NO_OF_SETS - 1);
 
+parameter STORE_BUFFER_WIDTH = 4;
+parameter BLEN = STORE_BUFFER_WIDTH;
+
 typedef enum logic [2:0] {
     DCACHE_IDLE, 
     DCACHE_PROCESS_REQ,
@@ -91,7 +94,7 @@ typedef enum logic [2:0] {
 } type_dcache_states_e; 
 
 // Bus interface from LSU to dcache  
-typedef struct packed {                            
+/*typedef struct packed {                            
     logic [DCACHE_ADDR_WIDTH-1:0]    addr;
     logic [DCACHE_DATA_WIDTH-1:0]    w_data;
     logic [3:0]                      sel_byte;  
@@ -103,7 +106,7 @@ typedef struct packed {
 typedef struct packed {                            
     logic [DCACHE_DATA_WIDTH-1:0]    r_data;
     logic                            ack;   
-} type_dcache2lsummu_s;
+} type_dcache2lsummu_s;*/
 
 // Bus interface from STB to dcache
 typedef struct packed {
