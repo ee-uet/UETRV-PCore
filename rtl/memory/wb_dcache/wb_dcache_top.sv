@@ -7,13 +7,14 @@
 // Author: Muhammad Tahir, UET Lahore
 // Date: 11.6.2023
 
-`timescale 1 ns / 100 ps
+// `timescale 1 ns / 100 ps
 
 `ifndef VERILATOR
 `include "../../defines/cache_defs.svh"
 `else
 `include "cache_defs.svh"
 `endif
+
 
 module wb_dcache_top (
     input wire                         clk,
@@ -46,9 +47,16 @@ type_dcache2lsummu_s               dcache2lsummu;
 type_mem2dcache_s                  mem2dcache;
 type_dcache2mem_s                  dcache2mem;
 
+//victim cache signals
+logic                             dcache_valid;
+logic                             victim_hit;
+logic                             victim2dcache_wr_en;
+logic                             victim_wr_en;
+logic                             dcache_victim_sel;
+logic                             victim_en;
+
 assign lsummu2dcache = lsummu2dcache_i;
 assign mem2dcache    = mem2dcache_i;
-
 
 wb_dcache_controller wb_dcache_controller_module(
   .clk                     (clk), 
@@ -76,7 +84,15 @@ wb_dcache_controller wb_dcache_controller_module(
   .dcache2mem_req_o        (dcache2mem.req),
   .dcache2mem_wr_o         (dcache2mem.w_en),
   .dcache2mem_kill_o       (dcache2mem_kill_o),
-  .dmem_sel_i              (dmem_sel_i)
+  .dmem_sel_i              (dmem_sel_i),
+
+  //victim cache to/from dcache
+  .victim_wr_en_o          (victim_wr_en),
+  .victim_en_o             (victim_en),  
+  .victim2dcache_wr_en_o   (victim2dcache_wr_en),
+  .dcache_victim_sel_o     (dcache_victim_sel),
+  .victim_hit_i            (victim_hit),
+  .dcache_valid_i          (dcache_valid)
 );  
 
 wb_dcache_datapath wb_dcache_datapath_module(
@@ -103,12 +119,18 @@ wb_dcache_datapath wb_dcache_datapath_module(
   // Data memory <---> data cache signals
   .mem2dcache_data_i       (mem2dcache.r_data),
   .dcache2mem_data_o       (dcache2mem.w_data),
-  .dcache2mem_addr_o       (dcache2mem.addr)
-);
+  .dcache2mem_addr_o       (dcache2mem.addr),
 
+  //victim cache to/from dcache
+  .victim_hit_o            (victim_hit),
+  .dcache_valid_o          (dcache_valid),
+  .victim_wr_en_i          (victim_wr_en),
+  .victim_en_i             (victim_en), 
+  .victim2dcache_wr_en_i   (victim2dcache_wr_en),
+  .dcache_victim_sel_i     (dcache_victim_sel)
+);
 
 assign dcache2lsummu_o = dcache2lsummu;
 assign dcache2mem_o    = dcache2mem;
-
 
 endmodule
