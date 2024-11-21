@@ -7,7 +7,8 @@
 // Author: Muhammad Tahir, UET Lahore
 // Date: 11.6.2023
 
-`timescale 1 ns / 100 ps
+// `timescale 1 ns / 100 ps
+
 
 `ifndef VERILATOR
 `include "../../defines/cache_defs.svh"
@@ -40,10 +41,17 @@ module wb_dcache_controller (
     output logic                          dcache2mem_req_o,
     output logic                          dcache2mem_wr_o,
     output logic                          dcache2mem_kill_o,
-    input wire                            dmem_sel_i
+    input wire                            dmem_sel_i,
+
+    //victim cache to dcache interface
+    input  logic                          dcache_valid_i,
+    input  logic                          victim_hit_i,
+    output logic                          victim2dcache_wr_en_o,
+    output logic                          victim_wr_en_o,
+    output logic                          dcache_victim_sel_o 
+
 );
          
-
 type_dcache_states_e                  dcache_state_ff, dcache_state_next;
 logic [DCACHE_IDX_BITS-1:0]           evict_index_next, evict_index_ff;
 
@@ -61,7 +69,6 @@ logic                                 cache_line_wr;
 logic                                 cache_line_clean;
 logic                                 dcache2mem_kill;
 logic                                 lsummu2dcache_req_ff, dmem_sel_ff;
-
 
 assign dcache_hit   = lsummu2dcache_req_ff & dmem_sel_ff & cache_hit_i;
 assign dcache_miss  = lsummu2dcache_req_ff & dmem_sel_ff & ~cache_hit_i ;
@@ -89,19 +96,21 @@ always_ff @(posedge clk) begin
       evict_index_ff  <= evict_index_next;
   end
 end
-
  
 always_comb begin
-    dcache_state_next = dcache_state_ff;
-    evict_index_next  = evict_index_ff;
-    dcache2lsummu_ack = 1'b0;
-    dcache2mem_req    = 1'b0;
-    dcache2mem_wr     = 1'b0;
-    cache_wrb_req     = 1'b0;
-    cache_line_wr     = 1'b0;
-    cache_line_clean  = 1'b0;
-    cache_wr          = 1'b0;
-    dcache2mem_kill   = 1'b0;
+    dcache_state_next      = dcache_state_ff;
+    evict_index_next       = evict_index_ff;
+    dcache2lsummu_ack      = 1'b0;
+    dcache2mem_req         = 1'b0;
+    dcache2mem_wr          = 1'b0;
+    cache_wrb_req          = 1'b0;
+    cache_line_wr          = 1'b0;
+    cache_line_clean       = 1'b0;
+    cache_wr               = 1'b0;
+    dcache2mem_kill        = 1'b0;
+    victim2dcache_wr_en_o  = 1'b0;
+    victim_wr_en_o      = 1'b0;
+    dcache_victim_sel_o   = 1'b0;
     
     unique case (dcache_state_ff)
         DCACHE_IDLE: begin
@@ -115,58 +124,109 @@ always_comb begin
                 evict_index_next  = '0;
             end
         end
+
         DCACHE_PROCESS_REQ: begin  
-            // Process the cache data request  
 
             if (dcache_hit) begin 
-            // In case of hit, perform the cache read/write operation   
-                       
                 if (lsummu2dcache_wr_ff) begin
-                    cache_wr      = 1'b1;
-                    dcache_state_next = DCACHE_IDLE; 
+                    cache_wr          = 1'b1;
                     dcache2lsummu_ack = 1'b1;  
+                    dcache_state_next = DCACHE_IDLE; 
                 end else begin
                     dcache2lsummu_ack = 1'b1;  
                     dcache_state_next = DCACHE_IDLE; 
                 end
-               
-            end else if (dcache_miss) begin           
-               if (dcache_evict) begin
+            end 
+
+            else if (victim_hit_i) begin
+                if (lsummu2dcache_wr_ff) begin
+                    if (dcache_evict && dcache_valid_i && !dcache_hit) begin
+
+                        victim_wr_en_o   = 1'b1;                    
+                        dcache2mem_req    = 1'b1;
+                        dcache2mem_wr     = 1'b1;
+                        cache_wrb_req     = 1'b1;
+                        dcache_state_next = DCACHE_WRITE_BACK;
+
+                    end 
+
+                    else begin
+                        victim2dcache_wr_en_o = 1'b1;
+                        dcache_state_next = DCACHE_VICTIM;                                    
+                    end
+                end
+
+                else if (!lsummu2dcache_wr_ff) begin
+                    dcache_victim_sel_o = 1'b1;
+                    victim2dcache_wr_en_o  = 1'b0;
+                    dcache2lsummu_ack    = 1'b1;  
+                    dcache_state_next    = DCACHE_IDLE;                
+                end
+            
+            end 
+
+            else begin           
+                if (dcache_evict) begin
+                    if (dcache_valid_i) begin
+                        victim_wr_en_o   = 1'b1;
+                    end
+                    else begin
+                        victim_wr_en_o   = 1'b0;
+                    end
                     dcache_state_next = DCACHE_WRITE_BACK;
                     dcache2mem_req    = 1'b1;
                     dcache2mem_wr     = 1'b1;
                     cache_wrb_req     = 1'b1;
-                end else begin 
+                end 
+                else begin 
+                    if (dcache_valid_i) begin
+                        victim_wr_en_o   = 1'b1;
+                    end
+                    else begin
+                      victim_wr_en_o   = 1'b0;
+                    end
                     dcache_state_next = DCACHE_ALLOCATE;
                     dcache2mem_req    = 1'b1;
                 end
             end           
         end
-        DCACHE_WRITE: begin
-             dcache_state_next = DCACHE_IDLE; 
-             dcache2lsummu_ack = 1'b1;  
+
+        DCACHE_VICTIM: begin 
+            cache_wr          = 1'b1;
+            // cache_line_wr = 1;
+            dcache2lsummu_ack = 1'b1;  
+            dcache_state_next = DCACHE_IDLE; 
+
         end
 
-        DCACHE_ALLOCATE: begin  
-            // Response from main memory is received          
+        DCACHE_ALLOCATE: begin             
             if (mem2dcache_ack_i) begin
                 dcache_state_next = DCACHE_PROCESS_REQ;
                 cache_line_wr     = 1'b1;
             end else begin
-               dcache_state_next = DCACHE_ALLOCATE;
-               dcache2mem_req    = 1'b1;
+               dcache_state_next  = DCACHE_ALLOCATE;
+               dcache2mem_req     = 1'b1;
             end
         end
+
         DCACHE_WRITE_BACK: begin  
-            // Response from main memory is received          
             if (mem2dcache_ack_i) begin  
-              //  dcache_state_next = DCACHE_ALLOCATE;
                 if (dcache_flush_i) begin
                     dcache_state_next = DCACHE_FLUSH_NEXT; // DCACHE_FLUSH;
                     cache_line_clean  = 1'b1;
                     if (~(&evict_index_ff)) begin  // evict_index_ff < DCACHE_MAX_IDX
                         evict_index_next  = evict_index_ff + 1;
                     end
+                end
+                
+                else if (victim_hit_i) begin
+                    
+                    dcache_state_next = DCACHE_PROCESS_REQ; 
+                    cache_line_clean    = 1'b1;
+                    
+                    // dcache_state_next = DCACHE_VICTIM; 
+                    // victim2dcache_wr_en_o = 1'b1;
+
                 end else begin
                     dcache_state_next = DCACHE_ALLOCATE;
                     dcache2mem_req    = 1'b1;
@@ -178,6 +238,7 @@ always_comb begin
                 cache_wrb_req     = 1'b1;
             end
         end
+
         DCACHE_FLUSH_NEXT: begin  
             // Ack from cache, data is written simultaneously          
             dcache_state_next = DCACHE_FLUSH;     
