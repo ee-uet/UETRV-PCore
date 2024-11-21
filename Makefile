@@ -11,10 +11,10 @@ ver-library ?= ver_work
 defines     ?= 
 
 # default command line arguments
-imem_uart  ?= sdk/example-uart/build/hello.hex
+imem_uart  ?= sdk/example-uart/build/pcore.hex
 imem_linux ?= sdk/example-linux/imem.txt
-max_cycles ?= 100000000
-vcd        ?= 0
+max_cycles ?= 100000
+vcd        ?= 1
 
 uartbuild_root := sdk/example-uart/build/
 
