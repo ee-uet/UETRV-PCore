@@ -80,7 +80,7 @@ parameter DCACHE_TAG_LSB     = DCACHE_ADDR_WIDTH - DCACHE_TAG_BITS;
 parameter DCACHE_MAX_IDX     = DCACHE_IDX_BITS'(DCACHE_NO_OF_SETS - 1);
 
 //victim cache
-parameter VICTIM_NO_OF_SETS   =  4;           
+parameter VICTIM_NO_OF_SETS   = 4;           
 parameter VICTIM_ADDR_BITS    = DCACHE_ADDR_WIDTH - DCACHE_OFFSET_BITS;
 parameter VICTIM_COUNTER_BITS = $clog2(VICTIM_NO_OF_SETS);
 

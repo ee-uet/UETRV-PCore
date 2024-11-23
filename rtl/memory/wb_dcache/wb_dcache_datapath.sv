@@ -67,7 +67,8 @@ logic                                dcache_flush;
 
 logic [DCACHE_LINE_WIDTH-1:0]        victim2cache_data;     
 logic [VICTIM_ADDR_BITS-1 :0]        victim2cache_addr;      
-logic [VICTIM_ADDR_BITS-1 :0]        cache2victim_addr;      
+logic [VICTIM_ADDR_BITS-1 :0]        cache2victim_addr_r;      
+logic [VICTIM_ADDR_BITS-1 :0]        cache2victim_addr_w;      
 
 assign dcache_flush         = dcache_flush_i;
 assign evict_index          = evict_index_i;
@@ -79,8 +80,8 @@ assign addr_offset          = lsummu2dcache_addr_i[DCACHE_OFFSET_BITS-1:2];
 assign addr_index           = dcache_flush ? evict_index : cache_wr_i ? addr_index_ff :
                               lsummu2dcache_addr_i[DCACHE_TAG_LSB-1:DCACHE_OFFSET_BITS];
 
-assign cache2victim_addr    = victim_wr_en_i ? {cache_tag_read.tag[DCACHE_TAG_BITS-1:0],addr_index}:
-                              lsummu2dcache_addr_i[DCACHE_ADDR_WIDTH-1:DCACHE_OFFSET_BITS];
+assign cache2victim_addr_r    = lsummu2dcache_addr_i[DCACHE_ADDR_WIDTH-1:DCACHE_OFFSET_BITS];
+assign cache2victim_addr_w    = victim_wr_en_i ? {cache_tag_read.tag[DCACHE_TAG_BITS-1:0],addr_index}: '0 ;
 
 always_ff@(posedge clk) begin
    if(!rst_n) begin
@@ -225,7 +226,8 @@ victim_cache victim_cache_module (
     .flush_i                  (dcache_flush),
 
     .dcache2victim_data_i     (cache_line_read),
-    .dcache2victim_addr_i     (cache2victim_addr),
+    .dcache2victim_addr_w_i   (cache2victim_addr_w),
+    .dcache2victim_addr_r_i   (cache2victim_addr_r),
     .victim_wr_en_i           (victim_wr_en_i),
 
     .victim2dcache_data_o     (victim2cache_data),

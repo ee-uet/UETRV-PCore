@@ -50,7 +50,7 @@ genvar i;
         end
     end
 endgenerate
-
+/*
 // make valid 0 at reset
 generate
 genvar j;
@@ -63,6 +63,6 @@ for (j=0; j<DCACHE_NO_OF_SETS; j++) begin
     end
 end
 endgenerate
-
+*/
 
 endmodule 
