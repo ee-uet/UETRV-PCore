@@ -71,6 +71,11 @@ logic [`XLEN-1:0]                    instr_word;
 logic                                if_stall;
 logic                                pc_misaligned;
 
+////////////////////////////////////////////////////////////////
+logic [`XLEN-1:0]                    pc_new_jal; 
+logic [`XLEN-1:0]                    jal_imm;            
+logic                                is_jal;
+
 
 assign icache2if = icache2if_i;
 assign mmu2if    = mmu2if_i;
@@ -118,11 +123,6 @@ always_comb begin
         default                 : begin       end
     endcase
 end
-
-////////////////////////////////////////////////////////////////
-logic [`XLEN-1:0]                    pc_new_jal; 
-logic [`XLEN-1:0]                    jal_imm;            
-logic                                is_jal;
 
 assign jal_imm = {{12{instr_word[31]}}, instr_word[19:12], instr_word[20], instr_word[30:21], 1'b0};
 //assign pc_new_jal = pc_ff + jal_imm;

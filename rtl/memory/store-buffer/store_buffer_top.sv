@@ -8,7 +8,7 @@
 // Date: 15.11.2024
 
 `ifndef VERILATOR
-`include "../defines/cache_defs.svh"
+`include "../../defines/cache_defs.svh"
 `else
 `include "cache_defs.svh"
 `endif
@@ -106,7 +106,7 @@ module store_buffer_top (
             end
             1'b0: begin
                 stb2lsummu_ack      = stb_ack;
-                stb2lsummu_rdata    = '0;
+    	        stb2lsummu_rdata    = '0;
 
                 stb2dcache_addr     = stb_addr;
                 stb2dcache_wdata    = stb_wdata;
@@ -118,7 +118,7 @@ module store_buffer_top (
             end
             default: begin
                 stb2lsummu_ack      = stb_ack;
-                stb2lsummu_rdata    = '0;
+    	        stb2lsummu_rdata    = '0;
 
                 stb2dcache_addr     = stb_addr;
                 stb2dcache_wdata    = stb_wdata;
@@ -130,7 +130,7 @@ module store_buffer_top (
             end
             endcase
     end
-
+    
 /* =========================================== Store Buffer Datapath ============================================= */
     store_buffer_datapath u_store_buffer (
         .clk                    (clk),

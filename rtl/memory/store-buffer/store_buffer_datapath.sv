@@ -8,7 +8,7 @@
 // Date: 15.11.2024
 
 `ifndef VERILATOR
-`include "../defines/cache_defs.svh"
+`include "../../defines/cache_defs.svh"
 `else
 `include "cache_defs.svh"
 `endif
@@ -49,13 +49,13 @@ module store_buffer_datapath (
     logic [$clog2(BLEN)-1:0]  wr_index, wr_index_comp, wr_index_add;
 
     // counter for write operaitons
-    assign wr_index_add = (wr_index == BLEN-1) ? '0: (wr_index + 1);
+    //assign wr_index_add = (wr_index == BLEN-1) ? '0: (wr_index + 1);
     always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             wr_index <= 0;
         end
         else if (wr_en) begin
-            wr_index <= wr_index_add;
+            wr_index <= (wr_index + 1);
         end
         else begin
             wr_index <= wr_index;
@@ -63,13 +63,13 @@ module store_buffer_datapath (
     end
 
     // counter for read operaitons
-    assign rd_index_add = (rd_index == BLEN-1) ? '0: (rd_index + 1);
+    //assign rd_index_add = (rd_index == BLEN-1) ? '0: (rd_index + 1);
     always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             rd_index <= 0;
         end
         else if (rd_en) begin
-            rd_index <= rd_index_add;
+            rd_index <= (rd_index + 1);
         end
         else begin
             rd_index <= rd_index;
@@ -110,7 +110,7 @@ module store_buffer_datapath (
 
     assign wr_index_comp = (wr_index == BLEN-1) ? '0: wr_index + 1;
     
-    assign stb_full = (rd_index == (wr_index_comp)) ? 1'b1 : 1'b0;
+    assign stb_full = (rd_index == wr_index_comp) ? 1'b1 : 1'b0;
     assign stb_empty = (rd_index == wr_index) ? 1'b1 : 1'b0;
 
 endmodule
