@@ -56,7 +56,8 @@ end
 initial 
 begin
     // Reading the contents of example imem.txt file to memory variable
-     $readmemh("imem.txt", dualport_memory);  
+    // $readmemh("imem.txt", dualport_memory);
+    $readmemh("sdk/example-uart/build/pcore.hex", dualport_memory);  
 end
 //`endif
 `else

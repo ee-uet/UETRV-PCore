@@ -13,7 +13,7 @@
 
 `ifndef COMPLIANCE
 //`define DRAM                         1
-//`define RTL_SIMULATION               1 
+`define RTL_SIMULATION               1 
 `endif
 
 `define ICACHE_SETS                  512
@@ -42,7 +42,7 @@
 `define BMEM_ADDR_MATCH              20'h00001
 
 // Boot mode selection
-`define LINUX_BOOT                   1
+//`define LINUX_BOOT                   1
 
 `ifndef COMPLIANCE
 `ifdef LINUX_BOOT

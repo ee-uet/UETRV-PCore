@@ -35,6 +35,9 @@ module lsu_stb_controller (
     } state_t;
 
     state_t current_state, next_state;
+    logic st_req;
+
+    assign st_req = dmem_sel_i & lsummu2stb_w_en & lsummu2stb_req;
 
     // State transition logic (sequential)
     always_ff @(posedge clk or negedge rst_n) begin
@@ -53,13 +56,13 @@ module lsu_stb_controller (
 
         case (current_state)
             SB_IDLE: begin
-                if (dmem_sel_i && lsummu2stb_w_en && lsummu2stb_req && !stb_full) begin
+                if (st_req & !stb_full) begin
                     wr_en      = 1'b1;  // Enable write to buffer
                     stb_stall  = 1'b0;
                     stb_ack    = 1'b0;
                     next_state = SB_WRITE;
                 end
-                else if (dmem_sel_i && lsummu2stb_w_en && lsummu2stb_req && stb_full) begin
+                else if (st_req & stb_full) begin
                     stb_stall  = 1'b1;
                     wr_en      = 1'b0;
                     stb_ack    = 1'b0;
@@ -74,12 +77,12 @@ module lsu_stb_controller (
 
             SB_WRITE: begin
                 stb_ack   = 1'b1;
-                if (dmem_sel_i && lsummu2stb_w_en && lsummu2stb_req && !stb_full)begin
+                if (st_req & !stb_full)begin
                     wr_en       = 1'b1;  // Enable write to buffer
                     stb_stall   = 1'b0;
                     next_state  = SB_WRITE;
                 end
-                else if (dmem_sel_i && lsummu2stb_w_en && lsummu2stb_req && stb_full)begin
+                else if (st_req & stb_full)begin
                     wr_en       = 1'b0;
                     stb_stall   = 1'b1;
                     next_state  = SB_FULL; 
@@ -98,13 +101,13 @@ module lsu_stb_controller (
 
             SB_FULL: begin
                 stb_stall = 1'b1;  // Stall signal if buffer is stb_full
-                if (dmem_sel_i && lsummu2stb_w_en && lsummu2stb_req && !stb_full) begin
+                if (st_req & !stb_full) begin
                     wr_en      = 1'b1;
                     stb_stall  = 1'b0;
                     stb_ack    = 1'b0;
                     next_state = SB_WRITE;  // Go to idle once buffer is not stb_full
                 end
-                else if(dmem_sel_i && lsummu2stb_w_en && lsummu2stb_req && stb_full) begin
+                else if(st_req & stb_full) begin
                     wr_en      = 1'b0;
                     stb_ack    = 1'b0;
                     next_state = SB_FULL;
