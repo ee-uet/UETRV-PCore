@@ -72,7 +72,7 @@ sim-verilate-linux: verilate
 	@echo
 	$(ver-library)/Vpcore_tb +imem=$(imem_linux) +max_cycles=300000000 +vcd=$(vcd)
 
-run-freertos:
+run-freertos: verilate
 	@echo
 	@echo "===== Starting FreeRTOS Deployment ====="
 	@echo
