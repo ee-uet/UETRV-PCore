@@ -13,7 +13,7 @@ defines     ?=
 # default command line arguments
 imem_uart  ?= sdk/example-uart/build/hello.hex
 imem_linux ?= sdk/example-linux/imem.txt
-max_cycles ?= 100000000
+max_cycles ?= 500000000
 vcd        ?= 0
 
 uartbuild_root := sdk/example-uart/build/
@@ -72,6 +72,26 @@ sim-verilate-linux: verilate
 	@echo
 	$(ver-library)/Vpcore_tb +imem=$(imem_linux) +max_cycles=300000000 +vcd=$(vcd)
 
+run-freertos:
+	@echo
+	@echo "===== Starting FreeRTOS Deployment ====="
+	@echo
+	@echo "Initiating the process for task scheduling and generating the RTOS hex file..."
+	cd FreeRTOS/Demo && make
+	@echo
+	@echo "Completed the process of generating the RTOS hex file..."
+	@echo "Copying RTOSDemo.hex to the required directory..."
+	cp FreeRTOS/Demo/build/RTOSDemo.hex sdk/example-uart/build/hello.hex
+	@echo "RTOSDemo.hex successfully copied to sdk/example-uart/build/hello.hex"
+	@echo
+	@echo "===== Running Verilator Simulation with FreeRTOS ====="
+	@echo "Output is captured in uart_logdata.log"
+	$(ver-library)/Vpcore_tb +imem=$(imem_uart) +max_cycles=$(max_cycles) +vcd=$(vcd)
+	@echo
+	@echo "===== FreeRTOS Deployment and Simulation Completed ====="
+	@echo
+
+ 
 clean-all:
 	rm -rf ver_work/ *.log *.vcd \
 	verif/*work/
