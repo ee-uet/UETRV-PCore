@@ -8,9 +8,9 @@
 // Date: 15.11.2024
 
 `ifndef VERILATOR
-`include "../../defines/cache_defs.svh"
+`include "../../defines/store_buffer_defs.svh"
 `else
-`include "cache_defs.svh"
+`include "store_buffer_defs.svh"
 `endif
 
 module store_buffer_datapath (
@@ -21,7 +21,9 @@ module store_buffer_datapath (
     input  logic [DCACHE_ADDR_WIDTH-1:0]    lsummu2stb_addr,        // Address input from LSU/MMU
     input  logic [DCACHE_DATA_WIDTH-1:0]    lsummu2stb_wdata,       // Data input from LSU/MMU
     input  logic [3:0]                      lsummu2stb_sel_byte,    // Byte selection input from LSU/MMU
-    
+    //input logic stb_write,
+    //input logic stb_request,
+
 // lsu_stb_controller --> store_buffer_datapath
     input  logic                            wr_en,              // Write enable signal
 
@@ -33,7 +35,6 @@ module store_buffer_datapath (
     output logic [DCACHE_ADDR_WIDTH-1:0]    stb_addr,        // Address output to Cache
     output logic [DCACHE_DATA_WIDTH-1:0]    stb_wdata,        // Data output to Cache
     output logic [3:0]                      stb_sel_byte,    // Byte selection output to Cache
-
 // store_buffer_datapath --> store buffer controllers
     output logic                            stb_full,               // Full signal
     output logic                            stb_empty               // Empty signal
@@ -43,27 +44,24 @@ module store_buffer_datapath (
     logic [DCACHE_ADDR_WIDTH-1:0]     addr_buf     [BLEN-1:0];
     logic [DCACHE_DATA_WIDTH-1:0]     data_buf     [BLEN-1:0];
     logic [3:0]                       sel_byte_buf [BLEN-1:0];
-
+    
     // Buffer Counter (to track read and write index)
-    logic [$clog2(BLEN)-1:0]  rd_index, rd_index_add;
-    logic [$clog2(BLEN)-1:0]  wr_index, wr_index_comp, wr_index_add;
+    logic [$clog2(BLEN)-1:0]  rd_index;
+    logic [$clog2(BLEN)-1:0]  wr_index, wr_index_comp;
 
     // counter for write operaitons
-    //assign wr_index_add = (wr_index == BLEN-1) ? '0: (wr_index + 1);
     always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             wr_index <= 0;
         end
         else if (wr_en) begin
             wr_index <= (wr_index + 1);
-        end
-        else begin
+        end else begin
             wr_index <= wr_index;
         end
     end
 
     // counter for read operaitons
-    //assign rd_index_add = (rd_index == BLEN-1) ? '0: (rd_index + 1);
     always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             rd_index <= 0;
@@ -79,20 +77,16 @@ module store_buffer_datapath (
     // Write/Read logic
     always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
-            addr_buf     <= addr_buf    ;
-            data_buf     <= data_buf    ;
-            sel_byte_buf <= sel_byte_buf;
-        end 
-        else if (wr_en) begin
-            // Write new values to buffer at wr_index
-            addr_buf     [wr_index] <= lsummu2stb_addr;
-            data_buf     [wr_index] <= lsummu2stb_wdata;
-            sel_byte_buf [wr_index] <= lsummu2stb_sel_byte;
-        end     
-        else begin
-            addr_buf     [rd_index] <= addr_buf     [rd_index];
-            data_buf     [rd_index] <= data_buf     [rd_index];
-            sel_byte_buf [rd_index] <= sel_byte_buf [rd_index];
+            addr_buf     [wr_index] <= addr_buf     [wr_index];
+            data_buf     [wr_index] <= data_buf     [wr_index];
+            sel_byte_buf [wr_index] <= sel_byte_buf [wr_index];
+        end else begin
+                if (wr_en) begin
+                    // Write new values to buffer at wr_index
+                    addr_buf     [wr_index] <= lsummu2stb_addr; //addr_ff;
+                    data_buf     [wr_index] <= lsummu2stb_wdata; //data_ff;
+                    sel_byte_buf [wr_index] <= lsummu2stb_sel_byte; //sel_byte_ff;
+                end
         end
     end
 
@@ -110,7 +104,9 @@ module store_buffer_datapath (
 
     assign wr_index_comp = (wr_index == BLEN-1) ? '0: wr_index + 1;
     
-    assign stb_full = (rd_index == wr_index_comp) ? 1'b1 : 1'b0;
-    assign stb_empty = (rd_index == wr_index) ? 1'b1 : 1'b0;
+    assign stb_full  = (wr_index_comp == rd_index) ? 1'b1 : 1'b0;
+    assign stb_empty = (wr_index == rd_index) ? 1'b1 : 1'b0;
+    //assign stb_empty = 1;
 
 endmodule
+

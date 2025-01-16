@@ -12,7 +12,6 @@ module stb_cache_controller (
     input  logic        rst_n,
     
     // store_buffer_datapath --> stb_cache_controller    
-    input  logic        stb_full,           // Store buffer full flag
     input  logic        stb_empty,          // Store buffer empty flag
     
     // dcache --> stb_cache_controller
@@ -28,19 +27,24 @@ module stb_cache_controller (
     output logic        dm_sel
 );
 
-    typedef enum logic [1:0] {
-        IDLE             = 2'b00,
-        SB_CACHE_WRITE   = 2'b01
+    typedef enum logic [1:0]{
+        IDLE             = '0,
+        SB_CACHE_WRITE   = 1,
+        SB_READ = 2
     } state_t;
 
     state_t current_state, next_state;
+    logic empty_ff;
 
     // State transition logic (sequential)
     always_ff @(posedge clk or negedge rst_n) begin
-        if (!rst_n)
+        if (!rst_n) begin
             current_state <= IDLE;
-        else
+            empty_ff <= '0; 
+        end else begin
             current_state <= next_state;
+            empty_ff <= stb_empty;
+        end
     end
 
     // Next state logic (combinational)     
@@ -52,11 +56,10 @@ module stb_cache_controller (
             stb_w_en    = 1'b0;
             rd_en       = 1'b0;
             dm_sel      = 1'b0;
-            next_state  = current_state;
 
             case (current_state)
                 IDLE: begin
-                    if (!stb_empty || stb_full) begin
+                    if (!stb_empty) begin
                         stb_req     = 1'b1;   // Request cache write
                         rd_sel      = 1'b1;   // Read selection for store buffer
                         stb_w_en    = 1'b1;
@@ -64,7 +67,7 @@ module stb_cache_controller (
                         rd_en       = 1'b0;
                         next_state  = SB_CACHE_WRITE;
                     end
-                    else if(stb_empty) begin
+                    else begin
                         rd_sel      = 1'b0;
                         stb_req     = 1'b0;
                         stb_w_en    = 1'b0;

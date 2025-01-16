@@ -13,10 +13,12 @@
 `include "../defines/mmu_defs.svh"
 `include "../defines/cache_defs.svh"
 `include "../defines/ddr_defs.svh"
+`include "../defines/store_buffer_defs.svh"
 `else
 `include "mmu_defs.svh"
 `include "cache_defs.svh"
 `include "ddr_defs.svh"
+`include "store_buffer_defs.svh"
 `endif
 
 module mem_top (
@@ -89,13 +91,20 @@ logic                                   timeout_flag;
 logic [5:0]                             timeout_next, timeout_ff; 
 
 // Store Buffer related signals
-type_stb2dcache_s                       stb2dcache;
-type_dcache2stb_s                       dcache2stb;
+type_stb2dcache_s                       stb2dcache, lsustb2dcache_mux;
+type_dcache2stb_s                       dcache2stb, dcache2lsustb_mux;
 
 type_lsummu2stb_s                       lsummu2stb;
 type_stb2lsummu_s                       stb2lsummu;
 logic                                   stb_dmem_sel_o;
 logic                                   stb2dcache_empty;
+logic                                   stb_bypass;
+
+logic mmu2stb_sel, dbus2stb_sel, dbus_sel;
+logic stb2dbus_sel, stb2mmu_sel;
+logic mmu_sel;
+
+assign mmu_sel = ~dmem_sel & mmu2dcache.r_req & ~mmu2dcache.flush_req;
 
 // Signal assignments
 assign mmu2dcache = mmu2dcache_i;
@@ -149,7 +158,7 @@ always_ff @(posedge clk) begin
     end
 end
 
-always_comb begin
+/*always_comb begin
 lsummu2stb    = '0;
 dcache2dbus   = '0;
 dcache2mmu    = '0;
@@ -214,7 +223,94 @@ dcache_kill_req = '0;
       default: begin     end
    endcase
  
+end*/ 
+
+always_comb begin
+mmu2stb_sel  = '0;
+dbus2stb_sel = '0;
+dbus_sel     = '0;
+stb2dbus_sel = '0;
+stb2mmu_sel  = '0;
+    case (cache_arbiter_state_ff)
+
+       DCACHE_ARBITER_IDLE: begin
+            if (dmem_sel) begin
+                dbus2stb_sel = 1'b1;
+                dbus_sel     = 1'b1;
+                cache_arbiter_state_next = DCACHE_ARBITER_LSU;
+           end else if (mmu_sel) begin
+                mmu2stb_sel = 1'b1;
+                cache_arbiter_state_next = DCACHE_ARBITER_MMU;
+           end
+       end
+
+       DCACHE_ARBITER_LSU: begin
+           if (stb2lsummu.ack) begin
+                stb2dbus_sel = 1'b1;
+                cache_arbiter_state_next = DCACHE_ARBITER_IDLE;
+           end else begin
+                cache_arbiter_state_next = DCACHE_ARBITER_LSU;
+                dbus2stb_sel = 1'b1;
+                dbus_sel     = 1'b1;
+           end 
+
+       end
+
+       DCACHE_ARBITER_MMU: begin
+           if (mmu2dcache.flush_req) begin 
+                cache_arbiter_state_next = DCACHE_ARBITER_IDLE;
+                dcache_kill_req = 1'b1;
+           end else if (stb2lsummu.ack) begin
+                stb2mmu_sel = 1'b1;
+                cache_arbiter_state_next = DCACHE_ARBITER_IDLE;
+           end else begin
+                cache_arbiter_state_next = DCACHE_ARBITER_MMU;
+                mmu2stb_sel = 1'b1;
+           end 
+       end
+
+      default: begin 
+            cache_arbiter_state_next = DCACHE_ARBITER_IDLE;
+        end
+   endcase
 end 
+
+always_comb begin // lsummu2stb
+    lsummu2stb = '0;
+    if (dbus_sel & dbus2stb_sel) begin
+        lsummu2stb.addr     = dbus2peri.addr;
+        lsummu2stb.w_data   = dbus2peri.w_data;
+        lsummu2stb.sel_byte = dbus2peri.sel_byte;
+        lsummu2stb.w_en     = dbus2peri.w_en;
+        lsummu2stb.req      = dbus2peri.req;
+    end else if (mmu2stb_sel) begin
+        lsummu2stb.addr     = mmu2dcache.paddr;
+        lsummu2stb.w_data   = '0;
+        lsummu2stb.sel_byte = '0;
+        lsummu2stb.w_en     = '0;
+        lsummu2stb.req      = 1'b1;
+    end
+end // lsummu2stb
+
+always_comb begin // stb2dbus
+    dcache2dbus.ack    = '0;
+    if (stb2dbus_sel) begin
+        dcache2dbus.r_data = stb2lsummu.r_data;
+        dcache2dbus.ack    = 1'b1;
+    end
+end // stb2dbus
+
+always_comb begin // stb2mmu
+    dcache2mmu = '0;
+    if (stb2mmu_sel) begin
+        dcache2mmu.r_data  = stb2lsummu.r_data;
+        dcache2mmu.r_valid = 1'b1;
+    end
+end // stb2mmu
+
+//assign stb_bypass = ((lsummu2stb.req & !lsummu2stb.w_en) | (!lsummu2stb.req & !lsummu2stb.w_en)) & stb2dcache_empty ;
+
+//assign dcache2lsustb_mux = (stb_bypass)? stb2lsummu : dcache2stb;
 
 //========================== Store Buffer top module ===========================//
 store_buffer_top store_buffer_top_module (
@@ -236,6 +332,8 @@ store_buffer_top store_buffer_top_module (
 // dcache --> store_buffer_top
     .dcache2stb_i           (dcache2stb)
 );
+
+//assign lsustb2dcache_mux = (stb_bypass)? stb2dcache : lsummu2stb;
 
 //========================== Data cache top module ===========================//
 wb_dcache_top wb_dcache_top_module(

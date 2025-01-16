@@ -79,9 +79,6 @@ parameter DCACHE_TAG_LSB     = DCACHE_ADDR_WIDTH - DCACHE_TAG_BITS;
 
 parameter DCACHE_MAX_IDX     = DCACHE_IDX_BITS'(DCACHE_NO_OF_SETS - 1);
 
-parameter STORE_BUFFER_WIDTH = 4;
-parameter BLEN = STORE_BUFFER_WIDTH;
-
 typedef enum logic [2:0] {
     DCACHE_IDLE, 
     DCACHE_PROCESS_REQ,
@@ -92,49 +89,6 @@ typedef enum logic [2:0] {
     DCACHE_FLUSH,  
     DCACHE_FLUSH_DONE
 } type_dcache_states_e; 
-
-// Bus interface from LSU to dcache  
-/*typedef struct packed {                            
-    logic [DCACHE_ADDR_WIDTH-1:0]    addr;
-    logic [DCACHE_DATA_WIDTH-1:0]    w_data;
-    logic [3:0]                      sel_byte;  
-    logic                            w_en;  
-    logic                            req; 
-} type_lsummu2dcache_s;
-
-// Bus interface from Icache to IF
-typedef struct packed {                            
-    logic [DCACHE_DATA_WIDTH-1:0]    r_data;
-    logic                            ack;   
-} type_dcache2lsummu_s;*/
-
-// Bus interface from STB to dcache
-typedef struct packed {
-    logic [DCACHE_ADDR_WIDTH-1:0]   addr;
-    logic [DCACHE_DATA_WIDTH-1:0]   w_data;
-    logic [3:0]                     sel_byte;
-    logic                           w_en;
-    logic                           req;
-} type_stb2dcache_s;
-
-typedef struct packed {                            
-    logic [DCACHE_DATA_WIDTH-1:0]   r_data;
-    logic                           ack;
-} type_dcache2stb_s;
-
-// Bus interface from LSU to STB
-typedef struct packed {
-    logic [DCACHE_ADDR_WIDTH-1:0]    addr;
-    logic [DCACHE_DATA_WIDTH-1:0]    w_data;
-    logic [3:0]                      sel_byte;  
-    logic                            w_en;  
-    logic                            req;
-} type_lsummu2stb_s;
-
-typedef struct packed {
-    logic                            ack;                            
-    logic [DCACHE_DATA_WIDTH-1:0]    r_data;
-} type_stb2lsummu_s;
 
 typedef struct packed {
     logic [DCACHE_ADDR_WIDTH-1:0]    addr;
