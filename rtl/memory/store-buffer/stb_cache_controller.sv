@@ -18,7 +18,7 @@ module stb_cache_controller (
     input  logic        dcache2stb_ack,     // Acknowledgement from cache
     
     // stb_cache_controller --> store_buffer_datapath
-    output logic        rd_en,          // enable for read counter
+    output logic        rd_en,              // enable for read counter
     output logic        rd_sel,             // Store buffer mux read selection
 
     // stb_cache_controller --> dcache
@@ -27,23 +27,19 @@ module stb_cache_controller (
     output logic        dm_sel
 );
 
-    typedef enum logic [1:0]{
-        IDLE             = '0,
-        SB_CACHE_WRITE   = 1,
-        SB_READ = 2
+    typedef enum logic {
+        IDLE             = 1'b0,
+        SB_CACHE_WRITE   = 1'b1
     } state_t;
 
     state_t current_state, next_state;
-    logic empty_ff;
 
     // State transition logic (sequential)
     always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             current_state <= IDLE;
-            empty_ff <= '0; 
         end else begin
             current_state <= next_state;
-            empty_ff <= stb_empty;
         end
     end
 
@@ -60,8 +56,8 @@ module stb_cache_controller (
             case (current_state)
                 IDLE: begin
                     if (!stb_empty) begin
-                        stb_req     = 1'b1;   // Request cache write
-                        rd_sel      = 1'b1;   // Read selection for store buffer
+                        stb_req     = 1'b1;
+                        rd_sel      = 1'b1;   
                         stb_w_en    = 1'b1;
                         dm_sel      = 1'b1;
                         rd_en       = 1'b0;

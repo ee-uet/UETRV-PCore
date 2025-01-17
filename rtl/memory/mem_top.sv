@@ -91,14 +91,13 @@ logic                                   timeout_flag;
 logic [5:0]                             timeout_next, timeout_ff; 
 
 // Store Buffer related signals
-type_stb2dcache_s                       stb2dcache, lsustb2dcache_mux;
-type_dcache2stb_s                       dcache2stb, dcache2lsustb_mux;
+type_stb2dcache_s                       stb2dcache;
+type_dcache2stb_s                       dcache2stb;
 
 type_lsummu2stb_s                       lsummu2stb;
 type_stb2lsummu_s                       stb2lsummu;
 logic                                   stb_dmem_sel_o;
 logic                                   stb2dcache_empty;
-logic                                   stb_bypass;
 
 logic mmu2stb_sel, dbus2stb_sel, dbus_sel;
 logic stb2dbus_sel, stb2mmu_sel;
@@ -308,10 +307,6 @@ always_comb begin // stb2mmu
     end
 end // stb2mmu
 
-//assign stb_bypass = ((lsummu2stb.req & !lsummu2stb.w_en) | (!lsummu2stb.req & !lsummu2stb.w_en)) & stb2dcache_empty ;
-
-//assign dcache2lsustb_mux = (stb_bypass)? stb2lsummu : dcache2stb;
-
 //========================== Store Buffer top module ===========================//
 store_buffer_top store_buffer_top_module (
     .clk                    (clk),
@@ -332,8 +327,6 @@ store_buffer_top store_buffer_top_module (
 // dcache --> store_buffer_top
     .dcache2stb_i           (dcache2stb)
 );
-
-//assign lsustb2dcache_mux = (stb_bypass)? stb2dcache : lsummu2stb;
 
 //========================== Data cache top module ===========================//
 wb_dcache_top wb_dcache_top_module(

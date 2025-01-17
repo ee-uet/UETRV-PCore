@@ -35,25 +35,30 @@ module store_buffer_top (
 );
 
 // Local Signals
-    logic                           wr_en, wr_ff;        // Store Buffer Write Enable (from LSU controller)
-    logic                           rd_en;        // Store Buffer Read Enable (from Cache controller)
-    logic                           stb_full;     // Store Buffer full signal
+    logic                           wr_en;                  // Store Buffer Write Enable (from LSU controller)
+    logic                           rd_en;                  // Store Buffer Read Enable (from Cache controller)
+    logic                           stb_full;               // Store Buffer full signal
     logic                           stb_empty, empty_ff;    // Store Buffer empty signal
-    logic                           rd_sel;       // selection for read mux
-    logic                           stb_bypass;   // Buffer Bypass signal
+    logic                           rd_sel;                 // selection for read mux
+    logic                           stb_bypass;             // Buffer Bypass signal
 
-    logic                           stb_ack, stb_acknowledge;
+    logic                           stb_ack;                // store buffer acknowledgement signal for lsu
 
-    logic [DCACHE_ADDR_WIDTH-1:0]   stb_addr;     
-    logic [DCACHE_DATA_WIDTH-1:0]   stb_wdata;    
-    logic [3:0]                     stb_sel_byte;
-    logic                           stb_req;
-    logic                           stb_w_en;
-    logic                           dm_sel;
+    logic [DCACHE_ADDR_WIDTH-1:0]   stb_addr;               // store buffer addr to dcache
+    logic [DCACHE_DATA_WIDTH-1:0]   stb_wdata;              // store buffer wdata to dcache
+    logic [3:0]                     stb_sel_byte;           // store buffer sel_byte to dcache
+    logic                           stb_req;                // store buffer request to dcache
+    logic                           stb_w_en;               // store buffer write enable to dcache
+    logic                           dm_sel;                 // store buffer dmem selection to dcache
+
+    logic                           st_req;                 // store request
+
+    assign st_req = lsummu2stb_i.req & lsummu2stb_i.w_en;
 
 /* =========================================== Bypassing Store buffer for Load Instructions ====================== */ 
     // Store Buffer bypass for load instructions
-    always_ff @(posedge clk or negedge rst_n ) begin : blockName
+    logic wr_ff;
+    always_ff @(posedge clk or negedge rst_n ) begin
         if (!rst_n)begin
             empty_ff <= '0;
             wr_ff    <= '0;
@@ -98,9 +103,10 @@ module store_buffer_top (
         .rst_n                  (rst_n),
 
         // LSU --> lsu_stb_controller
-        .lsummu2stb_w_en        (lsummu2stb_i.w_en),
-        .lsummu2stb_req         (lsummu2stb_i.req),
         .dmem_sel_i             (dmem_sel_i),
+
+        // store buffer top --> lsu_stb_controller
+        .st_req                 (st_req),
 
         // store_buffer_datapath --> lsu_stb_controller 
         .stb_full               (stb_full),  
@@ -134,7 +140,7 @@ module store_buffer_top (
     );
     
 /* =========================================== Output signals ==================================================== */ 
-    assign stb2dcache_empty         = empty_ff;
+    assign stb2dcache_empty         = stb_empty;
     
     always_comb begin
         stb2lsummu_o.ack      = stb_ack;

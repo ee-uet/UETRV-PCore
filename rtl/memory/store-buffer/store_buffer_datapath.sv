@@ -21,20 +21,19 @@ module store_buffer_datapath (
     input  logic [DCACHE_ADDR_WIDTH-1:0]    lsummu2stb_addr,        // Address input from LSU/MMU
     input  logic [DCACHE_DATA_WIDTH-1:0]    lsummu2stb_wdata,       // Data input from LSU/MMU
     input  logic [3:0]                      lsummu2stb_sel_byte,    // Byte selection input from LSU/MMU
-    //input logic stb_write,
-    //input logic stb_request,
 
 // lsu_stb_controller --> store_buffer_datapath
-    input  logic                            wr_en,              // Write enable signal
+    input  logic                            wr_en,                  // Write enable signal
 
 // stb_cache_controller --> store_buffer_datapath
-    input  logic                            rd_en,              // Read enable signal
+    input  logic                            rd_en,                  // Read enable signal
     input  logic                            rd_sel,                 // Read Selection signal
 
 // store_buffer_datapath --> dcache 
-    output logic [DCACHE_ADDR_WIDTH-1:0]    stb_addr,        // Address output to Cache
-    output logic [DCACHE_DATA_WIDTH-1:0]    stb_wdata,        // Data output to Cache
-    output logic [3:0]                      stb_sel_byte,    // Byte selection output to Cache
+    output logic [DCACHE_ADDR_WIDTH-1:0]    stb_addr,               // Address output to Cache
+    output logic [DCACHE_DATA_WIDTH-1:0]    stb_wdata,              // Data output to Cache
+    output logic [3:0]                      stb_sel_byte,           // Byte selection output to Cache
+
 // store_buffer_datapath --> store buffer controllers
     output logic                            stb_full,               // Full signal
     output logic                            stb_empty               // Empty signal
@@ -83,9 +82,9 @@ module store_buffer_datapath (
         end else begin
                 if (wr_en) begin
                     // Write new values to buffer at wr_index
-                    addr_buf     [wr_index] <= lsummu2stb_addr; //addr_ff;
-                    data_buf     [wr_index] <= lsummu2stb_wdata; //data_ff;
-                    sel_byte_buf [wr_index] <= lsummu2stb_sel_byte; //sel_byte_ff;
+                    addr_buf     [wr_index] <= lsummu2stb_addr; 
+                    data_buf     [wr_index] <= lsummu2stb_wdata; 
+                    sel_byte_buf [wr_index] <= lsummu2stb_sel_byte; 
                 end
         end
     end
@@ -106,7 +105,6 @@ module store_buffer_datapath (
     
     assign stb_full  = (wr_index_comp == rd_index) ? 1'b1 : 1'b0;
     assign stb_empty = (wr_index == rd_index) ? 1'b1 : 1'b0;
-    //assign stb_empty = 1;
 
 endmodule
 

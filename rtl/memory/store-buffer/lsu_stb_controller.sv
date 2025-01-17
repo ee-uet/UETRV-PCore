@@ -12,8 +12,7 @@ module lsu_stb_controller (
     input  logic        rst_n,
 
     // LSU --> lsu_stb_controller
-    input  logic        lsummu2stb_w_en,    // Write enable from LSU
-    input  logic        lsummu2stb_req,     // Store request from LSU
+    input  logic        st_req,             // store request from lsu 
     input  logic        dmem_sel_i,         // Input from LSU (data memory select)
 
     // store_buffer_datapath --> lsu_stb_controller 
@@ -29,21 +28,17 @@ module lsu_stb_controller (
     typedef enum logic [1:0] {
         SB_IDLE  = 2'b00,
         SB_WRITE = 2'b01,
-        SB_FULL  = 2'b10,
-        SB_BYPASS = 2'b11
+        SB_FULL  = 2'b10
     } state_t;
 
     state_t current_state, next_state;
-    logic full_ff;
 
     //State transition logic (sequential)
     always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             current_state <= SB_IDLE;
-            full_ff <= '0;
         end else begin
             current_state <= next_state;
-            full_ff <= stb_full;
         end
     end
 
@@ -56,65 +51,50 @@ module lsu_stb_controller (
         case (current_state)
             SB_IDLE: begin
                 stb_ack    = 1'b0;
-                if (lsummu2stb_req ) begin
-                    if (lsummu2stb_w_en) begin
-                        if (full_ff) begin
-                            wr_en      = 1'b0;
-                            next_state = SB_FULL;
-                        end else begin
-                            wr_en      = 1'b1;
-                            next_state = SB_WRITE;
-                        end
-                    end else begin
+                if (st_req) begin
+                    if (stb_full) begin
                         wr_en      = 1'b0;
-                        next_state = SB_IDLE;  
+                        next_state = SB_FULL;
+                    end else begin
+                        wr_en      = 1'b1;
+                        next_state = SB_WRITE;
                     end
                 end else begin
                     wr_en      = 1'b0;
-                    next_state = SB_IDLE;
+                    next_state = SB_IDLE;  
                 end
             end
 
             SB_WRITE: begin
                 stb_ack   = 1'b1;
-                if (lsummu2stb_req) begin
-                    if (lsummu2stb_w_en) begin
-                        if (full_ff) begin
-                            wr_en       = 1'b0;
-                            next_state  = SB_FULL;
-                        end else begin
-                            wr_en       = 1'b1; 
-                            next_state  = SB_WRITE;
-                        end
+                if (st_req) begin
+                    if (stb_full) begin
+                        wr_en       = 1'b0;
+                        next_state  = SB_FULL;
                     end else begin
-                        wr_en       = 1'b0; 
-                        next_state  = SB_IDLE;
+                        wr_en       = 1'b1; 
+                        next_state  = SB_WRITE;
                     end
                 end else begin
-                    wr_en      = 1'b0;
-                    next_state = SB_IDLE;
+                    wr_en       = 1'b0; 
+                    next_state  = SB_IDLE;
                 end
             end
 
             SB_FULL: begin
                 stb_ack    = 1'b0;
-                if (lsummu2stb_req) begin
-                    if (lsummu2stb_w_en) begin
-                        if (full_ff) begin
-                            wr_en      = 1'b0;
-                            next_state = SB_FULL; // Go to idle once buffer is not stb_full
-                        end else begin
-                            wr_en      = 1'b1;
-                            next_state = SB_WRITE; 
-                        end
-                    end else begin
+                if (st_req) begin
+                    if (stb_full) begin
                         wr_en      = 1'b0;
-                        next_state = SB_IDLE;
+                        next_state = SB_FULL;
+                    end else begin
+                        wr_en      = 1'b1;
+                        next_state = SB_WRITE; 
                     end
                 end else begin
                     wr_en      = 1'b0;
                     next_state = SB_IDLE;
-                end        
+                end
             end
             default: begin 
                 next_state = SB_IDLE;
