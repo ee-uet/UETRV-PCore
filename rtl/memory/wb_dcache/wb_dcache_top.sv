@@ -21,10 +21,11 @@ module wb_dcache_top (
     input wire                         dmem_sel_i,
     input wire                         dcache_flush_i,
     input wire                         dcache_kill_i,
+    input wire                         stb2dcache_empty,
 
     // LSU/MMU to data cache interface
-    input wire type_lsummu2dcache_s    lsummu2dcache_i,
-    output type_dcache2lsummu_s        dcache2lsummu_o,
+    input wire type_stb2dcache_s    stb2dcache_i,
+    output type_dcache2stb_s        dcache2stb_o,
   
     // Data cache to data memory interface  
     input wire type_mem2dcache_s       mem2dcache_i,
@@ -40,15 +41,18 @@ logic                              cache_line_clean;
 logic                              cache_wrb_req;
 logic [DCACHE_IDX_BITS-1:0]        evict_index;
 
-type_lsummu2dcache_s               lsummu2dcache;
-type_dcache2lsummu_s               dcache2lsummu;
+type_stb2dcache_s               stb2dcache;
+type_dcache2stb_s               dcache2stb;
 
 type_mem2dcache_s                  mem2dcache;
 type_dcache2mem_s                  dcache2mem;
 
-assign lsummu2dcache = lsummu2dcache_i;
+logic                              top_dcache_flush;
+
+assign stb2dcache = stb2dcache_i;
 assign mem2dcache    = mem2dcache_i;
 
+assign top_dcache_flush  =  stb2dcache_empty && dcache_flush_i;
 
 wb_dcache_controller wb_dcache_controller_module(
   .clk                     (clk), 
@@ -64,12 +68,12 @@ wb_dcache_controller wb_dcache_controller_module(
   .cache_wrb_req_o         (cache_wrb_req),
 
   // LSU/MMU <---> data cache signals
-  .lsummu2dcache_req_i     (lsummu2dcache.req),
-  .lsummu2dcache_wr_i      (lsummu2dcache.w_en),
-  .dcache2lsummu_ack_o     (dcache2lsummu.ack),
-  .dcache_flush_i          (dcache_flush_i),
+  .stb2dcache_req_i     (stb2dcache.req),
+  .stb2dcache_wr_i      (stb2dcache.w_en),
+  .dcache2stb_ack_o     (dcache2stb.ack),
+  .dcache_flush_i          (top_dcache_flush),
   .dcache_kill_i           (dcache_kill_i),
-//  .dcache_flush_ack_o      (dcache2lsummu.flush_ack),    
+//  .dcache_flush_ack_o      (dcache2stb.flush_ack),    
 
   // Data memory <---> data cache signals
   .mem2dcache_ack_i        (mem2dcache.ack),
@@ -93,12 +97,12 @@ wb_dcache_datapath wb_dcache_datapath_module(
   .cache_evict_req_o       (cache_evict_req),
 
   // LSU/MMU <---> data cache signals
-  .dcache_flush_i          (dcache_flush_i),
-  .lsummu2dcache_req_i     (lsummu2dcache.req),
-  .lsummu2dcache_addr_i    (lsummu2dcache.addr),
-  .lsummu2dcache_wdata_i   (lsummu2dcache.w_data),
-  .sel_byte_i              (lsummu2dcache.sel_byte),
-  .dcache2lsummu_data_o    (dcache2lsummu.r_data),
+  .dcache_flush_i          (top_dcache_flush),
+  .stb2dcache_req_i     (stb2dcache.req),
+  .stb2dcache_addr_i    (stb2dcache.addr),
+  .stb2dcache_wdata_i   (stb2dcache.w_data),
+  .sel_byte_i              (stb2dcache.sel_byte),
+  .dcache2stb_data_o    (dcache2stb.r_data),
   
   // Data memory <---> data cache signals
   .mem2dcache_data_i       (mem2dcache.r_data),
@@ -107,7 +111,7 @@ wb_dcache_datapath wb_dcache_datapath_module(
 );
 
 
-assign dcache2lsummu_o = dcache2lsummu;
+assign dcache2stb_o = dcache2stb;
 assign dcache2mem_o    = dcache2mem;
 
 
