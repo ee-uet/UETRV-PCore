@@ -27,6 +27,7 @@ parameter DATA_WIDTH = NUM_COL*COL_WIDTH          // Data Width in bits
   input wire   [NUM_COL-1:0]     wr_en, 
   input wire   [ADDR_WIDTH-1:0]  addr,
   input wire   [DATA_WIDTH-1:0]  wdata,
+  input wire			 dcache_flush,
   output logic [DATA_WIDTH-1:0]  rdata
 );
 
@@ -46,6 +47,9 @@ genvar i;
                     rdata[i*COL_WIDTH +: COL_WIDTH]               <= wdata[i*COL_WIDTH +: COL_WIDTH];
                 end else begin
                     rdata[i*COL_WIDTH +: COL_WIDTH]               <= dcache_tagram[addr][i*COL_WIDTH +: COL_WIDTH];
+                end
+                if (dcache_flush) begin
+                     dcache_tagram[addr][23] <= 0;
                 end
          //   end
         end

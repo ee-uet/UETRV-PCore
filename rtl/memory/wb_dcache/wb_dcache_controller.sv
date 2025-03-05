@@ -28,7 +28,7 @@ module wb_dcache_controller (
     output logic                          cache_line_clean_o,
     output logic                          cache_wrb_req_o,
     output logic [DCACHE_IDX_BITS-1:0]    evict_index_o,
- 
+
     // LSU/MMU to data cache interface
     input wire                            lsummu2dcache_req_i,
     input wire                            lsummu2dcache_wr_i,
@@ -147,7 +147,7 @@ always_comb begin
              dcache2lsummu_ack = 1'b1;  
         end
 
-        DCACHE_ALLOCATE: begin  
+        DCACHE_ALLOCATE: begin 
             // Response from main memory is received          
             if (mem2dcache_ack_i) begin
                 dcache_state_next = DCACHE_PROCESS_REQ;
@@ -157,7 +157,7 @@ always_comb begin
                dcache2mem_req    = 1'b1;
             end
         end
-        DCACHE_WRITE_BACK: begin  
+        DCACHE_WRITE_BACK: begin 
             // Response from main memory is received          
             if (mem2dcache_ack_i) begin  
               //  dcache_state_next = DCACHE_ALLOCATE;

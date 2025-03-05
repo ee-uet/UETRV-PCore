@@ -64,18 +64,48 @@ logic [1:0]                          replace_way_ff;
 logic [3:0]                          cache_wr_way; 
 logic [3:0]                          cache_hit_way; 
 
+logic valid0,valid1,valid2,valid3;
+logic flush;
 
 assign if2icache         = if2icache_i;
 assign mem2icache.r_data = mem2icache_i.r_data;
 assign mem2icache.ack    = mem2icache_i.ack;
 
 assign icache_flush = if2icache.icache_flush || icache_flush_ff;
+// Muxes for cache validity 
+always_comb begin
+    if (icache_rd_tag_way[0][31]) begin
+        valid0 = 1'b1;
+    end else begin
+    	valid0 = 1'b0;
+    end
+end
+always_comb begin
+    if (icache_rd_tag_way[1][31]) begin
+        valid1= 1'b1;
+    end else begin
+    	valid1 = 1'b0;
+    end
+end
+always_comb begin
+    if (icache_rd_tag_way[2][31]) begin
+        valid2 = 1'b1;
+    end else begin
+    	valid2 = 1'b0;
+    end
+end
+always_comb begin
+    if (icache_rd_tag_way[3][31]) begin
+        valid3 = 1'b1;
+    end else begin
+    	valid3 = 1'b0;
+    end
+end
 
-assign cache_hit_way[0] = icache_rd_tag_way[0][31] && (icache_rd_tag_way[0][ICACHE_TAG_BITS-1:0] == addr_tag_ff);
-assign cache_hit_way[1] = icache_rd_tag_way[1][31] && (icache_rd_tag_way[1][ICACHE_TAG_BITS-1:0] == addr_tag_ff);
-assign cache_hit_way[2] = icache_rd_tag_way[2][31] && (icache_rd_tag_way[2][ICACHE_TAG_BITS-1:0] == addr_tag_ff);
-assign cache_hit_way[3] = icache_rd_tag_way[3][31] && (icache_rd_tag_way[3][ICACHE_TAG_BITS-1:0] == addr_tag_ff);
-
+assign cache_hit_way[0] = valid0 && (icache_rd_tag_way[0][ICACHE_TAG_BITS-1:0] == addr_tag_ff);
+assign cache_hit_way[1] = valid1 && (icache_rd_tag_way[1][ICACHE_TAG_BITS-1:0] == addr_tag_ff);
+assign cache_hit_way[2] = valid2 && (icache_rd_tag_way[2][ICACHE_TAG_BITS-1:0] == addr_tag_ff);
+assign cache_hit_way[3] = valid3 && (icache_rd_tag_way[3][ICACHE_TAG_BITS-1:0] == addr_tag_ff);
 
 assign cache_hit   = (|cache_hit_way) && ~icache_flush; 
 assign icache_hit  = if2icache_req & imem_sel_ff & cache_hit;
@@ -89,7 +119,22 @@ assign addr_index  = icache_flush_ff ? flush_index_ff : if2icache.addr[ICACHE_TA
 assign icache_wr_tag  = {cache_valid_bit, {`XLEN-ICACHE_TAG_BITS-1{1'b0}}, addr_tag}; 
 
 // Select the requested word from the read cache data line
-assign icache_rd_data = cache_hit_way[3] ? icache_rd_data_way[3] : cache_hit_way[2] ? icache_rd_data_way[2] : cache_hit_way[1] ? icache_rd_data_way[1] : icache_rd_data_way[0];
+always_comb begin
+    if (cache_hit_way[3]) begin
+        icache_rd_data = icache_rd_data_way[3];
+    end
+    else if (cache_hit_way[2]) begin
+        icache_rd_data = icache_rd_data_way[2];
+    end
+    else if (cache_hit_way[1]) begin
+        icache_rd_data = icache_rd_data_way[1];
+    end
+    else begin
+        icache_rd_data = icache_rd_data_way[0];
+    end
+end
+
+
 
 always_comb begin
     unique case (addr_offset_ff) 
@@ -120,8 +165,17 @@ end
 always @ (posedge clk) begin
     if (!rst_n) begin
         replace_way_ff <= '0;
-    end else if (mem2icache.ack) begin
-        replace_way_ff <= replace_way_ff + 2'd1;
+    end else if (icache_rd_tag_way[0][31]&icache_rd_tag_way[1][31]&icache_rd_tag_way[2][31]&icache_rd_tag_way[3][31]) begin
+        replace_way_ff <= '0;
+    end else if (icache_rd_tag_way[0][31]&icache_rd_tag_way[1][31]&icache_rd_tag_way[2][31]) begin
+        replace_way_ff <= 2'd3;
+    end else if (icache_rd_tag_way[0][31]&icache_rd_tag_way[1][31]) begin
+        replace_way_ff <= 2'd2;
+    end else if (icache_rd_tag_way[0][31]) begin
+        replace_way_ff <= 2'd1;
+    end
+    else begin
+    	replace_way_ff <= 2'd0;
     end
 end
 
@@ -130,10 +184,12 @@ end
 always_ff @(posedge clk) begin
   if (!rst_n) begin
       icache_flush_ff  <= '0;
-  end else if (if2icache.icache_flush) begin
-      icache_flush_ff <= 1'b1;
-  end else if (icache_flush_done) begin
+  end 
+  else if (icache_flush_done) begin
       icache_flush_ff <= 1'b0;
+  end
+  else if (if2icache.icache_flush) begin
+      icache_flush_ff <= 1'b1;
   end 
 end
 
@@ -152,12 +208,14 @@ always_comb begin
     icache_state_next = icache_state_ff;
     flush_index_next  = '0; //flush_index_ff;
     icache2mem.req    = '0;
-    cache_wr_way      = '0;
-    cache_valid_bit   = '0;
+    cache_wr_way      = 4'h0;
+    cache_valid_bit   = 1'b0;
     icache_flush_done = 1'b0;
+    flush=0;
     
     unique case (icache_state_ff)
         ICACHE_IDLE: begin
+            flush=0;
             // In case of miss, initiate main memory read cycle   
             if (if2icache.icache_flush) begin           
                 icache_state_next = ICACHE_FLUSH;
@@ -192,16 +250,19 @@ always_comb begin
             end
         end
         ICACHE_FLUSH: begin
-                
+            cache_wr_way    = 4'hF;
+            flush=1;    
             if (&flush_index_ff) begin  
-                icache_flush_done = 1'b1;
-                icache_state_next = ICACHE_IDLE;
+                icache_state_next = ICACHE_FLUSH_DONE;
             end else begin
                 flush_index_next = flush_index_ff + 1;
                 icache_state_next = ICACHE_FLUSH;
-                cache_valid_bit = 1'b0;
-                cache_wr_way    = 4'hF;
+                
             end
+        end
+        ICACHE_FLUSH_DONE: begin
+            icache_flush_done = 1'b1;
+            icache_state_next = ICACHE_IDLE;
         end
        
         default: begin      end
@@ -209,10 +270,11 @@ always_comb begin
 
     // Kill any ongoing main memory read request if:
     //     1) The new PC points to boot memory region (only happens on reset) 
-    if (~imem_sel_i) begin  // | if2icache_req_kill_i
+    if (~imem_sel_i) begin 
         icache_state_next = ICACHE_IDLE;
-        cache_wr_way   = '0;    
+        cache_wr_way   = 4'h0;    
         icache2mem.req = 1'b0;
+        icache2mem.kill = 1'b0;
     end
 
 end
@@ -228,12 +290,13 @@ icache_data_ram icache_data_ram_module0 (
   .wr_en                (cache_wr_way[0]),
   .rdata                (icache_rd_data_way[0])  
 );
-
+ 
 icache_tag_ram icache_tag_ram_module0 (
   .clk                  (clk), 
   .rst_n                (rst_n),
 
   .req                  (cache_req),
+  .flush		(flush),
   .addr                 (addr_index),
   .wdata                (icache_wr_tag),
   .wr_en                (cache_wr_way[0]),
@@ -256,6 +319,7 @@ icache_tag_ram icache_tag_ram_module1 (
   .rst_n                (rst_n),
 
   .req                  (cache_req),
+  .flush		(flush),
   .addr                 (addr_index),
   .wdata                (icache_wr_tag),
   .wr_en                (cache_wr_way[1]),
@@ -278,6 +342,7 @@ icache_tag_ram icache_tag_ram_module2 (
   .rst_n                (rst_n),
 
   .req                  (cache_req),
+  .flush		(flush),
   .addr                 (addr_index),
   .wdata                (icache_wr_tag),
   .wr_en                (cache_wr_way[2]),
@@ -300,6 +365,7 @@ icache_tag_ram icache_tag_ram_module3 (
   .rst_n                (rst_n),
 
   .req                  (cache_req),
+  .flush		(flush),
   .addr                 (addr_index),
   .wdata                (icache_wr_tag),
   .wr_en                (cache_wr_way[3]),

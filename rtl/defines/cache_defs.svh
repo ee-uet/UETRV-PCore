@@ -29,7 +29,7 @@ typedef enum logic [1:0] {
     ICACHE_IDLE, 
     ICACHE_READ_MEMORY, 
     ICACHE_FLUSH, 
-    ICACHE_ALLOCATE 
+    ICACHE_FLUSH_DONE
 } type_icache_states_e; 
 
 // Bus interface from IF to icache  

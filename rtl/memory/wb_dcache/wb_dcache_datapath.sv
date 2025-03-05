@@ -56,9 +56,11 @@ logic [3:0]                          cache_tag_wr_sel;
 logic [DCACHE_DATA_WIDTH-1:0]        dcache2lsummu_data_ff, dcache2lsummu_data_next;
 logic [DCACHE_TAG_BITS-1:0]          addr_tag, addr_tag_ff;
 logic [1:0]                          addr_offset, addr_offset_ff;
-logic [DCACHE_IDX_BITS-1:0]          addr_index, addr_index_ff;
+logic [DCACHE_IDX_BITS-1:0]          addr_index;
+logic [DCACHE_IDX_BITS-1:0]          addr_index_ff;
 logic [DCACHE_IDX_BITS-1:0]          evict_index;
-logic                                dcache_flush;                               
+logic                                dcache_flush;  
+logic  valid;                             
 
 assign dcache_flush         = dcache_flush_i;
 assign evict_index          = evict_index_i;
@@ -67,8 +69,16 @@ assign evict_index          = evict_index_i;
 
 assign addr_tag             = lsummu2dcache_addr_i[DCACHE_ADDR_WIDTH-1:DCACHE_TAG_LSB];
 assign addr_offset          = lsummu2dcache_addr_i[DCACHE_OFFSET_BITS-1:2];
-assign addr_index           = dcache_flush ? evict_index : cache_wr_i ? addr_index_ff :
-                              lsummu2dcache_addr_i[DCACHE_TAG_LSB-1:DCACHE_OFFSET_BITS];
+
+always_comb begin
+	if (dcache_flush) begin
+            addr_index = evict_index;
+        end else if (cache_wr_i) begin
+            addr_index = addr_index_ff;
+        end else begin
+            addr_index = lsummu2dcache_addr_i[DCACHE_TAG_LSB-1:DCACHE_OFFSET_BITS];
+        end
+end
 
 
 always_ff@(posedge clk) begin
@@ -203,14 +213,24 @@ dcache_tag_ram dcache_tag_ram_module (
   .wr_en                (cache_tag_wr_sel),
   .addr                 (addr_index),
   .wdata                (cache_tag_write),
-  .rdata                (cache_tag_read)  
+  .rdata                (cache_tag_read)  ,
+  .dcache_flush         (dcache_flush)
 );
-
-
+always_comb begin
+    if (cache_tag_read.valid)begin
+	valid=1;
+    end else begin
+	valid=0;
+    end
+end
+    
+    
+    
 // Output signals update
 assign dcache2lsummu_data_next = cache_word_read;   // Read data from cache to LSU/MMU 
 
-assign cache_hit_o          = (addr_tag_ff == cache_tag_read.tag[DCACHE_TAG_BITS-1:0]) && cache_tag_read.valid;
+
+assign cache_hit_o          = (addr_tag_ff == cache_tag_read.tag[DCACHE_TAG_BITS-1:0]) && valid;
 assign cache_evict_req_o    = cache_tag_read.dirty[0]; // & cache_tag_read.valid;
 assign dcache2mem_addr_o    = dcache2mem_addr;
 assign dcache2mem_data_o    = cache_line_read;
