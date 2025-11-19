@@ -1,5 +1,9 @@
 `timescale 1ns / 1ps
-`include "../../defines/cache_defs.svh"
+`ifndef VERILATOR
+`include "../defines/cache_defs.svh"
+`else
+`include "cache_defs.svh"
+`endif
 
 module icache_top_tb;
 
