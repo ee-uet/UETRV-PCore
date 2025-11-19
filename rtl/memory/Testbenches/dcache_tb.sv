@@ -1,5 +1,10 @@
 `timescale 1ns / 1ps
-`include "../../defines/cache_defs.svh"
+
+`ifndef VERILATOR
+`include "../defines/cache_defs.svh"
+`else
+`include "cache_defs.svh"
+`endif
 module dcache_tb;
 
     // Clock and Reset Signals
@@ -175,7 +180,7 @@ module dcache_tb;
         	@(posedge clk);
         end
         lsummu2dcache.req = 0;
-        $display("\n\AFTER Cache Allocation");
+        $display("\nAFTER Cache Allocation");
         display_cacheline(32'h80000000);
         repeat(10)@(posedge clk);
         //------------------------------------------------------------------------------------------------------------------------
@@ -188,7 +193,7 @@ module dcache_tb;
         	@(posedge clk);
         end
         lsummu2dcache.req = 0;
-        $display("\n\AFTER Cache Allocation");
+        $display("\nAFTER Cache Allocation");
         display_cacheline(32'h80007ff0);
         repeat(10)@(posedge clk);
         //------------------------------------------------------------------------------------------------------------------------
@@ -250,7 +255,7 @@ module dcache_tb;
         	@(posedge clk);
         end
         lsummu2dcache.req = 0;
-        $display("\n\AFTER Cache Allocation");
+        $display("\nAFTER Cache Allocation");
         display_cacheline(32'h80000010);
         repeat(10)@(posedge clk);
         //------------------------------------------------------------------------------------------------------------------------
@@ -262,7 +267,7 @@ module dcache_tb;
         	@(posedge clk);
         end
         lsummu2dcache.req = 0;
-        $display("\n\AFTER Cache Allocation");
+        $display("\nAFTER Cache Allocation");
         display_cacheline(32'h80000c20);
         repeat(10)@(posedge clk);
         //------------------------------------------------------------------------------------------------------------------------
@@ -275,7 +280,7 @@ module dcache_tb;
         end
         lsummu2dcache.req = 0;
         lsummu2dcache.w_en = 0;
-        $display("\n\AFTER Writing Cache-Line");
+        $display("\nAFTER Writing Cache-Line");
         @(posedge clk);
         display_cacheline(32'h80000c20);
         repeat(10)@(posedge clk);
@@ -299,7 +304,7 @@ module dcache_tb;
         end
         lsummu2dcache.req = 0;
         lsummu2dcache.w_en = 0;
-        $display("\n\AFTER Writing Cache-Line");
+        $display("\nAFTER Writing Cache-Line");
         @(posedge clk);
         display_cacheline(32'h80000c20);
         repeat(10)@(posedge clk);
@@ -313,7 +318,7 @@ module dcache_tb;
         end
         lsummu2dcache.req = 0;
         lsummu2dcache.w_en = 0;
-        $display("\n\AFTER Writing Cache-Line");
+        $display("\nAFTER Writing Cache-Line");
         @(posedge clk);
         display_cacheline(32'h80000c20);
         repeat(10)@(posedge clk);
@@ -327,7 +332,7 @@ module dcache_tb;
         end
         lsummu2dcache.req = 0;
         lsummu2dcache.w_en = 0;
-        $display("\n\AFTER Writing Cache-Line");
+        $display("\nAFTER Writing Cache-Line");
         @(posedge clk);
         display_cacheline(32'h80000c20);
         repeat(10)@(posedge clk);
@@ -342,7 +347,7 @@ module dcache_tb;
         end
         lsummu2dcache.req = 0;
         lsummu2dcache.w_en = 0;
-        $display("\n\AFTER Writing Cache-Line");
+        $display("\nAFTER Writing Cache-Line");
         @(posedge clk);
         display_cacheline(32'h8000030c);
         repeat(10)@(posedge clk);
@@ -357,7 +362,7 @@ module dcache_tb;
         end
         lsummu2dcache.req = 0;
         lsummu2dcache.w_en = 0;
-        $display("\n\AFTER Writing Cache-Line");
+        $display("\nAFTER Writing Cache-Line");
         @(posedge clk);
         display_cacheline(32'h8000830c);
         repeat(10)@(posedge clk);
@@ -379,7 +384,7 @@ module dcache_tb;
         	@(posedge clk);
         end
         lsummu2dcache.req = 0;
-        $display("\n\AFTER Cache Allocation");
+        $display("\nAFTER Cache Allocation");
         display_cacheline(32'h80007ff0);
         repeat(10)@(posedge clk);
         //------------------------------------------------------------------------------------------------------------------------
