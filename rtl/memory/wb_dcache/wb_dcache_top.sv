@@ -45,6 +45,7 @@ type_dcache2lsummu_s               dcache2lsummu;
 
 type_mem2dcache_s                  mem2dcache;
 type_dcache2mem_s                  dcache2mem;
+logic collect_info_tag;
 
 assign lsummu2dcache = lsummu2dcache_i;
 assign mem2dcache    = mem2dcache_i;

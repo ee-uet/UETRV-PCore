@@ -28,7 +28,8 @@ parameter DATA_WIDTH = NUM_COL*COL_WIDTH          // Data width in bits
   input wire                     wr_en,           // [NUM_COL-1:0]
   input wire   [ADDR_WIDTH-1:0]  addr,
   input wire   [DATA_WIDTH-1:0]  wdata,
-  output logic [DATA_WIDTH-1:0]  rdata
+  output logic [DATA_WIDTH-1:0]  rdata,
+  input flush
 );
 
 // Memory
@@ -44,6 +45,11 @@ always @ (posedge clk) begin
          rdata               <= icache_tagram[addr]; 
       end 
    end 
+   if (flush & wr_en) begin
+   	icache_tagram[addr][31] = 0;
+   end
+   else begin
+   end
 end
 
 endmodule 
