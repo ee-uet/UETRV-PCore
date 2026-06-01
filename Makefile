@@ -8,7 +8,7 @@
 
 verilator   ?= verilator
 ver-library ?= ver_work
-defines     ?= 
+defines     ?=
 
 # default command line arguments
 imem_uart  ?= sdk/example-uart/build/hello.hex
@@ -75,4 +75,3 @@ sim-verilate-linux: verilate
 clean-all:
 	rm -rf ver_work/ *.log *.vcd \
 	verif/*work/
-
