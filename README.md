@@ -121,4 +121,9 @@ After successful downloading of the image the booting process starts. A snapshot
 
 ![bootlog](./docs/images/linux_boot_log.png)
 
+## FreeRTOS Demo
+To run the `FreeRTOS` on the `UETRV-PCore` then simply run:
+```bash
+make run-freertos
+```
 
