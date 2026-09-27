@@ -1,0 +1,6 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1748812058" />
+    <testcase name="memory_operations_test" classname="mmu" file="/home/masooma/UETRV-PCore-main/verif/pytests/mmu/mmu.py" lineno="102" time="0.4865455627441406" sim_time_ns="20285.001" ratio_time="41691.883665717985" />
+  </testsuite>
+</testsuites>

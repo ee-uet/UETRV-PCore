@@ -1,0 +1,5 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1748808365" />
+  </testsuite>
+</testsuites>
